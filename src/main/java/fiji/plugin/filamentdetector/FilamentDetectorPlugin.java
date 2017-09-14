@@ -1,7 +1,7 @@
 package fiji.plugin.filamentdetector;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.scijava.ItemIO;
 import org.scijava.command.Command;
@@ -10,7 +10,6 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import de.biomedical_imaging.ij.steger.Line;
 import fiji.plugin.filamentdetector.ui.OverlayFactory;
 import ij.gui.Roi;
 import net.imagej.Dataset;
@@ -74,7 +73,7 @@ public class FilamentDetectorPlugin implements Command {
 		Detector detector = new Detector(ij.context(), image, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
-		
+
 		// Simplify filaments by reducing the number of points
 		double toleranceDistance = 10;
 		filaments = filaments.simplify(toleranceDistance);
@@ -89,18 +88,17 @@ public class FilamentDetectorPlugin implements Command {
 				.filter(filament -> filament.getLength() > minLength)
 				.filter(filament -> filament.getSinuosity() < maxSinuosity)
 				.filter(filament -> filament.getSinuosity() > minSinuosity)
-				.collect(Filaments::new, Filaments::add, Filaments::addAll);
+				.collect(Collectors.toCollection(Filaments::new));
 
 		log.info(filteredFilaments.info());
 
 		log.info("Size before filters : " + filaments.size());
 		log.info("Size after filters : " + filteredFilaments.size());
-		log.info("\n");
 
 		// Show lines as ROIs
 		List<Roi> rois = OverlayFactory.createROIs(filteredFilaments);
 		OverlayFactory.displayInROIManager(rois);
-		
+
 		// Build GUI to do live fine parameters tuning
 		// Track filaments
 		// Export data

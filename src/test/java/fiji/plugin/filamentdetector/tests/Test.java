@@ -17,7 +17,7 @@ public class Test {
 		String fpath = FilamentDetectorPlugin.class.getResource("/fiji/plugin/filamentdetector/tests/testdata/" + name)
 				.getPath();
 		
-		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/mt.tif";
+		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/seeds.tif";
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 
