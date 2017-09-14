@@ -14,6 +14,7 @@ public class Filament {
 	private double length = Double.NaN;
 	private double[] lengths;
 	private double sinuosity = Double.NaN;
+	private double[] boundingBox;
 
 	public Filament(Line line, int frame) {
 		this.line = line;
@@ -93,6 +94,44 @@ public class Filament {
 		return this.sinuosity;
 	}
 
+	public double[] getBoundingBox() {
+		if (boundingBox != null) {
+			return boundingBox;
+		}
+
+		boundingBox = new double[4];
+
+		float[] x = this.getXCoordinates();
+		float[] y = this.getYCoordinates();
+
+		double xMin = x[0];
+		double xMax = x[0];
+		double yMin = y[0];
+		double yMax = y[0];
+
+		for (int i = 1; i < x.length; i++) {
+			if (x[i] < xMin) {
+				xMin = (double) x[i];
+			}
+			if (x[i] > xMax) {
+				xMax = (double) x[i];
+			}
+			if (y[i] < yMin) {
+				yMin = (double) y[i];
+			}
+			if (y[i] > yMax) {
+				yMax = (double) y[i];
+			}
+		}
+
+		boundingBox[0] = xMin;
+		boundingBox[1] = yMin;
+		boundingBox[2] = xMax - xMin;
+		boundingBox[3] = yMax - yMin;
+
+		return boundingBox;
+	}
+
 	public String toString() {
 		return "Frame: " + this.getFrame() + " | ID: " + this.getID();
 	}
@@ -104,6 +143,11 @@ public class Filament {
 		info += "N Points: " + this.getSize() + "\n";
 		info += "Length: " + String.format("%.2f", this.getLength()) + "\n";
 		info += "Sinuosity: " + String.format("%.2f", this.getSinuosity()) + "\n";
+		info += "Bounding Box: ";
+		info += "x = " + String.format("%.2f", this.getBoundingBox()[0]) + ", ";
+		info += "y = " + String.format("%.2f", this.getBoundingBox()[1]) + ", ";
+		info += "width = " + String.format("%.2f", this.getBoundingBox()[2]) + ", ";
+		info += "height = " + String.format("%.2f", this.getBoundingBox()[3]) + ", " + "\n";
 
 		return info;
 	}

@@ -10,6 +10,7 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.ui.OverlayFactory;
 import ij.gui.Roi;
 import net.imagej.Dataset;
@@ -67,7 +68,7 @@ public class FilamentDetectorPlugin implements Command {
 
 		// Setup parameters
 		DetectionParameters params = new DetectionParameters();
-		params.setSigma(1.51);
+		params.setSigma(2.5);
 
 		// Detect filaments
 		Detector detector = new Detector(ij.context(), image, params);
@@ -96,7 +97,16 @@ public class FilamentDetectorPlugin implements Command {
 		log.info("Size after filters : " + filteredFilaments.size());
 
 		// Show lines as ROIs
-		List<Roi> rois = OverlayFactory.createROIs(filteredFilaments);
+		// List<Roi> rois = OverlayFactory.createROIs(filteredFilaments);
+		// OverlayFactory.displayInROIManager(rois);
+
+		// Track filaments over time
+		FilamentsTracker tracker = new FilamentsTracker(filteredFilaments);
+		tracker.track();
+		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();
+
+		// Show one tracked filaments
+		List<Roi> rois = OverlayFactory.createROIs(trackedFilaments);
 		OverlayFactory.displayInROIManager(rois);
 
 		// Build GUI to do live fine parameters tuning

@@ -5,6 +5,8 @@ import java.util.List;
 
 import fiji.plugin.filamentdetector.Filament;
 import fiji.plugin.filamentdetector.Filaments;
+import fiji.plugin.filamentdetector.TrackedFilament;
+import fiji.plugin.filamentdetector.TrackedFilaments;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
@@ -36,6 +38,17 @@ public class OverlayFactory {
 
 		return r;
 
+	}
+
+	public static List<Roi> createROIs(TrackedFilaments trackedFilaments) {
+
+		List<Roi> rois = new ArrayList<Roi>();
+		for (TrackedFilament trackedFilament : trackedFilaments) {
+			for(Filament filament: trackedFilament) {
+				rois.add(createROI(filament));
+			}
+		}
+		return rois;
 	}
 
 	public static void displayInROIManager(Roi roi) {
