@@ -1,16 +1,31 @@
 package fiji.plugin.filamentdetector.tracking;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.scijava.Context;
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+
 import fiji.plugin.filamentdetector.Filament;
 import fiji.plugin.filamentdetector.Filaments;
 import fiji.plugin.filamentdetector.TrackedFilament;
 import fiji.plugin.filamentdetector.TrackedFilaments;
+import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
+import fiji.plugin.trackmate.tracking.sparselap.costmatrix.JaqamanLinkingCostMatrixCreator;
+import fiji.plugin.trackmate.tracking.sparselap.linker.JaqamanLinker;
 
 public class FilamentsTracker {
+
+	@Parameter
+	private LogService log;
 
 	private Filaments filaments;
 	private TrackedFilaments trackedFilaments;
 
-	public FilamentsTracker(Filaments filaments) {
+	public FilamentsTracker(Context context, Filaments filaments) {
+		context.inject(this);
 		this.setFilaments(filaments);
 	}
 
@@ -23,14 +38,75 @@ public class FilamentsTracker {
 	}
 
 	public void track() {
+		track(0.5);
+	}
+
+	public void track(double costThreshold) {
+
+		// TODO: implement multi-threading
+
 		trackedFilaments = new TrackedFilaments();
 
-		TrackedFilament trackedFilament = new TrackedFilament();
+		// Group filaments by frames in a map
+		Map<Integer, List<Filament>> sortedFilaments = filaments.stream()
+				.collect(Collectors.groupingBy(Filament::getFrame));
 
-		for (Filament filament : filaments) {
-			trackedFilament.add(filament);
+		// Get the sorted list of frames that contains filaments
+		List<Integer> frames = sortedFilaments.keySet().stream().sorted().collect(Collectors.toList());
+
+		// Prepare cost function
+		CostFunction<Filament, Filament> costFunction = new BoundingBoxOverlapCostFunction();
+
+		// Initialize variables
+
+		double alternativeCostFactor = 0.5;
+		double percentile = 1d;
+
+		JaqamanLinkingCostMatrixCreator<Filament, Filament> creator;
+		JaqamanLinker<Filament, Filament> linker;
+
+		List<Filament> sources;
+		List<Filament> targets;
+		int deltaFrames = 0;
+		int frameSource;
+		int frameTarget;
+
+		// Iterate over all the frames two by two
+		for (int i = 0; i < frames.size() - 1; i++) {
+
+			frameSource = frames.get(i);
+			frameTarget = frames.get(i + 1);
+
+			sources = sortedFilaments.get(frameSource);
+			targets = sortedFilaments.get(frameTarget);
+			deltaFrames = frameTarget - frameSource;
+
+			// Build the matrix
+			creator = new JaqamanLinkingCostMatrixCreator<Filament, Filament>(sources, targets, costFunction,
+					costThreshold, alternativeCostFactor, percentile);
+			linker = new JaqamanLinker<Filament, Filament>(creator);
+
+			// Solve it
+			if (!linker.checkInput() || !linker.process()) {
+				log.error("At frame " + frameSource + " to " + frameTarget + ": " + linker.getErrorMessage());
+			}
+
+			// Process results
+			Map<Filament, Double> costs = linker.getAssignmentCosts();
+			Map<Filament, Filament> assignment = linker.getResult();
+
+			for (final Filament source : assignment.keySet()) {
+				double cost = costs.get(source);
+				Filament target = assignment.get(source);
+				log.info(source);
+				log.info(target);
+				log.info(cost);
+				log.info("");
+			}
+
 		}
 
+		TrackedFilament trackedFilament = new TrackedFilament();
 		trackedFilaments.add(trackedFilament);
 	}
 

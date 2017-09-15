@@ -91,23 +91,23 @@ public class FilamentDetectorPlugin implements Command {
 				.filter(filament -> filament.getSinuosity() > minSinuosity)
 				.collect(Collectors.toCollection(Filaments::new));
 
-		log.info(filteredFilaments.info());
+		//log.info(filteredFilaments.info());
 
 		log.info("Size before filters : " + filaments.size());
 		log.info("Size after filters : " + filteredFilaments.size());
 
 		// Show lines as ROIs
-		// List<Roi> rois = OverlayFactory.createROIs(filteredFilaments);
-		// OverlayFactory.displayInROIManager(rois);
+		List<Roi> rois = OverlayFactory.createROIs(filteredFilaments);
+		OverlayFactory.displayInROIManager(rois);
 
 		// Track filaments over time
-		FilamentsTracker tracker = new FilamentsTracker(filteredFilaments);
+		FilamentsTracker tracker = new FilamentsTracker(ij.context(), filteredFilaments);
 		tracker.track();
 		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();
 
 		// Show one tracked filaments
-		List<Roi> rois = OverlayFactory.createROIs(trackedFilaments);
-		OverlayFactory.displayInROIManager(rois);
+		//List<Roi> rois = OverlayFactory.createROIs(trackedFilaments);
+		//OverlayFactory.displayInROIManager(rois);
 
 		// Build GUI to do live fine parameters tuning
 		// Track filaments

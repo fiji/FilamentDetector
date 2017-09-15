@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import de.biomedical_imaging.ij.steger.Line;
+import net.imglib2.RealLocalizable;
 
 /* A container for Line */
-public class Filament {
+public class Filament implements Comparable<Filament> {
 
 	private final Line line;
 	private final int frame;
@@ -185,6 +186,11 @@ public class Filament {
 
 		Line line = new Line(newX, newY);
 		return new Filament(line, this.getFrame());
+	}
+
+	@Override
+	public int compareTo(Filament filament) {
+		return this.getID() - filament.getID();
 	}
 
 }
