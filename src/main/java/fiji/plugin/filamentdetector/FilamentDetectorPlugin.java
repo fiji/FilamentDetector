@@ -110,7 +110,7 @@ public class FilamentDetectorPlugin implements Command {
 		//OverlayFactory.displayInROIManager(rois);
 
 		// Build GUI to do live fine parameters tuning
-		// Track filaments
+		// Filter TrackedFilament
 		// Export data
 		// Build kymographs automatically
 

@@ -10,6 +10,8 @@ public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Fi
 	@Override
 	public double linkingCost(Filament source, Filament target) {
 
+		// TODO: optimize, optimize, optimize !!!
+		
 		// Inspired from
 		// http://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/
 
