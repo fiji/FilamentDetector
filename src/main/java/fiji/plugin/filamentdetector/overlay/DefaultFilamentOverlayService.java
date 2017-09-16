@@ -161,7 +161,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	@Override
-	public void setColorALpha(int colorALpha) {
+	public void setColorAlpha(int colorALpha) {
 		this.colorALpha = colorALpha;
 	}
 
