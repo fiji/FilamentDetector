@@ -68,7 +68,7 @@ public class FilamentDetectorPlugin implements Command {
 
 		// Setup parameters
 		DetectionParameters params = new DetectionParameters();
-		params.setSigma(2.5);
+		params.setSigma(2);
 
 		// Detect filaments
 		Detector detector = new Detector(ij.context(), image, params);
