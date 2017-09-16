@@ -23,7 +23,7 @@ public class Test {
 	public static void main(final String... args) throws Exception {
 		final ImageJ ij = net.imagej.Main.launch(args);
 		Context context = ij.getContext();
-		
+
 		LogService log = ij.log();
 		FilamentOverlayService overlayService = ij.get(FilamentOverlayService.class);
 

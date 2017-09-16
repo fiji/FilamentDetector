@@ -25,7 +25,7 @@ import net.imagej.display.OverlayService;
 public class DefaultFilamentOverlayService extends AbstractService implements FilamentOverlayService {
 
 	private static int DEFAULT_COLOR_ALPHA = 255;
-	
+
 	@Parameter
 	private ConvertService convert;
 
@@ -38,7 +38,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	private Map<Filament, Roi> filamentROIMap = new HashMap<>();
 	private ImageDisplay imageDisplay;
-	
+
 	@Override
 	public void add(Filament filament) {
 		add(filament, this.filamentColor);
@@ -57,7 +57,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		roi.setPosition(filament.getFrame());
 		roi.setName(Integer.toString(filament.getID()));
 		roi.setStrokeWidth(filamentWidth);
-		
+
 		Color realColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorALpha);
 		roi.setStrokeColor(realColor);
 
@@ -154,7 +154,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void setImageDisplay(ImageDisplay imageDisplay) {
 		this.imageDisplay = imageDisplay;
 	}
-	
+
 	@Override
 	public int getColorALpha() {
 		return colorALpha;
