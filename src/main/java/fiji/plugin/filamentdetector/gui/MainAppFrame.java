@@ -20,57 +20,57 @@ public class MainAppFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	@Parameter
-    private LogService log;
+	private LogService log;
 
-    private final ImageJ ij;
+	private final ImageJ ij;
 
-    private JFXPanel fxPanel;
+	private JFXPanel fxPanel;
 
-    public MainAppFrame(ImageJ ij) {
-        ij.context().inject(this);
-        this.ij = ij;
-    }
+	public MainAppFrame(ImageJ ij) {
+		ij.context().inject(this);
+		this.ij = ij;
+	}
 
-    /**
-     * Create the JFXPanel that make the link between Swing (IJ) and JavaFX plugin.
-     */
-    public void init() {
-        this.fxPanel = new JFXPanel();
-        this.add(this.fxPanel);
-        this.setVisible(true);
+	/**
+	 * Create the JFXPanel that make the link between Swing (IJ) and JavaFX plugin.
+	 */
+	public void init() {
+		this.fxPanel = new JFXPanel();
+		this.add(this.fxPanel);
+		this.setVisible(true);
 
-        // The call to runLater() avoid a mix between JavaFX thread and Swing thread.
-        Platform.runLater(() -> {
-            initFX(fxPanel);
-        });
-        
-    }
-    
-    public void initFX(JFXPanel fxPanel) {
-        // Init the root layout
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            System.out.println(getClass().getClassLoader().getResource("/gui/RootLayout.fxml"));
-            loader.setLocation(getClass().getClassLoader().getResource("/gui/RootLayout.fxml"));
-            AnchorPane rootLayout = (AnchorPane) loader.load();
-            
-            // Get the controller and add an ImageJ context to it.
-            RootLayoutController controller = loader.getController();
-            controller.setContext(ij.context());
+		// The call to runLater() avoid a mix between JavaFX thread and Swing thread.
+		Platform.runLater(() -> {
+			initFX(fxPanel);
+		});
 
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            this.fxPanel.setScene(scene);
+	}
 
-            // Resize the JFrame to the JavaFX scene
-            this.setSize((int) scene.getWidth(), (int) scene.getHeight());
+	public void initFX(JFXPanel fxPanel) {
+		// Init the root layout
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			System.out.println(getClass().getClassLoader().getResource("/gui/RootLayout.fxml"));
+			loader.setLocation(getClass().getClassLoader().getResource("/gui/RootLayout.fxml"));
+			AnchorPane rootLayout = (AnchorPane) loader.load();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public static void main(final String... args) throws Exception {
+			// Get the controller and add an ImageJ context to it.
+			RootLayoutController controller = loader.getController();
+			controller.setContext(ij.context());
+
+			// Show the scene containing the root layout.
+			Scene scene = new Scene(rootLayout);
+			this.fxPanel.setScene(scene);
+
+			// Resize the JFrame to the JavaFX scene
+			this.setSize((int) scene.getWidth(), (int) scene.getHeight());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(final String... args) throws Exception {
 		final ImageJ ij = net.imagej.Main.launch(args);
 		Context context = ij.getContext();
 

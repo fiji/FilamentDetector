@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import de.biomedical_imaging.ij.steger.Line;
-import net.imglib2.RealLocalizable;
 
 /* A container for Line */
 public class Filament implements Comparable<Filament> {

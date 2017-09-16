@@ -12,7 +12,7 @@ import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
 import ij.process.FloatPolygon;
 
-public class OverlayFactory {
+public class ROIFactory {
 
 	public static List<Roi> createROIs(Filaments filaments) {
 
@@ -44,7 +44,7 @@ public class OverlayFactory {
 
 		List<Roi> rois = new ArrayList<Roi>();
 		for (TrackedFilament trackedFilament : trackedFilaments) {
-			for(Filament filament: trackedFilament) {
+			for (Filament filament : trackedFilament) {
 				rois.add(createROI(filament));
 			}
 		}

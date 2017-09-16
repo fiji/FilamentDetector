@@ -1,6 +1,5 @@
 package fiji.plugin.filamentdetector;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.scijava.ItemIO;
@@ -10,11 +9,13 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import fiji.plugin.filamentdetector.overlay.ColorService;
+import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
-import fiji.plugin.filamentdetector.ui.OverlayFactory;
-import ij.gui.Roi;
 import net.imagej.Dataset;
+import net.imagej.DatasetService;
 import net.imagej.ImageJ;
+import net.imagej.display.ImageDisplay;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 @Plugin(type = Command.class, menuPath = "Plugins>Tracking>FilamentDetector")
@@ -29,8 +30,19 @@ public class FilamentDetectorPlugin implements Command {
 	@Parameter
 	private ConvertService convert;
 
+	@Parameter
+	private FilamentOverlayService overlayService;
+
+	@Parameter
+	private DatasetService dservice;
+
+	@Parameter
+	private ColorService colorService;
+
 	@Parameter(type = ItemIO.INPUT)
-	private Dataset image;
+	private ImageDisplay imd;
+
+	private Dataset dataset;
 
 	public static final String PLUGIN_NAME = "FilamentDetector";
 	public static final String VERSION = version();
@@ -49,29 +61,32 @@ public class FilamentDetectorPlugin implements Command {
 
 		log.info("Running " + PLUGIN_NAME + " version " + VERSION);
 
+		// Get Dataset
+		dataset = dservice.getDatasets(imd).get(0);
+
 		// Check image exist on disk
-		if (image.getSource() == "") {
+		if (dataset.getSource() == "") {
 			log.error("Please save the image on disk before processing it.");
 			return;
 		}
 
 		// Check image is 8-bit
-		if (image.getType().getClass() != UnsignedByteType.class) {
+		if (dataset.getType().getClass() != UnsignedByteType.class) {
 			log.error("Please convert the image to 8-bit first.");
 			return;
 		}
 
 		// Get physical pixel sizes (um) and duration between frames (s)
-		Calibrations cals = new Calibrations(image);
-		log.info(cals.getDx());
-		log.info(cals.getDt());
+		Calibrations cals = new Calibrations(dataset);
+		log.info("Pixel size is: " + cals.getDx());
+		log.info("dt is: " + cals.getDt());
 
 		// Setup parameters
 		DetectionParameters params = new DetectionParameters();
-		params.setSigma(2);
+		params.setSigma(2.5);
 
 		// Detect filaments
-		Detector detector = new Detector(ij.context(), image, params);
+		Detector detector = new Detector(ij.context(), dataset, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 
@@ -91,29 +106,29 @@ public class FilamentDetectorPlugin implements Command {
 				.filter(filament -> filament.getSinuosity() > minSinuosity)
 				.collect(Collectors.toCollection(Filaments::new));
 
-		//log.info(filteredFilaments.info());
+		// log.info(filteredFilaments.info());
 
 		log.info("Size before filters : " + filaments.size());
 		log.info("Size after filters : " + filteredFilaments.size());
 
 		// Show lines as ROIs
-		List<Roi> rois = OverlayFactory.createROIs(filteredFilaments);
-		OverlayFactory.displayInROIManager(rois);
+		// List<Roi> rois = ROIFactory.createROIs(filteredFilaments);
+		// ROIFactory.displayInROIManager(rois);
 
 		// Track filaments over time
 		FilamentsTracker tracker = new FilamentsTracker(ij.context(), filteredFilaments);
 		tracker.track();
 		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();
 
-		// Show one tracked filaments
-		//List<Roi> rois = OverlayFactory.createROIs(trackedFilaments);
-		//OverlayFactory.displayInROIManager(rois);
+		log.info(trackedFilaments.size());
+
+		overlayService.setImageDisplay(imd);
+		overlayService.add(trackedFilaments);
 
 		// Build GUI to do live fine parameters tuning
 		// Filter TrackedFilament
 		// Export data
 		// Build kymographs automatically
-
 	}
 
 }

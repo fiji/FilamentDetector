@@ -10,7 +10,6 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.Filament;
 import fiji.plugin.filamentdetector.Filaments;
-import fiji.plugin.filamentdetector.TrackedFilament;
 import fiji.plugin.filamentdetector.TrackedFilaments;
 import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
 import fiji.plugin.trackmate.tracking.sparselap.costmatrix.JaqamanLinkingCostMatrixCreator;
@@ -20,6 +19,9 @@ public class FilamentsTracker {
 
 	@Parameter
 	private LogService log;
+
+	@Parameter
+	private Context context;
 
 	private Filaments filaments;
 	private TrackedFilaments trackedFilaments;
@@ -45,7 +47,7 @@ public class FilamentsTracker {
 
 		// TODO: implement multi-threading
 
-		trackedFilaments = new TrackedFilaments();
+		trackedFilaments = new TrackedFilaments(context);
 
 		// Group filaments by frames in a map
 		Map<Integer, List<Filament>> sortedFilaments = filaments.stream()
@@ -67,7 +69,7 @@ public class FilamentsTracker {
 
 		List<Filament> sources;
 		List<Filament> targets;
-		int deltaFrames = 0;
+		// int deltaFrames = 0;
 		int frameSource;
 		int frameTarget;
 
@@ -79,7 +81,7 @@ public class FilamentsTracker {
 
 			sources = sortedFilaments.get(frameSource);
 			targets = sortedFilaments.get(frameTarget);
-			deltaFrames = frameTarget - frameSource;
+			// deltaFrames = frameTarget - frameSource;
 
 			// Build the matrix
 			creator = new JaqamanLinkingCostMatrixCreator<Filament, Filament>(sources, targets, costFunction,
@@ -98,16 +100,10 @@ public class FilamentsTracker {
 			for (final Filament source : assignment.keySet()) {
 				double cost = costs.get(source);
 				Filament target = assignment.get(source);
-				log.info(source);
-				log.info(target);
-				log.info(cost);
-				log.info("");
+				trackedFilaments.addLink(source, target);
 			}
 
 		}
-
-		TrackedFilament trackedFilament = new TrackedFilament();
-		trackedFilaments.add(trackedFilament);
 	}
 
 	public TrackedFilaments getTrackedFilaments() {
