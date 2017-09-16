@@ -39,4 +39,8 @@ public interface FilamentOverlayService extends ImageJService {
 	void add(TrackedFilaments trackedFilaments);
 
 	void remove(TrackedFilaments trackedFilaments);
+
+	void setColorALpha(int colorALpha);
+
+	int getColorALpha();
 }

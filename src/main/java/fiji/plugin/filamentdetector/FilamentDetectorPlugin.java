@@ -123,6 +123,7 @@ public class FilamentDetectorPlugin implements Command {
 		log.info(trackedFilaments.size());
 
 		overlayService.setImageDisplay(imd);
+		overlayService.setColorALpha(170);
 		overlayService.add(trackedFilaments);
 
 		// Build GUI to do live fine parameters tuning
