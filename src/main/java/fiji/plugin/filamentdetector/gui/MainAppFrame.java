@@ -72,8 +72,8 @@ public class MainAppFrame extends JFrame {
 
 			// Resize the JFrame to the JavaFX scene
 			this.setSize((int) scene.getWidth(), (int) scene.getHeight());
-			
-			mainController.loadFilamentViewer();
+
+			mainController.loadPanes();
 
 		} catch (IOException e) {
 			log.error(e);

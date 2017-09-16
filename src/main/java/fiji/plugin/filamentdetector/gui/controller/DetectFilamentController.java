@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 
-public class FilamentViewerController extends Controller implements Initializable {
+public class DetectFilamentController extends Controller implements Initializable {
 
 	@FXML
 	private ListView<String> listView;
@@ -19,7 +19,7 @@ public class FilamentViewerController extends Controller implements Initializabl
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 	}
 
-	public FilamentViewerController(Context context) {
+	public DetectFilamentController(Context context) {
 		context.inject(this);
 	}
 
