@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector;
+package fiji.plugin.filamentdetector.detection;
 
 import de.biomedical_imaging.ij.steger.OverlapOption;
 

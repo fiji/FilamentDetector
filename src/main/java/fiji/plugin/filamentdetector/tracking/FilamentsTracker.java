@@ -8,9 +8,9 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.Filament;
-import fiji.plugin.filamentdetector.Filaments;
-import fiji.plugin.filamentdetector.TrackedFilaments;
+import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.Filaments;
+import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
 import fiji.plugin.trackmate.tracking.sparselap.costmatrix.JaqamanLinkingCostMatrixCreator;
 import fiji.plugin.trackmate.tracking.sparselap.linker.JaqamanLinker;

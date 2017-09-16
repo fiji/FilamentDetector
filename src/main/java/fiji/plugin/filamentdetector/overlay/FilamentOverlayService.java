@@ -2,9 +2,9 @@ package fiji.plugin.filamentdetector.overlay;
 
 import java.awt.Color;
 
-import fiji.plugin.filamentdetector.Filament;
-import fiji.plugin.filamentdetector.TrackedFilament;
-import fiji.plugin.filamentdetector.TrackedFilaments;
+import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.TrackedFilament;
+import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import net.imagej.ImageJService;
 import net.imagej.display.ImageDisplay;
 

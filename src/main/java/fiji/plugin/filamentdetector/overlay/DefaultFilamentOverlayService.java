@@ -10,9 +10,9 @@ import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
-import fiji.plugin.filamentdetector.Filament;
-import fiji.plugin.filamentdetector.TrackedFilament;
-import fiji.plugin.filamentdetector.TrackedFilaments;
+import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.TrackedFilament;
+import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import ij.ImagePlus;
 import ij.gui.Overlay;
 import ij.gui.PolygonRoi;

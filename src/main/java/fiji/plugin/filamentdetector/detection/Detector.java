@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector;
+package fiji.plugin.filamentdetector.detection;
 
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
@@ -8,6 +8,8 @@ import org.scijava.plugin.Parameter;
 import de.biomedical_imaging.ij.steger.Line;
 import de.biomedical_imaging.ij.steger.LineDetector;
 import de.biomedical_imaging.ij.steger.Lines;
+import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.Filaments;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
 import net.imagej.Dataset;

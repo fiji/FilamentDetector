@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector;
+package fiji.plugin.filamentdetector.model;
 
 import java.util.ArrayList;
 
