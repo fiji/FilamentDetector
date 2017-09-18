@@ -8,15 +8,16 @@ import javax.swing.JFrame;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.ui.DialogPrompt;
 
-import fiji.plugin.filamentdetector.gui.controller.Controller;
+import fiji.plugin.filamentdetector.FilamentDetector;
 import fiji.plugin.filamentdetector.gui.controller.MainController;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import net.imagej.ImageJ;
 import net.imagej.display.ImageDisplay;
 
 public class MainAppFrame extends JFrame {
@@ -29,22 +30,39 @@ public class MainAppFrame extends JFrame {
 	@Parameter
 	private Context context;
 
-	private JFXPanel fxPanel;
-	private final ImageDisplay image;
+	private ImageJ ij;
 
-	public MainAppFrame(Context context, ImageDisplay image) {
-		context.inject(this);
-		this.image = image;
+	private JFXPanel fxPanel;
+
+	private final FilamentDetector filamentDetector;
+	private final ImageDisplay imd;
+
+	public MainAppFrame(ImageJ ij, FilamentDetector filamentDetector) {
+		ij.context().inject(this);
+		this.ij = ij;
+		this.filamentDetector = filamentDetector;
+		this.imd = filamentDetector.getImageDisplay();
 	}
 
 	/**
 	 * Create the JFXPanel that make the link between Swing (IJ) and JavaFX plugin.
 	 */
-	public void init() {
+	public void init() throws Exception {
+
+		try {
+			filamentDetector.initialize();
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+
+		GUIUtils.userCheckImpDimensions(ij, filamentDetector.getDataset());
+
+		// Create the JavaFX panel
 		this.fxPanel = new JFXPanel();
 		this.add(this.fxPanel);
 		this.setVisible(true);
 
+		// Initialize the JavaFX panel
 		// The call to runLater() avoid a mix between JavaFX thread and Swing thread.
 		Platform.runLater(new Runnable() {
 			@Override
@@ -62,7 +80,7 @@ public class MainAppFrame extends JFrame {
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);
 
 			// Create and set the main controller
-			MainController mainController = new MainController(context);
+			MainController mainController = new MainController(context, filamentDetector);
 			loader.setController(mainController);
 
 			// Show the scene containing the root layout.
@@ -73,23 +91,14 @@ public class MainAppFrame extends JFrame {
 			// Resize the JFrame to the JavaFX scene
 			this.setSize((int) scene.getWidth(), (int) scene.getHeight());
 
+			// Position the window
+			GUIUtils.positionWindow(this, filamentDetector.getImagePlus().getWindow());
+
 			mainController.loadPanes();
 
 		} catch (IOException e) {
 			log.error(e);
 		}
-	}
-
-	public static Pane loadFXML(String fxml, Controller controller) {
-		try {
-			URL fxmlUrl = MainAppFrame.class.getResource(fxml);
-			FXMLLoader loader = new FXMLLoader(fxmlUrl);
-			loader.setController(controller);
-			return (AnchorPane) loader.load();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 }
