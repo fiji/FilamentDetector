@@ -50,7 +50,7 @@ public class Test {
 		}
 
 		// Get physical pixel sizes (um) and duration between frames (s)
-		Calibrations cals = new Calibrations(dataset);
+		Calibrations cals = new Calibrations(ij.context(), dataset);
 		log.info("Pixel size is: " + cals.getDx());
 		log.info("dt is: " + cals.getDt());
 

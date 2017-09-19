@@ -9,6 +9,7 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +22,10 @@ public class WelcomeController extends Controller implements Initializable {
 
 	@Parameter
 	private LogService log;
-	
+
+	@Parameter
+	private GUIStatusService status;
+
 	@FXML
 	private WebView welcomeTextField;
 
@@ -94,12 +98,16 @@ public class WelcomeController extends Controller implements Initializable {
 		channelComboBox.getItems().addAll(filamentDetector.getCalibrations().getChannelList());
 		channelComboBox.getSelectionModel().selectFirst();
 	}
-	
-	@FXML
-    void writeCalibration(Event event) {
-		log.info(event);
-		log.info(pixelWidthField.getText());
 
-    }
+	@FXML
+	void writeCalibration(Event event) {
+
+		filamentDetector.getCalibrations().setDx(Double.parseDouble(pixelWidthField.getText()));
+		filamentDetector.getCalibrations().setDy(Double.parseDouble(pixelHeightField.getText()));
+		filamentDetector.getCalibrations().setDz(Double.parseDouble(voxelDepthField.getText()));
+		filamentDetector.getCalibrations().setDt(Double.parseDouble(timeIntervalField.getText()));
+
+		status.showStatus("Image calibrations and channel to use have been updated.");
+	}
 
 }

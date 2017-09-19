@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
-import org.scijava.ui.DialogPrompt;
 
 import fiji.plugin.filamentdetector.FilamentDetector;
 import fiji.plugin.filamentdetector.gui.controller.MainController;

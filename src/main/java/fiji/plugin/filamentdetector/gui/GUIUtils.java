@@ -15,7 +15,6 @@ import org.scijava.ui.DialogPrompt;
 
 import fiji.plugin.filamentdetector.gui.controller.Controller;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;

@@ -2,12 +2,20 @@ package fiji.plugin.filamentdetector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import org.scijava.Context;
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
 
 /* An easy way to get Dataset calibrations */
 public class Calibrations {
+
+	@Parameter
+	LogService log;
 
 	private Dataset data;
 
@@ -22,8 +30,10 @@ public class Calibrations {
 	private String unitT;
 
 	private List<String> channelList;
+	private int channelToUseIndex = 0;
 
-	public Calibrations(Dataset data) {
+	public Calibrations(Context context, Dataset data) {
+		context.inject(this);
 
 		this.data = data;
 
@@ -109,6 +119,25 @@ public class Calibrations {
 
 	public void setChannelList(List<String> channelList) {
 		this.channelList = channelList;
+	}
+
+	public void channelToUse(String channelToUse) {
+		int newChannelIndex = IntStream.range(0, channelList.size())
+				.filter(i -> channelList.get(i).equals(channelToUse)).findFirst().orElse(-1);
+
+		if (newChannelIndex != -1) {
+			channelToUseIndex = newChannelIndex;
+		} else {
+			log.error(channelToUse + " is not a valid channel.");
+		}
+	}
+
+	public String getChannelToUse() {
+		return channelList.get(channelToUseIndex);
+	}
+
+	public int getChannelToUseIndex() {
+		return channelToUseIndex;
 	}
 
 }

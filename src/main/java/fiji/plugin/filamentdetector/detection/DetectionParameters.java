@@ -15,6 +15,8 @@ public class DetectionParameters {
 	private boolean doExtendLine = true;
 	private OverlapOption overlapOption = OverlapOption.NONE;
 
+	private boolean detectOnlyOnCurrentFrame = false;
+
 	public double getSigma() {
 		return sigma;
 	}
@@ -93,6 +95,14 @@ public class DetectionParameters {
 
 	public void setOverlapOption(OverlapOption overlapOption) {
 		this.overlapOption = overlapOption;
+	}
+
+	public boolean isDetectOnlyOnCurrentFrame() {
+		return detectOnlyOnCurrentFrame;
+	}
+
+	public void setDetectOnlyOnCurrentFrame(boolean detectOnlyOnCurrentFrame) {
+		this.detectOnlyOnCurrentFrame = detectOnlyOnCurrentFrame;
 	}
 
 }

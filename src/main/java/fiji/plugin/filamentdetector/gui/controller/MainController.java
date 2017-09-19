@@ -8,10 +8,12 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 
@@ -23,8 +25,14 @@ public class MainController extends Controller implements Initializable {
 	@Parameter
 	private LogService log;
 
+	@Parameter
+	private GUIStatusService status;
+
 	@FXML
 	private Accordion mainPane;
+
+	@FXML
+	private TextArea logField;
 
 	private WelcomeController welcomeController;
 	private DetectFilamentController detectFilamentController;
@@ -41,6 +49,11 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadPanes() {
+
+		// Allow GUIStatusService to display message in the log window
+		status.setTextField(logField);
+
+		// Load all the panes
 		loadWelcome();
 		loadDetectFilament();
 		loadTrackingFilament();
@@ -49,9 +62,11 @@ public class MainController extends Controller implements Initializable {
 		loadAnalyzer();
 		loadAbout();
 
+		// Enable the first welcome pane
 		mainPane.setExpandedPane(getTitledPane("Welcome"));
-		
 		welcomeController.loadImageCalibrations();
+
+		status.showStatus("FilamentDetector has been correctly initialized.");
 	}
 
 	public TitledPane getTitledPane(String text) {
@@ -67,14 +82,12 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadDetectFilament() {
-		detectFilamentController = new DetectFilamentController(context);
+		detectFilamentController = new DetectFilamentController(context, filamentDetector);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DetectFilamentView.fxml",
 				detectFilamentController);
 
 		TitledPane titledPane = new TitledPane("Detect Filaments", pane);
 		mainPane.getPanes().add(titledPane);
-
-		detectFilamentController.test();
 	}
 
 	public void loadTrackingFilament() {
