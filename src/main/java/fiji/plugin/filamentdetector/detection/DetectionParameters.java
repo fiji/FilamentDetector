@@ -15,7 +15,7 @@ public class DetectionParameters {
 	private boolean doExtendLine = true;
 	private OverlapOption overlapOption = OverlapOption.NONE;
 
-	private boolean detectOnlyOnCurrentFrame = false;
+	private boolean detectOnlyCurrentFrame = false;
 
 	public double getSigma() {
 		return sigma;
@@ -98,11 +98,22 @@ public class DetectionParameters {
 	}
 
 	public boolean isDetectOnlyOnCurrentFrame() {
-		return detectOnlyOnCurrentFrame;
+		return detectOnlyCurrentFrame;
 	}
 
 	public void setDetectOnlyOnCurrentFrame(boolean detectOnlyOnCurrentFrame) {
-		this.detectOnlyOnCurrentFrame = detectOnlyOnCurrentFrame;
+		this.detectOnlyCurrentFrame = detectOnlyOnCurrentFrame;
+	}
+
+	public String toString() {
+		String out = "";
+		
+		out += "Sigma = " + sigma + "\n";
+		out += "Lower Threshold = " + lowerThresh + "\n";
+		out += "Upper Threshold = " + upperThresh + "\n";
+		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame + "\n";
+		
+		return out;
 	}
 
 }
