@@ -12,12 +12,14 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentDetector;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -58,7 +60,13 @@ public class DetectFilamentController extends Controller implements Initializabl
 	@FXML
 	private CheckBox liveDetectionButton;
 
+	@FXML
+	private ProgressIndicator detectionProgressIndicator;
+
 	private FilamentDetector filamentDetector;
+
+	private Thread detectionThread;
+	private Task<Integer> detectionTask;
 
 	public DetectFilamentController(Context context, FilamentDetector filamentDetector) {
 		context.inject(this);
@@ -67,6 +75,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		this.detectionProgressIndicator.setVisible(false);
+		
 		this.filamentDetector.initDetection();
 
 		sigmaField.setText(Double.toString(filamentDetector.getDetectionParameters().getSigma()));
@@ -191,8 +201,55 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@FXML
 	void detect(ActionEvent event) {
-		status.showStatus("Start detection with the following parameter : ");
-		status.showStatus(filamentDetector.getDetectionParameters().toString());
+
+		if (detectionTask != null) {
+			detectionTask.cancel();
+		}
+
+		if (detectionThread != null) {
+			detectionThread.stop();
+		}
+		
+		this.detectionProgressIndicator.setVisible(true);
+
+		detectionTask = new Task<Integer>() {
+			@Override
+			protected Integer call() throws Exception {
+				if (detectCurrentFrameButton.isSelected()) {
+					filamentDetector.detectCurrentFrame();
+				} else {
+					filamentDetector.detect();
+				}
+
+				return filamentDetector.getFilaments().size();
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				status.showStatus(
+						filamentDetector.getFilaments().size() + " has been detected with the following parameters : ");
+				status.showStatus(filamentDetector.getDetectionParameters().toString());
+				detectionProgressIndicator.setVisible(false);
+			}
+
+			@Override
+			protected void cancelled() {
+				super.cancelled();
+			}
+
+			@Override
+			protected void failed() {
+				super.failed();
+				status.showStatus("Detection failed.");
+				detectionProgressIndicator.setVisible(false);
+			}
+		};
+
+		detectionThread = new Thread(detectionTask);
+		detectionThread.setDaemon(true);
+		detectionThread.start();
+
 	}
 
 	@FXML
@@ -217,8 +274,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 		Tooltip.install(lowerThresholdField, tooltip);
 
 		tooltip = new Tooltip("Line points with a response larger as this threshold are accepted.");
-		Tooltip.install(lowerThresholdSlider, tooltip);
-		Tooltip.install(lowerThresholdField, tooltip);
+		Tooltip.install(upperThresholdSlider, tooltip);
+		Tooltip.install(upperThresholdSlider, tooltip);
 
 		tooltip = new Tooltip(
 				"Only detect filaments on the current frame (use for quick detection parameters tuning).");

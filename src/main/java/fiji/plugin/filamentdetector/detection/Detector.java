@@ -23,7 +23,7 @@ public class Detector {
 	LogService log;
 
 	private Dataset image;
-	private DetectionParameters params;
+	private DetectionParameters parameters;
 
 	private LineDetector lineDetector;
 
@@ -38,7 +38,7 @@ public class Detector {
 	public Detector(Context context, Dataset image, DetectionParameters params) {
 		context.inject(this);
 		this.image = image;
-		this.params = params;
+		this.parameters = params;
 		this.lineDetector = new LineDetector();
 
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
@@ -58,6 +58,12 @@ public class Detector {
 
 	}
 
+	public void detectCurrentFrame() {
+		this.filaments = new Filaments();
+		int currentFrame = this.imp.getFrame();
+		this.detectFrame(currentFrame);
+	}
+
 	public void detectFrame(int frame) {
 
 		if (this.filaments == null) {
@@ -68,11 +74,12 @@ public class Detector {
 		ImageProcessor ip = this.imp.getProcessor();
 
 		// Detect lines
-		Lines lines = this.lineDetector.detectLines(ip, this.params.getSigma(), this.params.getUpperThresh(),
-				this.params.getLowerThresh(), this.params.getMinLength(), this.params.getMaxLength(),
-				this.params.isDarkLine(), this.params.isDoCorrectPosition(), this.params.isDoEstimateWidth(),
-				this.params.isDoExtendLine(), this.params.getOverlapOption());
-
+		Lines lines = this.lineDetector.detectLines(ip, this.parameters.getSigma(), this.parameters.getUpperThresh(),
+				this.parameters.getLowerThresh(), this.parameters.getMinLength(), this.parameters.getMaxLength(),
+				this.parameters.isDarkLine(), this.parameters.isDoCorrectPosition(),
+				this.parameters.isDoEstimateWidth(), this.parameters.isDoExtendLine(),
+				this.parameters.getOverlapOption());
+		
 		for (Line line : lines) {
 			this.filaments.add(new Filament(line, frame));
 		}
@@ -81,5 +88,13 @@ public class Detector {
 
 	public Filaments getFilaments() {
 		return this.filaments;
+	}
+
+	public DetectionParameters getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(DetectionParameters parameters) {
+		this.parameters = parameters;
 	}
 }

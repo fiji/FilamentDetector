@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -75,6 +76,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                              <children>
+                                                <ProgressIndicator fx:id="detectionProgressIndicator" />
                                                 <Button fx:id="detectButton" mnemonicParsing="false" onAction="#detect" text="Detect" />
                                              </children>
                                           </HBox>

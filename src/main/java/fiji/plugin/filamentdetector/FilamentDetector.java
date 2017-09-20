@@ -5,6 +5,8 @@ import org.scijava.convert.ConvertService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
+import fiji.plugin.filamentdetector.detection.Detector;
+import fiji.plugin.filamentdetector.model.Filaments;
 import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
@@ -27,10 +29,12 @@ public class FilamentDetector {
 
 	private DetectionParameters detectionParameters;
 
+	private Detector detector;
+	private Filaments filaments;
+
 	public FilamentDetector(Context context, ImageDisplay imd) {
 		context.inject(this);
 		this.imd = imd;
-
 	}
 
 	public void initialize() throws Exception {
@@ -45,6 +49,17 @@ public class FilamentDetector {
 
 	public void initDetection() {
 		detectionParameters = new DetectionParameters();
+		detector = new Detector(context, getDataset(), detectionParameters);
+	}
+
+	public void detectCurrentFrame() {
+		detector.detectCurrentFrame();
+		this.filaments = detector.getFilaments();
+	}
+
+	public void detect() {
+		detector.detect();
+		this.filaments = detector.getFilaments();
 	}
 
 	public Dataset getDataset() {
@@ -77,6 +92,10 @@ public class FilamentDetector {
 
 	public void setDetectionParameters(DetectionParameters detectionParameters) {
 		this.detectionParameters = detectionParameters;
+	}
+
+	public Filaments getFilaments() {
+		return filaments;
 	}
 
 }
