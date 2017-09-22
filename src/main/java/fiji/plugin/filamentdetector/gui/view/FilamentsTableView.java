@@ -35,15 +35,19 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 		TableColumn<FilamentModel, Integer> idColumn = new TableColumn<>("ID");
 		TableColumn<FilamentModel, Double> lengthColumn = new TableColumn<>("Length (" + calibrations.getUnitX() + ")");
+		TableColumn<FilamentModel, Integer> frameColumn = new TableColumn<>("Frame");
 
 		this.getColumns().add(idColumn);
 		this.getColumns().add(lengthColumn);
+		this.getColumns().add(frameColumn);
 
 		idColumn.setStyle("-fx-alignment: CENTER;");
 		lengthColumn.setStyle("-fx-alignment: CENTER;");
+		frameColumn.setStyle("-fx-alignment: CENTER;");
 
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().getID().asObject());
 		lengthColumn.setCellValueFactory(cellData -> cellData.getValue().getLength().asObject());
+		frameColumn.setCellValueFactory(cellData -> cellData.getValue().getFrame().asObject());
 
 		formatter = new DecimalFormat("#0.00");
 

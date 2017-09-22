@@ -18,8 +18,12 @@ public interface FilamentOverlayService extends ImageJService {
 	void setFilamentWidth(int filamentWidth);
 
 	void setFilamentColor(Color filamentColor);
+	
+	void setFilamentColor(javafx.scene.paint.Color filamentColor);
 
 	Color getFilamentColor();
+	
+	javafx.scene.paint.Color getFilamentColorAsJavaFX();
 
 	void remove(Filament filament);
 
@@ -49,7 +53,13 @@ public interface FilamentOverlayService extends ImageJService {
 
 	void setColorAlpha(int colorALpha);
 
-	int getColorALpha();
+	int getColorAlpha();
 	
 	void reset();
+	
+	void refresh();
+	
+	void exportToROIManager();
+	
+	void disableOverlay(boolean disable);
 }

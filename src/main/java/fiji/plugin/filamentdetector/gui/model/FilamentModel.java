@@ -12,12 +12,14 @@ public class FilamentModel {
 
 	private IntegerProperty ID;
 	private DoubleProperty length;
+	private IntegerProperty frame;
 
 	public FilamentModel(Filament filament) {
 		this.filament = filament;
 
 		this.ID = new SimpleIntegerProperty(filament.getID());
 		this.length = new SimpleDoubleProperty(filament.getLength());
+		this.frame = new SimpleIntegerProperty(filament.getFrame());
 	}
 
 	public IntegerProperty getID() {
@@ -38,6 +40,14 @@ public class FilamentModel {
 
 	public Filament getFilament() {
 		return filament;
+	}
+
+	public IntegerProperty getFrame() {
+		return frame;
+	}
+
+	public void setFrame(IntegerProperty frame) {
+		this.frame = frame;
 	}
 
 }

@@ -2,10 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
@@ -16,14 +23,84 @@
       <SplitPane dividerPositions="0.6" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
             <Accordion fx:id="mainPane" />
-            <TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Status Messages">
-               <content>
-                  <TextArea fx:id="logField" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
-                     <font>
-                        <Font size="10.0" />
-                     </font></TextArea>
-               </content>
-            </TitledPane>
+            <AnchorPane>
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Status Messages" VBox.vgrow="ALWAYS">
+                           <content>
+                              <TextArea fx:id="logField" editable="false" wrapText="true">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </TextArea>
+                           </content>
+                        </TitledPane>
+                        <TitledPane collapsible="false" text="Overlays Settings" VBox.vgrow="NEVER">
+                           <content>
+                              <AnchorPane>
+                                 <children>
+                                    <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <CheckBox fx:id="disableOverlaysCheckbox" mnemonicParsing="false" onMouseClicked="#updateHideOverlay" text="Disable Overlays" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label text="Default Color" />
+                                                <ColorPicker fx:id="colorChooser" editable="true" onHiding="#updateOverlaySettings" />
+                                                <Label fx:id="colorValueLabel" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label text="Transparency" />
+                                                <Slider fx:id="transparencySlider" blockIncrement="1.0" max="255.0" onMouseClicked="#updateOverlaySettings" onMouseDragged="#updateOverlaySettings" />
+                                                <Label fx:id="transparencyValueLabel" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label text="Line Width" />
+                                                <Slider fx:id="lineWidthSlider" blockIncrement="1.0" max="10.0" onMouseClicked="#updateOverlaySettings" onMouseDragged="#updateOverlaySettings" />
+                                                <Label fx:id="lineWidthValueLabel" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER_RIGHT" spacing="5.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" onMouseClicked="#exportToROIManager" text="Export to ROI Manager" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
          </items>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

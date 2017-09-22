@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jfree.util.Log;
 import org.scijava.convert.ConvertService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -18,6 +19,7 @@ import ij.ImagePlus;
 import ij.gui.Overlay;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
+import ij.plugin.frame.RoiManager;
 import ij.process.FloatPolygon;
 import net.imagej.display.ImageDisplay;
 import net.imagej.display.OverlayService;
@@ -38,9 +40,10 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	private int filamentWidth = 2;
 	private Color filamentColor = Color.orange;
-	private int colorALpha = DEFAULT_COLOR_ALPHA;
+	private int colorAlpha = DEFAULT_COLOR_ALPHA;
 
 	private Map<Filament, Roi> filamentROIMap = new HashMap<>();
+	private Map<Filament, Color> filamentColorMap = new HashMap<>();
 	private ImageDisplay imageDisplay;
 
 	@Override
@@ -62,7 +65,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		roi.setName(Integer.toString(filament.getID()));
 		roi.setStrokeWidth(filamentWidth);
 
-		Color realColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorALpha);
+		Color realColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorAlpha);
 		roi.setStrokeColor(realColor);
 
 		Overlay overlay = imp.getOverlay();
@@ -74,6 +77,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		imp.repaintWindow();
 
 		filamentROIMap.put(filament, roi);
+		filamentColorMap.put(filament, color);
 
 	}
 
@@ -139,6 +143,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		}
 
 		filamentROIMap.remove(filament);
+		filamentColorMap.remove(filament);
 		imp.updateAndDraw();
 	}
 
@@ -164,8 +169,19 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	@Override
+	public javafx.scene.paint.Color getFilamentColorAsJavaFX() {
+		return javafx.scene.paint.Color.rgb(filamentColor.getRed(), filamentColor.getGreen(), filamentColor.getBlue(),
+				filamentColor.getAlpha() / 255);
+	}
+
+	@Override
 	public void setFilamentColor(Color filamentColor) {
 		this.filamentColor = filamentColor;
+	}
+
+	public void setFilamentColor(javafx.scene.paint.Color filamentColorJavaFX) {
+		filamentColor = new Color((int) filamentColorJavaFX.getRed(), (int) filamentColorJavaFX.getGreen(),
+				(int) filamentColorJavaFX.getBlue(), (int) (filamentColorJavaFX.getOpacity() * 255));
 	}
 
 	@Override
@@ -189,13 +205,13 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	@Override
-	public int getColorALpha() {
-		return colorALpha;
+	public int getColorAlpha() {
+		return colorAlpha;
 	}
 
 	@Override
-	public void setColorAlpha(int colorALpha) {
-		this.colorALpha = colorALpha;
+	public void setColorAlpha(int colorAlpha) {
+		this.colorAlpha = colorAlpha;
 	}
 
 	@Override
@@ -212,7 +228,52 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		}
 
 		filamentROIMap = new HashMap<>();
+		filamentColorMap = new HashMap<>();
 		imp.updateAndDraw();
 	}
 
+	@Override
+	public void refresh() {
+
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+
+		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
+			Overlay overlay = imp.getOverlay();
+
+			if (overlay != null && entry.getValue() != null) {
+				overlay.remove(entry.getValue());
+			}
+		}
+
+		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
+			add(entry.getKey(), filamentColorMap.get(entry.getKey()));
+		}
+
+		imp.updateAndDraw();
+	}
+
+	@Override
+	public void exportToROIManager() {
+
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+
+		Overlay overlay = imp.getOverlay();
+		if (overlay != null) {
+
+			RoiManager rm = RoiManager.getInstance();
+			if (rm == null) {
+				rm = RoiManager.getRoiManager();
+			}
+			for (int i = 0; i < overlay.size(); i++) {
+				rm.addRoi(overlay.get(i));
+			}
+		}
+
+	}
+
+	@Override
+	public void disableOverlay(boolean disable) {
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		imp.setHideOverlay(!disable);
+	}
 }
