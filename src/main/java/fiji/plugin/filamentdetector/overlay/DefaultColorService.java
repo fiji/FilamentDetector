@@ -37,11 +37,6 @@ public class DefaultColorService extends AbstractService implements ColorService
 	private ColorTable colorTable;
 
 	@Override
-	public void initialize() {
-		setLut(DEFAULT_LUT);
-	}
-
-	@Override
 	public int getLength() {
 		return this.colorTable.getLength();
 	}
@@ -52,7 +47,12 @@ public class DefaultColorService extends AbstractService implements ColorService
 	}
 
 	@Override
-	public void setLut(String lut) {
+	public void initialize() {
+		initialize(DEFAULT_LUT);
+	}
+
+	@Override
+	public void initialize(String lut) {
 		try {
 			// Look first in custom LUTs
 			if (customLUTs.containsKey(lut)) {
@@ -74,6 +74,11 @@ public class DefaultColorService extends AbstractService implements ColorService
 
 	@Override
 	public Color getColor(int colorCounter) {
+
+		if (colorCounter >= getLength()) {
+			colorCounter = colorCounter % getLength();
+		}
+		
 		Color color = null;
 		if (this.colorTable.getComponentCount() == 3) {
 			color = new Color(this.colorTable.get(0, colorCounter), this.colorTable.get(1, colorCounter),

@@ -14,6 +14,7 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 /*
  * This class holds the necessary informations/models necessary during the use of the GUI.
+ * Can be also used for scripting.
  */
 public class FilamentDetector {
 
@@ -23,7 +24,7 @@ public class FilamentDetector {
 	@Parameter
 	private ConvertService convert;
 
-	private ImageDisplay imd;
+	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
 	private double channelToUse = 0;
 
@@ -34,7 +35,7 @@ public class FilamentDetector {
 
 	public FilamentDetector(Context context, ImageDisplay imd) {
 		context.inject(this);
-		this.imd = imd;
+		this.imageDisplay = imd;
 	}
 
 	public void initialize() throws Exception {
@@ -49,7 +50,7 @@ public class FilamentDetector {
 
 	public void initDetection() {
 		detectionParameters = new DetectionParameters();
-		detector = new Detector(context, getDataset(), detectionParameters);
+		detector = new Detector(context, imageDisplay, detectionParameters);
 	}
 
 	public void detectCurrentFrame() {
@@ -63,15 +64,15 @@ public class FilamentDetector {
 	}
 
 	public Dataset getDataset() {
-		return (Dataset) imd.getActiveView().getData();
+		return (Dataset) imageDisplay.getActiveView().getData();
 	}
 
 	public ImageDisplay getImageDisplay() {
-		return imd;
+		return imageDisplay;
 	}
 
 	public ImagePlus getImagePlus() {
-		return convert.convert(imd, ImagePlus.class);
+		return convert.convert(imageDisplay, ImagePlus.class);
 	}
 
 	public Calibrations getCalibrations() {

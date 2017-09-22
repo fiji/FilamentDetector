@@ -3,6 +3,7 @@ package fiji.plugin.filamentdetector.overlay;
 import java.awt.Color;
 
 import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import net.imagej.ImageJService;
@@ -39,8 +40,16 @@ public interface FilamentOverlayService extends ImageJService {
 	void add(TrackedFilaments trackedFilaments);
 
 	void remove(TrackedFilaments trackedFilaments);
+	
+	void add(Filaments filaments, Color color);
+	
+	void add(Filaments filaments);
+	
+	void remove(Filaments filaments);
 
 	void setColorAlpha(int colorALpha);
 
 	int getColorALpha();
+	
+	void reset();
 }

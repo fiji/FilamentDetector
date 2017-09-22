@@ -11,6 +11,7 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import ij.ImagePlus;
@@ -24,13 +25,16 @@ import net.imagej.display.OverlayService;
 @Plugin(type = Service.class)
 public class DefaultFilamentOverlayService extends AbstractService implements FilamentOverlayService {
 
-	private static int DEFAULT_COLOR_ALPHA = 255;
+	private static int DEFAULT_COLOR_ALPHA = 190;
 
 	@Parameter
 	private ConvertService convert;
 
 	@Parameter
 	private OverlayService overlayService;
+
+	@Parameter
+	private ColorService colorService;
 
 	private int filamentWidth = 2;
 	private Color filamentColor = Color.orange;
@@ -67,6 +71,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			imp.setOverlay(overlay);
 		}
 		overlay.add(roi);
+		imp.repaintWindow();
 
 		filamentROIMap.put(filament, roi);
 
@@ -99,6 +104,30 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	@Override
+	public void add(Filaments filaments, Color color) {
+		for (Filament filament : filaments) {
+			add(filament, color);
+		}
+	}
+
+	@Override
+	public void add(Filaments filaments) {
+		colorService.initialize();
+		for (int i = 0; i < filaments.size(); i++) {
+			Color color = colorService.getColor(i);
+			add(filaments.get(i), color);
+		}
+	}
+
+	@Override
+	public void remove(Filaments filaments) {
+		for (Filament filament : filaments) {
+			remove(filament);
+		}
+		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
+	}
+
+	@Override
 	public void remove(Filament filament) {
 		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
 
@@ -109,6 +138,8 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			overlay.remove(roiToRemove);
 		}
 
+		filamentROIMap.remove(filament);
+		imp.updateAndDraw();
 	}
 
 	@Override
@@ -116,6 +147,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		for (Filament filament : trackedFilament) {
 			remove(filament);
 		}
+		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
 	}
 
 	@Override
@@ -123,6 +155,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		for (TrackedFilament trackedFilament : trackedFilaments) {
 			remove(trackedFilament);
 		}
+		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
 	}
 
 	@Override
@@ -163,6 +196,23 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void setColorAlpha(int colorALpha) {
 		this.colorALpha = colorALpha;
+	}
+
+	@Override
+	public void reset() {
+
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+
+		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
+			Overlay overlay = imp.getOverlay();
+
+			if (overlay != null && entry.getValue() != null) {
+				overlay.remove(entry.getValue());
+			}
+		}
+
+		filamentROIMap = new HashMap<>();
+		imp.updateAndDraw();
 	}
 
 }

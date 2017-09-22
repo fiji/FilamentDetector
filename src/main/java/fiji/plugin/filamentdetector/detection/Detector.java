@@ -12,7 +12,7 @@ import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
-import net.imagej.Dataset;
+import net.imagej.display.ImageDisplay;
 
 public class Detector {
 
@@ -22,7 +22,7 @@ public class Detector {
 	@Parameter
 	LogService log;
 
-	private Dataset image;
+	private ImageDisplay imageDisplay;
 	private DetectionParameters parameters;
 
 	private LineDetector lineDetector;
@@ -31,18 +31,18 @@ public class Detector {
 
 	private Filaments filaments;
 
-	public Detector(Context context, Dataset image) {
-		new Detector(context, image, new DetectionParameters());
+	public Detector(Context context, ImageDisplay imageDisplay) {
+		new Detector(context, imageDisplay, new DetectionParameters());
 	}
 
-	public Detector(Context context, Dataset image, DetectionParameters params) {
+	public Detector(Context context, ImageDisplay imageDisplay, DetectionParameters params) {
 		context.inject(this);
-		this.image = image;
+		this.imageDisplay = imageDisplay;
 		this.parameters = params;
 		this.lineDetector = new LineDetector();
 
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
-		this.imp = convertService.convert(this.image, ImagePlus.class);
+		this.imp = convertService.convert(this.imageDisplay, ImagePlus.class);
 	}
 
 	public void detect() {

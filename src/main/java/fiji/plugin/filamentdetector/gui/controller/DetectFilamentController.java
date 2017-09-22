@@ -12,6 +12,8 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentDetector;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
+import fiji.plugin.filamentdetector.gui.view.FilamentsTableView;
+import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -24,14 +26,21 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 public class DetectFilamentController extends Controller implements Initializable {
 
+	@Parameter
+	private Context context;
+	
 	@Parameter
 	private GUIStatusService status;
 
 	@Parameter
 	private LogService log;
+	
+	@Parameter
+	FilamentOverlayService overlayService;
 
 	@FXML
 	private Slider sigmaSlider;
@@ -63,6 +72,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 	@FXML
 	private ProgressIndicator detectionProgressIndicator;
 
+	@FXML
+	private VBox filamentViewContainer;
+
+	private FilamentsTableView filamentsTableView;
+
 	private FilamentDetector filamentDetector;
 
 	private Thread detectionThread;
@@ -76,9 +90,10 @@ public class DetectFilamentController extends Controller implements Initializabl
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		this.detectionProgressIndicator.setVisible(false);
-		
+
 		this.filamentDetector.initDetection();
 
+		// Fill fields with default values
 		sigmaField.setText(Double.toString(filamentDetector.getDetectionParameters().getSigma()));
 		sigmaSlider.setValue(filamentDetector.getDetectionParameters().getSigma());
 
@@ -87,12 +102,25 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		upperThresholdField.setText(Double.toString(filamentDetector.getDetectionParameters().getUpperThresh()));
 		upperThresholdSlider.setValue(filamentDetector.getDetectionParameters().getUpperThresh());
+		
+		detectCurrentFrameButton.setSelected(filamentDetector.getDetectionParameters().isDetectOnlyOnCurrentFrame());
 
 		this.setToolTips();
+
+		// Initialize filaments list
+		filamentsTableView = new FilamentsTableView(context, filamentDetector.getCalibrations());
+		filamentViewContainer.getChildren().add(filamentsTableView);
+		
+		// Initialize overlay on the image
+		overlayService.setImageDisplay(filamentDetector.getImageDisplay());
+	}
+
+	private void updateFilamentsList() {
+		filamentsTableView.setFilaments(filamentDetector.getFilaments());
 	}
 
 	@FXML
-	void updateDetectionParameters(Event event) {
+	public void updateDetectionParameters(Event event) {
 
 		DecimalFormat f = new DecimalFormat("##.00");
 
@@ -200,7 +228,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 	}
 
 	@FXML
-	void detect(ActionEvent event) {
+	public void detect(ActionEvent event) {
 
 		if (detectionTask != null) {
 			detectionTask.cancel();
@@ -209,7 +237,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 		if (detectionThread != null) {
 			detectionThread.stop();
 		}
-		
+
 		this.detectionProgressIndicator.setVisible(true);
 
 		detectionTask = new Task<Integer>() {
@@ -231,6 +259,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 						filamentDetector.getFilaments().size() + " has been detected with the following parameters : ");
 				status.showStatus(filamentDetector.getDetectionParameters().toString());
 				detectionProgressIndicator.setVisible(false);
+				updateFilamentsList();
 			}
 
 			@Override
@@ -253,7 +282,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 	}
 
 	@FXML
-	void liveDetectionClicked(MouseEvent event) {
+	public void liveDetectionClicked(MouseEvent event) {
 		if (liveDetectionButton.isSelected()) {
 			detectButton.setDisable(true);
 		} else {

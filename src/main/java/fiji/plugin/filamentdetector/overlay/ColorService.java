@@ -12,7 +12,7 @@ public interface ColorService extends ImageJService {
 
 	public Color getColor(int colorCounter);
 
-	void setLut(String lut);
+	void initialize(String lut);
 
 	String getLut();
 

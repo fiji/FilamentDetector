@@ -59,7 +59,7 @@ public class Test {
 		params.setSigma(2.5);
 
 		// Detect filaments
-		Detector detector = new Detector(ij.context(), dataset, params);
+		Detector detector = new Detector(ij.context(), imd, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 
