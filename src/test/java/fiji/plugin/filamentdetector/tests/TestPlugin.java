@@ -12,12 +12,7 @@ public class TestPlugin {
 		final ImageJ ij = net.imagej.Main.launch(args);
 		Context context = ij.getContext();
 
-		// String name = "filaments_single_time.ome.tif";
-		String name = "filaments.ome.tif";
-		String fpath = FilamentDetectorPlugin.class.getResource("/fiji/plugin/filamentdetector/tests/testdata/" + name)
-				.getPath();
-
-		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/seeds.tif";
+		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/combine.tif";
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 
