@@ -152,7 +152,7 @@ public class MainController extends Controller implements Initializable {
 
 	@FXML
 	void updateHideOverlay(MouseEvent event) {
-		overlay.disableOverlay(disableOverlaysCheckbox.isSelected());
+		overlay.disableOverlay(!disableOverlaysCheckbox.isSelected());
 	}
 
 	public TitledPane getTitledPane(String text) {
