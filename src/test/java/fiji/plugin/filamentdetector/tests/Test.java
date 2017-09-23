@@ -6,7 +6,6 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 
 import fiji.plugin.filamentdetector.Calibrations;
-import fiji.plugin.filamentdetector.FilamentDetectorPlugin;
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
 import fiji.plugin.filamentdetector.detection.Detector;
 import fiji.plugin.filamentdetector.model.Filaments;

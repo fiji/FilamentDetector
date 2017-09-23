@@ -82,7 +82,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 			filamentModelList.add(new FilamentModel(filament));
 		}
 		this.setItems(filamentModelList);
-		
+
 		// Update overlay
 		overlayService.reset();
 		overlayService.add(filaments);

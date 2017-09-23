@@ -32,13 +32,13 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@Parameter
 	private Context context;
-	
+
 	@Parameter
 	private GUIStatusService status;
 
 	@Parameter
 	private LogService log;
-	
+
 	@Parameter
 	FilamentOverlayService overlayService;
 
@@ -102,7 +102,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		upperThresholdField.setText(Double.toString(filamentDetector.getDetectionParameters().getUpperThresh()));
 		upperThresholdSlider.setValue(filamentDetector.getDetectionParameters().getUpperThresh());
-		
+
 		detectCurrentFrameButton.setSelected(filamentDetector.getDetectionParameters().isDetectOnlyOnCurrentFrame());
 
 		this.setToolTips();
@@ -110,7 +110,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 		// Initialize filaments list
 		filamentsTableView = new FilamentsTableView(context, filamentDetector.getCalibrations());
 		filamentViewContainer.getChildren().add(filamentsTableView);
-		
+
 		// Initialize overlay on the image
 		overlayService.setImageDisplay(filamentDetector.getImageDisplay());
 	}

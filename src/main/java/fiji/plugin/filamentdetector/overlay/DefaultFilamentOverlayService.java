@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jfree.util.Log;
 import org.scijava.convert.ConvertService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

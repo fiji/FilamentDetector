@@ -78,7 +78,7 @@ public class DefaultColorService extends AbstractService implements ColorService
 		if (colorCounter >= getLength()) {
 			colorCounter = colorCounter % getLength();
 		}
-		
+
 		Color color = null;
 		if (this.colorTable.getComponentCount() == 3) {
 			color = new Color(this.colorTable.get(0, colorCounter), this.colorTable.get(1, colorCounter),

@@ -54,7 +54,7 @@ public class Detector {
 		this.filaments = new Filaments();
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
-		
+
 		this.imp.setC(channelIndex);
 
 		for (int frame = 1; frame < this.imp.getNFrames() + 1; frame++) {
@@ -71,12 +71,12 @@ public class Detector {
 	public void detectCurrentFrame(int channelIndex) {
 		this.filaments = new Filaments();
 		int currentFrame = this.imp.getFrame();
-		
+
 		int currentChannel = this.imp.getChannel();
 		this.imp.setC(channelIndex);
-		
+
 		this.detectFrame(currentFrame);
-		
+
 		this.imp.setC(currentChannel);
 	}
 

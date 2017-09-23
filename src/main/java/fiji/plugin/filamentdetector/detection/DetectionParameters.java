@@ -107,12 +107,12 @@ public class DetectionParameters {
 
 	public String toString() {
 		String out = "";
-		
+
 		out += "Sigma = " + sigma + "\n";
 		out += "Lower Threshold = " + lowerThresh + "\n";
 		out += "Upper Threshold = " + upperThresh + "\n";
 		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame + "\n";
-		
+
 		return out;
 	}
 

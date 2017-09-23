@@ -124,7 +124,7 @@ public class Calibrations {
 	public void channelToUse(String channelToUse) {
 		int newChannelIndex = IntStream.range(0, channelList.size())
 				.filter(i -> channelList.get(i).equals(channelToUse)).findFirst().orElse(-1);
-		
+
 		if (newChannelIndex != -1) {
 			channelToUseIndex = newChannelIndex + 1;
 		} else {

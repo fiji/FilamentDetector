@@ -1,6 +1,5 @@
 package fiji.plugin.filamentdetector;
 
-import org.jfree.util.Log;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.plugin.Parameter;
