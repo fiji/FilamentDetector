@@ -27,11 +27,7 @@ public class Test {
 		LogService log = ij.log();
 		FilamentOverlayService overlayService = ij.get(FilamentOverlayService.class);
 
-		// String name = "filaments_single_time.ome.tif";
-		String name = "filaments.ome.tif";
-		String fpath = FilamentDetectorPlugin.class.getResource("/fiji/plugin/filamentdetector/tests/testdata/" + name)
-				.getPath();
-		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/seeds.tif";
+		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/seeds.tif";
 		Dataset dataset = ij.dataset().open(fpath);
 		ij.ui().show(dataset);
 
