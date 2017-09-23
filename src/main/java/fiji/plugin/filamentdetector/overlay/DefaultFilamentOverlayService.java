@@ -61,7 +61,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		FloatPolygon positions = new FloatPolygon(x, y, filament.getNumber());
 		Roi roi = new PolygonRoi(positions, Roi.FREELINE);
 
-		roi.setPosition(filament.getFrame());
+		roi.setPosition(-1, -1, filament.getFrame());
 		roi.setName(Integer.toString(filament.getID()));
 		roi.setStrokeWidth(filamentWidth);
 

@@ -1,5 +1,6 @@
 package fiji.plugin.filamentdetector;
 
+import org.jfree.util.Log;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.plugin.Parameter;
@@ -26,7 +27,6 @@ public class FilamentDetector {
 
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
-	private double channelToUse = 0;
 
 	private DetectionParameters detectionParameters;
 
@@ -54,12 +54,12 @@ public class FilamentDetector {
 	}
 
 	public void detectCurrentFrame() {
-		detector.detectCurrentFrame();
+		detector.detectCurrentFrame(calibrations.getChannelToUseIndex());
 		this.filaments = detector.getFilaments();
 	}
 
 	public void detect() {
-		detector.detect();
+		detector.detect(calibrations.getChannelToUseIndex());
 		this.filaments = detector.getFilaments();
 	}
 
@@ -77,14 +77,6 @@ public class FilamentDetector {
 
 	public Calibrations getCalibrations() {
 		return calibrations;
-	}
-
-	public double getChannelToUse() {
-		return channelToUse;
-	}
-
-	public void setChannelToUse(double channelToUse) {
-		this.channelToUse = channelToUse;
 	}
 
 	public DetectionParameters getDetectionParameters() {

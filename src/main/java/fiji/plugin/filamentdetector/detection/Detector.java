@@ -46,22 +46,38 @@ public class Detector {
 	}
 
 	public void detect() {
+		detect(0);
+	}
+
+	public void detect(int channelIndex) {
 
 		this.filaments = new Filaments();
 		int currentFrame = this.imp.getFrame();
+		int currentChannel = this.imp.getChannel();
+		
+		this.imp.setC(channelIndex);
 
 		for (int frame = 1; frame < this.imp.getNFrames() + 1; frame++) {
 			this.detectFrame(frame);
 		}
-
 		this.imp.setT(currentFrame);
-
+		this.imp.setC(currentChannel);
 	}
 
 	public void detectCurrentFrame() {
+		detectCurrentFrame(0);
+	}
+
+	public void detectCurrentFrame(int channelIndex) {
 		this.filaments = new Filaments();
 		int currentFrame = this.imp.getFrame();
+		
+		int currentChannel = this.imp.getChannel();
+		this.imp.setC(channelIndex);
+		
 		this.detectFrame(currentFrame);
+		
+		this.imp.setC(currentChannel);
 	}
 
 	public void detectFrame(int frame) {
@@ -79,7 +95,7 @@ public class Detector {
 				this.parameters.isDarkLine(), this.parameters.isDoCorrectPosition(),
 				this.parameters.isDoEstimateWidth(), this.parameters.isDoExtendLine(),
 				this.parameters.getOverlapOption());
-		
+
 		for (Line line : lines) {
 			this.filaments.add(new Filament(line, frame));
 		}

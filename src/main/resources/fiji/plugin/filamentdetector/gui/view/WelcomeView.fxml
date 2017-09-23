@@ -107,7 +107,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
                                                 <Label text="Channel to use :" />
-                                                <ComboBox fx:id="channelComboBox" onHidden="#writeCalibration" />
+                                                <ComboBox fx:id="channelComboBox" onAction="#writeCalibration" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

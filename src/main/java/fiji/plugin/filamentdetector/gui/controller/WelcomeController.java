@@ -107,6 +107,8 @@ public class WelcomeController extends Controller implements Initializable {
 		filamentDetector.getCalibrations().setDz(Double.parseDouble(voxelDepthField.getText()));
 		filamentDetector.getCalibrations().setDt(Double.parseDouble(timeIntervalField.getText()));
 
+		filamentDetector.getCalibrations().channelToUse(channelComboBox.getSelectionModel().getSelectedItem());
+
 		status.showStatus("Image calibrations and channel to use have been updated.");
 	}
 

@@ -111,7 +111,7 @@ public class DetectionParameters {
 		out += "Sigma = " + sigma + "\n";
 		out += "Lower Threshold = " + lowerThresh + "\n";
 		out += "Upper Threshold = " + upperThresh + "\n";
-		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame;
+		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame + "\n";
 		
 		return out;
 	}
