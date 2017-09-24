@@ -351,48 +351,6 @@ public class DetectFilamentController extends Controller implements Initializabl
 			updateFilamentsList();
 		});
 	}
-	//
-	// @EventHandler
-	// public void filter(FilterFilamentEvent event) {
-	//
-	// if (filterTask != null) {
-	// filterTask.cancel();
-	// }
-	//
-	// if (filterThread != null) {
-	// filterThread.stop();
-	// }
-	//
-	// filterTask = new Task<Integer>() {
-	// @Override
-	// protected Integer call() throws Exception {
-	// filamentDetector.filterFilament(event.getFilteringParameters());
-	// return filamentDetector.getFilaments().size();
-	// }
-	//
-	// @Override
-	// protected void succeeded() {
-	// super.succeeded();
-	// updateFilamentsList();
-	// }
-	//
-	// @Override
-	// protected void cancelled() {
-	// super.cancelled();
-	// }
-	//
-	// @Override
-	// protected void failed() {
-	// super.failed();
-	// status.showStatus("Filtering failed.");
-	// }
-	// };
-	//
-	// filterThread = new Thread(filterTask);
-	// filterThread.setDaemon(true);
-	// filterThread.start();
-	//
-	// }
 
 	@FXML
 	public void liveDetectionClicked(MouseEvent event) {

@@ -113,10 +113,10 @@ public class Detector {
 
 		for (Line line : lines) {
 			Filament filament = new Filament(line, frame);
-			
+
 			Color color = colorService.getColor(this.filaments.size() + 1);
 			filament.setColor(color);
-			
+
 			this.filaments.add(filament);
 		}
 
