@@ -1,5 +1,7 @@
 package fiji.plugin.filamentdetector.detection;
 
+import java.awt.Color;
+
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -10,6 +12,7 @@ import de.biomedical_imaging.ij.steger.LineDetector;
 import de.biomedical_imaging.ij.steger.Lines;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
+import fiji.plugin.filamentdetector.overlay.ColorService;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
 import net.imagej.display.ImageDisplay;
@@ -21,6 +24,9 @@ public class Detector {
 
 	@Parameter
 	LogService log;
+
+	@Parameter
+	private ColorService colorService;
 
 	private ImageDisplay imageDisplay;
 	private DetectionParameters parameters;
@@ -53,6 +59,7 @@ public class Detector {
 
 	public void detect(int channelIndex) {
 
+		colorService.initialize();
 		this.filaments = new Filaments();
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
@@ -70,6 +77,7 @@ public class Detector {
 	}
 
 	public void detectCurrentFrame() {
+		colorService.initialize();
 		detectCurrentFrame(0);
 		// Simplify filaments by reducing the number of points
 		filaments = filaments.simplify(simplifyToleranceDistance);
@@ -104,7 +112,12 @@ public class Detector {
 				this.parameters.getOverlapOption());
 
 		for (Line line : lines) {
-			this.filaments.add(new Filament(line, frame));
+			Filament filament = new Filament(line, frame);
+			
+			Color color = colorService.getColor(this.filaments.size() + 1);
+			filament.setColor(color);
+			
+			this.filaments.add(filament);
 		}
 
 	}

@@ -1,5 +1,7 @@
 package fiji.plugin.filamentdetector;
 
+import java.util.stream.Collectors;
+
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -40,11 +42,13 @@ public class FilamentDetector {
 
 	private Detector detector;
 	private Filaments filaments;
+	private Filaments filteredFilaments;
 
 	public FilamentDetector(Context context, ImageDisplay imd) {
 		context.inject(this);
 		this.imageDisplay = imd;
 		this.filaments = new Filaments();
+		this.filteredFilaments = this.filaments;
 	}
 
 	public void initialize() throws Exception {
@@ -97,12 +101,22 @@ public class FilamentDetector {
 	}
 
 	public Filaments getFilaments() {
-		return filaments;
+		return filteredFilaments;
 	}
 
 	public void filterFilament(FilteringParameters filteringParameters) {
 		status.showStatus("Filtering filaments with the following parameters : ");
 		status.showStatus(filteringParameters.toString());
+
+		this.filteredFilaments = this.filaments.stream()
+				.filter(filament -> filament.getLength() < filteringParameters.getMaxLength())
+				.filter(filament -> filament.getLength() > filteringParameters.getMinLength())
+				.filter(filament -> filament.getSinuosity() < filteringParameters.getMaxSinuosity())
+				.filter(filament -> filament.getSinuosity() > filteringParameters.getMinSinuosity())
+				.collect(Collectors.toCollection(Filaments::new));
+
+		status.showStatus(this.filaments.size() - this.filteredFilaments.size() + " / " + this.filaments.size()
+				+ " filaments have been removed by the filters.");
 	}
 
 }

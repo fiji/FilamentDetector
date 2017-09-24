@@ -50,7 +50,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private EventService eventService;
 
 	private int filamentWidth = 2;
-	private Color filamentColor = Color.orange;
+	private Color filamentColor = Filament.DEFAULT_COLOR;
 	private int colorAlpha = DEFAULT_COLOR_ALPHA;
 
 	private Map<Filament, Roi> filamentROIMap = new HashMap<>();
@@ -131,8 +131,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void add(Filaments filaments) {
 		colorService.initialize();
 		for (int i = 0; i < filaments.size(); i++) {
-			Color color = colorService.getColor(i);
-			add(filaments.get(i), color);
+			add(filaments.get(i), filaments.get(i).getColor());
 		}
 	}
 

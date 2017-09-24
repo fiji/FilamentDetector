@@ -1,5 +1,6 @@
 package fiji.plugin.filamentdetector.model;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -8,6 +9,8 @@ import de.biomedical_imaging.ij.steger.Line;
 /* A container for Line */
 public class Filament implements Comparable<Filament> {
 
+	public static Color DEFAULT_COLOR = Color.orange;
+
 	private final Line line;
 	private final int frame;
 
@@ -15,6 +18,8 @@ public class Filament implements Comparable<Filament> {
 	private double[] lengths;
 	private double sinuosity = Double.NaN;
 	private double[] boundingBox;
+
+	private Color color = DEFAULT_COLOR;
 
 	public Filament(float[] x, float[] y, int frame) {
 		this.line = new Line(x, y);
@@ -195,6 +200,14 @@ public class Filament implements Comparable<Filament> {
 	@Override
 	public int compareTo(Filament filament) {
 		return this.getID() - filament.getID();
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

@@ -43,4 +43,9 @@ public class Filaments extends ArrayList<Filament> {
 
 	}
 
+	@Override
+	public boolean add(Filament filament) {
+		return super.add(filament);
+	}
+
 }

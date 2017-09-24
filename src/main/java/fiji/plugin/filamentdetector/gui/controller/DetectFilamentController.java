@@ -2,8 +2,6 @@
 package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
@@ -25,6 +23,7 @@ import ij.gui.Line;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -123,6 +122,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	private Thread detectionThread;
 	private Task<Integer> detectionTask;
+
+	private Thread filterThread;
+	private Task<Integer> filterTask;
 
 	private FilteringParameters filteringParameters;
 
@@ -344,9 +346,53 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@EventHandler
 	public void filter(FilterFilamentEvent event) {
-		filamentDetector.filterFilament(event.getFilteringParameters());
-		updateFilamentsList();
+		Platform.runLater(() -> {
+			filamentDetector.filterFilament(event.getFilteringParameters());
+			updateFilamentsList();
+		});
 	}
+	//
+	// @EventHandler
+	// public void filter(FilterFilamentEvent event) {
+	//
+	// if (filterTask != null) {
+	// filterTask.cancel();
+	// }
+	//
+	// if (filterThread != null) {
+	// filterThread.stop();
+	// }
+	//
+	// filterTask = new Task<Integer>() {
+	// @Override
+	// protected Integer call() throws Exception {
+	// filamentDetector.filterFilament(event.getFilteringParameters());
+	// return filamentDetector.getFilaments().size();
+	// }
+	//
+	// @Override
+	// protected void succeeded() {
+	// super.succeeded();
+	// updateFilamentsList();
+	// }
+	//
+	// @Override
+	// protected void cancelled() {
+	// super.cancelled();
+	// }
+	//
+	// @Override
+	// protected void failed() {
+	// super.failed();
+	// status.showStatus("Filtering failed.");
+	// }
+	// };
+	//
+	// filterThread = new Thread(filterTask);
+	// filterThread.setDaemon(true);
+	// filterThread.start();
+	//
+	// }
 
 	@FXML
 	public void liveDetectionClicked(MouseEvent event) {
