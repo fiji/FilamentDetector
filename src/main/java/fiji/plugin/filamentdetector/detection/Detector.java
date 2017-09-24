@@ -25,6 +25,8 @@ public class Detector {
 	private ImageDisplay imageDisplay;
 	private DetectionParameters parameters;
 
+	private double simplifyToleranceDistance = 10;
+
 	private LineDetector lineDetector;
 
 	private ImagePlus imp;
@@ -62,10 +64,15 @@ public class Detector {
 		}
 		this.imp.setT(currentFrame);
 		this.imp.setC(currentChannel);
+
+		// Simplify filaments by reducing the number of points
+		filaments = filaments.simplify(simplifyToleranceDistance);
 	}
 
 	public void detectCurrentFrame() {
 		detectCurrentFrame(0);
+		// Simplify filaments by reducing the number of points
+		filaments = filaments.simplify(simplifyToleranceDistance);
 	}
 
 	public void detectCurrentFrame(int channelIndex) {

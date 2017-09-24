@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.overlay;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
@@ -319,7 +320,6 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void mouseClicked(MouseEvent event) {
-
 		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
 
 		// Get the real x and y
@@ -343,6 +343,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 				}
 			}
 		}
+
 	}
 
 	@Override
