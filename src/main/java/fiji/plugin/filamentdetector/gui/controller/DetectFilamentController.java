@@ -13,7 +13,12 @@ import org.scijava.plugin.Parameter;
 import fiji.plugin.filamentdetector.FilamentDetector;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.view.FilamentsTableView;
+import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
+import ij.gui.Line;
+import ij.gui.PolygonRoi;
+import ij.gui.Roi;
+import ij.plugin.frame.RoiManager;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -75,9 +80,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@FXML
 	private VBox filamentViewContainer;
-	
-    @FXML
-    private AnchorPane detailViewContainer;
+
+	@FXML
+	private AnchorPane detailViewContainer;
 
 	private FilamentsTableView filamentsTableView;
 
@@ -112,7 +117,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 		this.setToolTips();
 
 		// Initialize filaments list
-		filamentsTableView = new FilamentsTableView(context, filamentDetector.getCalibrations());
+		filamentsTableView = new FilamentsTableView(context, filamentDetector.getFilaments(),
+				filamentDetector.getCalibrations());
 		filamentViewContainer.getChildren().add(0, filamentsTableView);
 		detailViewContainer.getChildren().add(filamentsTableView.getDetailPane());
 
@@ -122,12 +128,51 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	private void updateFilamentsList() {
 		filamentsTableView.setFilaments(filamentDetector.getFilaments());
+		filamentsTableView.updateFilaments();
 	}
-	
-    @FXML
-    void importLinesfromROIManager(MouseEvent event) {
-    	
-    }
+
+	@FXML
+	public void importLinesfromROIManager(MouseEvent event) {
+		RoiManager rm = RoiManager.getInstance();
+
+		if (rm == null) {
+			status.showStatus("Roi Manager not found. Press 't' to add a line to it.");
+			return;
+		}
+
+		int total = 0;
+		int i = 1;
+		Filament filament = null;
+		for (Roi roi : rm.getRoisAsArray()) {
+
+			if (roi.getType() == Roi.FREELINE || roi.getType() == Roi.POLYLINE) {
+
+				PolygonRoi line = (PolygonRoi) roi;
+				float[] x = line.getFloatPolygon().xpoints;
+				float[] y = line.getFloatPolygon().ypoints;
+				filament = new Filament(x, y, roi.getTPosition());
+				rm.select(i);
+				rm.runCommand("Delete");
+				total++;
+			} else if (roi.getType() == Roi.LINE) {
+
+				Line line = (Line) roi;
+				float[] x = new float[] { (float) line.x1d, (float) line.x2d };
+				float[] y = new float[] { (float) line.y1d, (float) line.y2d };
+				filament = new Filament(x, y, roi.getTPosition());
+				rm.select(i);
+				rm.runCommand("Delete");
+				total++;
+			}
+
+			if (filament != null) {
+				filamentsTableView.addFilament(filament);
+			}
+			i++;
+		}
+
+		status.showStatus(total + " filament(s) has been added.");
+	}
 
 	@FXML
 	public void updateDetectionParameters(Event event) {

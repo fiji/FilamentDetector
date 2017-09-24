@@ -35,6 +35,7 @@ public class FilamentDetector {
 	public FilamentDetector(Context context, ImageDisplay imd) {
 		context.inject(this);
 		this.imageDisplay = imd;
+		this.filaments = new Filaments();
 	}
 
 	public void initialize() throws Exception {

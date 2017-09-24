@@ -40,11 +40,12 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 	private AnchorPane detailPane;
 
-	public FilamentsTableView(Context context, Calibrations calibrations) {
+	public FilamentsTableView(Context context, Filaments filaments, Calibrations calibrations) {
 		context.inject(this);
 		this.calibrations = calibrations;
 
-		filamentModelList = FXCollections.observableArrayList();
+		this.filamentModelList = FXCollections.observableArrayList();
+		this.filaments = filaments;
 
 		TableColumn<FilamentModel, Integer> idColumn = new TableColumn<>("ID");
 		TableColumn<FilamentModel, Double> lengthColumn = new TableColumn<>("Length (" + calibrations.getUnitX() + ")");
@@ -126,9 +127,12 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	public Filaments getFilaments() {
 		return filaments;
 	}
-
+	
 	public void setFilaments(Filaments filaments) {
 		this.filaments = filaments;
+	}
+
+	public void updateFilaments() {
 
 		filamentModelList = FXCollections.observableArrayList();
 		for (Filament filament : filaments) {
@@ -139,6 +143,12 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		// Update overlay
 		overlayService.reset();
 		overlayService.add(filaments);
+	}
+
+	public void addFilament(Filament filament) {
+		filaments.add(filament);
+		filamentModelList.add(new FilamentModel(filament));
+		overlayService.add(filament);
 	}
 
 	public Pane getDetailPane() {
@@ -156,7 +166,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				.findFirst().orElse(null);
 		filamentModelList.remove(filamentModel);
 		filaments.remove(filament);
-		
+
 		overlayService.remove(filament);
 	}
 

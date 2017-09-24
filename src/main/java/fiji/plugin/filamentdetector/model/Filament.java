@@ -16,6 +16,11 @@ public class Filament implements Comparable<Filament> {
 	private double sinuosity = Double.NaN;
 	private double[] boundingBox;
 
+	public Filament(float[] x, float[] y, int frame) {
+		this.line = new Line(x, y);
+		this.frame = frame;
+	}
+
 	public Filament(Line line, int frame) {
 		this.line = line;
 		this.frame = frame;
