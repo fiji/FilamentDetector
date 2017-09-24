@@ -67,13 +67,29 @@ public class FilamentDetector {
 	}
 
 	public void detectCurrentFrame() {
+		detectCurrentFrame(true);
+	}
+
+	public void detectCurrentFrame(boolean simplifyFilaments) {
 		detector.detectCurrentFrame(calibrations.getChannelToUseIndex());
+		if (simplifyFilaments) {
+			detector.simplify();
+		}
 		this.filaments = detector.getFilaments();
+		this.filteredFilaments = this.filaments;
 	}
 
 	public void detect() {
+		detect(true);
+	}
+
+	public void detect(boolean simplifyFilaments) {
 		detector.detect(calibrations.getChannelToUseIndex());
+		if (simplifyFilaments) {
+			detector.simplify();
+		}
 		this.filaments = detector.getFilaments();
+		this.filteredFilaments = this.filaments;
 	}
 
 	public Dataset getDataset() {

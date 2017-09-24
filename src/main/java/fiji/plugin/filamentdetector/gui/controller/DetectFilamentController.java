@@ -115,6 +115,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@FXML
 	private TextField minSinuosityField;
+	
+	@FXML
+	private CheckBox simplifyFilamentsCheckbox;
 
 	private FilamentsTableView filamentsTableView;
 
@@ -301,9 +304,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected Integer call() throws Exception {
 				if (detectCurrentFrameButton.isSelected()) {
-					filamentDetector.detectCurrentFrame();
+					filamentDetector.detectCurrentFrame(simplifyFilamentsCheckbox.isSelected());
 				} else {
-					filamentDetector.detect();
+					filamentDetector.detect(simplifyFilamentsCheckbox.isSelected());
 				}
 
 				return filamentDetector.getFilaments().size();

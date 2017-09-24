@@ -194,7 +194,10 @@ public class Filament implements Comparable<Filament> {
 		newY = Arrays.copyOf(newY, newSize);
 
 		Line line = new Line(newX, newY);
-		return new Filament(line, this.getFrame());
+		
+		Filament newFilament = new Filament(line, this.getFrame());
+		newFilament.setColor(this.getColor());
+		return newFilament;
 	}
 
 	@Override
