@@ -45,6 +45,8 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private Map<Filament, Color> filamentColorMap = new HashMap<>();
 	private ImageDisplay imageDisplay;
 
+	private Filament selectedFilament;
+
 	@Override
 	public void add(Filament filament) {
 		add(filament, this.filamentColor);
@@ -274,5 +276,28 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void disableOverlay(boolean disable) {
 		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
 		imp.setHideOverlay(!disable);
+	}
+
+	@Override
+	public void setSelected(Filament filament, boolean moveToFrame) {
+
+		if (selectedFilament != null) {
+			Roi oldRoi = filamentROIMap.get(selectedFilament);
+			if (oldRoi != null) {
+				oldRoi.setStrokeWidth(oldRoi.getStrokeWidth() / 2);
+			}
+		}
+		selectedFilament = filament;
+
+		Roi roi = filamentROIMap.get(filament);
+		roi.setStrokeWidth(roi.getStrokeWidth() * 2);
+
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+
+		if (moveToFrame) {
+			imp.setT(roi.getTPosition());
+		}
+
+		imp.repaintWindow();
 	}
 }

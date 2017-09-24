@@ -26,6 +26,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 public class DetectFilamentController extends Controller implements Initializable {
@@ -74,6 +75,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@FXML
 	private VBox filamentViewContainer;
+	
+    @FXML
+    private AnchorPane detailViewContainer;
 
 	private FilamentsTableView filamentsTableView;
 
@@ -109,7 +113,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		// Initialize filaments list
 		filamentsTableView = new FilamentsTableView(context, filamentDetector.getCalibrations());
-		filamentViewContainer.getChildren().add(filamentsTableView);
+		filamentViewContainer.getChildren().add(0, filamentsTableView);
+		detailViewContainer.getChildren().add(filamentsTableView.getDetailPane());
 
 		// Initialize overlay on the image
 		overlayService.setImageDisplay(filamentDetector.getImageDisplay());
@@ -118,6 +123,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 	private void updateFilamentsList() {
 		filamentsTableView.setFilaments(filamentDetector.getFilaments());
 	}
+	
+    @FXML
+    void importLinesfromROIManager(MouseEvent event) {
+    	
+    }
 
 	@FXML
 	public void updateDetectionParameters(Event event) {

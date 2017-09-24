@@ -100,10 +100,19 @@
                      <items>
                         <TitledPane animated="false" collapsible="false" text="Filaments">
                            <content>
-                              <VBox fx:id="filamentViewContainer" />
+                              <VBox fx:id="filamentViewContainer" spacing="5.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#importLinesfromROIManager" text="Import from ROI Manager" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding></VBox>
                            </content>
                         </TitledPane>
-                        <TitledPane animated="false" collapsible="false" text="Filter" />
+                        <TitledPane animated="false" collapsible="false" text="Filament Details">
+                           <content>
+                              <AnchorPane fx:id="detailViewContainer" />
+                           </content></TitledPane>
                      </items>
                   </SplitPane>
                </children>
