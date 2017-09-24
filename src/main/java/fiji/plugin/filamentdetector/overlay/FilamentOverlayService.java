@@ -62,6 +62,6 @@ public interface FilamentOverlayService extends ImageJService {
 	void exportToROIManager();
 
 	void disableOverlay(boolean disable);
-	
+
 	void setSelected(Filament filament, boolean moveToFrame);
 }

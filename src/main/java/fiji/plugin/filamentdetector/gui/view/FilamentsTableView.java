@@ -3,17 +3,21 @@ package fiji.plugin.filamentdetector.gui.view;
 import java.text.DecimalFormat;
 
 import org.scijava.Context;
+import org.scijava.event.EventHandler;
+import org.scijava.event.EventService;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.Calibrations;
+import fiji.plugin.filamentdetector.event.FilamentSelectedEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
-import fiji.plugin.filamentdetector.gui.controller.Controller;
 import fiji.plugin.filamentdetector.gui.controller.DetailedFilamentController;
 import fiji.plugin.filamentdetector.gui.model.FilamentModel;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Control;
@@ -30,7 +34,13 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	FilamentOverlayService overlayService;
 
 	@Parameter
+	private LogService log;
+
+	@Parameter
 	private GUIStatusService status;
+
+	@Parameter
+	private EventService eventService;
 
 	private ObservableList<FilamentModel> filamentModelList;
 	private Filaments filaments;
@@ -122,12 +132,14 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 			}
 		});
 
+		// Handle filament selection
+		eventService.subscribe(this);
 	}
 
 	public Filaments getFilaments() {
 		return filaments;
 	}
-	
+
 	public void setFilaments(Filaments filaments) {
 		this.filaments = filaments;
 	}
@@ -168,6 +180,19 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		filaments.remove(filament);
 
 		overlayService.remove(filament);
+	}
+
+	@EventHandler
+	public void filamentSelected(FilamentSelectedEvent event) {
+		FilamentModel filamentModel = filamentModelList.stream()
+				.filter(f -> f.getFilament().equals(event.getFilament())).findFirst().orElse(null);
+		if (filamentModel != null) {
+			// Require to not mix AWT and JavaFX thread.
+			Platform.runLater(() -> {
+				this.getSelectionModel().clearSelection();
+				this.getSelectionModel().select(filamentModel);
+			});
+		}
 	}
 
 }

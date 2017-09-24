@@ -1,15 +1,20 @@
 package fiji.plugin.filamentdetector.overlay;
 
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.scijava.convert.ConvertService;
+import org.scijava.event.EventService;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
+import fiji.plugin.filamentdetector.event.FilamentSelectedEvent;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
@@ -24,7 +29,7 @@ import net.imagej.display.ImageDisplay;
 import net.imagej.display.OverlayService;
 
 @Plugin(type = Service.class)
-public class DefaultFilamentOverlayService extends AbstractService implements FilamentOverlayService {
+public class DefaultFilamentOverlayService extends AbstractService implements FilamentOverlayService, MouseListener {
 
 	private static int DEFAULT_COLOR_ALPHA = 190;
 
@@ -32,10 +37,16 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private ConvertService convert;
 
 	@Parameter
+	private LogService log;
+
+	@Parameter
 	private OverlayService overlayService;
 
 	@Parameter
 	private ColorService colorService;
+
+	@Parameter
+	private EventService eventService;
 
 	private int filamentWidth = 2;
 	private Color filamentColor = Color.orange;
@@ -202,6 +213,11 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void setImageDisplay(ImageDisplay imageDisplay) {
+
+		// Set listeners
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		imp.getWindow().getCanvas().addMouseListener(this);
+
 		this.imageDisplay = imageDisplay;
 	}
 
@@ -299,5 +315,51 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		}
 
 		imp.repaintWindow();
+	}
+
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent event) {
+
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+
+		// Get the real x and y
+		double x = imp.getWindow().getCanvas().offScreenXD(event.getX());
+		double y = imp.getWindow().getCanvas().offScreenYD(event.getY());
+
+		int frame = imp.getFrame();
+//		int slice = imp.getSlice();
+//		int channel = imp.getChannel();
+
+		Filament filament;
+		Roi roi;
+		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
+			filament = entry.getKey();
+			roi = entry.getValue();
+
+			if (roi.getTPosition() == frame) {
+				if (roi.getBounds().contains((int) Math.floor(x), (int) Math.floor(y))) {
+					eventService.publish(new FilamentSelectedEvent(filament));
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent event) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent event) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent event) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent event) {
 	}
 }
