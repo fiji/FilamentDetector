@@ -317,8 +317,6 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		imp.repaintWindow();
 	}
 
-	
-	
 	@Override
 	public void mouseClicked(MouseEvent event) {
 
@@ -329,8 +327,8 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		double y = imp.getWindow().getCanvas().offScreenYD(event.getY());
 
 		int frame = imp.getFrame();
-//		int slice = imp.getSlice();
-//		int channel = imp.getChannel();
+		// int slice = imp.getSlice();
+		// int channel = imp.getChannel();
 
 		Filament filament;
 		Roi roi;

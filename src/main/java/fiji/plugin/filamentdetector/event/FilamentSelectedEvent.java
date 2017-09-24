@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.event;
 
 import org.scijava.event.SciJavaEvent;
+
 import fiji.plugin.filamentdetector.model.Filament;
 
 public class FilamentSelectedEvent extends SciJavaEvent {
