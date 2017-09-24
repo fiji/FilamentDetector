@@ -2,10 +2,13 @@ package fiji.plugin.filamentdetector;
 
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
 import fiji.plugin.filamentdetector.detection.Detector;
+import fiji.plugin.filamentdetector.detection.FilteringParameters;
+import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.model.Filaments;
 import ij.ImagePlus;
 import net.imagej.Dataset;
@@ -23,6 +26,12 @@ public class FilamentDetector {
 
 	@Parameter
 	private ConvertService convert;
+
+	@Parameter
+	private LogService log;
+
+	@Parameter
+	private GUIStatusService status;
 
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
@@ -89,6 +98,11 @@ public class FilamentDetector {
 
 	public Filaments getFilaments() {
 		return filaments;
+	}
+
+	public void filterFilament(FilteringParameters filteringParameters) {
+		status.showStatus("Filtering filaments with the following parameters : ");
+		status.showStatus(filteringParameters.toString());
 	}
 
 }

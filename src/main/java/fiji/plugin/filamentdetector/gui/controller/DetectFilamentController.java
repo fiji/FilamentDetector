@@ -7,11 +7,17 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.event.EventHandler;
+import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.detection.FilteringParameters;
+import fiji.plugin.filamentdetector.event.FilterFilamentEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
+import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
+import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.FilamentsTableView;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -41,6 +47,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@Parameter
 	private GUIStatusService status;
+
+	@Parameter
+	private EventService eventService;
 
 	@Parameter
 	private LogService log;
@@ -84,12 +93,43 @@ public class DetectFilamentController extends Controller implements Initializabl
 	@FXML
 	private AnchorPane detailViewContainer;
 
+	@FXML
+	private Slider maxLengthSlider;
+
+	@FXML
+	private TextField maxLengthField;
+
+	@FXML
+	private Slider minLengthSlider;
+
+	@FXML
+	private TextField minLengthField;
+
+	@FXML
+	private Slider maxSinuositySlider;
+
+	@FXML
+	private TextField maxSinuosityField;
+
+	@FXML
+	private Slider minSinuositySlider;
+
+	@FXML
+	private TextField minSinuosityField;
+
 	private FilamentsTableView filamentsTableView;
 
 	private FilamentDetector filamentDetector;
 
 	private Thread detectionThread;
 	private Task<Integer> detectionTask;
+
+	private FilteringParameters filteringParameters;
+
+	private SliderLabelSynchronizer sigmaSync;
+	private UpperLowerSynchronizer thresholdSync;
+	private UpperLowerSynchronizer lengthSync;
+	private UpperLowerSynchronizer sinuositySync;
 
 	public DetectFilamentController(Context context, FilamentDetector filamentDetector) {
 		context.inject(this);
@@ -103,18 +143,42 @@ public class DetectFilamentController extends Controller implements Initializabl
 		this.filamentDetector.initDetection();
 
 		// Fill fields with default values
-		sigmaField.setText(Double.toString(filamentDetector.getDetectionParameters().getSigma()));
-		sigmaSlider.setValue(filamentDetector.getDetectionParameters().getSigma());
+		sigmaSync = new SliderLabelSynchronizer(sigmaSlider, sigmaField);
+		sigmaSync.setTooltip("Determines the sigma for the derivatives. It depends on the line width.");
+		sigmaSync.setValue(filamentDetector.getDetectionParameters().getSigma());
 
-		lowerThresholdField.setText(Double.toString(filamentDetector.getDetectionParameters().getLowerThresh()));
-		lowerThresholdSlider.setValue(filamentDetector.getDetectionParameters().getLowerThresh());
-
-		upperThresholdField.setText(Double.toString(filamentDetector.getDetectionParameters().getUpperThresh()));
-		upperThresholdSlider.setValue(filamentDetector.getDetectionParameters().getUpperThresh());
+		thresholdSync = new UpperLowerSynchronizer(lowerThresholdSlider, lowerThresholdField, upperThresholdSlider,
+				upperThresholdField);
+		thresholdSync.setLowerTooltip("Line points with a response smaller as this threshold are rejected.");
+		thresholdSync.setUpperTooltip("Line points with a response larger as this threshold are accepted.");
+		thresholdSync.setLowerValue(filamentDetector.getDetectionParameters().getLowerThresh());
+		thresholdSync.setUpperValue(filamentDetector.getDetectionParameters().getUpperThresh());
 
 		detectCurrentFrameButton.setSelected(filamentDetector.getDetectionParameters().isDetectOnlyOnCurrentFrame());
 
-		this.setToolTips();
+		// Fill filtering fields
+		filteringParameters = new FilteringParameters();
+
+		lengthSync = new UpperLowerSynchronizer(minLengthSlider, minLengthField, maxLengthSlider, maxLengthField);
+		lengthSync.setLowerValue(filteringParameters.getMinLength());
+		lengthSync.setUpperValue(filteringParameters.getMaxLength());
+
+		sinuositySync = new UpperLowerSynchronizer(minSinuositySlider, minSinuosityField, maxSinuositySlider,
+				maxSinuosityField);
+		sinuositySync.setLowerTooltip(
+				"The sinuosity define how 'straight' is a line. 1 means it's straight, more is less straight.");
+		sinuositySync.setUpperTooltip(
+				"The sinuosity define how 'straight' is a line. 1 means it's straight, more is less straight.");
+		sinuositySync.setLowerValue(filteringParameters.getMinSinuosity());
+		sinuositySync.setUpperValue(filteringParameters.getMaxSinuosity());
+
+		Tooltip tooltip;
+		tooltip = new Tooltip(
+				"Only detect filaments on the current frame (use for quick detection parameters tuning).");
+		Tooltip.install(detectCurrentFrameButton, tooltip);
+
+		tooltip = new Tooltip("Perform detection each time a parameter is modified.");
+		Tooltip.install(liveDetectionButton, tooltip);
 
 		// Initialize filaments list
 		filamentsTableView = new FilamentsTableView(context, filamentDetector.getFilaments(),
@@ -124,6 +188,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		// Initialize overlay on the image
 		overlayService.setImageDisplay(filamentDetector.getImageDisplay());
+
+		// Subscribe this class to SciJava events
+		eventService.subscribe(this);
 	}
 
 	private void updateFilamentsList() {
@@ -172,103 +239,21 @@ public class DetectFilamentController extends Controller implements Initializabl
 		}
 
 		status.showStatus(total + " filament(s) has been added.");
+
+		eventService.publish(new FilterFilamentEvent(filteringParameters));
 	}
 
 	@FXML
 	public void updateDetectionParameters(Event event) {
 
-		DecimalFormat f = new DecimalFormat("##.00");
+		if (sigmaSync.isEvent(event)) {
+			sigmaSync.update(event);
+			filamentDetector.getDetectionParameters().setSigma(sigmaSync.getValue());
 
-		if (event.getSource().equals(sigmaSlider)) {
-			double newSigmaValue;
-			try {
-				newSigmaValue = f.parse(f.format(sigmaSlider.getValue())).doubleValue();
-				sigmaField.setText(Double.toString(newSigmaValue));
-				filamentDetector.getDetectionParameters().setSigma(newSigmaValue);
-			} catch (ParseException e) {
-				sigmaSlider.setValue(filamentDetector.getDetectionParameters().getSigma());
-			}
-
-		} else if (event.getSource().equals(sigmaField)) {
-			try {
-				double newSigmaValue = f.parse(f.format(Double.parseDouble(sigmaField.getText()))).doubleValue();
-				sigmaSlider.setValue(newSigmaValue);
-				filamentDetector.getDetectionParameters().setSigma(newSigmaValue);
-			} catch (NumberFormatException | ParseException | ClassCastException e) {
-				sigmaField.setText(Double.toString(filamentDetector.getDetectionParameters().getSigma()));
-			}
-		}
-
-		else if (event.getSource().equals(lowerThresholdSlider)) {
-			double newLowThresholdValue;
-			try {
-				newLowThresholdValue = f.parse(f.format(lowerThresholdSlider.getValue())).doubleValue();
-				if (newLowThresholdValue < filamentDetector.getDetectionParameters().getUpperThresh()) {
-					lowerThresholdField.setText(Double.toString(newLowThresholdValue));
-					filamentDetector.getDetectionParameters().setLowerThresh(newLowThresholdValue);
-				} else {
-					lowerThresholdSlider.setValue(filamentDetector.getDetectionParameters().getUpperThresh() - 0.01);
-					lowerThresholdField.setText(
-							Double.toString(filamentDetector.getDetectionParameters().getUpperThresh() - 0.01));
-				}
-
-			} catch (ParseException e) {
-				lowerThresholdSlider.setValue(filamentDetector.getDetectionParameters().getLowerThresh());
-			}
-
-		} else if (event.getSource().equals(lowerThresholdField)) {
-			try {
-				double newLowThresholdValue = f.parse(f.format(Double.parseDouble(lowerThresholdField.getText())))
-						.doubleValue();
-				if (newLowThresholdValue < filamentDetector.getDetectionParameters().getUpperThresh()) {
-					lowerThresholdSlider.setValue(newLowThresholdValue);
-					filamentDetector.getDetectionParameters().setLowerThresh(newLowThresholdValue);
-				} else {
-					lowerThresholdField.setText(
-							Double.toString(filamentDetector.getDetectionParameters().getUpperThresh() - 0.01));
-					lowerThresholdSlider.setValue(filamentDetector.getDetectionParameters().getUpperThresh() - 0.01);
-				}
-
-			} catch (NumberFormatException | ParseException | ClassCastException e) {
-				lowerThresholdField
-						.setText(Double.toString(filamentDetector.getDetectionParameters().getLowerThresh()));
-			}
-		}
-
-		else if (event.getSource().equals(upperThresholdSlider)) {
-			double newUpperThresholdValue;
-			try {
-				newUpperThresholdValue = f.parse(f.format(upperThresholdSlider.getValue())).doubleValue();
-				if (newUpperThresholdValue > filamentDetector.getDetectionParameters().getLowerThresh()) {
-					upperThresholdField.setText(Double.toString(newUpperThresholdValue));
-					filamentDetector.getDetectionParameters().setUpperThresh(newUpperThresholdValue);
-				} else {
-					upperThresholdSlider.setValue(filamentDetector.getDetectionParameters().getLowerThresh() + 0.01);
-					upperThresholdField.setText(
-							Double.toString(filamentDetector.getDetectionParameters().getLowerThresh() + 0.01));
-				}
-
-			} catch (ParseException e) {
-				upperThresholdSlider.setValue(filamentDetector.getDetectionParameters().getLowerThresh());
-			}
-
-		} else if (event.getSource().equals(upperThresholdField)) {
-			try {
-				double newUpperThresholdValue = f.parse(f.format(Double.parseDouble(upperThresholdField.getText())))
-						.doubleValue();
-				if (newUpperThresholdValue > filamentDetector.getDetectionParameters().getLowerThresh()) {
-					upperThresholdSlider.setValue(newUpperThresholdValue);
-					filamentDetector.getDetectionParameters().setUpperThresh(newUpperThresholdValue);
-				} else {
-					upperThresholdField.setText(
-							Double.toString(filamentDetector.getDetectionParameters().getLowerThresh() + 0.01));
-					upperThresholdSlider.setValue(filamentDetector.getDetectionParameters().getLowerThresh() + 0.01);
-				}
-
-			} catch (NumberFormatException | ParseException | ClassCastException e) {
-				upperThresholdField
-						.setText(Double.toString(filamentDetector.getDetectionParameters().getLowerThresh()));
-			}
+		} else if (thresholdSync.isEvent(event)) {
+			thresholdSync.update(event);
+			filamentDetector.getDetectionParameters().setLowerThresh(thresholdSync.getLowerValue());
+			filamentDetector.getDetectionParameters().setUpperThresh(thresholdSync.getUpperValue());
 		}
 
 		else if (event.getSource().equals(detectCurrentFrameButton)) {
@@ -279,7 +264,22 @@ public class DetectFilamentController extends Controller implements Initializabl
 		if (liveDetectionButton.isSelected()) {
 			this.detect(null);
 		}
+	}
 
+	@FXML
+	public void updateFilteringParameters(Event event) {
+
+		if (lengthSync.isEvent(event)) {
+			lengthSync.update(event);
+			filteringParameters.setMinLength(lengthSync.getLowerValue());
+			filteringParameters.setMaxLength(lengthSync.getUpperValue());
+		} else if (sinuositySync.isEvent(event)) {
+			sinuositySync.update(event);
+			filteringParameters.setMinSinuosity(sinuositySync.getLowerValue());
+			filteringParameters.setMaxSinuosity(sinuositySync.getUpperValue());
+		}
+
+		eventService.publish(new FilterFilamentEvent(filteringParameters));
 	}
 
 	@FXML
@@ -315,6 +315,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 				status.showStatus(filamentDetector.getDetectionParameters().toString());
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
+				eventService.publish(new FilterFilamentEvent(filteringParameters));
 			}
 
 			@Override
@@ -337,6 +338,17 @@ public class DetectFilamentController extends Controller implements Initializabl
 	}
 
 	@FXML
+	public void filter(ActionEvent event) {
+		eventService.publish(new FilterFilamentEvent(filteringParameters));
+	}
+
+	@EventHandler
+	public void filter(FilterFilamentEvent event) {
+		filamentDetector.filterFilament(event.getFilteringParameters());
+		updateFilamentsList();
+	}
+
+	@FXML
 	public void liveDetectionClicked(MouseEvent event) {
 		if (liveDetectionButton.isSelected()) {
 			detectButton.setDisable(true);
@@ -344,29 +356,6 @@ public class DetectFilamentController extends Controller implements Initializabl
 			detectButton.setDisable(false);
 
 		}
-	}
-
-	private void setToolTips() {
-		Tooltip tooltip;
-
-		tooltip = new Tooltip("Determines the sigma for the derivatives. It depends on the line width.");
-		Tooltip.install(sigmaSlider, tooltip);
-		Tooltip.install(sigmaField, tooltip);
-
-		tooltip = new Tooltip("Line points with a response smaller as this threshold are rejected.");
-		Tooltip.install(lowerThresholdSlider, tooltip);
-		Tooltip.install(lowerThresholdField, tooltip);
-
-		tooltip = new Tooltip("Line points with a response larger as this threshold are accepted.");
-		Tooltip.install(upperThresholdSlider, tooltip);
-		Tooltip.install(upperThresholdSlider, tooltip);
-
-		tooltip = new Tooltip(
-				"Only detect filaments on the current frame (use for quick detection parameters tuning).");
-		Tooltip.install(detectCurrentFrameButton, tooltip);
-
-		tooltip = new Tooltip("Perform detection each time a parameter is modified.");
-		Tooltip.install(liveDetectionButton, tooltip);
 	}
 
 }
