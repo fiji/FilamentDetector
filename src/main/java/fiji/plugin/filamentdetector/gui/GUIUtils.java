@@ -27,7 +27,7 @@ public class GUIUtils {
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);
 			loader.setController(controller);
 			Pane pane = (Pane) loader.load();
-			
+
 			if (controller != null) {
 				controller.setPane(pane);
 			}

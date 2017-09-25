@@ -216,9 +216,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@FXML
 	public void importLinesfromROIManager(MouseEvent event) {
-		
+
 		updateFilamentsList();
-		
+
 		RoiManager rm = RoiManager.getInstance();
 
 		if (rm == null) {

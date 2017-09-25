@@ -10,7 +10,7 @@ public interface DataExporter<T> {
 	public String getName();
 
 	public String getExtension();
-	
+
 	public List<String> getExtensionFilters();
 
 	public String getExtensionDescription();
