@@ -21,6 +21,7 @@ import net.imagej.ImageJ;
 
 public class GUIUtils {
 
+	@SuppressWarnings("unchecked")
 	public static Pane loadFXML(String fxml, Controller controller) {
 		try {
 			URL fxmlUrl = MainAppFrame.class.getResource(fxml);

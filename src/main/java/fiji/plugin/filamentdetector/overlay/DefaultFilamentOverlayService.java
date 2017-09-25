@@ -239,11 +239,18 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
 			Overlay overlay = imp.getOverlay();
 
-			if (overlay != null && entry.getValue() != null) {
-				if (overlay.contains(entry.getValue())) {
-					overlay.remove(entry.getValue());
+			try {
+				if (overlay != null && entry != null && entry.getValue() != null) {
+					if (overlay.contains(entry.getValue())) {
+						overlay.remove(entry.getValue());
+					}
 				}
+			} catch (NullPointerException e) {
+				log.error(entry);
+				log.error(overlay);
+				log.error(e);
 			}
+
 		}
 
 		filamentROIMap = new HashMap<>();

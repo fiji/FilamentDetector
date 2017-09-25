@@ -50,7 +50,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
                                                 <Label text="Pixel Width :" />
-                                                <TextField fx:id="pixelWidthField" maxWidth="80.0" onKeyTyped="#writeCalibration" />
+                                                <TextField fx:id="pixelWidthField" maxWidth="80.0" onAction="#writeCalibration" />
                                                 <Label fx:id="pixelWidthUnitLabel" />
                                              </children>
                                              <VBox.margin>
@@ -63,7 +63,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
                                                 <Label text="Pixel Height :" />
-                                                <TextField fx:id="pixelHeightField" maxWidth="80.0" onKeyTyped="#writeCalibration" />
+                                                <TextField fx:id="pixelHeightField" maxWidth="80.0" onAction="#writeCalibration" />
                                                 <Label fx:id="pixelHeightUnitLabel" />
                                              </children>
                                              <VBox.margin>
@@ -76,7 +76,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
                                                 <Label text="Voxel Depth :" />
-                                                <TextField fx:id="voxelDepthField" maxWidth="80.0" onKeyTyped="#writeCalibration" />
+                                                <TextField fx:id="voxelDepthField" maxWidth="80.0" onAction="#writeCalibration" />
                                                 <Label fx:id="voxelDepthUnitLabel" />
                                              </children>
                                              <VBox.margin>

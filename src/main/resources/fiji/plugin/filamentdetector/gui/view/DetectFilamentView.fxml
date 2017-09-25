@@ -31,8 +31,8 @@
                                           <HBox alignment="CENTER_LEFT" spacing="5.0">
                                              <children>
                                                 <Label minWidth="-Infinity" text="Sigma :" />
-                                                <Slider fx:id="sigmaSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" min="0.4" minorTickCount="1" onMouseClicked="#updateDetectionParameters" onMouseDragged="#updateDetectionParameters" onMousePressed="#updateDetectionParameters" />
-                                                <TextField fx:id="sigmaField" maxWidth="80.0" minWidth="45.0" onKeyTyped="#updateDetectionParameters" />
+                                                <Slider fx:id="sigmaSlider" blockIncrement="0.1" majorTickUnit="5.0" max="5.0" min="0.4" minorTickCount="1" onMouseClicked="#updateDetectionParameters" onMouseDragged="#updateDetectionParameters" onMousePressed="#updateDetectionParameters" />
+                                                <TextField fx:id="sigmaField" maxWidth="80.0" minWidth="45.0" onAction="#updateDetectionParameters" />
                                              </children>
                                              <VBox.margin>
                                                 <Insets />
@@ -45,7 +45,7 @@
                                              <children>
                                                 <Label minWidth="-Infinity" text="Lower Treshold" />
                                                 <Slider fx:id="lowerThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" minorTickCount="1" onMouseClicked="#updateDetectionParameters" onMouseDragged="#updateDetectionParameters" onMousePressed="#updateDetectionParameters" />
-                                                <TextField fx:id="lowerThresholdField" maxWidth="45.0" minWidth="45.0" onKeyTyped="#updateDetectionParameters" />
+                                                <TextField fx:id="lowerThresholdField" maxWidth="45.0" minWidth="45.0" onAction="#updateDetectionParameters" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -55,7 +55,7 @@
                                              <children>
                                                 <Label minWidth="-Infinity" text="Upper Treshold" />
                                                 <Slider fx:id="upperThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" minorTickCount="1" onMouseClicked="#updateDetectionParameters" onMouseDragged="#updateDetectionParameters" onMousePressed="#updateDetectionParameters" />
-                                                <TextField fx:id="upperThresholdField" maxWidth="80.0" minWidth="45.0" onKeyTyped="#updateDetectionParameters" />
+                                                <TextField fx:id="upperThresholdField" maxWidth="80.0" minWidth="45.0" onAction="#updateDetectionParameters" />
                                              </children>
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -77,7 +77,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <CheckBox fx:id="simplifyFilamentsCheckbox" mnemonicParsing="false" onMouseClicked="#liveDetectionClicked" selected="true" text="Simplify Filaments" />
+                                                <CheckBox fx:id="simplifyFilamentsCheckbox" mnemonicParsing="false" onMouseClicked="#liveDetectionClicked" text="Simplify Filaments" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_RIGHT" spacing="10.0">
@@ -104,7 +104,7 @@
                                        <children>
                                           <Label minWidth="-Infinity" text="Max. Length" />
                                           <Slider fx:id="maxLengthSlider" blockIncrement="0.1" majorTickUnit="5.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
-                                          <TextField fx:id="maxLengthField" maxWidth="80.0" minWidth="45.0" onKeyTyped="#updateFilteringParameters" />
+                                          <TextField fx:id="maxLengthField" maxWidth="80.0" minWidth="45.0" onAction="#updateFilteringParameters" />
                                        </children>
                                        <VBox.margin>
                                           <Insets />
@@ -117,7 +117,7 @@
                                        <children>
                                           <Label minWidth="-Infinity" text="Min. Length" />
                                           <Slider fx:id="minLengthSlider" blockIncrement="0.1" majorTickUnit="5.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
-                                          <TextField fx:id="minLengthField" maxWidth="45.0" minWidth="45.0" onKeyTyped="#updateFilteringParameters" />
+                                          <TextField fx:id="minLengthField" maxWidth="45.0" minWidth="45.0" onAction="#updateFilteringParameters" />
                                        </children>
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -126,8 +126,8 @@
                                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                                        <children>
                                           <Label minWidth="-Infinity" text="Max. Sinuosity" />
-                                          <Slider fx:id="maxSinuositySlider" blockIncrement="0.01" majorTickUnit="5.0" max="2.0" min="1.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
-                                          <TextField fx:id="maxSinuosityField" maxWidth="80.0" minWidth="45.0" onKeyTyped="#updateFilteringParameters" />
+                                          <Slider fx:id="maxSinuositySlider" blockIncrement="0.01" majorTickUnit="5.0" max="1.5" min="1.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" value="2.0" />
+                                          <TextField fx:id="maxSinuosityField" maxWidth="80.0" minWidth="45.0" onAction="#updateFilteringParameters" />
                                        </children>
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -136,8 +136,8 @@
                                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                                        <children>
                                           <Label minWidth="-Infinity" text="Min. SInuosity" />
-                                          <Slider fx:id="minSinuositySlider" blockIncrement="0.01" majorTickUnit="5.0" max="2.0" min="1.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
-                                          <TextField fx:id="minSinuosityField" maxWidth="80.0" minWidth="45.0" onKeyTyped="#updateFilteringParameters" />
+                                          <Slider fx:id="minSinuositySlider" blockIncrement="0.01" majorTickUnit="5.0" max="1.5" min="1.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
+                                          <TextField fx:id="minSinuosityField" maxWidth="80.0" minWidth="45.0" onAction="#updateFilteringParameters" />
                                        </children>
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -147,6 +147,14 @@
                               </VBox>
                               <VBox alignment="BOTTOM_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
                                  <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                       <children>
+                                          <CheckBox fx:id="disableFilteringBox" mnemonicParsing="false" onMouseClicked="#updateFilteringParameters" text="Disable Filtering" />
+                                       </children>
+                                    </HBox>
                                     <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                        <children>
                                           <Label text="Filtering is done in realtime. You can force it if needed." wrapText="true">

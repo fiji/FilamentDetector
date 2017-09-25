@@ -130,18 +130,23 @@ public class FilamentDetector {
 	}
 
 	public void filterFilament(FilteringParameters filteringParameters) {
-		status.showStatus("Filtering filaments with the following parameters : ");
-		status.showStatus(filteringParameters.toString());
+		if (!filteringParameters.isDisableFiltering()) {
+			status.showStatus("Filtering filaments with the following parameters : ");
+			status.showStatus(filteringParameters.toString());
 
-		this.filteredFilaments = this.filaments.stream()
-				.filter(filament -> filament.getLength() < filteringParameters.getMaxLength())
-				.filter(filament -> filament.getLength() > filteringParameters.getMinLength())
-				.filter(filament -> filament.getSinuosity() < filteringParameters.getMaxSinuosity())
-				.filter(filament -> filament.getSinuosity() > filteringParameters.getMinSinuosity())
-				.collect(Collectors.toCollection(Filaments::new));
-		
-		status.showStatus(this.filaments.size() - this.filteredFilaments.size() + " / " + this.filaments.size()
-				+ " filaments have been removed by the filters.");
+			this.filteredFilaments = this.filaments.stream()
+					.filter(filament -> filament.getLength() < filteringParameters.getMaxLength())
+					.filter(filament -> filament.getLength() > filteringParameters.getMinLength())
+					.filter(filament -> filament.getSinuosity() < filteringParameters.getMaxSinuosity())
+					.filter(filament -> filament.getSinuosity() > filteringParameters.getMinSinuosity())
+					.collect(Collectors.toCollection(Filaments::new));
+
+			status.showStatus(this.filaments.size() - this.filteredFilaments.size() + " / " + this.filaments.size()
+					+ " filaments have been removed by the filters.");
+		} else {
+			status.showStatus("Filtering is disabled.");
+			this.filteredFilaments = this.filaments;
+		}
 	}
 
 }

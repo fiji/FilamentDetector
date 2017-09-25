@@ -2,7 +2,9 @@
 package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
@@ -119,6 +121,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 	@FXML
 	private CheckBox simplifyFilamentsCheckbox;
 
+	@FXML
+	private CheckBox disableFilteringBox;
+
 	private FilamentsTableView filamentsTableView;
 
 	private FilamentDetector filamentDetector;
@@ -163,6 +168,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		// Fill filtering fields
 		filteringParameters = new FilteringParameters();
+		filteringParameters.setDisableFiltering(true);
 
 		lengthSync = new UpperLowerSynchronizer(minLengthSlider, minLengthField, maxLengthSlider, maxLengthField);
 		lengthSync.setLowerValue(filteringParameters.getMinLength());
@@ -176,6 +182,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 				"The sinuosity define how 'straight' is a line. 1 means it's straight, more is less straight.");
 		sinuositySync.setLowerValue(filteringParameters.getMinSinuosity());
 		sinuositySync.setUpperValue(filteringParameters.getMaxSinuosity());
+
+		disableFilteringBox.setSelected(filteringParameters.isDisableFiltering());
 
 		Tooltip tooltip;
 		tooltip = new Tooltip(
@@ -282,6 +290,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 			sinuositySync.update(event);
 			filteringParameters.setMinSinuosity(sinuositySync.getLowerValue());
 			filteringParameters.setMaxSinuosity(sinuositySync.getUpperValue());
+		} else if (event.getSource().equals(disableFilteringBox)) {
+			filteringParameters.setDisableFiltering(disableFilteringBox.isSelected());
 		}
 
 		eventService.publish(new FilterFilamentEvent(filteringParameters));
@@ -331,7 +341,10 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void failed() {
 				super.failed();
-				status.showStatus("Detection failed.");
+				status.showStatus("Something failed during detection: ");
+				StackTraceElement[] stackTrace = this.getException().getStackTrace();
+				status.showStatus(
+						Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
 				detectionProgressIndicator.setVisible(false);
 			}
 		};
@@ -359,9 +372,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 	public void liveDetectionClicked(MouseEvent event) {
 		if (liveDetectionButton.isSelected()) {
 			detectButton.setDisable(true);
+			this.detect(null);
 		} else {
 			detectButton.setDisable(false);
-
 		}
 	}
 
