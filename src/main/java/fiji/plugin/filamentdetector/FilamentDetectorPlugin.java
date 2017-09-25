@@ -40,18 +40,15 @@ public class FilamentDetectorPlugin implements Command {
 	public void run() {
 		log.info("Running " + PLUGIN_NAME + " version " + VERSION);
 
-		FilamentDetector filamentDetector = new FilamentDetector(ij.context(), imd);
-
 		try {
+			FilamentDetector filamentDetector = new FilamentDetector(ij.context(), imd);
+
 			// Launch JavaFX interface
 			MainAppFrame app = new MainAppFrame(ij, filamentDetector);
 			app.setTitle(PLUGIN_NAME + " version " + VERSION);
 			app.init();
 		} catch (Exception e) {
 			ij.ui().showDialog(e.getMessage(), "Error during initialization", DialogPrompt.MessageType.ERROR_MESSAGE);
-
-			// TODO: Find a better way to exit
-			System.exit(-1);
 		}
 
 	}
