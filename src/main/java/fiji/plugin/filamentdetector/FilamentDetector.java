@@ -12,6 +12,7 @@ import fiji.plugin.filamentdetector.detection.Detector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.model.Filaments;
+import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
@@ -41,8 +42,13 @@ public class FilamentDetector {
 	private DetectionParameters detectionParameters;
 
 	private Detector detector;
+	
 	private Filaments filaments;
 	private Filaments filteredFilaments;
+	
+	private TrackedFilaments trackedFilaments;
+	private TrackedFilaments filteredTrackedFilaments;
+
 
 	public FilamentDetector(Context context, ImageDisplay imd) {
 		context.inject(this);
@@ -118,6 +124,10 @@ public class FilamentDetector {
 
 	public Filaments getFilaments() {
 		return filteredFilaments;
+	}
+	
+	public TrackedFilaments getTrackedFilaments() {
+		return filteredTrackedFilaments;
 	}
 
 	public void filterFilament(FilteringParameters filteringParameters) {

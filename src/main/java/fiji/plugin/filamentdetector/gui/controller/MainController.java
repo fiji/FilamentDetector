@@ -71,6 +71,7 @@ public class MainController extends Controller implements Initializable {
 	private DetectFilamentController detectFilamentController;
 	private AboutController aboutController;
 	private FilamentDetector filamentDetector;
+	private DataExporterController dataExporterController;
 
 	public MainController(Context context, FilamentDetector filamentDetector) {
 		context.inject(this);
@@ -183,8 +184,11 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadDataExporter() {
-		TitledPane titledPane = new TitledPane();
-		titledPane.setText("Export Data");
+		dataExporterController = new DataExporterController(context, filamentDetector);
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DataExporterView.fxml",
+				dataExporterController);
+
+		TitledPane titledPane = new TitledPane("Export Data", pane);
 		mainPane.getPanes().add(titledPane);
 	}
 

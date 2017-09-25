@@ -245,7 +245,10 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 		filamentROIMap = new HashMap<>();
 		filamentColorMap = new HashMap<>();
-		imp.updateAndDraw();
+		
+		if (imp != null) {
+			imp.updateAndDraw();
+		}
 	}
 
 	@Override
