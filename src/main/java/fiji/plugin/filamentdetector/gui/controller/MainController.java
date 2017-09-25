@@ -67,10 +67,11 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	private CheckBox disableOverlaysCheckbox;
 
+	private FilamentDetector filamentDetector;
+
 	private WelcomeController welcomeController;
 	private DetectFilamentController detectFilamentController;
 	private AboutController aboutController;
-	private FilamentDetector filamentDetector;
 	private DataExporterController dataExporterController;
 	private TrackingFilamentController trackingFilamentController;
 
@@ -89,6 +90,8 @@ public class MainController extends Controller implements Initializable {
 				if (new_val != null && new_val.getContent() != null) {
 					if (new_val.getContent().equals(dataExporterController.getPane())) {
 						dataExporterController.refreshData(null);
+					} else if (new_val.getContent().equals(trackingFilamentController.getPane())) {
+						trackingFilamentController.initPane();
 					}
 				}
 			}
@@ -193,8 +196,8 @@ public class MainController extends Controller implements Initializable {
 	public void loadTrackingFilament() {
 		trackingFilamentController = new TrackingFilamentController(context, filamentDetector);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/TrackingFilamentView.fxml",
-				detectFilamentController);
-		
+				trackingFilamentController);
+
 		TitledPane titledPane = new TitledPane("Track Filaments", pane);
 		mainPane.getPanes().add(titledPane);
 	}
