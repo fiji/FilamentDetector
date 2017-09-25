@@ -64,7 +64,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <CheckBox fx:id="simplifyFilamentsCheckbox" mnemonicParsing="false" onAction="#updateDetectionParameters" selected="true" text="Simplify Tolerance Distance" />
+                                                <CheckBox fx:id="simplifyFilamentsCheckbox" mnemonicParsing="false" onAction="#updateDetectionParameters" selected="true" text="Simplify Tolerance Distance" wrapText="true" />
                                                 <TextField fx:id="simplifyToleranceDistanceField" onAction="#updateDetectionParameters" prefWidth="80.0" />
                                                 <Label text="pixel" />
                                              </children>

@@ -128,7 +128,8 @@ public class FilamentDetector {
 					.collect(Collectors.toCollection(Filaments::new));
 
 			status.showStatus(this.filaments.size() - this.filteredFilaments.size() + " / " + this.filaments.size()
-					+ " filaments have been removed by the filters. " + this.filaments.size() + " filaments remain.");
+					+ " filaments have been removed by the filters. " + this.filteredFilaments.size()
+					+ " filaments remain.");
 		} else {
 			status.showStatus("Filtering is disabled. " + this.filaments.size() + " filaments detected.");
 			this.filteredFilaments = this.filaments;

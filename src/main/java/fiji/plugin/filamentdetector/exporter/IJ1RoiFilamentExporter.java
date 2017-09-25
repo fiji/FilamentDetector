@@ -22,8 +22,9 @@ public class IJ1RoiFilamentExporter extends FilamentsExporter<Filaments> {
 
 	public static String NAME = "IJ1 Roi Exporter";
 	public static String DESCRIPTION = "A ImageJ1 Roi Exporter. This operation will clear the Roi Manager.";
-	public static List<String> EXTENSION = Arrays.asList(".zip");
-	public static String EXTENSION_DESCRIPTION = "ZIP File";
+	public static String EXTENSION = ".zip";
+	public static String EXTENSION_DESCRIPTION = "ZIP File (*.zip)";
+	public static List<String> EXTENSION_FILTERS = Arrays.asList("*.zip");
 
 	public IJ1RoiFilamentExporter(Context context) {
 		super(context);
@@ -35,8 +36,13 @@ public class IJ1RoiFilamentExporter extends FilamentsExporter<Filaments> {
 	}
 
 	@Override
-	public List<String> getExtension() {
+	public String getExtension() {
 		return EXTENSION;
+	}
+
+	@Override
+	public List<String> getExtensionFilters() {
+		return EXTENSION_FILTERS;
 	}
 
 	@Override

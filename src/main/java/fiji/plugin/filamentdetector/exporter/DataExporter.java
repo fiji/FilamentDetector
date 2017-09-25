@@ -9,7 +9,9 @@ public interface DataExporter<T> {
 
 	public String getName();
 
-	public List<String> getExtension();
+	public String getExtension();
+	
+	public List<String> getExtensionFilters();
 
 	public String getExtensionDescription();
 

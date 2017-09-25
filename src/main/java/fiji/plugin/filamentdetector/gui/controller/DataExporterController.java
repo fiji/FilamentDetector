@@ -29,6 +29,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import net.imagej.Dataset;
 
 public class DataExporterController extends Controller implements Initializable {
 
@@ -159,8 +160,14 @@ public class DataExporterController extends Controller implements Initializable 
 
 		FileChooser fileChooser = new FileChooser();
 
+		Dataset dataset = (Dataset) filamentDetector.getImageDisplay().getActiveView().getData();
+		if (dataset.getSource() != null) {
+			String parentPath = new File(dataset.getSource()).getParent();
+			fileChooser.setInitialDirectory(new File(parentPath));
+		}
+
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(exporter.getExtensionDescription(),
-				exporter.getExtension());
+				exporter.getExtensionFilters());
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(this.getPane().getScene().getWindow());
 

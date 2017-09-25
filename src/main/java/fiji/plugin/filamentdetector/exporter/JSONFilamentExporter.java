@@ -28,8 +28,9 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 
 	public static String NAME = "JSON Exporter";
 	public static String DESCRIPTION = "A JSON Exporter";
-	public static List<String> EXTENSION = Arrays.asList(".json");
-	public static String EXTENSION_DESCRIPTION = "JSON File";
+	public static String EXTENSION = "*.json";
+	public static String EXTENSION_DESCRIPTION = "JSON File (*.json)";
+	public static List<String> EXTENSION_FILTERS = Arrays.asList("*.json");
 
 	public JSONFilamentExporter(Context context) {
 		super(context);
@@ -41,8 +42,13 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 	}
 
 	@Override
-	public List<String> getExtension() {
+	public String getExtension() {
 		return EXTENSION;
+	}
+
+	@Override
+	public List<String> getExtensionFilters() {
+		return EXTENSION_FILTERS;
 	}
 
 	@Override
