@@ -3,12 +3,14 @@ package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
+import org.scijava.event.EventSubscriber;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -201,9 +203,6 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		// Initialize overlay on the image
 		overlayService.setImageDisplay(filamentDetector.getImageDisplay());
-
-		// Subscribe this class to SciJava events
-		eventService.subscribe(this);
 	}
 
 	private void updateFilamentsList() {

@@ -4,7 +4,7 @@ public class FilteringParameters {
 
 	private double maxLength = 100;
 	private double minLength = 0;
-	private double maxSinuosity = 1.5;
+	private double maxSinuosity = Double.POSITIVE_INFINITY;
 	private double minSinuosity = 1;
 
 	private boolean disableFiltering = false;

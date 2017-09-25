@@ -135,7 +135,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                                        <children>
-                                          <Label minWidth="-Infinity" text="Min. SInuosity" />
+                                          <Label minWidth="-Infinity" text="Min. Sinuosity" />
                                           <Slider fx:id="minSinuositySlider" blockIncrement="0.01" majorTickUnit="5.0" max="1.5" min="1.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
                                           <TextField fx:id="minSinuosityField" maxWidth="80.0" minWidth="45.0" onAction="#updateFilteringParameters" />
                                        </children>
