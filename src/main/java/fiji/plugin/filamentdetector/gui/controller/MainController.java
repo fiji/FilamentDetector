@@ -72,6 +72,7 @@ public class MainController extends Controller implements Initializable {
 	private AboutController aboutController;
 	private FilamentDetector filamentDetector;
 	private DataExporterController dataExporterController;
+	private TrackingFilamentController trackingFilamentController;
 
 	public MainController(Context context, FilamentDetector filamentDetector) {
 		context.inject(this);
@@ -190,8 +191,11 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadTrackingFilament() {
-		TitledPane titledPane = new TitledPane();
-		titledPane.setText("Track Filaments");
+		trackingFilamentController = new TrackingFilamentController(context, filamentDetector);
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/TrackingFilamentView.fxml",
+				detectFilamentController);
+		
+		TitledPane titledPane = new TitledPane("Track Filaments", pane);
 		mainPane.getPanes().add(titledPane);
 	}
 
