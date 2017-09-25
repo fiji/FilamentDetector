@@ -3,6 +3,7 @@ package fiji.plugin.filamentdetector.overlay;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +21,10 @@ import net.imglib2.display.ColorTable;
 public class DefaultColorService extends AbstractService implements ColorService {
 
 	private static String DEFAULT_LUT = "glasbey";
-	private static Map<String, String> customLUTs;
+	private static Map<String, URL> customLUTs;
 	static {
-		Map<String, String> aMap = new HashMap<>();
-		aMap.put("glasbey", DefaultColorService.class.getResource("/luts/glasbey.lut").getPath());
+		Map<String, URL> aMap = new HashMap<>();
+		aMap.put("glasbey", DefaultColorService.class.getResource("/luts/glasbey.lut"));
 		customLUTs = Collections.unmodifiableMap(aMap);
 	}
 
@@ -57,7 +58,7 @@ public class DefaultColorService extends AbstractService implements ColorService
 			// Look first in custom LUTs
 			if (customLUTs.containsKey(lut)) {
 				this.lut = lut;
-				this.colorTable = lutService.loadLUT(new File(customLUTs.get(lut)));
+				this.colorTable = lutService.loadLUT(customLUTs.get(lut));
 
 				// Then look in LUTService
 			} else if (lutService.findLUTs().containsKey(lut)) {

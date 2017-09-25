@@ -23,7 +23,7 @@ public class GUIUtils {
 
 	public static Pane loadFXML(String fxml, Controller controller) {
 		try {
-			URL fxmlUrl = MainAppFrame.class.getResource(fxml);
+			URL fxmlUrl = GUIUtils.class.getResource(fxml);
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);
 			loader.setController(controller);
 			Pane pane = (Pane) loader.load();
