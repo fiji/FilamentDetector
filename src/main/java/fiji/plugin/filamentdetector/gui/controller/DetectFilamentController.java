@@ -381,10 +381,58 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@EventHandler
 	public void filter(FilterFilamentEvent event) {
-		Platform.runLater(() -> {
-			filamentDetector.filterFilament(event.getFilteringParameters());
-			updateFilamentsList();
-		});
+
+		if (filterTask != null) {
+			filterTask.cancel();
+		}
+
+		if (filterThread != null) {
+			filterThread.stop();
+		}
+
+		filterTask = new Task<Integer>() {
+			@Override
+			protected Integer call() throws Exception {
+				Platform.runLater(() -> {
+
+					filamentDetector.filterFilament(event.getFilteringParameters());
+					updateFilamentsList();
+				});
+
+				return filamentDetector.getFilaments().size();
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				if (!filteringParameters.isDisableFiltering()) {
+					status.showStatus("Filtering with the following parameters : ");
+					status.showStatus(filteringParameters.toString());
+					status.showStatus(filamentDetector.getFilaments().size() + " filament(s) remain.");
+				} else {
+					status.showStatus("Filtering is disabled. " + filamentDetector.getFilaments().size()
+							+ " filaments detected.");
+				}
+			}
+
+			@Override
+			protected void cancelled() {
+				super.cancelled();
+			}
+
+			@Override
+			protected void failed() {
+				super.failed();
+				status.showStatus("Something failed during filtering: ");
+				StackTraceElement[] stackTrace = this.getException().getStackTrace();
+				status.showStatus(
+						Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
+			}
+		};
+
+		filterThread = new Thread(filterTask);
+		filterThread.setDaemon(true);
+		filterThread.start();
 	}
 
 	@FXML

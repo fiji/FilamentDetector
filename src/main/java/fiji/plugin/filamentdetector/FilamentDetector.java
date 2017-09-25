@@ -33,9 +33,6 @@ public class FilamentDetector {
 	@Parameter
 	private LogService log;
 
-	@Parameter
-	private GUIStatusService status;
-
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
 
@@ -117,8 +114,6 @@ public class FilamentDetector {
 
 	public void filterFilament(FilteringParameters filteringParameters) {
 		if (!filteringParameters.isDisableFiltering()) {
-			status.showStatus("Filtering filaments with the following parameters : ");
-			status.showStatus(filteringParameters.toString());
 
 			this.filteredFilaments = this.filaments.stream()
 					.filter(filament -> filament.getLength() <= filteringParameters.getMaxLength())
@@ -126,12 +121,7 @@ public class FilamentDetector {
 					.filter(filament -> filament.getSinuosity() <= filteringParameters.getMaxSinuosity())
 					.filter(filament -> filament.getSinuosity() >= filteringParameters.getMinSinuosity())
 					.collect(Collectors.toCollection(Filaments::new));
-
-			status.showStatus(this.filaments.size() - this.filteredFilaments.size() + " / " + this.filaments.size()
-					+ " filaments have been removed by the filters. " + this.filteredFilaments.size()
-					+ " filaments remain.");
 		} else {
-			status.showStatus("Filtering is disabled. " + this.filaments.size() + " filaments detected.");
 			this.filteredFilaments = this.filaments;
 		}
 	}
