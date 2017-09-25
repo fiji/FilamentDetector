@@ -190,6 +190,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		this.filamentColor = filamentColor;
 	}
 
+	@Override
 	public void setFilamentColor(javafx.scene.paint.Color filamentColorJavaFX) {
 		filamentColor = new Color((int) filamentColorJavaFX.getRed(), (int) filamentColorJavaFX.getGreen(),
 				(int) filamentColorJavaFX.getBlue(), (int) (filamentColorJavaFX.getOpacity() * 255));
@@ -245,7 +246,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 		filamentROIMap = new HashMap<>();
 		filamentColorMap = new HashMap<>();
-		
+
 		if (imp != null) {
 			imp.updateAndDraw();
 		}

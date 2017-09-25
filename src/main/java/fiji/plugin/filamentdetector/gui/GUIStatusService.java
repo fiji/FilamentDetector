@@ -22,6 +22,7 @@ public class GUIStatusService extends DefaultStatusService implements StatusServ
 		this.logField = logField;
 	}
 
+	@Override
 	protected void publish(final StatusEvent statusEvent) {
 		eventService.publishLater(statusEvent);
 		if (logField != null) {

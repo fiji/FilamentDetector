@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 
 public class FilamentsTableView extends TableView<FilamentModel> {
 
@@ -99,8 +100,8 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		AnchorPane.setLeftAnchor(detailPane, 0.0);
 		AnchorPane.setRightAnchor(detailPane, 0.0);
 		AnchorPane.setBottomAnchor(detailPane, 0.0);
-		detailPane.setPrefHeight(Control.USE_COMPUTED_SIZE);
-		detailPane.setPrefWidth(Control.USE_COMPUTED_SIZE);
+		detailPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+		detailPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
 		setNoDetail();
 
 		this.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -120,8 +121,8 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				AnchorPane.setLeftAnchor(pane, 0.0);
 				AnchorPane.setRightAnchor(pane, 0.0);
 				AnchorPane.setBottomAnchor(pane, 0.0);
-				pane.setPrefHeight(Control.USE_COMPUTED_SIZE);
-				pane.setPrefWidth(Control.USE_COMPUTED_SIZE);
+				pane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+				pane.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
 				controller.getRemoveFilamentLabel().setOnAction((event) -> {
 					removeFilament(controller.getFilament());

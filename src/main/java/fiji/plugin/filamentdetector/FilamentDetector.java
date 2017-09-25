@@ -42,13 +42,12 @@ public class FilamentDetector {
 	private DetectionParameters detectionParameters;
 
 	private Detector detector;
-	
+
 	private Filaments filaments;
 	private Filaments filteredFilaments;
-	
+
 	private TrackedFilaments trackedFilaments;
 	private TrackedFilaments filteredTrackedFilaments;
-
 
 	public FilamentDetector(Context context, ImageDisplay imd) {
 		context.inject(this);
@@ -125,7 +124,7 @@ public class FilamentDetector {
 	public Filaments getFilaments() {
 		return filteredFilaments;
 	}
-	
+
 	public TrackedFilaments getTrackedFilaments() {
 		return filteredTrackedFilaments;
 	}

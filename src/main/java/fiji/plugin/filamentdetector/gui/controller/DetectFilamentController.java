@@ -115,7 +115,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	@FXML
 	private TextField minSinuosityField;
-	
+
 	@FXML
 	private CheckBox simplifyFilamentsCheckbox;
 

@@ -80,6 +80,18 @@ public class MainController extends Controller implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+
+		// Call children controller methods when their respective panes are expanded.
+		mainPane.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+			@Override
+			public void changed(ObservableValue<? extends TitledPane> ov, TitledPane old_val, TitledPane new_val) {
+				if (new_val != null && new_val.getContent() != null) {
+					if (new_val.getContent().equals(dataExporterController.getPane())) {
+						dataExporterController.refreshData(null);
+					}
+				}
+			}
+		});
 	}
 
 	public void loadPanes() {

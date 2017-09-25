@@ -39,6 +39,7 @@ public class FilteringParameters {
 		this.minSinuosity = minSinuosity;
 	}
 
+	@Override
 	public String toString() {
 		String out = "";
 

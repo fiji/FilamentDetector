@@ -131,7 +131,7 @@ public class DataExporterController extends Controller implements Initializable 
 	}
 
 	@FXML
-	void refreshData(MouseEvent event) {
+	public void refreshData(MouseEvent event) {
 		if (filamentDetector.getFilaments() != null && filamentDetector.getFilaments().size() > 0) {
 			filamentsLabel.setText(filamentDetector.getFilaments().size() + " filaments");
 			filamentsExporterBox.setDisable(false);
@@ -159,7 +159,8 @@ public class DataExporterController extends Controller implements Initializable 
 
 		FileChooser fileChooser = new FileChooser();
 
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(exporter.getExtensionDescription(), exporter.getExtension());
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(exporter.getExtensionDescription(),
+				exporter.getExtension());
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showSaveDialog(this.getPane().getScene().getWindow());
 

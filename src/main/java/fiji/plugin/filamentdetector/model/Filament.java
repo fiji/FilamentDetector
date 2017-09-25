@@ -121,16 +121,16 @@ public class Filament implements Comparable<Filament> {
 
 		for (int i = 1; i < x.length; i++) {
 			if (x[i] < xMin) {
-				xMin = (double) x[i];
+				xMin = x[i];
 			}
 			if (x[i] > xMax) {
-				xMax = (double) x[i];
+				xMax = x[i];
 			}
 			if (y[i] < yMin) {
-				yMin = (double) y[i];
+				yMin = y[i];
 			}
 			if (y[i] > yMax) {
-				yMax = (double) y[i];
+				yMax = y[i];
 			}
 		}
 
@@ -142,6 +142,7 @@ public class Filament implements Comparable<Filament> {
 		return boundingBox;
 	}
 
+	@Override
 	public String toString() {
 		return "Frame: " + this.getFrame() + " | ID: " + this.getID();
 	}
@@ -194,7 +195,7 @@ public class Filament implements Comparable<Filament> {
 		newY = Arrays.copyOf(newY, newSize);
 
 		Line line = new Line(newX, newY);
-		
+
 		Filament newFilament = new Filament(line, this.getFrame());
 		newFilament.setColor(this.getColor());
 		return newFilament;

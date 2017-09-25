@@ -1,6 +1,5 @@
 package fiji.plugin.filamentdetector.exporter;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;

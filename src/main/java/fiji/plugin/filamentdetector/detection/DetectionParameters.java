@@ -105,6 +105,7 @@ public class DetectionParameters {
 		this.detectOnlyCurrentFrame = detectOnlyOnCurrentFrame;
 	}
 
+	@Override
 	public String toString() {
 		String out = "";
 

@@ -6,6 +6,7 @@ import net.imagej.ImageJService;
 
 public interface ColorService extends ImageJService {
 
+	@Override
 	public void initialize();
 
 	public int getLength();

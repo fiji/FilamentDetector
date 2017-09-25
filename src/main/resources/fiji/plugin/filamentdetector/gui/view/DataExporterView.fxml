@@ -65,7 +65,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label text="Choose an exporter here : " />
+                                    <Label text="Choose an exporter : " />
                                     <ComboBox fx:id="filamentsExporterBox" prefWidth="150.0" />
                                  </children>
                                  <padding>
@@ -127,7 +127,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label text="Choose an exporter here : " />
+                                    <Label text="Choose an exporter : " />
                                     <ComboBox fx:id="trackedFilamentsExporterBox" />
                                  </children>
                                  <padding>
