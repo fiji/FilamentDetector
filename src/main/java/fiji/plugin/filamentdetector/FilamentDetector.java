@@ -139,7 +139,7 @@ public class FilamentDetector {
 				.filter(filament -> filament.getSinuosity() < filteringParameters.getMaxSinuosity())
 				.filter(filament -> filament.getSinuosity() > filteringParameters.getMinSinuosity())
 				.collect(Collectors.toCollection(Filaments::new));
-
+		
 		status.showStatus(this.filaments.size() - this.filteredFilaments.size() + " / " + this.filaments.size()
 				+ " filaments have been removed by the filters.");
 	}

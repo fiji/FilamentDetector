@@ -240,7 +240,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			Overlay overlay = imp.getOverlay();
 
 			if (overlay != null && entry.getValue() != null) {
-				overlay.remove(entry.getValue());
+				if (overlay.contains(entry.getValue())) {
+					overlay.remove(entry.getValue());
+				}
 			}
 		}
 
