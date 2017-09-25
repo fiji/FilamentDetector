@@ -43,8 +43,8 @@ public class TestExporter {
 		log.info("Filaments Detected : " + filaments.size());
 
 		DataExporter<Filaments> exporter = new JSONFilamentExporter(context);
-		exporter = new IJ1RoiFilamentExporter(context);
-		File file = new File("/home/hadim/test.zip");
+		//exporter = new IJ1RoiFilamentExporter(context);
+		File file = new File("/home/hadim/test.json");
 		exporter.export(filaments, file);
 	}
 }

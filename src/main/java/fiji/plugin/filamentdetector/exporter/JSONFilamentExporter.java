@@ -73,12 +73,12 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 		for (Filament filament : filaments) {
 			filamentElement = new JsonObject();
 
-			filamentElement.add("ID", new JsonPrimitive(filament.getID()));
-			filamentElement.add("Length", new JsonPrimitive(filament.getLength()));
-			filamentElement.add("Frame", new JsonPrimitive(filament.getFrame()));
-			filamentElement.add("Sinuosity", new JsonPrimitive(filament.getSinuosity()));
-			filamentElement.add("Size", new JsonPrimitive(filament.getSize()));
-			filamentElement.add("Color", new JsonPrimitive(serializeColor(filament.getColor())));
+			filamentElement.add("id", new JsonPrimitive(filament.getID()));
+			filamentElement.add("length", new JsonPrimitive(filament.getLength()));
+			filamentElement.add("frame", new JsonPrimitive(filament.getFrame()));
+			filamentElement.add("sinuosity", new JsonPrimitive(filament.getSinuosity()));
+			filamentElement.add("size", new JsonPrimitive(filament.getSize()));
+			filamentElement.add("color", new JsonPrimitive(serializeColor(filament.getColor())));
 
 			x = filament.getXCoordinatesAsDouble();
 			filamentElement.add("x", serializeCoordinates(x));
