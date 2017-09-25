@@ -3,14 +3,12 @@ package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
-import org.scijava.event.EventSubscriber;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -126,6 +124,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 	@FXML
 	private CheckBox disableFilteringBox;
 
+	@FXML
+	private TextField simplifyToleranceDistanceField;
+
 	private FilamentsTableView filamentsTableView;
 
 	private FilamentDetector filamentDetector;
@@ -166,7 +167,10 @@ public class DetectFilamentController extends Controller implements Initializabl
 		thresholdSync.setLowerValue(filamentDetector.getDetectionParameters().getLowerThresh());
 		thresholdSync.setUpperValue(filamentDetector.getDetectionParameters().getUpperThresh());
 
-		detectCurrentFrameButton.setSelected(filamentDetector.getDetectionParameters().isDetectOnlyOnCurrentFrame());
+		detectCurrentFrameButton.setSelected(filamentDetector.getDetectionParameters().isDetectOnlyCurrentFrame());
+		simplifyFilamentsCheckbox.setSelected(filamentDetector.getDetectionParameters().isSimplifyFilaments());
+		simplifyToleranceDistanceField
+				.setText(Double.toString(filamentDetector.getDetectionParameters().getSimplifyToleranceDistance()));
 
 		// Fill filtering fields
 		filteringParameters = new FilteringParameters();
@@ -269,8 +273,21 @@ public class DetectFilamentController extends Controller implements Initializabl
 		}
 
 		else if (event.getSource().equals(detectCurrentFrameButton)) {
-			filamentDetector.getDetectionParameters()
-					.setDetectOnlyOnCurrentFrame(detectCurrentFrameButton.isSelected());
+			filamentDetector.getDetectionParameters().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
+		}
+
+		else if (event.getSource().equals(simplifyToleranceDistanceField)) {
+			double newValue = Double.parseDouble(simplifyToleranceDistanceField.getText());
+			if (newValue < 0) {
+				simplifyToleranceDistanceField.setText(
+						Double.toString(filamentDetector.getDetectionParameters().getSimplifyToleranceDistance()));
+			} else {
+				filamentDetector.getDetectionParameters().setSimplifyToleranceDistance(newValue);
+			}
+		}
+
+		else if (event.getSource().equals(simplifyFilamentsCheckbox)) {
+			filamentDetector.getDetectionParameters().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
 		}
 
 		if (liveDetectionButton.isSelected()) {
@@ -313,9 +330,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected Integer call() throws Exception {
 				if (detectCurrentFrameButton.isSelected()) {
-					filamentDetector.detectCurrentFrame(simplifyFilamentsCheckbox.isSelected());
+					filamentDetector.detectCurrentFrame();
 				} else {
-					filamentDetector.detect(simplifyFilamentsCheckbox.isSelected());
+					filamentDetector.detect();
 				}
 
 				return filamentDetector.getFilaments().size();

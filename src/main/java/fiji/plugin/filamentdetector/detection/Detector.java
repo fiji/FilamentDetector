@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.detection;
 
 import java.awt.Color;
+import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
@@ -30,8 +31,6 @@ public class Detector {
 
 	private ImageDisplay imageDisplay;
 	private DetectionParameters parameters;
-
-	private double simplifyToleranceDistance = 1;
 
 	private LineDetector lineDetector;
 
@@ -71,6 +70,8 @@ public class Detector {
 		}
 		this.imp.setT(currentFrame);
 		this.imp.setC(currentChannel);
+
+		this.simplify();
 	}
 
 	public void detectCurrentFrame() {
@@ -89,6 +90,8 @@ public class Detector {
 		this.detectFrame(currentFrame);
 
 		this.imp.setC(currentChannel);
+
+		this.simplify();
 	}
 
 	public void detectFrame(int frame) {
@@ -130,8 +133,13 @@ public class Detector {
 		this.parameters = parameters;
 	}
 
-	public void simplify() {
-		// Simplify filaments by reducing the number of points
-		filaments = filaments.simplify(simplifyToleranceDistance);
+	private void simplify() {
+		if (parameters.isSimplifyFilaments()) {
+			filaments = filaments.simplify(parameters.getSimplifyToleranceDistance());
+
+			// Remove filaments with only one point
+			filaments = filaments.stream().filter(filament -> filament.getSize() > 1)
+					.collect(Collectors.toCollection(Filaments::new));
+		}
 	}
 }

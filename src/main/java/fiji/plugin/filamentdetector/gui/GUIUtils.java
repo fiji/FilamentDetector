@@ -21,13 +21,13 @@ import net.imagej.ImageJ;
 
 public class GUIUtils {
 
-	@SuppressWarnings("unchecked")
 	public static Pane loadFXML(String fxml, Controller controller) {
 		try {
 			URL fxmlUrl = MainAppFrame.class.getResource(fxml);
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);
 			loader.setController(controller);
 			Pane pane = (Pane) loader.load();
+			
 			if (controller != null) {
 				controller.setPane(pane);
 			}

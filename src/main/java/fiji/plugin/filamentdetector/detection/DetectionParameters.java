@@ -13,6 +13,9 @@ public class DetectionParameters {
 	private boolean doCorrectPosition = true;
 	private boolean doEstimateWidth = true;
 	private boolean doExtendLine = true;
+	private boolean simplifyFilaments = true;
+	private double simplifyToleranceDistance = 5;
+
 	private OverlapOption overlapOption = OverlapOption.NONE;
 
 	private boolean detectOnlyCurrentFrame = false;
@@ -97,12 +100,28 @@ public class DetectionParameters {
 		this.overlapOption = overlapOption;
 	}
 
-	public boolean isDetectOnlyOnCurrentFrame() {
+	public boolean isDetectOnlyCurrentFrame() {
 		return detectOnlyCurrentFrame;
 	}
 
-	public void setDetectOnlyOnCurrentFrame(boolean detectOnlyOnCurrentFrame) {
-		this.detectOnlyCurrentFrame = detectOnlyOnCurrentFrame;
+	public void setDetectOnlyCurrentFrame(boolean detectOnlyCurrentFrame) {
+		this.detectOnlyCurrentFrame = detectOnlyCurrentFrame;
+	}
+
+	public boolean isSimplifyFilaments() {
+		return simplifyFilaments;
+	}
+
+	public void setSimplifyFilaments(boolean simplifyFilaments) {
+		this.simplifyFilaments = simplifyFilaments;
+	}
+
+	public double getSimplifyToleranceDistance() {
+		return simplifyToleranceDistance;
+	}
+
+	public void setSimplifyToleranceDistance(double simplifyToleranceDistance) {
+		this.simplifyToleranceDistance = simplifyToleranceDistance;
 	}
 
 	@Override
@@ -112,7 +131,9 @@ public class DetectionParameters {
 		out += "Sigma = " + sigma + "\n";
 		out += "Lower Threshold = " + lowerThresh + "\n";
 		out += "Upper Threshold = " + upperThresh + "\n";
-		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame;
+		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame + "\n";
+		out += "Simplify Filaments = " + simplifyFilaments + "\n";
+		out += "Simplify Tolerance Distance = " + simplifyToleranceDistance;
 
 		return out;
 	}

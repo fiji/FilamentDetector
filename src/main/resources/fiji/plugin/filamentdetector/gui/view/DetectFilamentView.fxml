@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.5" layoutX="-157.0" layoutY="-196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -26,7 +27,7 @@
                            <content>
                               <VBox>
                                  <children>
-                                    <VBox>
+                                    <VBox spacing="5.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="5.0">
                                              <children>
@@ -61,8 +62,19 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                             <children>
+                                                <CheckBox fx:id="simplifyFilamentsCheckbox" mnemonicParsing="false" onAction="#updateDetectionParameters" selected="true" text="Simplify Tolerance Distance" />
+                                                <TextField fx:id="simplifyToleranceDistanceField" onAction="#updateDetectionParameters" prefWidth="80.0" />
+                                                <Label text="pixel" />
+                                             </children>
+                                          </HBox>
                                        </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
                                     </VBox>
+                                    <Separator prefWidth="200.0" />
                                     <VBox alignment="BOTTOM_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -73,11 +85,6 @@
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
                                                 <CheckBox fx:id="liveDetectionButton" mnemonicParsing="false" onMouseClicked="#liveDetectionClicked" text="LIve Detection" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                             <children>
-                                                <CheckBox fx:id="simplifyFilamentsCheckbox" mnemonicParsing="false" onMouseClicked="#liveDetectionClicked" text="Simplify Filaments" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_RIGHT" spacing="10.0">
