@@ -36,7 +36,7 @@
                   </Label>
                </children>
             </HBox>
-            <SplitPane dividerPositions="0.5">
+            <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
                <items>
                   <AnchorPane>
                      <children>

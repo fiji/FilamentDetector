@@ -31,8 +31,15 @@ public class TrackedFilament extends Filaments {
 		return color;
 	}
 
+	public String getColorAsHex() {
+		return String.format("#%02x%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+	}
+
 	public void setColor(Color color) {
 		this.color = color;
+		for (Filament filament : this) {
+			filament.setColor(color);
+		}
 	}
 
 }

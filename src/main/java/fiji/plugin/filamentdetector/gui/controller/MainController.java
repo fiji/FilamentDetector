@@ -18,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -57,12 +56,6 @@ public class MainController extends Controller implements Initializable {
 
 	@FXML
 	private Label lineWidthValueLabel;
-
-	@FXML
-	private ColorPicker colorChooser;
-
-	@FXML
-	private Label colorValueLabel;
 
 	@FXML
 	private CheckBox disableOverlaysCheckbox;
@@ -148,7 +141,6 @@ public class MainController extends Controller implements Initializable {
 
 		transparencySlider.setValue(overlay.getColorAlpha());
 		lineWidthSlider.setValue(overlay.getFilamentWidth());
-		colorChooser.setValue(overlay.getFilamentColorAsJavaFX());
 
 		overlay.disableOverlay(false);
 		disableOverlaysCheckbox.setSelected(false);
@@ -158,7 +150,6 @@ public class MainController extends Controller implements Initializable {
 	void updateOverlaySettings(Event event) {
 		overlay.setColorAlpha((int) transparencySlider.getValue());
 		overlay.setFilamentWidth((int) lineWidthSlider.getValue());
-		overlay.setFilamentColor(colorChooser.getValue());
 		overlay.refresh();
 	}
 

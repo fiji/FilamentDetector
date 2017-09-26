@@ -1,7 +1,5 @@
 package fiji.plugin.filamentdetector.overlay;
 
-import java.awt.Color;
-
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
@@ -13,55 +11,43 @@ public interface FilamentOverlayService extends ImageJService {
 
 	void add(Filament filament);
 
-	int getFilamentWidth();
-
-	void setFilamentWidth(int filamentWidth);
-
-	void setFilamentColor(Color filamentColor);
-
-	void setFilamentColor(javafx.scene.paint.Color filamentColor);
-
-	Color getFilamentColor();
-
-	javafx.scene.paint.Color getFilamentColorAsJavaFX();
-
-	void remove(Filament filament);
-
-	void add(Filament filament, Color color);
-
-	void setImageDisplay(ImageDisplay imageDisplay);
-
-	ImageDisplay getImageDisplay();
-
-	void add(TrackedFilament trackedFilament, Color color);
+	void add(Filaments filaments);
 
 	void add(TrackedFilament trackedFilament);
 
-	void remove(TrackedFilament trackedFilament);
-
-	void add(TrackedFilaments trackedFilaments, Color color);
-
 	void add(TrackedFilaments trackedFilaments);
 
-	void remove(TrackedFilaments trackedFilaments);
-
-	void add(Filaments filaments, Color color);
-
-	void add(Filaments filaments);
-
-	void remove(Filaments filaments);
-
-	void setColorAlpha(int colorALpha);
-
-	int getColorAlpha();
-
-	void reset();
-
-	void refresh();
-
-	void exportToROIManager();
+	void clearSelection();
 
 	void disableOverlay(boolean disable);
 
-	void setSelected(Filament filament, boolean moveToFrame);
+	void exportToROIManager();
+
+	int getColorAlpha();
+
+	int getFilamentWidth();
+
+	ImageDisplay getImageDisplay();
+
+	void refresh();
+
+	void remove(Filament filament);
+
+	void remove(Filaments filaments);
+
+	void remove(TrackedFilament trackedFilament);
+
+	void remove(TrackedFilaments trackedFilaments);
+
+	void reset();
+
+	void setColorAlpha(int colorAlpha);
+
+	void setFilamentWidth(int filamentWidth);
+
+	void setImageDisplay(ImageDisplay imageDisplay);
+
+	void setSelected(Filament filament, boolean moveToFrame, boolean clearSelection);
+
+	void setSelected(TrackedFilament trackedFilament, boolean moveToFrame, boolean clearSelection);
 }

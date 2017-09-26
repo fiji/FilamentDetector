@@ -8,7 +8,6 @@ import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.Calibrations;
 import fiji.plugin.filamentdetector.event.FilamentSelectedEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
@@ -46,32 +45,34 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	private Filaments filaments;
 
 	private DecimalFormat formatter;
-	private Calibrations calibrations;
 
 	private AnchorPane detailPane;
 
-	public FilamentsTableView(Context context, Filaments filaments, Calibrations calibrations) {
+	public FilamentsTableView(Context context, Filaments filaments) {
 		context.inject(this);
-		this.calibrations = calibrations;
 
 		this.filamentModelList = FXCollections.observableArrayList();
 		this.filaments = filaments;
 
 		TableColumn<FilamentModel, Integer> idColumn = new TableColumn<>("ID");
-		TableColumn<FilamentModel, Double> lengthColumn = new TableColumn<>("Length (" + calibrations.getUnitX() + ")");
+		TableColumn<FilamentModel, Double> lengthColumn = new TableColumn<>("Length");
 		TableColumn<FilamentModel, Integer> frameColumn = new TableColumn<>("Frame");
+		TableColumn<FilamentModel, String> colorColumn = new TableColumn<>("Color");
 
 		this.getColumns().add(idColumn);
 		this.getColumns().add(lengthColumn);
 		this.getColumns().add(frameColumn);
+		this.getColumns().add(colorColumn);
 
 		idColumn.setStyle("-fx-alignment: CENTER;");
 		lengthColumn.setStyle("-fx-alignment: CENTER;");
 		frameColumn.setStyle("-fx-alignment: CENTER;");
+		colorColumn.setStyle("-fx-alignment: CENTER;");
 
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().getID().asObject());
+		idColumn.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
 		lengthColumn.setCellValueFactory(cellData -> cellData.getValue().getLength().asObject());
 		frameColumn.setCellValueFactory(cellData -> cellData.getValue().getFrame().asObject());
+		colorColumn.setCellValueFactory(cellData -> cellData.getValue().getColor());
 
 		formatter = new DecimalFormat("#0.00");
 
@@ -80,12 +81,26 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				@Override
 				protected void updateItem(Double item, boolean empty) {
 					super.updateItem(item, empty);
-
 					if (item == null || empty) {
 						setText(null);
 					} else {
-						item = item * calibrations.getDx();
 						setText(formatter.format(item));
+					}
+				};
+			};
+		});
+
+		colorColumn.setCellFactory(column -> {
+			return new TableCell<FilamentModel, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("-fx-background-color: none");
+					} else {
+						setText(" ");
+						setStyle("-fx-background-color:" + item);
 					}
 				};
 			};
@@ -106,7 +121,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		this.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null && oldSelection != newSelection) {
 				// Set the overlay
-				overlayService.setSelected(newSelection.getFilament(), true);
+				overlayService.setSelected(newSelection.getFilament(), true, true);
 
 				// Fill the detailed view
 				DetailedFilamentController controller = new DetailedFilamentController(newSelection.getFilament());

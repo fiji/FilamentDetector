@@ -1,6 +1,5 @@
 package fiji.plugin.filamentdetector.exporter;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -84,7 +83,7 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 			filamentElement.add("frame", new JsonPrimitive(filament.getFrame()));
 			filamentElement.add("sinuosity", new JsonPrimitive(filament.getSinuosity()));
 			filamentElement.add("size", new JsonPrimitive(filament.getSize()));
-			filamentElement.add("color", new JsonPrimitive(serializeColor(filament.getColor())));
+			filamentElement.add("color", new JsonPrimitive(filament.getColorAsHex()));
 
 			x = filament.getXCoordinatesAsDouble();
 			filamentElement.add("x", serializeCoordinates(x));
@@ -110,10 +109,6 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 		} catch (IOException e) {
 			log.error(e);
 		}
-	}
-
-	private String serializeColor(Color color) {
-		return String.format("#%02x%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	}
 
 	private JsonArray serializeCoordinates(double[] coords) {

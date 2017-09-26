@@ -28,25 +28,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <Label text="Frame : " />
-                  <Label fx:id="frameLabel" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <children>
-                  <Label text="Length (pixel) : " />
-                  <Label fx:id="lenghtLabel" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <children>
-                  <Label text="Number of points : " />
+                  <Label text="Number of filaments : " />
                   <Label fx:id="sizeLabel" />
                </children>
             </HBox>
@@ -55,22 +37,13 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <Label text="Sinuosity : " />
-                  <Label fx:id="sinuosityLabel" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <children>
                   <Label text="Color : " />
-                  <Label fx:id="colorLabel" text="      " />
+                  <Label fx:id="colorLabel" text="     " />
                </children>
             </HBox>
             <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="removeFilamentLabel" mnemonicParsing="false" text="Remove Filament">
+                  <Button fx:id="removeFilamentLabel" mnemonicParsing="false" text="Remove Tracked Filament">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>

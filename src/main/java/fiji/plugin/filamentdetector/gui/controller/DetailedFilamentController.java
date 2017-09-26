@@ -28,6 +28,9 @@ public class DetailedFilamentController extends Controller implements Initializa
 	private Label sinuosityLabel;
 
 	@FXML
+	private Label colorLabel;
+
+	@FXML
 	public Button removeFilamentLabel;
 
 	private Filament filament;
@@ -45,6 +48,7 @@ public class DetailedFilamentController extends Controller implements Initializa
 		lenghtLabel.setText(f.format(filament.getLength()));
 		sizeLabel.setText(Integer.toString(filament.getSize()));
 		sinuosityLabel.setText(f.format(filament.getSinuosity()));
+		colorLabel.setStyle("-fx-background-color:" + filament.getColorAsHex());
 	}
 
 	public Button getRemoveFilamentLabel() {

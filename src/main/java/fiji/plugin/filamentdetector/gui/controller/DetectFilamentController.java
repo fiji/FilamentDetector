@@ -200,8 +200,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 		Tooltip.install(liveDetectionButton, tooltip);
 
 		// Initialize filaments list
-		filamentsTableView = new FilamentsTableView(context, filamentWorkflow.getFilaments(),
-				filamentWorkflow.getCalibrations());
+		filamentsTableView = new FilamentsTableView(context, filamentWorkflow.getFilaments());
 		filamentViewContainer.getChildren().add(0, filamentsTableView);
 		detailViewContainer.getChildren().add(filamentsTableView.getDetailPane());
 

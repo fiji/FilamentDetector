@@ -17,6 +17,7 @@ import fiji.plugin.filamentdetector.event.FilterTrackedFilamentEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
+import fiji.plugin.filamentdetector.gui.view.TrackedFilamentsTableView;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -92,6 +93,8 @@ public class TrackingFilamentController extends Controller implements Initializa
 
 	private FilteringTrackedFilamentsParameters filteringParameters;
 
+	private TrackedFilamentsTableView trackedFilamentsTableView;
+
 	public TrackingFilamentController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentWorkflow = filamentDetector;
@@ -120,6 +123,11 @@ public class TrackingFilamentController extends Controller implements Initializa
 		sizeSync.setUpperValue(filteringParameters.getMaxSize());
 
 		disableFilteringBox.setSelected(filteringParameters.isDisableFiltering());
+
+		// Initialize tracked filaments list
+		trackedFilamentsTableView = new TrackedFilamentsTableView(context, filamentWorkflow.getTrackedFilaments());
+		trackedFilamentViewContainer.getChildren().add(0, trackedFilamentsTableView);
+		detailViewContainer.getChildren().add(trackedFilamentsTableView.getDetailPane());
 	}
 
 	public void initPane() {
@@ -138,8 +146,8 @@ public class TrackingFilamentController extends Controller implements Initializa
 	}
 
 	private void updateTrackedFilamentsList() {
-		// trackedFilamentsTableView.setFilaments(filamentDetector.getFilaments());
-		// trackedFilamentsTableView.updateFilaments();
+		trackedFilamentsTableView.setTrackedFilaments(filamentWorkflow.getTrackedFilaments());
+		trackedFilamentsTableView.updateTrackedFilaments();
 	}
 
 	@FXML

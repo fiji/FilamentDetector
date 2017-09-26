@@ -88,7 +88,7 @@ public class FilamentsTracker {
 
 			// Build the matrix
 			creator = new JaqamanLinkingCostMatrixCreator<Filament, Filament>(sources, targets, costFunction,
-					trackingParameters.getCostThreshold(), alternativeCostFactor, percentile);
+					1 - trackingParameters.getCostThreshold(), alternativeCostFactor, percentile);
 			linker = new JaqamanLinker<Filament, Filament>(creator);
 
 			// Solve it
