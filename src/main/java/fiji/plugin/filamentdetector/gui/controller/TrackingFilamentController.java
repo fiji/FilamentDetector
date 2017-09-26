@@ -25,6 +25,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -41,9 +42,12 @@ public class TrackingFilamentController extends Controller implements Initializa
 
 	@Parameter
 	private EventService eventService;
-	
+
 	@Parameter
 	private LogService log;
+
+	@FXML
+	private Label nFilamentsField;
 
 	@FXML
 	private Slider costThresholdSlider;
@@ -122,11 +126,14 @@ public class TrackingFilamentController extends Controller implements Initializa
 		if (this.filamentWorkflow.getDataset().getFrames() == 1) {
 			status.showStatus("The image only has 1 timepoints. Tracking can't be done.");
 			this.getPane().setDisable(true);
+			nFilamentsField.setText("");
 		} else if (this.filamentWorkflow.getFilaments() == null || this.filamentWorkflow.getFilaments().size() == 0) {
 			status.showStatus("No filaments detected. Please use the \"Detect Filaments\" panel first.");
 			this.getPane().setDisable(true);
+			nFilamentsField.setText("");
 		} else {
 			this.getPane().setDisable(false);
+			nFilamentsField.setText(Integer.toString(filamentWorkflow.getFilaments().size()));
 		}
 	}
 

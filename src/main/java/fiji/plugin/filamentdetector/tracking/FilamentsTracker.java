@@ -97,11 +97,11 @@ public class FilamentsTracker {
 			}
 
 			// Process results
-			Map<Filament, Double> costs = linker.getAssignmentCosts();
+			// Map<Filament, Double> costs = linker.getAssignmentCosts();
 			Map<Filament, Filament> assignment = linker.getResult();
 
 			for (final Filament source : assignment.keySet()) {
-				//double cost = costs.get(source);
+				// double cost = costs.get(source);
 				Filament target = assignment.get(source);
 				trackedFilaments.addLink(source, target);
 			}
