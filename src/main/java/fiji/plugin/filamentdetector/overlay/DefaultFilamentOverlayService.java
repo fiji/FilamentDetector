@@ -25,6 +25,7 @@ import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
 import ij.process.FloatPolygon;
+import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 import net.imagej.display.OverlayService;
 
@@ -65,6 +66,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void add(Filament filament, Color color) {
+		Dataset data = (Dataset) imageDisplay.getActiveView().getData();
 		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
 
 		float[] x = filament.getXCoordinates();
@@ -73,7 +75,11 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		FloatPolygon positions = new FloatPolygon(x, y, filament.getNumber());
 		Roi roi = new PolygonRoi(positions, Roi.FREELINE);
 
-		roi.setPosition(-1, -1, filament.getFrame());
+		if (data.numDimensions() > 3) {
+			roi.setPosition(-1, -1, filament.getFrame());
+		} else {
+			roi.setPosition(filament.getFrame());
+		}
 		roi.setName(Integer.toString(filament.getID()));
 		roi.setStrokeWidth(filamentWidth);
 
