@@ -8,11 +8,13 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
-import fiji.plugin.filamentdetector.detection.Detector;
+import fiji.plugin.filamentdetector.detection.FilamentsDetector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
-import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
+import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
+import fiji.plugin.filamentdetector.tracking.TrackingParameters;
 import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
@@ -22,7 +24,7 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
  * This class holds the necessary informations/models necessary during the use of the GUI.
  * Can be also used for scripting.
  */
-public class FilamentDetector {
+public class FilamentWorkflow {
 
 	@Parameter
 	private Context context;
@@ -37,8 +39,10 @@ public class FilamentDetector {
 	private Calibrations calibrations;
 
 	private DetectionParameters detectionParameters;
+	private TrackingParameters trackingParameters;
 
-	private Detector detector;
+	private FilamentsDetector filamentsDetector;
+	private FilamentsTracker filamentsTracker;
 
 	private Filaments filaments;
 	private Filaments filteredFilaments;
@@ -46,11 +50,15 @@ public class FilamentDetector {
 	private TrackedFilaments trackedFilaments;
 	private TrackedFilaments filteredTrackedFilaments;
 
-	public FilamentDetector(Context context, ImageDisplay imd) {
+	public FilamentWorkflow(Context context, ImageDisplay imd) {
 		context.inject(this);
 		this.imageDisplay = imd;
+
 		this.filaments = new Filaments();
 		this.filteredFilaments = this.filaments;
+
+		this.trackedFilaments = new TrackedFilaments(context);
+		this.filteredTrackedFilaments = this.trackedFilaments;
 	}
 
 	public void initialize() throws Exception {
@@ -65,19 +73,31 @@ public class FilamentDetector {
 
 	public void initDetection() {
 		detectionParameters = new DetectionParameters();
-		detector = new Detector(context, imageDisplay, detectionParameters);
+		filamentsDetector = new FilamentsDetector(context, imageDisplay, detectionParameters);
+	}
+
+	public void initTracking() {
+		trackingParameters = new TrackingParameters();
+		filamentsTracker = new FilamentsTracker(context, getFilaments(), trackingParameters);
 	}
 
 	public void detectCurrentFrame() {
-		detector.detectCurrentFrame(calibrations.getChannelToUseIndex());
-		this.filaments = detector.getFilaments();
+		this.filamentsDetector.detectCurrentFrame(calibrations.getChannelToUseIndex());
+		this.filaments = filamentsDetector.getFilaments();
 		this.filteredFilaments = this.filaments;
 	}
 
 	public void detect() {
-		detector.detect(calibrations.getChannelToUseIndex());
-		this.filaments = detector.getFilaments();
+		this.filamentsDetector.detect(calibrations.getChannelToUseIndex());
+		this.filaments = filamentsDetector.getFilaments();
 		this.filteredFilaments = this.filaments;
+	}
+
+	public void track() {
+		this.filamentsTracker.setFilaments(getFilaments());
+		this.filamentsTracker.track();
+		this.trackedFilaments = filamentsTracker.getTrackedFilaments();
+		this.filteredTrackedFilaments = this.trackedFilaments;
 	}
 
 	public Dataset getDataset() {
@@ -100,8 +120,8 @@ public class FilamentDetector {
 		return detectionParameters;
 	}
 
-	public void setDetectionParameters(DetectionParameters detectionParameters) {
-		this.detectionParameters = detectionParameters;
+	public TrackingParameters getTrackingParameters() {
+		return trackingParameters;
 	}
 
 	public Filaments getFilaments() {
@@ -114,7 +134,6 @@ public class FilamentDetector {
 
 	public void filterFilament(FilteringParameters filteringParameters) {
 		if (!filteringParameters.isDisableFiltering()) {
-
 			this.filteredFilaments = this.filaments.stream()
 					.filter(filament -> filament.getLength() <= filteringParameters.getMaxLength())
 					.filter(filament -> filament.getLength() >= filteringParameters.getMinLength())
@@ -123,6 +142,17 @@ public class FilamentDetector {
 					.collect(Collectors.toCollection(Filaments::new));
 		} else {
 			this.filteredFilaments = this.filaments;
+		}
+	}
+
+	public void filterTrackedFilament(FilteringTrackedFilamentsParameters filteringParameters) {
+		if (!filteringParameters.isDisableFiltering()) {
+			this.filteredTrackedFilaments = this.trackedFilaments.stream()
+					.filter(trackedFilament -> trackedFilament.size() <= filteringParameters.getMaxSize())
+					.filter(trackedFilament -> trackedFilament.size() >= filteringParameters.getMinSize())
+					.collect(Collectors.toCollection(() -> new TrackedFilaments(context)));
+		} else {
+			this.filteredTrackedFilaments = this.trackedFilaments;
 		}
 	}
 

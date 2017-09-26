@@ -6,7 +6,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
-import fiji.plugin.filamentdetector.detection.Detector;
+import fiji.plugin.filamentdetector.detection.FilamentsDetector;
 import fiji.plugin.filamentdetector.exporter.DataExporter;
 import fiji.plugin.filamentdetector.exporter.JSONFilamentExporter;
 import fiji.plugin.filamentdetector.model.Filaments;
@@ -35,7 +35,7 @@ public class TestExporter {
 		params.setSigma(2.5);
 
 		// Detect filaments
-		Detector detector = new Detector(ij.context(), imd, params);
+		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 

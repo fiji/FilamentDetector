@@ -28,6 +28,10 @@ public class TrackedFilaments extends ArrayList<TrackedFilament> {
 	 */
 	public TrackedFilament addLink(Filament source, Filament target) {
 
+		if(this.size() == 0) {
+			colorService.initialize();
+		}
+		
 		// Check if we need to create a new TrackedFilament
 		TrackedFilament currentTrackedFilament = null;
 		for (TrackedFilament trackedFilament : this) {
@@ -51,7 +55,7 @@ public class TrackedFilaments extends ArrayList<TrackedFilament> {
 		return this.stream().map(x -> x.getId()).collect(Collectors.toList());
 	}
 
-	public Color nextColor() {
+	private Color nextColor() {
 
 		if (colorCounter == colorService.getLength()) {
 			colorCounter = 1;

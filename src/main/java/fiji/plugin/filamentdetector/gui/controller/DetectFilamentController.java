@@ -12,7 +12,7 @@ import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
 import fiji.plugin.filamentdetector.event.FilterFilamentEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
@@ -129,7 +129,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	private FilamentsTableView filamentsTableView;
 
-	private FilamentDetector filamentDetector;
+	private FilamentWorkflow filamentWorkflow;
 
 	private Thread detectionThread;
 	private Task<Integer> detectionTask;
@@ -144,33 +144,33 @@ public class DetectFilamentController extends Controller implements Initializabl
 	private UpperLowerSynchronizer lengthSync;
 	private UpperLowerSynchronizer sinuositySync;
 
-	public DetectFilamentController(Context context, FilamentDetector filamentDetector) {
+	public DetectFilamentController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
-		this.filamentDetector = filamentDetector;
+		this.filamentWorkflow = filamentDetector;
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		this.detectionProgressIndicator.setVisible(false);
 
-		this.filamentDetector.initDetection();
+		this.filamentWorkflow.initDetection();
 
 		// Fill fields with default values
 		sigmaSync = new SliderLabelSynchronizer(sigmaSlider, sigmaField);
 		sigmaSync.setTooltip("Determines the sigma for the derivatives. It depends on the line width.");
-		sigmaSync.setValue(filamentDetector.getDetectionParameters().getSigma());
+		sigmaSync.setValue(filamentWorkflow.getDetectionParameters().getSigma());
 
 		thresholdSync = new UpperLowerSynchronizer(lowerThresholdSlider, lowerThresholdField, upperThresholdSlider,
 				upperThresholdField);
 		thresholdSync.setLowerTooltip("Line points with a response smaller as this threshold are rejected.");
 		thresholdSync.setUpperTooltip("Line points with a response larger as this threshold are accepted.");
-		thresholdSync.setLowerValue(filamentDetector.getDetectionParameters().getLowerThresh());
-		thresholdSync.setUpperValue(filamentDetector.getDetectionParameters().getUpperThresh());
+		thresholdSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowerThresh());
+		thresholdSync.setUpperValue(filamentWorkflow.getDetectionParameters().getUpperThresh());
 
-		detectCurrentFrameButton.setSelected(filamentDetector.getDetectionParameters().isDetectOnlyCurrentFrame());
-		simplifyFilamentsCheckbox.setSelected(filamentDetector.getDetectionParameters().isSimplifyFilaments());
+		detectCurrentFrameButton.setSelected(filamentWorkflow.getDetectionParameters().isDetectOnlyCurrentFrame());
+		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getDetectionParameters().isSimplifyFilaments());
 		simplifyToleranceDistanceField
-				.setText(Double.toString(filamentDetector.getDetectionParameters().getSimplifyToleranceDistance()));
+				.setText(Double.toString(filamentWorkflow.getDetectionParameters().getSimplifyToleranceDistance()));
 
 		// Fill filtering fields
 		filteringParameters = new FilteringParameters();
@@ -200,17 +200,17 @@ public class DetectFilamentController extends Controller implements Initializabl
 		Tooltip.install(liveDetectionButton, tooltip);
 
 		// Initialize filaments list
-		filamentsTableView = new FilamentsTableView(context, filamentDetector.getFilaments(),
-				filamentDetector.getCalibrations());
+		filamentsTableView = new FilamentsTableView(context, filamentWorkflow.getFilaments(),
+				filamentWorkflow.getCalibrations());
 		filamentViewContainer.getChildren().add(0, filamentsTableView);
 		detailViewContainer.getChildren().add(filamentsTableView.getDetailPane());
 
 		// Initialize overlay on the image
-		overlayService.setImageDisplay(filamentDetector.getImageDisplay());
+		overlayService.setImageDisplay(filamentWorkflow.getImageDisplay());
 	}
 
 	private void updateFilamentsList() {
-		filamentsTableView.setFilaments(filamentDetector.getFilaments());
+		filamentsTableView.setFilaments(filamentWorkflow.getFilaments());
 		filamentsTableView.updateFilaments();
 	}
 
@@ -267,30 +267,30 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		if (sigmaSync.isEvent(event)) {
 			sigmaSync.update(event);
-			filamentDetector.getDetectionParameters().setSigma(sigmaSync.getValue());
+			filamentWorkflow.getDetectionParameters().setSigma(sigmaSync.getValue());
 
 		} else if (thresholdSync.isEvent(event)) {
 			thresholdSync.update(event);
-			filamentDetector.getDetectionParameters().setLowerThresh(thresholdSync.getLowerValue());
-			filamentDetector.getDetectionParameters().setUpperThresh(thresholdSync.getUpperValue());
+			filamentWorkflow.getDetectionParameters().setLowerThresh(thresholdSync.getLowerValue());
+			filamentWorkflow.getDetectionParameters().setUpperThresh(thresholdSync.getUpperValue());
 		}
 
 		else if (event.getSource().equals(detectCurrentFrameButton)) {
-			filamentDetector.getDetectionParameters().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
+			filamentWorkflow.getDetectionParameters().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
 		}
 
 		else if (event.getSource().equals(simplifyToleranceDistanceField)) {
 			double newValue = Double.parseDouble(simplifyToleranceDistanceField.getText());
 			if (newValue < 0) {
 				simplifyToleranceDistanceField.setText(
-						Double.toString(filamentDetector.getDetectionParameters().getSimplifyToleranceDistance()));
+						Double.toString(filamentWorkflow.getDetectionParameters().getSimplifyToleranceDistance()));
 			} else {
-				filamentDetector.getDetectionParameters().setSimplifyToleranceDistance(newValue);
+				filamentWorkflow.getDetectionParameters().setSimplifyToleranceDistance(newValue);
 			}
 		}
 
 		else if (event.getSource().equals(simplifyFilamentsCheckbox)) {
-			filamentDetector.getDetectionParameters().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
+			filamentWorkflow.getDetectionParameters().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
 		}
 
 		if (liveDetectionButton.isSelected()) {
@@ -333,20 +333,20 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected Integer call() throws Exception {
 				if (detectCurrentFrameButton.isSelected()) {
-					filamentDetector.detectCurrentFrame();
+					filamentWorkflow.detectCurrentFrame();
 				} else {
-					filamentDetector.detect();
+					filamentWorkflow.detect();
 				}
 
-				return filamentDetector.getFilaments().size();
+				return filamentWorkflow.getFilaments().size();
 			}
 
 			@Override
 			protected void succeeded() {
 				super.succeeded();
 				status.showStatus(
-						filamentDetector.getFilaments().size() + " has been detected with the following parameters : ");
-				status.showStatus(filamentDetector.getDetectionParameters().toString());
+						filamentWorkflow.getFilaments().size() + " filaments has been detected with the following parameters : ");
+				status.showStatus(filamentWorkflow.getDetectionParameters().toString());
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
 				eventService.publish(new FilterFilamentEvent(filteringParameters));
@@ -395,11 +395,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 			protected Integer call() throws Exception {
 				Platform.runLater(() -> {
 
-					filamentDetector.filterFilament(event.getFilteringParameters());
+					filamentWorkflow.filterFilament(event.getFilteringParameters());
 					updateFilamentsList();
 				});
 
-				return filamentDetector.getFilaments().size();
+				return filamentWorkflow.getFilaments().size();
 			}
 
 			@Override
@@ -408,9 +408,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 				if (!filteringParameters.isDisableFiltering()) {
 					status.showStatus("Filtering with the following parameters : ");
 					status.showStatus(filteringParameters.toString());
-					status.showStatus(filamentDetector.getFilaments().size() + " filament(s) remain.");
+					status.showStatus(filamentWorkflow.getFilaments().size() + " filament(s) remain.");
 				} else {
-					status.showStatus("Filtering is disabled. " + filamentDetector.getFilaments().size()
+					status.showStatus("Filtering is disabled. " + filamentWorkflow.getFilaments().size()
 							+ " filaments detected.");
 				}
 			}

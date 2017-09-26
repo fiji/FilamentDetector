@@ -41,7 +41,7 @@ public class FilamentDetectorPlugin implements Command {
 		log.info("Running " + PLUGIN_NAME + " version " + VERSION);
 
 		try {
-			FilamentDetector filamentDetector = new FilamentDetector(ij.context(), imd);
+			FilamentWorkflow filamentDetector = new FilamentWorkflow(ij.context(), imd);
 
 			// Launch JavaFX interface
 			MainAppFrame app = new MainAppFrame(ij, filamentDetector);

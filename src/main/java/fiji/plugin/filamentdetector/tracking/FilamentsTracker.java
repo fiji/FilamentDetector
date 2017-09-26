@@ -26,9 +26,16 @@ public class FilamentsTracker {
 	private Filaments filaments;
 	private TrackedFilaments trackedFilaments;
 
+	private TrackingParameters trackingParameters;
+
 	public FilamentsTracker(Context context, Filaments filaments) {
+		new FilamentsTracker(context, filaments, new TrackingParameters());
+	}
+
+	public FilamentsTracker(Context context, Filaments filaments, TrackingParameters trackingParameters) {
 		context.inject(this);
 		this.setFilaments(filaments);
+		this.trackingParameters = trackingParameters;
 	}
 
 	public Filaments getFilaments() {
@@ -40,10 +47,6 @@ public class FilamentsTracker {
 	}
 
 	public void track() {
-		track(0.5);
-	}
-
-	public void track(double costThreshold) {
 
 		// TODO: implement multi-threading
 
@@ -85,7 +88,7 @@ public class FilamentsTracker {
 
 			// Build the matrix
 			creator = new JaqamanLinkingCostMatrixCreator<Filament, Filament>(sources, targets, costFunction,
-					costThreshold, alternativeCostFactor, percentile);
+					trackingParameters.getCostThreshold(), alternativeCostFactor, percentile);
 			linker = new JaqamanLinker<Filament, Filament>(creator);
 
 			// Solve it
@@ -98,7 +101,7 @@ public class FilamentsTracker {
 			Map<Filament, Filament> assignment = linker.getResult();
 
 			for (final Filament source : assignment.keySet()) {
-				double cost = costs.get(source);
+				//double cost = costs.get(source);
 				Filament target = assignment.get(source);
 				trackedFilaments.addLink(source, target);
 			}
@@ -108,6 +111,10 @@ public class FilamentsTracker {
 
 	public TrackedFilaments getTrackedFilaments() {
 		return trackedFilaments;
+	}
+
+	public TrackingParameters getTrackingParameters() {
+		return trackingParameters;
 	}
 
 }

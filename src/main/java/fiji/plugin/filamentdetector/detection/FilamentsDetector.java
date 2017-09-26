@@ -18,7 +18,7 @@ import ij.ImagePlus;
 import ij.process.ImageProcessor;
 import net.imagej.display.ImageDisplay;
 
-public class Detector {
+public class FilamentsDetector {
 
 	@Parameter
 	ConvertService convertService;
@@ -38,11 +38,11 @@ public class Detector {
 
 	private Filaments filaments;
 
-	public Detector(Context context, ImageDisplay imageDisplay) {
-		new Detector(context, imageDisplay, new DetectionParameters());
+	public FilamentsDetector(Context context, ImageDisplay imageDisplay) {
+		new FilamentsDetector(context, imageDisplay, new DetectionParameters());
 	}
 
-	public Detector(Context context, ImageDisplay imageDisplay, DetectionParameters params) {
+	public FilamentsDetector(Context context, ImageDisplay imageDisplay, DetectionParameters params) {
 		context.inject(this);
 		this.imageDisplay = imageDisplay;
 		this.parameters = params;

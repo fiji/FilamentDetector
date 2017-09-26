@@ -9,7 +9,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.gui.controller.MainController;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -33,10 +33,10 @@ public class MainAppFrame extends JFrame {
 
 	private JFXPanel fxPanel;
 
-	private final FilamentDetector filamentDetector;
+	private final FilamentWorkflow filamentDetector;
 	private final ImageDisplay imd;
 
-	public MainAppFrame(ImageJ ij, FilamentDetector filamentDetector) {
+	public MainAppFrame(ImageJ ij, FilamentWorkflow filamentDetector) {
 		ij.context().inject(this);
 		this.ij = ij;
 		this.filamentDetector = filamentDetector;

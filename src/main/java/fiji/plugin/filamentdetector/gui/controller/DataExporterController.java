@@ -10,7 +10,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.exporter.DataExporter;
 import fiji.plugin.filamentdetector.exporter.IJ1RoiFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.JSONFilamentExporter;
@@ -60,12 +60,12 @@ public class DataExporterController extends Controller implements Initializable 
 	@FXML
 	private Button exportTrackedFilamentsButton;
 
-	private FilamentDetector filamentDetector;
+	private FilamentWorkflow filamentDetector;
 
 	private List<DataExporter<Filaments>> filamentsExporters;
 	private List<DataExporter<TrackedFilaments>> trackedFilamentsExporters;
 
-	public DataExporterController(Context context, FilamentDetector filamentDetector) {
+	public DataExporterController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentDetector = filamentDetector;
 	}

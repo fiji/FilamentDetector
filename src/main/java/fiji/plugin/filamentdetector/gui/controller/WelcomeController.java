@@ -8,7 +8,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -59,9 +59,9 @@ public class WelcomeController extends Controller implements Initializable {
 	@FXML
 	private ComboBox<String> channelComboBox;
 
-	private FilamentDetector filamentDetector;
+	private FilamentWorkflow filamentDetector;
 
-	public WelcomeController(Context context, FilamentDetector filamentDetector) {
+	public WelcomeController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentDetector = filamentDetector;
 	}

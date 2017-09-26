@@ -7,7 +7,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.FilamentDetector;
+import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -67,7 +67,7 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	private CheckBox disableOverlaysCheckbox;
 
-	private FilamentDetector filamentDetector;
+	private FilamentWorkflow filamentDetector;
 
 	private WelcomeController welcomeController;
 	private DetectFilamentController detectFilamentController;
@@ -75,7 +75,7 @@ public class MainController extends Controller implements Initializable {
 	private DataExporterController dataExporterController;
 	private TrackingFilamentController trackingFilamentController;
 
-	public MainController(Context context, FilamentDetector filamentDetector) {
+	public MainController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentDetector = filamentDetector;
 	}
