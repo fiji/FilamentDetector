@@ -1,7 +1,6 @@
 package fiji.plugin.filamentdetector.overlay;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;

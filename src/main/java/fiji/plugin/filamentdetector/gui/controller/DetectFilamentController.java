@@ -344,8 +344,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-				status.showStatus(
-						filamentWorkflow.getFilaments().size() + " filaments has been detected with the following parameters : ");
+				status.showStatus(filamentWorkflow.getFilaments().size()
+						+ " filaments has been detected with the following parameters : ");
 				status.showStatus(filamentWorkflow.getDetectionParameters().toString());
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
