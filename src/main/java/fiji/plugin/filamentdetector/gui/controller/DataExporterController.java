@@ -12,9 +12,11 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.exporter.CSVFilamentExporter;
+import fiji.plugin.filamentdetector.exporter.CSVTrackedFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.DataExporter;
 import fiji.plugin.filamentdetector.exporter.IJ1RoiFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.JSONFilamentExporter;
+import fiji.plugin.filamentdetector.exporter.JSONTrackedFilamentExporter;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
@@ -64,7 +66,7 @@ public class DataExporterController extends Controller implements Initializable 
 	private Label filamentExporterDescription;
 
 	@FXML
-	private Label trackedFlamentExporterDescription;
+	private Label trackedFilamentExporterDescription;
 
 	private FilamentWorkflow filamentWorkflow;
 
@@ -93,7 +95,6 @@ public class DataExporterController extends Controller implements Initializable 
 								} else {
 									setText(null);
 								}
-
 							}
 						};
 					}
@@ -112,7 +113,6 @@ public class DataExporterController extends Controller implements Initializable 
 								} else {
 									setText(null);
 								}
-
 							}
 						};
 					}
@@ -120,14 +120,14 @@ public class DataExporterController extends Controller implements Initializable 
 
 		filamentsExporterBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
-				trackedFlamentExporterDescription.setText(newValue.getDescription());
+				filamentExporterDescription.setText(newValue.getDescription());
 			}
 		});
 
 		trackedFilamentsExporterBox.getSelectionModel().selectedItemProperty()
 				.addListener((options, oldValue, newValue) -> {
 					if (newValue != null) {
-						filamentExporterDescription.setText(newValue.getDescription());
+						trackedFilamentExporterDescription.setText(newValue.getDescription());
 					}
 				});
 
@@ -140,6 +140,8 @@ public class DataExporterController extends Controller implements Initializable 
 		filamentsExporters.add(new CSVFilamentExporter(context, filamentWorkflow.getCalibrations()));
 
 		trackedFilamentsExporters = new ArrayList<>();
+		trackedFilamentsExporters.add(new JSONTrackedFilamentExporter(context, filamentWorkflow.getCalibrations()));
+		trackedFilamentsExporters.add(new CSVTrackedFilamentExporter(context, filamentWorkflow.getCalibrations()));
 
 		// Add lists to combo boxes.
 		filamentsExporterBox.setItems(FXCollections.observableList(filamentsExporters));
@@ -175,7 +177,24 @@ public class DataExporterController extends Controller implements Initializable 
 	@FXML
 	void exportFilaments(MouseEvent event) {
 		DataExporter<Filaments> exporter = filamentsExporterBox.getSelectionModel().getSelectedItem();
+		File file = fileChooser(exporter);
+		if (file != null) {
+			exporter.export(filamentWorkflow.getFilaments(), file);
+			status.showStatus("Filaments have been saved at " + file.getAbsolutePath());
+		}
+	}
 
+	@FXML
+	void exportTrackedFilaments(MouseEvent event) {
+		DataExporter<TrackedFilaments> exporter = trackedFilamentsExporterBox.getSelectionModel().getSelectedItem();
+		File file = fileChooser(exporter);
+		if (file != null) {
+			exporter.export(filamentWorkflow.getTrackedFilaments(), file);
+			status.showStatus("Filaments have been saved at " + file.getAbsolutePath());
+		}
+	}
+
+	private File fileChooser(DataExporter<?> exporter) {
 		FileChooser fileChooser = new FileChooser();
 
 		Dataset dataset = (Dataset) filamentWorkflow.getImageDisplay().getActiveView().getData();
@@ -187,17 +206,7 @@ public class DataExporterController extends Controller implements Initializable 
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(exporter.getExtensionDescription(),
 				exporter.getExtensionFilters());
 		fileChooser.getExtensionFilters().add(extFilter);
-		File file = fileChooser.showSaveDialog(this.getPane().getScene().getWindow());
-
-		if (file != null) {
-			exporter.export(filamentWorkflow.getFilaments(), file);
-			status.showStatus("Filaments have been saved at " + file.getAbsolutePath());
-		}
-	}
-
-	@FXML
-	void exportTrackedFilaments(MouseEvent event) {
-
+		return fileChooser.showSaveDialog(this.getPane().getScene().getWindow());
 	}
 
 }

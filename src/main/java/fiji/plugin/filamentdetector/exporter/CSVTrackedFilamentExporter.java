@@ -75,7 +75,7 @@ public class CSVTrackedFilamentExporter extends TrackedFilamentsExporter<Tracked
 		csv.write(file, new CSVWriteProc() {
 
 			public void process(CSVWriter out) {
-				out.writeNext("track id", "id", "length", "frame", "sinuosity", "size", "color");
+				out.writeNext("track id", "filament id", "length", "frame", "sinuosity", "size", "color");
 
 				List<String[]> data = new ArrayList<>();
 				List<String> row;

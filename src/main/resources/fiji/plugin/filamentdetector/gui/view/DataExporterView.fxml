@@ -148,7 +148,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Label fx:id="trackedFilamentExporterDescription1" prefWidth="400.0" wrapText="true">
+                                    <Label fx:id="trackedFilamentExporterDescription" prefWidth="400.0" wrapText="true">
                                        <font>
                                           <Font name="System Italic" size="13.0" />
                                        </font>
