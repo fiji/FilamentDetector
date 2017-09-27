@@ -1,5 +1,8 @@
 package fiji.plugin.filamentdetector.kymograph;
 
+import fiji.plugin.filamentdetector.kymograph.linedrawer.LineDrawer;
+import fiji.plugin.filamentdetector.kymograph.linedrawer.LongestFilamentLineDrawer;
+
 public class KymographParameters {
 
 	private boolean buildOneRandomKymograph = false;

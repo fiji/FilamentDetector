@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.kymograph;
+package fiji.plugin.filamentdetector.kymograph.linedrawer;
 
 public abstract class AbstractLineDrawer implements LineDrawer {
 

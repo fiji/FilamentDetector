@@ -1,16 +1,17 @@
-package fiji.plugin.filamentdetector.kymograph;
+package fiji.plugin.filamentdetector.kymograph.linedrawer;
 
 import java.util.Comparator;
 
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 
-public class LongestFilamentLineDrawer extends AbstractLineDrawer implements LineDrawer {
+public class AverageFilamentLineDrawer extends AbstractLineDrawer implements LineDrawer {
 
-	public static String NAME = "Longest Filament Line Drawer";
-	public static String DESCRIPTION = "Look for the longest filament in the track and draw the kymograph based on it.";
+	public static String NAME = "Average Filament Line Drawer";
+	public static String DESCRIPTION = "Find an \"average filament\" in the tracks while "
+			+ "keeping the length similar to the longest one.";
 
-	public LongestFilamentLineDrawer() {
+	public AverageFilamentLineDrawer() {
 		setName(NAME);
 		setDescription(DESCRIPTION);
 	}

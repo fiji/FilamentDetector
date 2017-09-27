@@ -2,6 +2,7 @@ package fiji.plugin.filamentdetector.kymograph;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import fiji.plugin.filamentdetector.kymograph.linedrawer.LineDrawer;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import ij.gui.Line;
 

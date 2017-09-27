@@ -14,8 +14,9 @@ import org.scijava.plugin.Parameter;
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.kymograph.KymographGenerator;
-import fiji.plugin.filamentdetector.kymograph.LineDrawer;
-import fiji.plugin.filamentdetector.kymograph.LongestFilamentLineDrawer;
+import fiji.plugin.filamentdetector.kymograph.linedrawer.AverageFilamentLineDrawer;
+import fiji.plugin.filamentdetector.kymograph.linedrawer.LineDrawer;
+import fiji.plugin.filamentdetector.kymograph.linedrawer.LongestFilamentLineDrawer;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -111,7 +112,7 @@ public class KymographBuilderController extends Controller implements Initializa
 				};
 			}
 		});
-		
+
 		lineDrawerCombobox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
 				lineDrawerDescription.setText(newValue.getDescription());
@@ -121,6 +122,7 @@ public class KymographBuilderController extends Controller implements Initializa
 		// Add line drawers to Combobox
 		lineDrawers = new ArrayList<>();
 		lineDrawers.add(new LongestFilamentLineDrawer());
+		//lineDrawers.add(new AverageFilamentLineDrawer());
 
 		lineDrawerCombobox.setItems(FXCollections.observableList(lineDrawers));
 		lineDrawerCombobox.getSelectionModel().selectFirst();
