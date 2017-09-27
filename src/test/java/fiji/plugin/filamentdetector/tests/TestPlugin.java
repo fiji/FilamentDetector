@@ -12,7 +12,7 @@ public class TestPlugin {
 		final ImageJ ij = net.imagej.Main.launch(args);
 		Context context = ij.getContext();
 
-		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/test-16bit.tif";
+		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/seeds.tif";
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 
