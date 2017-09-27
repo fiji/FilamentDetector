@@ -2,6 +2,8 @@ package fiji.plugin.filamentdetector.tracking;
 
 import java.util.Arrays;
 
+import org.jfree.util.Log;
+
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
 

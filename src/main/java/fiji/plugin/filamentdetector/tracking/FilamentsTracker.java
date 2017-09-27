@@ -64,8 +64,8 @@ public class FilamentsTracker {
 
 		// Initialize variables
 
-		double alternativeCostFactor = 0.5;
-		double percentile = 1d;
+		double alternativeCostFactor = 1.01;
+		double percentile = 1;
 
 		JaqamanLinkingCostMatrixCreator<Filament, Filament> creator;
 		JaqamanLinker<Filament, Filament> linker;
@@ -78,7 +78,7 @@ public class FilamentsTracker {
 
 		// Iterate over all the frames two by two
 		for (int i = 0; i < frames.size() - 1; i++) {
-
+			
 			frameSource = frames.get(i);
 			frameTarget = frames.get(i + 1);
 
@@ -88,7 +88,7 @@ public class FilamentsTracker {
 
 			// Build the matrix
 			creator = new JaqamanLinkingCostMatrixCreator<Filament, Filament>(sources, targets, costFunction,
-					1 - trackingParameters.getCostThreshold(), alternativeCostFactor, percentile);
+					trackingParameters.getCostThreshold(), alternativeCostFactor, percentile);
 			linker = new JaqamanLinker<Filament, Filament>(creator);
 
 			// Solve it
@@ -97,13 +97,14 @@ public class FilamentsTracker {
 			}
 
 			// Process results
-			// Map<Filament, Double> costs = linker.getAssignmentCosts();
+			Map<Filament, Double> costs = linker.getAssignmentCosts();
 			Map<Filament, Filament> assignment = linker.getResult();
 
 			for (final Filament source : assignment.keySet()) {
-				// double cost = costs.get(source);
+				double cost = costs.get(source);
 				Filament target = assignment.get(source);
 				trackedFilaments.addLink(source, target);
+				//log.info(cost);
 			}
 
 		}

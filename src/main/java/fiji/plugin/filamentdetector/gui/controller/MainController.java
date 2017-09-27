@@ -59,6 +59,9 @@ public class MainController extends Controller implements Initializable {
 
 	@FXML
 	private CheckBox disableOverlaysCheckbox;
+	
+	@FXML
+	private CheckBox drawBoundsCheckbox;
 
 	private FilamentWorkflow filamentDetector;
 
@@ -144,12 +147,14 @@ public class MainController extends Controller implements Initializable {
 
 		overlay.disableOverlay(false);
 		disableOverlaysCheckbox.setSelected(false);
+		drawBoundsCheckbox.setSelected(overlay.isDrawBoundingBoxes());
 	}
 
 	@FXML
 	void updateOverlaySettings(Event event) {
 		overlay.setColorAlpha((int) transparencySlider.getValue());
 		overlay.setFilamentWidth((int) lineWidthSlider.getValue());
+		overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());
 		overlay.refresh();
 	}
 

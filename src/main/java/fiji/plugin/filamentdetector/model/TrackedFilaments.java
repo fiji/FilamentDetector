@@ -36,6 +36,7 @@ public class TrackedFilaments extends ArrayList<TrackedFilament> {
 		TrackedFilament currentTrackedFilament = null;
 		for (TrackedFilament trackedFilament : this) {
 			if (trackedFilament.lastFilamentIs(source)) {
+				target.setColor(trackedFilament.getColor());
 				trackedFilament.add(target);
 				return trackedFilament;
 			}

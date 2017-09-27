@@ -11,7 +11,7 @@ public class TrackedFilament extends Filaments {
 	private Color color;
 
 	public boolean lastFilamentIs(Filament filament) {
-		return filament == this.get(this.size() - 1);
+		return filament.equals(this.get(this.size() - 1));
 	}
 
 	public int getId() {

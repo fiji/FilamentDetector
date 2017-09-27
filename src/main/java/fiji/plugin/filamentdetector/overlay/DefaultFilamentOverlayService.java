@@ -63,6 +63,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private List<Filament> selectedFilaments = new ArrayList<>();
 	private List<TrackedFilament> selectedTrackedFilament = new ArrayList<>();
 
+	private boolean drawBoundingBoxes = false;
+	private Map<Filament, Roi> filamentBoundingBoxesMap = new HashMap<>();
+
 	@Override
 	public void add(Filament filament) {
 		Dataset data = (Dataset) imageDisplay.getActiveView().getData();
@@ -91,6 +94,23 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			overlay = new Overlay();
 			imp.setOverlay(overlay);
 		}
+
+		if (drawBoundingBoxes) {
+			Roi boundsRoi = new Roi(roi.getBounds().x, roi.getBounds().y, roi.getBounds().width,
+					roi.getBounds().height);
+			boundsRoi.setStrokeColor(realColor);
+			boundsRoi.setStrokeWidth(1);
+
+			if (data.numDimensions() > 3) {
+				boundsRoi.setPosition(-1, -1, filament.getFrame());
+			} else {
+				boundsRoi.setPosition(filament.getFrame());
+			}
+
+			filamentBoundingBoxesMap.put(filament, boundsRoi);
+			overlay.add(boundsRoi);
+		}
+
 		overlay.add(roi);
 		imp.repaintWindow();
 
@@ -107,6 +127,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void add(TrackedFilament trackedFilament) {
+		trackedFilamentDisplayed.add(trackedFilament);
 		for (Filament filament : trackedFilament) {
 			add(filament);
 		}
@@ -115,6 +136,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void add(TrackedFilaments trackedFilaments) {
 		for (TrackedFilament trackedFilament : trackedFilaments) {
+			trackedFilamentDisplayed.add(trackedFilament);
 			add(trackedFilament);
 		}
 	}
@@ -227,6 +249,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 				if (overlay != null && entry != null && entry.getValue() != null) {
 					if (overlay.contains(entry.getValue())) {
 						overlay.remove(entry.getValue());
+						overlay.remove(filamentBoundingBoxesMap.get(entry.getKey()));
 					}
 				}
 			} catch (NullPointerException e) {
@@ -269,6 +292,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void remove(TrackedFilament trackedFilament) {
+		trackedFilamentDisplayed.remove(trackedFilament);
 		for (Filament filament : trackedFilament) {
 			remove(filament);
 		}
@@ -278,6 +302,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void remove(TrackedFilaments trackedFilaments) {
 		for (TrackedFilament trackedFilament : trackedFilaments) {
+			trackedFilamentDisplayed.remove(trackedFilament);
 			remove(trackedFilament);
 		}
 		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
@@ -307,6 +332,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		}
 
 		filamentROIMap = new HashMap<>();
+		filamentBoundingBoxesMap = new HashMap<>();
 
 		if (imp != null) {
 			imp.updateAndDraw();
@@ -344,7 +370,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		roi.setStrokeWidth(roi.getStrokeWidth() * 2);
 		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
 		if (moveToFrame) {
-			imp.setT(roi.getTPosition());
+			imp.setT(filament.getFrame());
 		}
 		imp.repaintWindow();
 	}
@@ -363,4 +389,15 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			imp.setT(trackedFilament.get(0).getFrame());
 		}
 	}
+
+	@Override
+	public boolean isDrawBoundingBoxes() {
+		return drawBoundingBoxes;
+	}
+
+	@Override
+	public void setDrawBoundingBoxes(boolean drawBoundingBoxes) {
+		this.drawBoundingBoxes = drawBoundingBoxes;
+	}
+
 }

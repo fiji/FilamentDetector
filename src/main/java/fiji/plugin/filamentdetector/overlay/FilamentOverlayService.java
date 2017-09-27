@@ -50,4 +50,8 @@ public interface FilamentOverlayService extends ImageJService {
 	void setSelected(Filament filament, boolean moveToFrame, boolean clearSelection);
 
 	void setSelected(TrackedFilament trackedFilament, boolean moveToFrame, boolean clearSelection);
+
+	boolean isDrawBoundingBoxes();
+
+	void setDrawBoundingBoxes(boolean drawBoundingBoxes);
 }

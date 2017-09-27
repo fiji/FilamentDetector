@@ -54,6 +54,14 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="5.0">
                                              <children>
+                                                <CheckBox fx:id="drawBoundsCheckbox" mnemonicParsing="false" onAction="#updateOverlaySettings" onMouseClicked="#updateHideOverlay" text="Draw Bounding Boxes" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
                                                 <Label text="Transparency" />
                                                 <Slider fx:id="transparencySlider" blockIncrement="1.0" max="255.0" onMouseClicked="#updateOverlaySettings" onMouseDragged="#updateOverlaySettings" />
                                                 <Label fx:id="transparencyValueLabel" />
