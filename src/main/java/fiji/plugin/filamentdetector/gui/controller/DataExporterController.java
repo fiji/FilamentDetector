@@ -11,6 +11,7 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
+import fiji.plugin.filamentdetector.exporter.CSVFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.DataExporter;
 import fiji.plugin.filamentdetector.exporter.IJ1RoiFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.JSONFilamentExporter;
@@ -25,7 +26,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
@@ -60,14 +60,20 @@ public class DataExporterController extends Controller implements Initializable 
 	@FXML
 	private Button exportTrackedFilamentsButton;
 
-	private FilamentWorkflow filamentDetector;
+	@FXML
+	private Label filamentExporterDescription;
+
+	@FXML
+	private Label trackedFlamentExporterDescription;
+
+	private FilamentWorkflow filamentWorkflow;
 
 	private List<DataExporter<Filaments>> filamentsExporters;
 	private List<DataExporter<TrackedFilaments>> trackedFilamentsExporters;
 
-	public DataExporterController(Context context, FilamentWorkflow filamentDetector) {
+	public DataExporterController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
-		this.filamentDetector = filamentDetector;
+		this.filamentWorkflow = filamentWorkflow;
 	}
 
 	@Override
@@ -84,7 +90,6 @@ public class DataExporterController extends Controller implements Initializable 
 								super.updateItem(t, bln);
 								if (t != null) {
 									setText(t.getName());
-									setTooltip(new Tooltip(t.getDescription()));
 								} else {
 									setText(null);
 								}
@@ -104,7 +109,6 @@ public class DataExporterController extends Controller implements Initializable 
 								super.updateItem(t, bln);
 								if (t != null) {
 									setText(t.getName());
-									setTooltip(new Tooltip(t.getDescription()));
 								} else {
 									setText(null);
 								}
@@ -114,12 +118,26 @@ public class DataExporterController extends Controller implements Initializable 
 					}
 				});
 
+		filamentsExporterBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				trackedFlamentExporterDescription.setText(newValue.getDescription());
+			}
+		});
+
+		trackedFilamentsExporterBox.getSelectionModel().selectedItemProperty()
+				.addListener((options, oldValue, newValue) -> {
+					if (newValue != null) {
+						filamentExporterDescription.setText(newValue.getDescription());
+					}
+				});
+
 		// Add exporters to lists.
 		// TODO: do the exporters discovery automatically based on type (can
 		// SciJavaPlugin be used ?).
 		filamentsExporters = new ArrayList<>();
-		filamentsExporters.add(new JSONFilamentExporter(context));
+		filamentsExporters.add(new JSONFilamentExporter(context, filamentWorkflow.getCalibrations()));
 		filamentsExporters.add(new IJ1RoiFilamentExporter(context));
+		filamentsExporters.add(new CSVFilamentExporter(context, filamentWorkflow.getCalibrations()));
 
 		trackedFilamentsExporters = new ArrayList<>();
 
@@ -133,8 +151,8 @@ public class DataExporterController extends Controller implements Initializable 
 
 	@FXML
 	public void refreshData(MouseEvent event) {
-		if (filamentDetector.getFilaments() != null && filamentDetector.getFilaments().size() > 0) {
-			filamentsLabel.setText(filamentDetector.getFilaments().size() + " filaments");
+		if (filamentWorkflow.getFilaments() != null && filamentWorkflow.getFilaments().size() > 0) {
+			filamentsLabel.setText(filamentWorkflow.getFilaments().size() + " filaments");
 			filamentsExporterBox.setDisable(false);
 			exportFilamentsButton.setDisable(false);
 		} else {
@@ -143,8 +161,8 @@ public class DataExporterController extends Controller implements Initializable 
 			exportFilamentsButton.setDisable(true);
 		}
 
-		if (filamentDetector.getTrackedFilaments() != null && filamentDetector.getTrackedFilaments().size() > 0) {
-			trackedFilamentsLabel.setText(filamentDetector.getTrackedFilaments().size() + " tracked filaments");
+		if (filamentWorkflow.getTrackedFilaments() != null && filamentWorkflow.getTrackedFilaments().size() > 0) {
+			trackedFilamentsLabel.setText(filamentWorkflow.getTrackedFilaments().size() + " tracked filaments");
 			trackedFilamentsExporterBox.setDisable(false);
 			exportTrackedFilamentsButton.setDisable(false);
 		} else {
@@ -160,7 +178,7 @@ public class DataExporterController extends Controller implements Initializable 
 
 		FileChooser fileChooser = new FileChooser();
 
-		Dataset dataset = (Dataset) filamentDetector.getImageDisplay().getActiveView().getData();
+		Dataset dataset = (Dataset) filamentWorkflow.getImageDisplay().getActiveView().getData();
 		if (dataset.getSource() != null) {
 			String parentPath = new File(dataset.getSource()).getParent();
 			fileChooser.setInitialDirectory(new File(parentPath));
@@ -172,7 +190,7 @@ public class DataExporterController extends Controller implements Initializable 
 		File file = fileChooser.showSaveDialog(this.getPane().getScene().getWindow());
 
 		if (file != null) {
-			exporter.export(filamentDetector.getFilaments(), file);
+			exporter.export(filamentWorkflow.getFilaments(), file);
 			status.showStatus("Filaments have been saved at " + file.getAbsolutePath());
 		}
 	}

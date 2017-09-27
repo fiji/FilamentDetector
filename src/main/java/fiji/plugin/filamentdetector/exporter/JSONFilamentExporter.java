@@ -17,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import fiji.plugin.filamentdetector.Calibrations;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 
@@ -26,13 +27,17 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 	private LogService log;
 
 	public static String NAME = "JSON Exporter";
-	public static String DESCRIPTION = "A JSON Exporter";
+	public static String DESCRIPTION = "A JSON Exporter. Calibrations of the image will be"
+			+ " applied to all spatial values.";
 	public static String EXTENSION = "*.json";
 	public static String EXTENSION_DESCRIPTION = "JSON File (*.json)";
 	public static List<String> EXTENSION_FILTERS = Arrays.asList("*.json");
 
-	public JSONFilamentExporter(Context context) {
+	private Calibrations calibrations;
+
+	public JSONFilamentExporter(Context context, Calibrations calibrations) {
 		super(context);
+		this.calibrations = calibrations;
 	}
 
 	@Override
@@ -79,17 +84,17 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 			filamentElement = new JsonObject();
 
 			filamentElement.add("id", new JsonPrimitive(filament.getID()));
-			filamentElement.add("length", new JsonPrimitive(filament.getLength()));
+			filamentElement.add("length", new JsonPrimitive(filament.getLength() * calibrations.getDx()));
 			filamentElement.add("frame", new JsonPrimitive(filament.getFrame()));
 			filamentElement.add("sinuosity", new JsonPrimitive(filament.getSinuosity()));
 			filamentElement.add("size", new JsonPrimitive(filament.getSize()));
 			filamentElement.add("color", new JsonPrimitive(filament.getColorAsHex()));
 
 			x = filament.getXCoordinatesAsDouble();
-			filamentElement.add("x", serializeCoordinates(x));
+			filamentElement.add("x", serializeCoordinates(x, calibrations.getDx()));
 
 			y = filament.getXCoordinatesAsDouble();
-			filamentElement.add("y", serializeCoordinates(y));
+			filamentElement.add("y", serializeCoordinates(y, calibrations.getDy()));
 
 			filamentsArray.add(filamentElement);
 		}
@@ -111,11 +116,4 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 		}
 	}
 
-	private JsonArray serializeCoordinates(double[] coords) {
-		JsonArray coordsArray = new JsonArray();
-		for (int i = 0; i < coords.length; i++) {
-			coordsArray.add(coords[i]);
-		}
-		return coordsArray;
-	}
 }

@@ -5,8 +5,10 @@ import java.io.File;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 
+import fiji.plugin.filamentdetector.Calibrations;
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
 import fiji.plugin.filamentdetector.detection.FilamentsDetector;
+import fiji.plugin.filamentdetector.exporter.CSVFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.DataExporter;
 import fiji.plugin.filamentdetector.exporter.JSONFilamentExporter;
 import fiji.plugin.filamentdetector.model.Filaments;
@@ -41,9 +43,11 @@ public class TestExporter {
 
 		log.info("Filaments Detected : " + filaments.size());
 
-		DataExporter<Filaments> exporter = new JSONFilamentExporter(context);
+		DataExporter<Filaments> exporter = new JSONFilamentExporter(context, new Calibrations(context, dataset));
 		// exporter = new IJ1RoiFilamentExporter(context);
-		File file = new File("/home/hadim/test.json");
+		exporter = new CSVFilamentExporter(context, new Calibrations(context, dataset));
+
+		File file = new File("/home/hadim/test" + exporter.getExtension().substring(1));
 		exporter.export(filaments, file);
 	}
 }
