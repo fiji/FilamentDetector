@@ -68,17 +68,18 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	private CheckBox drawBoundsCheckbox;
 
-	private FilamentWorkflow filamentDetector;
+	private FilamentWorkflow filamentWorkflow;
 
 	private WelcomeController welcomeController;
 	private DetectFilamentController detectFilamentController;
 	private AboutController aboutController;
 	private DataExporterController dataExporterController;
 	private TrackingFilamentController trackingFilamentController;
+	private KymographBuilderController kymographBuilderController;
 
 	public MainController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
-		this.filamentDetector = filamentDetector;
+		this.filamentWorkflow = filamentDetector;
 	}
 
 	@Override
@@ -93,6 +94,8 @@ public class MainController extends Controller implements Initializable {
 						dataExporterController.refreshData(null);
 					} else if (new_val.getContent().equals(trackingFilamentController.getPane())) {
 						trackingFilamentController.initPane();
+					} else if (new_val.getContent().equals(kymographBuilderController.getPane())) {
+						kymographBuilderController.initPane();
 					}
 				}
 			}
@@ -178,7 +181,7 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadWelcome() {
-		welcomeController = new WelcomeController(context, filamentDetector);
+		welcomeController = new WelcomeController(context, filamentWorkflow);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/WelcomeView.fxml", welcomeController);
 
 		TitledPane titledPane = new TitledPane("Welcome", pane);
@@ -186,7 +189,7 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadDetectFilament() {
-		detectFilamentController = new DetectFilamentController(context, filamentDetector);
+		detectFilamentController = new DetectFilamentController(context, filamentWorkflow);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DetectFilamentView.fxml",
 				detectFilamentController);
 
@@ -195,7 +198,7 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadTrackingFilament() {
-		trackingFilamentController = new TrackingFilamentController(context, filamentDetector);
+		trackingFilamentController = new TrackingFilamentController(context, filamentWorkflow);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/TrackingFilamentView.fxml",
 				trackingFilamentController);
 
@@ -204,7 +207,7 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadDataExporter() {
-		dataExporterController = new DataExporterController(context, filamentDetector);
+		dataExporterController = new DataExporterController(context, filamentWorkflow);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DataExporterView.fxml",
 				dataExporterController);
 
@@ -213,7 +216,11 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadKymographBuilder() {
-		TitledPane titledPane = new TitledPane();
+		kymographBuilderController = new KymographBuilderController(context, filamentWorkflow);
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/KymographBuilderView.fxml",
+				kymographBuilderController);
+
+		TitledPane titledPane = new TitledPane("Build Kymographs", pane);
 		titledPane.setText("Build Kymographs");
 		mainPane.getPanes().add(titledPane);
 	}

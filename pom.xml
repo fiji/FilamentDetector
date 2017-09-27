@@ -120,6 +120,11 @@
 			<version>2.4</version>
 		</dependency>
 
+		<dependency>
+			<groupId>sc.fiji</groupId>
+			<artifactId>KymographBuilder</artifactId>
+		</dependency>
+
 		<!-- Enable IJ1 interface at runtime -->
 		<dependency>
 			<groupId>net.imagej</groupId>

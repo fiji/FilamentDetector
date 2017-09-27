@@ -172,7 +172,6 @@ public class TrackingFilamentController extends Controller implements Initializa
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-				Log.info(filamentWorkflow.getTrackedFilaments());
 				status.showStatus(filamentWorkflow.getTrackedFilaments().size()
 						+ " tracks has been created with the following parameters : ");
 				status.showStatus(filamentWorkflow.getTrackingParameters().toString());
