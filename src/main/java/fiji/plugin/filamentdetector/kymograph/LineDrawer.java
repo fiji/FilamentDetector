@@ -27,45 +27,63 @@ public class LineDrawer {
 		this.trackedFilament = trackedFilament;
 	}
 
-	public Line draw() {
+	public Line draw() throws Exception {
 
-		//Get the longest filament in all the frames
+		// Get the longest filament in all the frames
 		double[] lineCoords = new double[4];
-		
+
 		Filament filament = trackedFilament.stream().max(Comparator.comparing(Filament::getLength)).orElse(null);
 		lineCoords[0] = filament.getXCoordinatesAsDouble()[0];
 		lineCoords[1] = filament.getYCoordinatesAsDouble()[0];
 		lineCoords[2] = filament.getXCoordinatesAsDouble()[filament.getSize() - 1];
 		lineCoords[3] = filament.getYCoordinatesAsDouble()[filament.getSize() - 1];
-		
-		// Extend the line by the offset
-		lineCoords = extendStartTip(lineCoords, startOffsetLength);
-		lineCoords = extendEndTip(lineCoords, endOffsetLength);
-		
+
+		// Extend the line by the offset at the start tip
+		//lineCoords = extendTip(lineCoords, startOffsetLength);
+		// Extend the line by the offset at the end tip
+		double tmp = lineCoords[0];
+		lineCoords[0] = lineCoords[2];
+		lineCoords[2] = tmp;
+		tmp = lineCoords[1];
+		lineCoords[1] = lineCoords[3];
+		lineCoords[3] = tmp;
+		lineCoords = extendTip(lineCoords, endOffsetLength);
+
 		// Construct the line
 		Line line = new Line(lineCoords[0], lineCoords[1], lineCoords[2], lineCoords[3]);
 		line.setStrokeWidth(lineTickness);
 		return line;
 	}
 
-	private double[] extendEndTip(double[] lineCoords, double endOffsetLength) {
-		return lineCoords;
+	private double[] extendTip(double[] lineCoords, double startOffsetLength) throws Exception {
+		double x0 = lineCoords[0];
+		double y0 = lineCoords[1];
+		double x1 = lineCoords[2];
+		double y1 = lineCoords[3];
+
+		double distanceRatio = getDistanceRatio(x0, y0, x1, y1);
+
+		double newX = ((1 - distanceRatio) * x0) + (distanceRatio * x1);
+		double newY = ((1 - distanceRatio) * y0) + (distanceRatio * y1);
+
+		if (y0 > y1 && x1 < x0) {
+			return new double[] { newX, newY, x0, y0 };
+		} else if (y1 > y0 && x1 > x0) {
+			return new double[] { newX, newY, x1, y1 };
+		} else if (y1 < y0 && x1 > x0) {
+			return new double[] { x0, y0, newX, newY };
+		} else if (y1 > y0 && x1 < x0) {
+			return new double[] { x1, y1, newX, newY };
+		} else {
+			throw new Exception("Error during line drawing. This should not happend.");
+		}
+
 	}
 
-	private double[] extendStartTip(double[] lineCoords, double startOffsetLength) {
-		double x1 = lineCoords[0]; 
-		double y1 = lineCoords[1]; 
-		double x2 = lineCoords[2]; 
-		double y2 = lineCoords[3]; 
-		
-		double lineLength = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	private double getDistanceRatio(double x0, double y0, double x1, double y1) {
+		double lineLength = Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
 		double newLength = lineLength + startOffsetLength;
-		double distanceRatio = newLength / lineLength;
-		
-		double newX1 = ((1 - distanceRatio) * x1) + (distanceRatio * x2);
-		double newY1 = ((1 - distanceRatio) * x1) + (distanceRatio * x2);
-		
-		return new double[]{newX1, newY1, x2, y2};
+		return newLength / lineLength;
 	}
 
 }

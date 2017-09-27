@@ -74,40 +74,45 @@ public class KymographGenerator {
 			kymographsHasBeenSaved = true;
 		}
 
-		for (TrackedFilament trackedFilament : trackedFilamentsToBuild) {
+		try {
+			for (TrackedFilament trackedFilament : trackedFilamentsToBuild) {
 
-			// Generate the line
-			lineDrawer.setTrackedFilament(trackedFilament);
-			line = lineDrawer.draw();
+				// Generate the line
+				lineDrawer.setTrackedFilament(trackedFilament);
 
-			if (kymographParameters.isSaveKymographLines() && baseFolder != null) {
-				lines.add(line);
-			}
+				line = lineDrawer.draw();
 
-			// Build the kymograph
-			kfactory = new KymographFactory(context, getDataset(), line);
-			kfactory.build();
+				if (kymographParameters.isSaveKymographLines() && baseFolder != null) {
+					lines.add(line);
+				}
 
-			final Dataset kymograph;
-			kymograph = kfactory.getKymograph();
-			kymograph.setName("Kymograph_" + trackedFilament.getId() + ".tif");
-			kymographs.add(kymograph);
+				// Build the kymograph
+				kfactory = new KymographFactory(context, getDataset(), line);
+				kfactory.build();
 
-			// Show it if needed
-			if (kymographParameters.isShowKymographs()) {
-				Platform.runLater(() -> {
-					ui.show(kymograph);
-				});
-			}
+				final Dataset kymograph;
+				kymograph = kfactory.getKymograph();
+				kymograph.setName("Kymograph_" + trackedFilament.getId() + ".tif");
+				kymographs.add(kymograph);
 
-			if (kymographParameters.isSaveKymographs() && baseFolder != null) {
-				try {
-					io.save(kymograph, Paths.get(baseFolder, kymograph.getName()).toString());
-				} catch (IOException e) {
-					log.error("Error while saving the following kymograph : " + kymograph);
-					log.error(e);
+				// Show it if needed
+				if (kymographParameters.isShowKymographs()) {
+					Platform.runLater(() -> {
+						ui.show(kymograph);
+					});
+				}
+
+				if (kymographParameters.isSaveKymographs() && baseFolder != null) {
+					try {
+						io.save(kymograph, Paths.get(baseFolder, kymograph.getName()).toString());
+					} catch (IOException e) {
+						log.error("Error while saving the following kymograph : " + kymograph);
+						log.error(e);
+					}
 				}
 			}
+		} catch (Exception e) {
+			log.error(e);
 		}
 
 		if (kymographParameters.isSaveKymographLines() && baseFolder != null) {
@@ -117,10 +122,11 @@ public class KymographGenerator {
 				rm.runCommand("Delete");
 			}
 			for (Roi lineToSave : lines) {
+				lineToSave.setStrokeWidth(1);
 				rm.addRoi(lineToSave);
 			}
 			rm.runCommand("Save", Paths.get(baseFolder, "KymographLines.zip").toString());
-			rm.runCommand("Delete");
+			//rm.runCommand("Delete");
 		}
 
 	}
