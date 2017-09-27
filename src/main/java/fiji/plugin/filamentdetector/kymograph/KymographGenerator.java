@@ -131,7 +131,6 @@ public class KymographGenerator {
 				rm.addRoi(lineToSave);
 			}
 			rm.runCommand("Save", Paths.get(baseFolder, "KymographLines.zip").toString());
-			// rm.runCommand("Delete");
 		}
 
 	}

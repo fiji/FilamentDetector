@@ -102,7 +102,7 @@ public class JSONTrackedFilamentExporter extends TrackedFilamentsExporter<Tracke
 				x = filament.getXCoordinatesAsDouble();
 				filamentElement.add("x", serializeCoordinates(x, calibrations.getDx()));
 
-				y = filament.getXCoordinatesAsDouble();
+				y = filament.getYCoordinatesAsDouble();
 				filamentElement.add("y", serializeCoordinates(y, calibrations.getDy()));
 
 				filamentsArray.add(filamentElement);

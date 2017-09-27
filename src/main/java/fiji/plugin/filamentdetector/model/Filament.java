@@ -218,4 +218,18 @@ public class Filament implements Comparable<Filament> {
 		this.color = color;
 	}
 
+	/*
+	 * Return both tips: [x1, y1, x2, y2]
+	 */
+	public double[] getTips() {
+		double[] coords = new double[4];
+
+		coords[0] = this.getXCoordinatesAsDouble()[0];
+		coords[1] = this.getYCoordinatesAsDouble()[0];
+		coords[2] = this.getXCoordinatesAsDouble()[this.getSize() - 1];
+		coords[3] = this.getYCoordinatesAsDouble()[this.getSize() - 1];
+
+		return coords;
+	}
+
 }

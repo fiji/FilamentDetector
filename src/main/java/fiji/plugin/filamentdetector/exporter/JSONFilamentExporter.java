@@ -93,7 +93,7 @@ public class JSONFilamentExporter extends FilamentsExporter<Filaments> {
 			x = filament.getXCoordinatesAsDouble();
 			filamentElement.add("x", serializeCoordinates(x, calibrations.getDx()));
 
-			y = filament.getXCoordinatesAsDouble();
+			y = filament.getYCoordinatesAsDouble();
 			filamentElement.add("y", serializeCoordinates(y, calibrations.getDy()));
 
 			filamentsArray.add(filamentElement);
