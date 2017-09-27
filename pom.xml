@@ -15,7 +15,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<name>FilamentDetector</name>
-	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments with sub-pixel resolution.</description>
+	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
 	<url>https://github.com/hadim/FilamentDetector</url>
 	<inceptionYear>2016</inceptionYear>
 
