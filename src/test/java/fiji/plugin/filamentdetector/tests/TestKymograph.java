@@ -46,23 +46,23 @@ public class TestKymograph {
 		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();
 
 		log.info("Tracked filaments : " + trackedFilaments.size());
-		
+
 		// Generate kymographs
 		KymographGenerator kymographGenerator = new KymographGenerator(context);
 		kymographGenerator.setImageDisplay(imageDisplay);
 		kymographGenerator.setTrackedFilaments(trackedFilaments);
-		
+
 		kymographGenerator.getKymographParameters().setShowKymographs(false);
 		kymographGenerator.getKymographParameters().setSaveKymographLines(true);
 		kymographGenerator.getKymographParameters().setSaveKymographs(false);
-		
+
 		kymographGenerator.build();
-		
+
 		List<Dataset> kymographs = kymographGenerator.getKymographs();
 		log.info(kymographs);
-		
+
 		RoiManager rm = RoiManager.getRoiManager();
 		rm.runCommand("Show All");
-		
+
 	}
 }

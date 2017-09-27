@@ -78,7 +78,7 @@ public class FilamentsTracker {
 
 		// Iterate over all the frames two by two
 		for (int i = 0; i < frames.size() - 1; i++) {
-			
+
 			frameSource = frames.get(i);
 			frameTarget = frames.get(i + 1);
 

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import org.jfree.util.Log;
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;

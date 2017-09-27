@@ -39,7 +39,7 @@
             </VBox>
             <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" disable="true">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
                         <Label prefWidth="400.0" text="Kymographs are build from tracked filaments. You can choose different methods to draw the line(s) used to build the kymographs." wrapText="true">
                            <font>
@@ -51,18 +51,18 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" disable="true">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
                         <Label text="Choose a line drawer : " />
-                        <ComboBox fx:id="lineDrawerCombobox" onAction="#updateParameters" prefWidth="150.0" />
+                        <ComboBox fx:id="lineDrawerCombobox" onAction="#updateParameters" />
                      </children>
                      <padding>
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" disable="true">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label fx:id="lineDrawerDescription" prefWidth="400.0" wrapText="true">
+                        <Label fx:id="lineDrawerDescription" wrapText="true">
                            <font>
                               <Font name="System Italic" size="13.0" />
                            </font>

@@ -1,7 +1,9 @@
 package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -12,6 +14,9 @@ import org.scijava.plugin.Parameter;
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.kymograph.KymographGenerator;
+import fiji.plugin.filamentdetector.kymograph.LineDrawer;
+import fiji.plugin.filamentdetector.kymograph.LongestFilamentLineDrawer;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +24,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 
 public class KymographBuilderController extends Controller implements Initializable {
 
@@ -36,7 +44,7 @@ public class KymographBuilderController extends Controller implements Initializa
 	private Label nTrackedFilamentsField;
 
 	@FXML
-	private ComboBox<?> lineDrawerCombobox;
+	private ComboBox<LineDrawer> lineDrawerCombobox;
 
 	@FXML
 	private Label lineDrawerDescription;
@@ -68,6 +76,8 @@ public class KymographBuilderController extends Controller implements Initializa
 	private FilamentWorkflow filamentWorkflow;
 	private KymographGenerator kymographGenerator;
 
+	private List<LineDrawer> lineDrawers;
+
 	public KymographBuilderController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
 		this.filamentWorkflow = filamentWorkflow;
@@ -85,6 +95,35 @@ public class KymographBuilderController extends Controller implements Initializa
 		startOffsetField.setText(Double.toString(kymographGenerator.getKymographParameters().getStartOffsetLength()));
 		endOffsetField.setText(Double.toString(kymographGenerator.getKymographParameters().getEndOffsetLength()));
 
+		lineDrawerCombobox.setCellFactory(new Callback<ListView<LineDrawer>, ListCell<LineDrawer>>() {
+			@Override
+			public ListCell<LineDrawer> call(ListView<LineDrawer> p) {
+				return new ListCell<LineDrawer>() {
+					@Override
+					protected void updateItem(LineDrawer t, boolean bln) {
+						super.updateItem(t, bln);
+						if (t != null) {
+							setText(t.toString());
+						} else {
+							setText(null);
+						}
+					}
+				};
+			}
+		});
+		
+		lineDrawerCombobox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				lineDrawerDescription.setText(newValue.getDescription());
+			}
+		});
+
+		// Add line drawers to Combobox
+		lineDrawers = new ArrayList<>();
+		lineDrawers.add(new LongestFilamentLineDrawer());
+
+		lineDrawerCombobox.setItems(FXCollections.observableList(lineDrawers));
+		lineDrawerCombobox.getSelectionModel().selectFirst();
 	}
 
 	public void initPane() {
@@ -111,6 +150,9 @@ public class KymographBuilderController extends Controller implements Initializa
 		kymographGenerator.getKymographParameters()
 				.setStartOffsetLength(Double.parseDouble(startOffsetField.getText()));
 		kymographGenerator.getKymographParameters().setEndOffsetLength(Double.parseDouble(endOffsetField.getText()));
+
+		kymographGenerator.getKymographParameters()
+				.setLineDrawer(lineDrawerCombobox.getSelectionModel().getSelectedItem());
 	}
 
 	@FXML

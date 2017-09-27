@@ -68,7 +68,7 @@ public class KymographGenerator {
 
 		List<Roi> lines = new ArrayList<>();
 		Roi line;
-		LineDrawer lineDrawer = new LineDrawer(kymographParameters.getLineThickness(),
+		LineGenerator lineDrawer = new LineGenerator(kymographParameters.getLineThickness(),
 				kymographParameters.getStartOffsetLength(), kymographParameters.getEndOffsetLength());
 
 		String baseFolder = new File(getDataset().getSource()).getParent();
@@ -85,7 +85,7 @@ public class KymographGenerator {
 				// Generate the line
 				lineDrawer.setTrackedFilament(trackedFilament);
 
-				line = lineDrawer.draw();
+				line = lineDrawer.build(kymographParameters.getLineDrawer());
 
 				if (kymographParameters.isSaveKymographLines() && baseFolder != null) {
 					lines.add(line);

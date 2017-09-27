@@ -9,6 +9,7 @@ public class KymographParameters {
 	private double lineThickness = 4;
 	private double startOffsetLength = 10;
 	private double endOffsetLength = 10;
+	private LineDrawer lineDrawer = new LongestFilamentLineDrawer();
 
 	public boolean isBuildOneRandomKymograph() {
 		return buildOneRandomKymograph;
@@ -66,6 +67,14 @@ public class KymographParameters {
 		this.saveKymographLines = saveKymographLines;
 	}
 
+	public LineDrawer getLineDrawer() {
+		return lineDrawer;
+	}
+
+	public void setLineDrawer(LineDrawer lineDrawer) {
+		this.lineDrawer = lineDrawer;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";
@@ -76,7 +85,8 @@ public class KymographParameters {
 		out += "lineThickness = " + lineThickness + "\n";
 		out += "startOffsetLength = " + startOffsetLength + "\n";
 		out += "endOffsetLength = " + endOffsetLength + "\n";
-		out += "saveKymographs = " + saveKymographs;
+		out += "saveKymographs = " + saveKymographs + "\n";
+		out += "lineDrawer = " + lineDrawer.getName();
 
 		return out;
 	}
