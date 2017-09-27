@@ -46,7 +46,7 @@ public class KymographGenerator {
 	public KymographGenerator(Context context) {
 		context.inject(this);
 		this.kymographParameters = new KymographParameters();
-		
+
 		// Disable KymographBuilder logs
 		// TODO: not working
 		System.setProperty("scijava.log.level:sc.fiji.kymographBuilder.KymographFactory", "none");
@@ -131,7 +131,7 @@ public class KymographGenerator {
 				rm.addRoi(lineToSave);
 			}
 			rm.runCommand("Save", Paths.get(baseFolder, "KymographLines.zip").toString());
-			//rm.runCommand("Delete");
+			// rm.runCommand("Delete");
 		}
 
 	}
@@ -175,6 +175,10 @@ public class KymographGenerator {
 
 	public boolean kymographsHasBeenSaved() {
 		return kymographsHasBeenSaved;
+	}
+
+	public List<Dataset> getKymographs() {
+		return kymographs;
 	}
 
 }
