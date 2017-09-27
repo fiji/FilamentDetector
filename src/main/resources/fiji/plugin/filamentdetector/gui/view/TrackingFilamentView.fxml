@@ -51,7 +51,7 @@
                                                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                    <children>
                                                       <Label minWidth="-Infinity" text="Cost Threshold" />
-                                                      <Slider fx:id="costThresholdSlider" blockIncrement="0.01" majorTickUnit="5.0" max="1.0" minorTickCount="1" onMouseClicked="#updateTrackingParameters" onMouseDragged="#updateTrackingParameters" onMousePressed="#updateTrackingParameters" />
+                                                      <Slider fx:id="costThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="5.0" minorTickCount="1" onMouseClicked="#updateTrackingParameters" onMouseDragged="#updateTrackingParameters" onMousePressed="#updateTrackingParameters" />
                                                       <TextField fx:id="costThresholdField" maxWidth="80.0" minWidth="45.0" onAction="#updateTrackingParameters" />
                                                    </children>
                                                    <VBox.margin>

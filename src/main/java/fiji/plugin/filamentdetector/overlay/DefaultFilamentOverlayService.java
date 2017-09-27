@@ -17,6 +17,7 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 import fiji.plugin.filamentdetector.event.FilamentSelectedEvent;
+import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
@@ -69,7 +70,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void add(Filament filament) {
 		Dataset data = (Dataset) imageDisplay.getActiveView().getData();
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 
 		float[] x = filament.getXCoordinates();
 		float[] y = filament.getYCoordinates();
@@ -155,14 +156,14 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void disableOverlay(boolean disable) {
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 		imp.setHideOverlay(!disable);
 	}
 
 	@Override
 	public void exportToROIManager() {
 
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 
 		Overlay overlay = imp.getOverlay();
 		if (overlay != null) {
@@ -195,7 +196,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void mouseClicked(MouseEvent event) {
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 
 		// Get the real x and y
 		double x = imp.getWindow().getCanvas().offScreenXD(event.getX());
@@ -240,7 +241,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void refresh() {
 
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 
 		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
 			Overlay overlay = imp.getOverlay();
@@ -269,7 +270,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void remove(Filament filament) {
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 
 		Roi roiToRemove = filamentROIMap.get(filament);
 		Overlay overlay = imp.getOverlay();
@@ -287,7 +288,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		for (Filament filament : filaments) {
 			remove(filament);
 		}
-		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
+		getImagePlus().updateAndDraw();
 	}
 
 	@Override
@@ -296,7 +297,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		for (Filament filament : trackedFilament) {
 			remove(filament);
 		}
-		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
+		getImagePlus().updateAndDraw();
 	}
 
 	@Override
@@ -305,13 +306,13 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			trackedFilamentDisplayed.remove(trackedFilament);
 			remove(trackedFilament);
 		}
-		convert.convert(imageDisplay, ImagePlus.class).updateAndDraw();
+		getImagePlus().updateAndDraw();
 	}
 
 	@Override
 	public void reset() {
 
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 
 		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
 			Overlay overlay = imp.getOverlay();
@@ -351,12 +352,8 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void setImageDisplay(ImageDisplay imageDisplay) {
-
-		// Set listeners
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
-		imp.getWindow().getCanvas().addMouseListener(this);
-
 		this.imageDisplay = imageDisplay;
+		getImagePlus().getWindow().getCanvas().addMouseListener(this);
 	}
 
 	@Override
@@ -368,7 +365,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 		Roi roi = filamentROIMap.get(filament);
 		roi.setStrokeWidth(roi.getStrokeWidth() * 2);
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		ImagePlus imp = getImagePlus();
 		if (moveToFrame) {
 			imp.setT(filament.getFrame());
 		}
@@ -385,7 +382,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			setSelected(filament, false, false);
 		}
 		if (moveToFrame) {
-			ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+			ImagePlus imp = getImagePlus();
 			imp.setT(trackedFilament.get(0).getFrame());
 		}
 	}
@@ -398,6 +395,14 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void setDrawBoundingBoxes(boolean drawBoundingBoxes) {
 		this.drawBoundingBoxes = drawBoundingBoxes;
+	}
+
+	private ImagePlus getImagePlus() {
+		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+		if (imageDisplay != null && imp == null) {
+			eventService.publish(new ImageNotFoundEvent());
+		}
+		return imp;
 	}
 
 }

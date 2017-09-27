@@ -104,7 +104,6 @@ public class FilamentsTracker {
 				double cost = costs.get(source);
 				Filament target = assignment.get(source);
 				trackedFilaments.addLink(source, target);
-				//log.info(cost);
 			}
 
 		}

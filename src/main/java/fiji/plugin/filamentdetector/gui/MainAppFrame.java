@@ -86,6 +86,7 @@ public class MainAppFrame extends JFrame {
 			AnchorPane mainScreen = (AnchorPane) loader.load();
 			Scene scene = new Scene(mainScreen);
 			this.fxPanel.setScene(scene);
+			mainController.setPane(mainScreen);
 
 			// Resize the JFrame to the JavaFX scene
 			this.setSize((int) scene.getWidth(), (int) scene.getHeight());

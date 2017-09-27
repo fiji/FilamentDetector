@@ -4,19 +4,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.event.EventHandler;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
+import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -59,7 +64,7 @@ public class MainController extends Controller implements Initializable {
 
 	@FXML
 	private CheckBox disableOverlaysCheckbox;
-	
+
 	@FXML
 	private CheckBox drawBoundsCheckbox;
 
@@ -227,6 +232,21 @@ public class MainController extends Controller implements Initializable {
 
 		TitledPane titledPane = new TitledPane("About FilamentDetector", pane);
 		mainPane.getPanes().add(titledPane);
+	}
+
+	@EventHandler
+	private void disableInterface(ImageNotFoundEvent event) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				getPane().setDisable(true);
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setContentText("It looks like the original image disapears. Please restart the plugin.");
+				alert.showAndWait();
+			}
+		});
+
 	}
 
 }

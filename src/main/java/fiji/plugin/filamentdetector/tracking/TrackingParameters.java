@@ -2,7 +2,7 @@ package fiji.plugin.filamentdetector.tracking;
 
 public class TrackingParameters {
 
-	private double costThreshold = 0.5;
+	private double costThreshold = 2;
 
 	public double getCostThreshold() {
 		return costThreshold;
