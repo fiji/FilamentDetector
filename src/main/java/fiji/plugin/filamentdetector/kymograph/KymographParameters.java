@@ -5,6 +5,7 @@ public class KymographParameters {
 	private boolean buildOneRandomKymograph = false;
 	private boolean saveKymographs = false;
 	private boolean showKymographs = true;
+	private boolean saveKymographLines = false;
 	private double lineThickness = 4;
 	private double startOffsetLength = 10;
 	private double endOffsetLength = 10;
@@ -57,12 +58,21 @@ public class KymographParameters {
 		this.endOffsetLength = endOffsetLength;
 	}
 
+	public boolean isSaveKymographLines() {
+		return saveKymographLines;
+	}
+
+	public void setSaveKymographLines(boolean saveKymographLines) {
+		this.saveKymographLines = saveKymographLines;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";
 
 		out += "buildOneRandomKymograph = " + buildOneRandomKymograph + "\n";
 		out += "showKymographs = " + showKymographs + "\n";
+		out += "saveKymographLines = " + saveKymographLines + "\n";
 		out += "lineThickness = " + lineThickness + "\n";
 		out += "startOffsetLength = " + startOffsetLength + "\n";
 		out += "endOffsetLength = " + endOffsetLength + "\n";

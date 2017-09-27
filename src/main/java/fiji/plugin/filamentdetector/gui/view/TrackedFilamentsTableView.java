@@ -169,7 +169,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 		TrackedFilamentModel trackedFilamentModel = trackedFilamentModelList.stream()
 				.filter(f -> f.getTrackedFilament().equals(trackedFilament)).findFirst().orElse(null);
 		trackedFilamentModelList.remove(trackedFilamentModel);
-		trackedFilament.remove(trackedFilament);
+		trackedFilaments.remove(trackedFilament);
 
 		overlayService.remove(trackedFilament);
 	}

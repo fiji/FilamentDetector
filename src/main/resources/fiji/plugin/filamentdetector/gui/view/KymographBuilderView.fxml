@@ -101,6 +101,14 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
+                        <CheckBox fx:id="showKymographsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show Kymograph(s)" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
                         <CheckBox fx:id="saveCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save kymographs next to the image file." />
                      </children>
                      <padding>
@@ -109,7 +117,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <CheckBox fx:id="showKymographsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show Kymograph(s)" />
+                        <CheckBox fx:id="saveLinesCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save kymograph lines as ImageJ1 Roi" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -59,6 +59,9 @@ public class KymographBuilderController extends Controller implements Initializa
 	@FXML
 	private TextField endOffsetField;
 
+	@FXML
+	private CheckBox saveLinesCheckbox;
+
 	private Thread kymographThread;
 	private Task<Integer> kymographTask;
 
@@ -76,6 +79,7 @@ public class KymographBuilderController extends Controller implements Initializa
 		saveCheckbox.setSelected(kymographGenerator.getKymographParameters().isSaveKymographs());
 		onlyBuildOneCheckbox.setSelected(kymographGenerator.getKymographParameters().isBuildOneRandomKymograph());
 		showKymographsCheckbox.setSelected(kymographGenerator.getKymographParameters().isShowKymographs());
+		saveLinesCheckbox.setSelected(kymographGenerator.getKymographParameters().isSaveKymographLines());
 
 		lineThicknessField.setText(Double.toString(kymographGenerator.getKymographParameters().getLineThickness()));
 		startOffsetField.setText(Double.toString(kymographGenerator.getKymographParameters().getStartOffsetLength()));
@@ -101,6 +105,7 @@ public class KymographBuilderController extends Controller implements Initializa
 		kymographGenerator.getKymographParameters().setBuildOneRandomKymograph(onlyBuildOneCheckbox.isSelected());
 		kymographGenerator.getKymographParameters().setSaveKymographs(saveCheckbox.isSelected());
 		kymographGenerator.getKymographParameters().setShowKymographs(showKymographsCheckbox.isSelected());
+		kymographGenerator.getKymographParameters().setSaveKymographLines(saveLinesCheckbox.isSelected());
 
 		kymographGenerator.getKymographParameters().setLineThickness(Double.parseDouble(lineThicknessField.getText()));
 		kymographGenerator.getKymographParameters()
@@ -128,13 +133,19 @@ public class KymographBuilderController extends Controller implements Initializa
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-				String statusMessage = kymographGenerator.nKymographs() + " kymograph(s) has been generated";
-				if (kymographGenerator.getKymographParameters().isSaveKymographs()) {
-					statusMessage += " and saved";
-				}
-				statusMessage += " with the following parameters : ";
+				String statusMessage = kymographGenerator.nKymographs()
+						+ " kymograph(s) has been generated with the following parameters : ";
 				status.showStatus(statusMessage);
 				status.showStatus(kymographGenerator.getKymographParameters().toString());
+
+				if (kymographGenerator.getKymographParameters().isSaveKymographs()) {
+					if (kymographGenerator.kymographsHasBeenSaved()) {
+						status.showStatus("Kymographs has been saved in the parent folder of the image.");
+					} else {
+						status.showStatus(
+								"The parent folder of the image is not set. Please save the image and restart the plugin.");
+					}
+				}
 			}
 
 			@Override
