@@ -9,10 +9,16 @@ import fiji.plugin.filamentdetector.Calibrations;
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
 import fiji.plugin.filamentdetector.detection.FilamentsDetector;
 import fiji.plugin.filamentdetector.exporter.CSVFilamentExporter;
+import fiji.plugin.filamentdetector.exporter.CSVTrackedFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.DataExporter;
+import fiji.plugin.filamentdetector.exporter.IJ1RoiFilamentExporter;
 import fiji.plugin.filamentdetector.exporter.JSONFilamentExporter;
+import fiji.plugin.filamentdetector.exporter.JSONTrackedFilamentExporter;
 import fiji.plugin.filamentdetector.model.Filaments;
+import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
+import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.TrackingParameters;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imagej.display.ImageDisplay;
@@ -32,9 +38,14 @@ public class TestExporter {
 
 		ImageDisplay imd = ij.imageDisplay().getActiveImageDisplay();
 
+		Calibrations calibrations = new Calibrations(ij.context(), dataset);
+
 		// Setup parameters
 		DetectionParameters params = new DetectionParameters();
 		params.setSigma(2.5);
+
+		TrackingParameters trackingParams = new TrackingParameters();
+		trackingParams.setCostThreshold(0.5);
 
 		// Detect filaments
 		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, params);
@@ -43,11 +54,25 @@ public class TestExporter {
 
 		log.info("Filaments Detected : " + filaments.size());
 
-		DataExporter<Filaments> exporter = new JSONFilamentExporter(context, new Calibrations(context, dataset));
-		// exporter = new IJ1RoiFilamentExporter(context);
-		exporter = new CSVFilamentExporter(context, new Calibrations(context, dataset));
+		FilamentsTracker tracker = new FilamentsTracker(ij.context(), filaments, trackingParams);
+		tracker.track();
+		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();
+
+		log.info("Tracked Filaments Detected : " + trackedFilaments.size());
+
+		DataExporter<Filaments> exporter;
+		exporter = new JSONFilamentExporter(context, calibrations);
+		exporter = new IJ1RoiFilamentExporter(context);
+		exporter = new CSVFilamentExporter(context, calibrations);
 
 		File file = new File("/home/hadim/test" + exporter.getExtension().substring(1));
-		exporter.export(filaments, file);
+		// exporter.export(filaments, file);
+
+		DataExporter<TrackedFilaments> trackedExporter;
+		trackedExporter = new CSVTrackedFilamentExporter(context, calibrations);
+		trackedExporter = new JSONTrackedFilamentExporter(context, calibrations);
+
+		file = new File("/home/hadim/test" + trackedExporter.getExtension().substring(1));
+		trackedExporter.export(trackedFilaments, file);
 	}
 }
