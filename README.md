@@ -2,7 +2,7 @@
 
 `FilamentDetector` is a **Fiji plugin** that allow easy, fast and accurate detection and tracking of **biological filament**.
 
-Please visit https://imagej.net/FilamentDetector for more informations.
+Please visit https://imagej.net/FilamentDetector for more informations (the Wiki page needs to be created).
 
 ## Installation
 
