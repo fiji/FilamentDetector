@@ -104,9 +104,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.hadim</groupId>
+			<groupId>com.github.thorstenwagner</groupId>
 			<artifactId>ij-ridgedetection</artifactId>
-			<version>d1b7e8b3d9</version>
+			<version>0727de72f2</version>
 		</dependency>
 
 		<dependency>

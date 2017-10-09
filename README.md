@@ -4,6 +4,9 @@
 
 Please visit https://imagej.net/FilamentDetector for more informations (the Wiki page needs to be created).
 
+![Screenshot of FilamentDetector](./screenshot.png "Screenshot of FilamentDetector")
+
+
 ## Installation
 
 - At the moment, you have to compile the plugin yourself and add it to your Fiji plugin directory.
