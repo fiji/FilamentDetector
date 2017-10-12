@@ -13,7 +13,7 @@ public interface LineDrawer {
 	String getDescription();
 
 	void setDescription(String description);
-	
+
 	String toString();
 
 }

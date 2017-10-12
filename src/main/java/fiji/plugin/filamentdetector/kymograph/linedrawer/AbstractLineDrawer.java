@@ -24,7 +24,7 @@ public abstract class AbstractLineDrawer implements LineDrawer {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;

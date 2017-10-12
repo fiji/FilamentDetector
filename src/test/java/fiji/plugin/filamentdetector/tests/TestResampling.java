@@ -6,7 +6,6 @@ import org.scijava.log.LogService;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
-import ij.plugin.Selection;
 import ij.plugin.frame.RoiManager;
 import ij.process.FloatPolygon;
 import net.imagej.Dataset;
