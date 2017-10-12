@@ -4,7 +4,6 @@
 ## Eclipse ##
 /.classpath
 /.project
-/.settings/
 
 ## vim ##
 *.swp
