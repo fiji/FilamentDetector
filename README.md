@@ -12,8 +12,10 @@ Please visit https://imagej.net/FilamentDetector for more informations (the Wiki
 
 ## Installation
 
-- At the moment, you have to compile the plugin yourself and add it to your Fiji plugin directory.
-- A Fiji update site will be setup soon.
+- Download the last released version [here](http://maven.imagej.net/service/local/artifact/maven/redirect?r=releases&g=org.scijava&a=FilamentDetector&v=RELEASE&e=jar).
+- Copy the .jar file to your Fiji plugins directory.
+- Launch Fiji.
+- You can run the plugin with `Plugins ► Tracking ► FilamentDetector`.
 
 ## Authors
 
