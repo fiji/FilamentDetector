@@ -1,3 +1,5 @@
+**Important**: *This plugin is in heavy development and not yet suitable for use*.
+
 # FilamentDetector
 
 [![](https://travis-ci.org/hadim/FilamentDetector.svg?branch=master)](https://travis-ci.org/hadim/FilamentDetector)
@@ -7,7 +9,6 @@
 Please visit https://imagej.net/FilamentDetector for more informations (the Wiki page needs to be created).
 
 ![Screenshot of FilamentDetector](./screenshot.png "Screenshot of FilamentDetector")
-
 
 ## Installation
 
