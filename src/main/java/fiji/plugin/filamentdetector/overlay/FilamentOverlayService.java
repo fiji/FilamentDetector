@@ -54,4 +54,12 @@ public interface FilamentOverlayService extends ImageJService {
 	boolean isDrawBoundingBoxes();
 
 	void setDrawBoundingBoxes(boolean drawBoundingBoxes);
+	
+	boolean isDrawPlusTips();
+	
+	boolean isDrawMinusTips();
+	
+	void setDrawPlusTips(boolean drawPlusTips);
+	
+	void setDrawMinusTips(boolean drawMinusTips);
 }

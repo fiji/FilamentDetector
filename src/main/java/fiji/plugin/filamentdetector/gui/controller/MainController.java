@@ -68,6 +68,12 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	private CheckBox drawBoundsCheckbox;
 
+	@FXML
+	private CheckBox drawPlusTipsCheckbox;
+
+	@FXML
+	private CheckBox drawMinusTipsCheckbox;
+
 	private FilamentWorkflow filamentWorkflow;
 
 	private WelcomeController welcomeController;
@@ -156,6 +162,9 @@ public class MainController extends Controller implements Initializable {
 		overlay.disableOverlay(false);
 		disableOverlaysCheckbox.setSelected(false);
 		drawBoundsCheckbox.setSelected(overlay.isDrawBoundingBoxes());
+
+		drawPlusTipsCheckbox.setSelected(overlay.isDrawPlusTips());
+		drawMinusTipsCheckbox.setSelected(overlay.isDrawMinusTips());
 	}
 
 	@FXML
@@ -163,6 +172,8 @@ public class MainController extends Controller implements Initializable {
 		overlay.setColorAlpha((int) transparencySlider.getValue());
 		overlay.setFilamentWidth((int) lineWidthSlider.getValue());
 		overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());
+		overlay.setDrawPlusTips(drawPlusTipsCheckbox.isSelected());
+		overlay.setDrawMinusTips(drawMinusTipsCheckbox.isSelected());
 		overlay.refresh();
 	}
 

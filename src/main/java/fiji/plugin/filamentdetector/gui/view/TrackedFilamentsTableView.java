@@ -119,10 +119,6 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 					removeTrackedFilament(controller.getTrackedFilament());
 				});
 
-				System.out.println(newSelection.getTrackedFilament().getPlusTip());
-				System.out.println(newSelection.getTrackedFilament().getMinusTip());
-				System.out.println("***********");
-
 			} else {
 				setNoDetail();
 			}

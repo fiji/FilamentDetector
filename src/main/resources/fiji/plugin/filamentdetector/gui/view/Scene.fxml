@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="850.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="850.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
@@ -72,7 +72,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="5.0">
                                              <children>
-                                                <Label text="Line Width" />
+                                                <Label text="Filament Width" />
                                                 <Slider fx:id="lineWidthSlider" blockIncrement="1.0" max="10.0" onMouseClicked="#updateOverlaySettings" onMouseDragged="#updateOverlaySettings" />
                                                 <Label fx:id="lineWidthValueLabel" />
                                              </children>
@@ -80,6 +80,30 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </HBox>
+                                          <TitledPane animated="false" collapsible="false" text="Only for Tracked Filaments">
+                                             <content>
+                                                <VBox>
+                                                   <children>
+                                                      <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                         <children>
+                                                            <CheckBox fx:id="drawPlusTipsCheckbox" mnemonicParsing="false" onAction="#updateOverlaySettings" onMouseClicked="#updateHideOverlay" text="Draw Plus Tips" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                         <children>
+                                                            <CheckBox fx:id="drawMinusTipsCheckbox" mnemonicParsing="false" onAction="#updateOverlaySettings" onMouseClicked="#updateHideOverlay" text="Draw Minus Tips" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </TitledPane>
                                           <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                              <children>
                                                 <Button mnemonicParsing="false" onMouseClicked="#exportToROIManager" text="Export to ROI Manager" />

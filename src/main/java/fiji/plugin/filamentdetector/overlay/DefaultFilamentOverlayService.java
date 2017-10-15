@@ -20,9 +20,11 @@ import fiji.plugin.filamentdetector.event.FilamentSelectedEvent;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
+import fiji.plugin.filamentdetector.model.Tip;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import ij.ImagePlus;
+import ij.gui.OvalRoi;
 import ij.gui.Overlay;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
@@ -55,8 +57,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private int filamentWidth = 2;
 	private int colorAlpha = DEFAULT_COLOR_ALPHA;
 
-	private Map<Filament, Roi> filamentROIMap = new HashMap<>();
+	private HashMap<Filament, Roi> filamentROIMap = new HashMap<>();
 
+	private List<Filament> filamentDisplayed = new ArrayList<>();
 	private List<TrackedFilament> trackedFilamentDisplayed = new ArrayList<>();
 
 	private ImageDisplay imageDisplay;
@@ -65,7 +68,15 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private List<TrackedFilament> selectedTrackedFilament = new ArrayList<>();
 
 	private boolean drawBoundingBoxes = false;
-	private Map<Filament, Roi> filamentBoundingBoxesMap = new HashMap<>();
+	private HashMap<Filament, Roi> filamentBoundingBoxesMap = new HashMap<>();
+
+	private HashMap<TrackedFilament, List<Roi>> filamentPlusTipsMap = new HashMap<>();
+	private HashMap<TrackedFilament, List<Roi>> filamentMinusTipsMap = new HashMap<>();
+
+	private boolean drawPlusTips = false;
+	private boolean drawMinusTips = false;
+
+	private int tipDiameter = 10;
 
 	@Override
 	public void add(Filament filament) {
@@ -116,7 +127,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		imp.repaintWindow();
 
 		filamentROIMap.put(filament, roi);
-
+		if (!filamentDisplayed.contains(filament)) {
+			filamentDisplayed.add(filament);
+		}
 	}
 
 	@Override
@@ -128,16 +141,65 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void add(TrackedFilament trackedFilament) {
+
 		trackedFilamentDisplayed.add(trackedFilament);
 		for (Filament filament : trackedFilament) {
 			add(filament);
 		}
+
+		if (drawPlusTips) {
+			List<Roi> rois = addTip(trackedFilament, trackedFilament.getPlusTip());
+			filamentPlusTipsMap.put(trackedFilament, rois);
+		}
+		if (drawMinusTips) {
+			List<Roi> rois = addTip(trackedFilament, trackedFilament.getMinusTip());
+			filamentMinusTipsMap.put(trackedFilament, rois);
+		}
+	}
+
+	private List<Roi> addTip(TrackedFilament trackedFilament, Tip tip) {
+
+		Dataset data = (Dataset) imageDisplay.getActiveView().getData();
+		ImagePlus imp = getImagePlus();
+
+		Color color = trackedFilament.getColor();
+		Color realColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorAlpha);
+
+		Overlay overlay = imp.getOverlay();
+		if (overlay == null) {
+			overlay = new Overlay();
+			imp.setOverlay(overlay);
+		}
+
+		double x;
+		double y;
+		int frame;
+
+		List<Roi> rois = new ArrayList<>();
+
+		for (int i = 0; i < tip.getX().length; i++) {
+			x = tip.getX()[i];
+			y = tip.getY()[i];
+			frame = tip.getFrames()[i];
+
+			Roi tipRoi = new OvalRoi(x, y, tipDiameter, tipDiameter);
+			tipRoi.setStrokeColor(realColor);
+			tipRoi.setStrokeWidth(filamentWidth);
+
+			if (data.numDimensions() > 3) {
+				tipRoi.setPosition(-1, -1, frame);
+			} else {
+				tipRoi.setPosition(frame);
+			}
+			overlay.add(tipRoi);
+			rois.add(tipRoi);
+		}
+		return rois;
 	}
 
 	@Override
 	public void add(TrackedFilaments trackedFilaments) {
 		for (TrackedFilament trackedFilament : trackedFilaments) {
-			trackedFilamentDisplayed.add(trackedFilament);
 			add(trackedFilament);
 		}
 	}
@@ -239,47 +301,25 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	@Override
-	public void refresh() {
-
-		ImagePlus imp = getImagePlus();
-
-		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
-			Overlay overlay = imp.getOverlay();
-
-			try {
-				if (overlay != null && entry != null && entry.getValue() != null) {
-					if (overlay.contains(entry.getValue())) {
-						overlay.remove(entry.getValue());
-						overlay.remove(filamentBoundingBoxesMap.get(entry.getKey()));
-					}
-				}
-			} catch (NullPointerException e) {
-				log.error(entry);
-				log.error(entry.getValue());
-				log.error(overlay);
-				log.error(e);
-			}
-		}
-
-		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
-			add(entry.getKey());
-		}
-
-		imp.updateAndDraw();
-	}
-
-	@Override
 	public void remove(Filament filament) {
 		ImagePlus imp = getImagePlus();
 
 		Roi roiToRemove = filamentROIMap.get(filament);
+		Roi boundingBoxToRemove = filamentBoundingBoxesMap.get(filament);
 		Overlay overlay = imp.getOverlay();
 
-		if (overlay != null && roiToRemove != null) {
-			overlay.remove(roiToRemove);
+		if (overlay != null) {
+			if (roiToRemove != null) {
+				overlay.remove(roiToRemove);
+			}
+			if (boundingBoxToRemove != null) {
+				overlay.remove(boundingBoxToRemove);
+			}
 		}
 
 		filamentROIMap.remove(filament);
+		filamentDisplayed.remove(filament);
+		filamentBoundingBoxesMap.remove(filament);
 		imp.updateAndDraw();
 	}
 
@@ -293,10 +333,35 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void remove(TrackedFilament trackedFilament) {
+
 		trackedFilamentDisplayed.remove(trackedFilament);
 		for (Filament filament : trackedFilament) {
 			remove(filament);
 		}
+
+		ImagePlus imp = getImagePlus();
+		List<Roi> plusTipToRemove = filamentPlusTipsMap.get(trackedFilament);
+		List<Roi> minusTipToRemove = filamentMinusTipsMap.get(trackedFilament);
+		Overlay overlay = imp.getOverlay();
+
+		if (plusTipToRemove != null) {
+			for (Roi roi : plusTipToRemove) {
+				if (overlay != null && roi != null) {
+					overlay.remove(roi);
+				}
+			}
+		}
+		if (minusTipToRemove != null) {
+			for (Roi roi : minusTipToRemove) {
+				if (overlay != null && roi != null) {
+					overlay.remove(roi);
+				}
+			}
+		}
+
+		filamentPlusTipsMap.remove(trackedFilament);
+		filamentMinusTipsMap.remove(trackedFilament);
+
 		getImagePlus().updateAndDraw();
 	}
 
@@ -311,32 +376,31 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Override
 	public void reset() {
-
-		ImagePlus imp = getImagePlus();
-
-		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
-			Overlay overlay = imp.getOverlay();
-
-			if (overlay != null) {
-				try {
-					if (overlay != null && entry != null && entry.getValue() != null) {
-						if (overlay.contains(entry.getValue())) {
-							overlay.remove(entry.getValue());
-						}
-					}
-				} catch (NullPointerException e) {
-					log.error(entry);
-					log.error(entry.getValue());
-					log.error(overlay);
-					log.error(e);
-				}
-			}
-
+		for (TrackedFilament trackedFilament : new ArrayList<>(trackedFilamentDisplayed)) {
+			remove(trackedFilament);
+		}
+		for (Filament filament : new ArrayList<>(filamentDisplayed)) {
+			remove(filament);
 		}
 
-		filamentROIMap = new HashMap<>();
-		filamentBoundingBoxesMap = new HashMap<>();
+		ImagePlus imp = getImagePlus();
+		if (imp != null) {
+			imp.updateAndDraw();
+		}
+	}
 
+	@Override
+	public void refresh() {
+		for (TrackedFilament trackedFilament : new ArrayList<>(trackedFilamentDisplayed)) {
+			remove(trackedFilament);
+			add(trackedFilament);
+		}
+		for (Filament filament : new ArrayList<>(filamentDisplayed)) {
+			remove(filament);
+			add(filament);
+		}
+
+		ImagePlus imp = getImagePlus();
 		if (imp != null) {
 			imp.updateAndDraw();
 		}
@@ -409,6 +473,26 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			imp.setCalibration(new ij.measure.Calibration());
 		}
 		return imp;
+	}
+
+	@Override
+	public boolean isDrawPlusTips() {
+		return drawPlusTips;
+	}
+
+	@Override
+	public void setDrawPlusTips(boolean drawPlusTips) {
+		this.drawPlusTips = drawPlusTips;
+	}
+
+	@Override
+	public boolean isDrawMinusTips() {
+		return drawMinusTips;
+	}
+
+	@Override
+	public void setDrawMinusTips(boolean drawMinusTips) {
+		this.drawMinusTips = drawMinusTips;
 	}
 
 }
