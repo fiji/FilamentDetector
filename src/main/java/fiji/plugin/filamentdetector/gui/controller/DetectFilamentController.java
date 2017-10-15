@@ -59,6 +59,24 @@ public class DetectFilamentController extends Controller implements Initializabl
 	FilamentOverlayService overlayService;
 
 	@FXML
+	private Slider lineWidthSlider;
+
+	@FXML
+	private TextField lineWidthField;
+
+	@FXML
+	private Slider highContrastSlider;
+
+	@FXML
+	private TextField highContrastField;
+
+	@FXML
+	private Slider lowContrastSlider;
+
+	@FXML
+	private TextField lowContrastField;
+
+	@FXML
 	private Slider sigmaSlider;
 
 	@FXML
@@ -141,6 +159,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	private SliderLabelSynchronizer sigmaSync;
 	private UpperLowerSynchronizer thresholdSync;
+	private SliderLabelSynchronizer lineWidthSync;
+	private UpperLowerSynchronizer contrastSync;
+
 	private UpperLowerSynchronizer lengthSync;
 	private UpperLowerSynchronizer sinuositySync;
 
@@ -166,6 +187,20 @@ public class DetectFilamentController extends Controller implements Initializabl
 		thresholdSync.setUpperTooltip("Line points with a response larger as this threshold are accepted.");
 		thresholdSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowerThresh());
 		thresholdSync.setUpperValue(filamentWorkflow.getDetectionParameters().getUpperThresh());
+
+		lineWidthSync = new SliderLabelSynchronizer(lineWidthSlider, lineWidthField);
+		lineWidthSync.setTooltip(
+				"The line diameter in pixels. It estimates the parameter \"sigma\" (available in the \"Advanced\" tab).");
+		lineWidthSync.setValue(filamentWorkflow.getDetectionParameters().getLineWidth());
+
+		contrastSync = new UpperLowerSynchronizer(lowContrastSlider, lowContrastField, highContrastSlider,
+				highContrastField);
+		contrastSync.setLowerTooltip(
+				"Lowest grayscale value of the line. It estimates the parameter \"Upper Threshold\" (available in the \\\"Advanced\\\" tab).");
+		contrastSync.setUpperTooltip(
+				"Highest grayscale value of the line. It estimates the parameter \"Lower Threshold\" (available in the \\\"Advanced\\\" tab).");
+		contrastSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowContrast());
+		contrastSync.setUpperValue(filamentWorkflow.getDetectionParameters().getHighContrast());
 
 		detectCurrentFrameButton.setSelected(filamentWorkflow.getDetectionParameters().isDetectOnlyCurrentFrame());
 		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getDetectionParameters().isSimplifyFilaments());
@@ -257,7 +292,6 @@ public class DetectFilamentController extends Controller implements Initializabl
 		}
 
 		status.showStatus(total + " filament(s) has been added.");
-
 		eventService.publish(new FilterFilamentEvent(filteringParameters));
 	}
 
@@ -272,6 +306,19 @@ public class DetectFilamentController extends Controller implements Initializabl
 			thresholdSync.update(event);
 			filamentWorkflow.getDetectionParameters().setLowerThresh(thresholdSync.getLowerValue());
 			filamentWorkflow.getDetectionParameters().setUpperThresh(thresholdSync.getUpperValue());
+		}
+
+		if (lineWidthSync.isEvent(event)) {
+			lineWidthSync.update(event);
+			filamentWorkflow.getDetectionParameters().setLineWidth(lineWidthSync.getValue());
+			sigmaSync.setValue(filamentWorkflow.getDetectionParameters().getSigma());
+
+		} else if (contrastSync.isEvent(event)) {
+			contrastSync.update(event);
+			filamentWorkflow.getDetectionParameters().setLowContrast(contrastSync.getLowerValue());
+			filamentWorkflow.getDetectionParameters().setHighContrast(contrastSync.getUpperValue());
+			thresholdSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowerThresh());
+			thresholdSync.setUpperValue(filamentWorkflow.getDetectionParameters().getUpperThresh());
 		}
 
 		else if (event.getSource().equals(detectCurrentFrameButton)) {

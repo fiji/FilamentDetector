@@ -7,6 +7,11 @@ public class DetectionParameters {
 	private double sigma = 1.51;
 	private double upperThresh = 7.99;
 	private double lowerThresh = 3.06;
+
+	private double lineWidth = 3.5;
+	private double highContrast = 230;
+	private double lowContrast = 87;
+
 	private double minLength = 0;
 	private double maxLength = 0;
 	private boolean isDarkLine = false;
@@ -124,6 +129,54 @@ public class DetectionParameters {
 		this.simplifyToleranceDistance = simplifyToleranceDistance;
 	}
 
+	public double getLineWidth() {
+		return lineWidth;
+	}
+
+	public void setLineWidth(double lineWidth) {
+		this.lineWidth = lineWidth;
+		computerParameters();
+	}
+
+	public double getHighContrast() {
+		return highContrast;
+	}
+
+	public void setHighContrast(double highContrast) {
+		this.highContrast = highContrast;
+		computerParameters();
+	}
+
+	public double getLowContrast() {
+		return lowContrast;
+	}
+
+	public void setLowContrast(double lowContrast) {
+		this.lowContrast = lowContrast;
+		computerParameters();
+	}
+
+	private void computerParameters() {
+		// Compute sigma
+		this.sigma = (this.lineWidth / (2 * Math.sqrt(3))) + 0.5;
+
+		// Compute upper threshold
+		double firstTerm = 0.17;
+		double secondTerm = (-2 * this.highContrast * (lineWidth / 2.0)
+				/ (Math.sqrt(2 * Math.PI) * Math.pow(this.sigma, 3)));
+		secondTerm = Math.abs(secondTerm);
+		double thirdTerm = Math.exp(-(Math.pow(this.lineWidth / 2.0, 2)) / (2 * Math.pow(this.sigma, 2)));
+		this.upperThresh = Math.floor(firstTerm * secondTerm) * thirdTerm;
+
+		// Compute lower threshold
+		firstTerm = 0.17;
+		secondTerm = (-2 * this.lowContrast * (lineWidth / 2.0)
+				/ (Math.sqrt(2 * Math.PI) * Math.pow(this.sigma, 3)));
+		secondTerm = Math.abs(secondTerm);
+		thirdTerm = Math.exp(-(Math.pow(this.lineWidth / 2.0, 2)) / (2 * Math.pow(this.sigma, 2)));
+		this.lowerThresh = Math.floor(firstTerm * secondTerm) * thirdTerm;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";
@@ -131,6 +184,11 @@ public class DetectionParameters {
 		out += "Sigma = " + sigma + "\n";
 		out += "Lower Threshold = " + lowerThresh + "\n";
 		out += "Upper Threshold = " + upperThresh + "\n";
+
+		out += "Line Width = " + lineWidth + "\n";
+		out += "High Contrast = " + highContrast + "\n";
+		out += "Low Contrast = " + lowContrast + "\n";
+
 		out += "Detect Only Current Frame = " + detectOnlyCurrentFrame + "\n";
 		out += "Simplify Filaments = " + simplifyFilaments + "\n";
 		out += "Simplify Tolerance Distance = " + simplifyToleranceDistance;
