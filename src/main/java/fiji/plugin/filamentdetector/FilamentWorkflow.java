@@ -68,7 +68,7 @@ public class FilamentWorkflow {
 		}
 
 		// Get physical pixel sizes (um) and duration between frames (s)
-		calibrations = new Calibrations(context, getDataset());
+		calibrations = new Calibrations(context, getDataset(), getImagePlus());
 	}
 
 	public void initDetection() {

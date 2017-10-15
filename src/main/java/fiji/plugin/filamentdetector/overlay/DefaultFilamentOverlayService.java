@@ -317,17 +317,19 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
 			Overlay overlay = imp.getOverlay();
 
-			try {
-				if (overlay != null && entry != null && entry.getValue() != null) {
-					if (overlay.contains(entry.getValue())) {
-						overlay.remove(entry.getValue());
+			if (overlay != null) {
+				try {
+					if (overlay != null && entry != null && entry.getValue() != null) {
+						if (overlay.contains(entry.getValue())) {
+							overlay.remove(entry.getValue());
+						}
 					}
+				} catch (NullPointerException e) {
+					log.error(entry);
+					log.error(entry.getValue());
+					log.error(overlay);
+					log.error(e);
 				}
-			} catch (NullPointerException e) {
-				log.error(entry);
-				log.error(entry.getValue());
-				log.error(overlay);
-				log.error(e);
 			}
 
 		}
@@ -401,6 +403,10 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
 		if (imageDisplay != null && imp == null) {
 			eventService.publish(new ImageNotFoundEvent());
+		}
+		ij.measure.Calibration cal = imp.getCalibration();
+		if (cal == null) {
+			imp.setCalibration(new ij.measure.Calibration());
 		}
 		return imp;
 	}

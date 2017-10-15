@@ -1,6 +1,8 @@
 package fiji.plugin.filamentdetector.model;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrackedFilament extends Filaments {
 
@@ -9,6 +11,12 @@ public class TrackedFilament extends Filaments {
 	private static int idCounter = 0;
 	private int id;
 	private Color color;
+
+	// The most dynamic tip
+	private Tip plusTip;
+
+	// The less dynamic tip
+	private Tip minusTip;
 
 	public boolean lastFilamentIs(Filament filament) {
 		return filament.equals(this.get(this.size() - 1));
@@ -42,4 +50,59 @@ public class TrackedFilament extends Filaments {
 		}
 	}
 
+	public Tip getPlusTip() {
+		if (plusTip == null) {
+			this.detectTips();
+		}
+		return plusTip;
+	}
+
+	public Tip getMinusTip() {
+		if (minusTip == null) {
+			this.detectTips();
+		}
+		return minusTip;
+	}
+
+	protected void detectTips() {
+
+		List<Double> tip1X = new ArrayList<>();
+		List<Double> tip1Y = new ArrayList<>();
+		List<Double> tip2X = new ArrayList<>();
+		List<Double> tip2Y = new ArrayList<>();
+
+		List<Integer> tip1Frame = new ArrayList<>();
+		List<Integer> tip2Frame = new ArrayList<>();
+
+		double[] x;
+		double[] y;
+
+		for (Filament filament : this) {
+			x = filament.getXCoordinatesAsDouble();
+			y = filament.getYCoordinatesAsDouble();
+
+			tip1X.add(x[0]);
+			tip1Y.add(y[0]);
+
+			tip2X.add(x[x.length - 1]);
+			tip2Y.add(y[x.length - 1]);
+
+			tip1Frame.add(filament.getFrame());
+			tip2Frame.add(filament.getFrame());
+		}
+
+		Tip tip1 = new Tip(tip1X.stream().mapToDouble(d -> d).toArray(), tip1Y.stream().mapToDouble(d -> d).toArray(),
+				tip1Frame.stream().mapToInt(d -> d).toArray());
+
+		Tip tip2 = new Tip(tip2X.stream().mapToDouble(d -> d).toArray(), tip2Y.stream().mapToDouble(d -> d).toArray(),
+				tip2Frame.stream().mapToInt(d -> d).toArray());
+
+		if ((tip1.getStdX() + tip1.getStdY()) > (tip2.getStdX() + tip2.getStdY())) {
+			plusTip = tip1;
+			minusTip = tip2;
+		} else {
+			plusTip = tip2;
+			minusTip = tip1;
+		}
+	}
 }
