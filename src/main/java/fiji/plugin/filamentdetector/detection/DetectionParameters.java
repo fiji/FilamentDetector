@@ -170,8 +170,7 @@ public class DetectionParameters {
 
 		// Compute lower threshold
 		firstTerm = 0.17;
-		secondTerm = (-2 * this.lowContrast * (lineWidth / 2.0)
-				/ (Math.sqrt(2 * Math.PI) * Math.pow(this.sigma, 3)));
+		secondTerm = (-2 * this.lowContrast * (lineWidth / 2.0) / (Math.sqrt(2 * Math.PI) * Math.pow(this.sigma, 3)));
 		secondTerm = Math.abs(secondTerm);
 		thirdTerm = Math.exp(-(Math.pow(this.lineWidth / 2.0, 2)) / (2 * Math.pow(this.sigma, 2)));
 		this.lowerThresh = Math.floor(firstTerm * secondTerm) * thirdTerm;

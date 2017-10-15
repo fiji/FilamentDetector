@@ -235,7 +235,7 @@ public class Filament implements Comparable<Filament> {
 	public void reverseCoordinates() {
 
 		int length = getXCoordinates().length;
-		
+
 		float[] newX = new float[length];
 		float[] newY = new float[length];
 

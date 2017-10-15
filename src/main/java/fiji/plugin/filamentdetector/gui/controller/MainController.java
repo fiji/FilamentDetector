@@ -12,7 +12,6 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
-import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -89,7 +88,8 @@ public class MainController extends Controller implements Initializable {
 	private DataExporterController dataExporterController;
 	private TrackingFilamentController trackingFilamentController;
 	private KymographBuilderController kymographBuilderController;
-	
+	private AnalyzeController analyzerController;
+
 	public MainController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentWorkflow = filamentDetector;
@@ -109,6 +109,8 @@ public class MainController extends Controller implements Initializable {
 						trackingFilamentController.initPane();
 					} else if (new_val.getContent().equals(kymographBuilderController.getPane())) {
 						kymographBuilderController.initPane();
+					} else if (new_val.getContent().equals(analyzerController.getPane())) {
+						analyzerController.initPane();
 					}
 				}
 			}
@@ -162,7 +164,7 @@ public class MainController extends Controller implements Initializable {
 				lineWidthValueLabel.setText(Math.round(newValue.intValue()) + "");
 			}
 		});
-		
+
 		tipDiameterSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
@@ -193,7 +195,7 @@ public class MainController extends Controller implements Initializable {
 		overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());
 		overlay.setDrawPlusTips(drawPlusTipsCheckbox.isSelected());
 		overlay.setDrawMinusTips(drawMinusTipsCheckbox.isSelected());
-		overlay.setTipDiameter((int)tipDiameterSlider.getValue());
+		overlay.setTipDiameter((int) tipDiameterSlider.getValue());
 		overlay.refresh();
 	}
 
@@ -252,13 +254,12 @@ public class MainController extends Controller implements Initializable {
 				kymographBuilderController);
 
 		TitledPane titledPane = new TitledPane("Build Kymographs", pane);
-		titledPane.setText("Build Kymographs");
 		mainPane.getPanes().add(titledPane);
 	}
 
 	public void loadAnalyzer() {
-		Controller controller = null;
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/AnalyzeView.fxml", controller);
+		analyzerController = new AnalyzeController(context, filamentWorkflow);
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/AnalyzerView.fxml", analyzerController);
 
 		TitledPane titledPane = new TitledPane("Analyze the Data", pane);
 		mainPane.getPanes().add(titledPane);

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>17.1.1</version>
+		<relativePath />
+	</parent>
+
+	<artifactId>FilamentDetector</artifactId>
+	<version>0.1.2-SNAPSHOT</version>
+
+	<name>FilamentDetector</name>
+	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
+	<url>https://github.com/hadim/FilamentDetector</url>
+	<inceptionYear>2016</inceptionYear>
+
+	<organization>
+		<name>SciJava</name>
+		<url>http://www.scijava.org/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://choosealicense.com/licenses/mit/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>hadim</id>
+			<name>Hadrien Mary</name>
+			<url>http://imagej.net/User:Hadim</url>
+			<roles>
+				<role>founder</role>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+	</developers>
+	<contributors>
+		<!-- NB: Need a least one element to override the parent. See: https://issues.apache.org/jira/browse/MNG-5220 -->
+		<contributor>
+			<name>None</name>
+		</contributor>
+	</contributors>
+
+	<properties>
+		<package-name>FilamentDetector</package-name>
+		<license.licenseName>mit</license.licenseName>
+		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
+		<gson.version>2.8.2</gson.version>
+
+		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
+		<releaseProfiles>deploy-to-imagej</releaseProfiles>
+	</properties>
+
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git:git://github.com/hadim/FilamentDetector</connection>
+		<developerConnection>scm:git:git@github.com:hadim/FilamentDetector</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/hadim/FilamentDetector</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/hadim/FilamentDetector/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/FilamentDetector/</url>
+	</ciManagement>
+
+	<dependencies>
+
+		<!--ImageJ -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>sc.fiji</groupId>
+			<artifactId>TrackMate_</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.thorstenwagner</groupId>
+			<artifactId>ij-ridgedetection</artifactId>
+			<version>0727de72f2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>au.com.bytecode</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>sc.fiji</groupId>
+			<artifactId>KymographBuilder</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
+		<!-- Enable IJ1 interface at runtime -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-legacy</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Unit test library -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+</project>
