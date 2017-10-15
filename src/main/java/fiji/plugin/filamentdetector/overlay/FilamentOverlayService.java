@@ -62,4 +62,8 @@ public interface FilamentOverlayService extends ImageJService {
 	void setDrawPlusTips(boolean drawPlusTips);
 	
 	void setDrawMinusTips(boolean drawMinusTips);
+	
+	void setTipDiameter(int tipDiameter);
+	
+	int getTipDiameter();
 }

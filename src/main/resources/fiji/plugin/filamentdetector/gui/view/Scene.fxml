@@ -100,6 +100,16 @@
                                                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                          </padding>
                                                       </HBox>
+                                                      <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                         <children>
+                                                            <Label text="Tip Diameter" />
+                                                            <Slider fx:id="tipDiameterSlider" blockIncrement="1.0" onMouseClicked="#updateOverlaySettings" onMouseDragged="#updateOverlaySettings" />
+                                                            <Label fx:id="tipDiameterValueLabel" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                      </HBox>
                                                    </children>
                                                 </VBox>
                                              </content>

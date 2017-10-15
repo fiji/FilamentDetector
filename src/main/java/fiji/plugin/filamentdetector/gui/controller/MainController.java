@@ -12,6 +12,7 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
+import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -74,6 +75,12 @@ public class MainController extends Controller implements Initializable {
 	@FXML
 	private CheckBox drawMinusTipsCheckbox;
 
+	@FXML
+	private Slider tipDiameterSlider;
+
+	@FXML
+	private Label tipDiameterValueLabel;
+
 	private FilamentWorkflow filamentWorkflow;
 
 	private WelcomeController welcomeController;
@@ -82,7 +89,7 @@ public class MainController extends Controller implements Initializable {
 	private DataExporterController dataExporterController;
 	private TrackingFilamentController trackingFilamentController;
 	private KymographBuilderController kymographBuilderController;
-
+	
 	public MainController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentWorkflow = filamentDetector;
@@ -155,9 +162,21 @@ public class MainController extends Controller implements Initializable {
 				lineWidthValueLabel.setText(Math.round(newValue.intValue()) + "");
 			}
 		});
+		
+		tipDiameterSlider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+				if (newValue == null) {
+					tipDiameterValueLabel.setText("");
+					return;
+				}
+				tipDiameterValueLabel.setText(Math.round(newValue.intValue()) + "");
+			}
+		});
 
 		transparencySlider.setValue(overlay.getColorAlpha());
 		lineWidthSlider.setValue(overlay.getFilamentWidth());
+		tipDiameterSlider.setValue(overlay.getTipDiameter());
 
 		overlay.disableOverlay(false);
 		disableOverlaysCheckbox.setSelected(false);
@@ -174,6 +193,7 @@ public class MainController extends Controller implements Initializable {
 		overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());
 		overlay.setDrawPlusTips(drawPlusTipsCheckbox.isSelected());
 		overlay.setDrawMinusTips(drawMinusTipsCheckbox.isSelected());
+		overlay.setTipDiameter((int)tipDiameterSlider.getValue());
 		overlay.refresh();
 	}
 

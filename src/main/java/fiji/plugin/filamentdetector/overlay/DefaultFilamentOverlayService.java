@@ -182,7 +182,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			y = tip.getY()[i];
 			frame = tip.getFrames()[i];
 
-			Roi tipRoi = new OvalRoi(x, y, tipDiameter, tipDiameter);
+			Roi tipRoi = new OvalRoi(x - tipDiameter / 2, y - tipDiameter / 2, tipDiameter, tipDiameter);
 			tipRoi.setStrokeColor(realColor);
 			tipRoi.setStrokeWidth(filamentWidth);
 
@@ -308,13 +308,17 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		Roi boundingBoxToRemove = filamentBoundingBoxesMap.get(filament);
 		Overlay overlay = imp.getOverlay();
 
-		if (overlay != null) {
-			if (roiToRemove != null) {
-				overlay.remove(roiToRemove);
+		try {
+			if (overlay != null) {
+				if (roiToRemove != null) {
+					overlay.remove(roiToRemove);
+				}
+				if (boundingBoxToRemove != null) {
+					overlay.remove(boundingBoxToRemove);
+				}
 			}
-			if (boundingBoxToRemove != null) {
-				overlay.remove(boundingBoxToRemove);
-			}
+		} catch (Exception e) {
+
 		}
 
 		filamentROIMap.remove(filament);
@@ -493,6 +497,16 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void setDrawMinusTips(boolean drawMinusTips) {
 		this.drawMinusTips = drawMinusTips;
+	}
+
+	@Override
+	public int getTipDiameter() {
+		return tipDiameter;
+	}
+
+	@Override
+	public void setTipDiameter(int tipDiameter) {
+		this.tipDiameter = tipDiameter;
 	}
 
 }
