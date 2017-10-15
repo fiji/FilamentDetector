@@ -97,12 +97,22 @@ public class TrackedFilament extends Filaments {
 		Tip tip2 = new Tip(tip2X.stream().mapToDouble(d -> d).toArray(), tip2Y.stream().mapToDouble(d -> d).toArray(),
 				tip2Frame.stream().mapToInt(d -> d).toArray());
 
+		boolean reverseCoordinates = false;
 		if ((tip1.getStdX() + tip1.getStdY()) > (tip2.getStdX() + tip2.getStdY())) {
 			plusTip = tip1;
 			minusTip = tip2;
+			reverseCoordinates = true;
 		} else {
 			plusTip = tip2;
 			minusTip = tip1;
+		}
+
+		// By convention we say the index 0 of the coordinates is the minusTip
+		// and the last index is the plusTip.
+		if (reverseCoordinates) {
+			for (Filament filament : this) {
+				filament.reverseCoordinates();
+			}
 		}
 	}
 }

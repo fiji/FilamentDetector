@@ -48,7 +48,6 @@ public class KymographGenerator {
 		this.kymographParameters = new KymographParameters();
 
 		// Disable KymographBuilder logs
-		// TODO: not working
 		System.setProperty("scijava.log.level:sc.fiji.kymographBuilder.KymographFactory", "none");
 		System.setProperty("scijava.log.level:sc.fiji.kymographBuilder.KymographCreator", "none");
 	}

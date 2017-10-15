@@ -118,6 +118,18 @@ public class KymographBuilderController extends Controller implements Initializa
 			}
 		});
 
+		lineThicknessField.textProperty().addListener((observable, oldValue, newValue) -> {
+			updateParameters();
+		});
+
+		startOffsetField.textProperty().addListener((observable, oldValue, newValue) -> {
+			updateParameters();
+		});
+
+		endOffsetField.textProperty().addListener((observable, oldValue, newValue) -> {
+			updateParameters();
+		});
+
 		// Add line drawers to Combobox
 		lineDrawers = new ArrayList<>();
 		lineDrawers.add(new LongestFilamentLineDrawer());
@@ -169,6 +181,8 @@ public class KymographBuilderController extends Controller implements Initializa
 		kymographTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
+				kymographGenerator.setImageDisplay(filamentWorkflow.getImageDisplay());
+				kymographGenerator.setTrackedFilaments(filamentWorkflow.getTrackedFilaments());
 				kymographGenerator.build();
 				return 0;
 			}

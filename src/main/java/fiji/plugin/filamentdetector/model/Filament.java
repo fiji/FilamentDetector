@@ -11,7 +11,7 @@ public class Filament implements Comparable<Filament> {
 
 	public static Color DEFAULT_COLOR = Color.orange;
 
-	private final Line line;
+	private Line line;
 	private final int frame;
 
 	private double length = Double.NaN;
@@ -230,6 +230,21 @@ public class Filament implements Comparable<Filament> {
 		coords[3] = this.getYCoordinatesAsDouble()[this.getSize() - 1];
 
 		return coords;
+	}
+
+	public void reverseCoordinates() {
+
+		int length = getXCoordinates().length;
+		
+		float[] newX = new float[length];
+		float[] newY = new float[length];
+
+		for (int i = 0; i < length; i++) {
+			newX[i] = getXCoordinates()[length - i - 1];
+			newY[i] = getYCoordinates()[length - i - 1];
+		}
+
+		this.line = new Line(newX, newY);
 	}
 
 }

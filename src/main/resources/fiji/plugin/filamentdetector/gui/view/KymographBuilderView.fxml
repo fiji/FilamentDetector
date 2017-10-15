@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -83,7 +83,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label text="Start Offset Length (pixel) : " />
+                        <Label text="Minus Tip Offset Length (pixel) : " />
                         <TextField fx:id="startOffsetField" onAction="#updateParameters" prefWidth="60.0" />
                      </children>
                      <padding>
@@ -92,7 +92,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label text="End Offset Length (pixel) : " />
+                        <Label text="Plus Tip Offset Length (pixel) : " />
                         <TextField fx:id="endOffsetField" onAction="#updateParameters" prefWidth="60.0" />
                      </children>
                      <padding>
