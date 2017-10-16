@@ -115,7 +115,7 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 
 				series = new XYChart.Series<>();
 				for (int i = 0; i < results.get("lengths").size(); i++) {
-					if ((int) results.get("ids").get(i) == trackedFilament.getId()) {
+					if ((Integer) results.get("ids").get(i) == trackedFilament.getId()) {
 						data = new XYChart.Data<>();
 						data.setXValue(results.get("times").get(i));
 						data.setYValue(results.get("lengths").get(i));
