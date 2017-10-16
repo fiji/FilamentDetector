@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>FilamentDetector</artifactId>
-	<version>0.1.5-SNAPSHOT</version>
+	<version>0.1.5</version>
 
 	<name>FilamentDetector</name>
 	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
@@ -75,7 +75,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/hadim/FilamentDetector</connection>
 		<developerConnection>scm:git:git@github.com:hadim/FilamentDetector</developerConnection>
-		<tag>HEAD</tag>
+		<tag>FilamentDetector-0.1.5</tag>
 		<url>https://github.com/hadim/FilamentDetector</url>
 	</scm>
 	<issueManagement>
