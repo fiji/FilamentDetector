@@ -146,7 +146,6 @@ public class TrackingFilamentController extends Controller implements Initializa
 
 	private void updateTrackedFilamentsList() {
 		trackedFilamentsTableView.setTrackedFilaments(filamentWorkflow.getTrackedFilaments());
-		trackedFilamentsTableView.updateTrackedFilaments();
 	}
 
 	@FXML

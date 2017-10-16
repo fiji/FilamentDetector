@@ -146,6 +146,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				controller.getRemoveFilamentLabel().setOnAction((event) -> {
 					removeFilament(controller.getFilament());
 				});
+				
 			} else if (filamentModels.size() > 1) {
 				setMultipleSelectionDetail();
 

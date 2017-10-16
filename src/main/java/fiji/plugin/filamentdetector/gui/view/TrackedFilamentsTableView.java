@@ -1,5 +1,8 @@
 package fiji.plugin.filamentdetector.gui.view;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
@@ -10,6 +13,7 @@ import fiji.plugin.filamentdetector.event.TrackedFilamentSelectedEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.gui.controller.DetailedTrackedFilamentController;
+import fiji.plugin.filamentdetector.gui.model.FilamentModel;
 import fiji.plugin.filamentdetector.gui.model.TrackedFilamentModel;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
@@ -17,13 +21,17 @@ import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 
@@ -39,16 +47,13 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	@Parameter
 	private EventService eventService;
 
-	private ObservableList<TrackedFilamentModel> trackedFilamentModelList;
-	private TrackedFilaments trackedFilaments;
-
 	private AnchorPane detailPane;
 
 	public TrackedFilamentsTableView(Context context, TrackedFilaments trackedFilaments) {
 		context.inject(this);
 
-		this.trackedFilamentModelList = FXCollections.observableArrayList();
-		this.trackedFilaments = trackedFilaments;
+		// Enable multiple selection
+		this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		TableColumn<TrackedFilamentModel, Integer> idColumn = new TableColumn<>("ID");
 		TableColumn<TrackedFilamentModel, Integer> sizeColumn = new TableColumn<>("Size");
@@ -82,8 +87,6 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 			};
 		});
 
-		this.setItems(trackedFilamentModelList);
-
 		// Initialize detailed view
 		detailPane = new AnchorPane(this);
 		AnchorPane.setTopAnchor(detailPane, 0.0);
@@ -95,7 +98,10 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 		setNoDetail();
 
 		this.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			if (newSelection != null && oldSelection != newSelection) {
+
+			List<TrackedFilamentModel> trackedFilamentModels = this.getSelectionModel().getSelectedItems();
+
+			if (trackedFilamentModels.size() == 1 && oldSelection != newSelection) {
 				// Set the overlay
 				overlayService.setSelected(newSelection.getTrackedFilament(), true, true);
 
@@ -118,27 +124,30 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 				controller.getRemoveFilamentLabel().setOnAction((event) -> {
 					removeTrackedFilament(controller.getTrackedFilament());
 				});
-
+				
+			} else if (trackedFilamentModels.size() > 1) {
+				setMultipleSelectionDetail();
+				
 			} else {
 				setNoDetail();
 			}
 		});
+
+		// Add filaments
+		setTrackedFilaments(trackedFilaments);
 
 		// Handle filament selection
 		eventService.subscribe(this);
 	}
 
 	public TrackedFilaments getTrackedFilaments() {
-		return trackedFilaments;
+		return this.getItems().stream().map(x -> x.getTrackedFilament())
+				.collect(Collectors.toCollection(TrackedFilaments::new));
 	}
 
 	public void setTrackedFilaments(TrackedFilaments trackedFilaments) {
-		this.trackedFilaments = trackedFilaments;
-	}
 
-	public void updateTrackedFilaments() {
-
-		trackedFilamentModelList = FXCollections.observableArrayList();
+		ObservableList<TrackedFilamentModel> trackedFilamentModelList = FXCollections.observableArrayList();
 		for (TrackedFilament trackedFilament : trackedFilaments) {
 			trackedFilamentModelList.add(new TrackedFilamentModel(trackedFilament));
 		}
@@ -150,8 +159,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	}
 
 	public void addTrackedFilament(TrackedFilament trackedFilament) {
-		trackedFilaments.add(trackedFilament);
-		trackedFilamentModelList.add(new TrackedFilamentModel(trackedFilament));
+		this.getItems().add(new TrackedFilamentModel(trackedFilament));
 		overlayService.add(trackedFilament);
 	}
 
@@ -165,18 +173,56 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 		detailPane.getChildren().add(noDetail);
 	}
 
-	private void removeTrackedFilament(TrackedFilament trackedFilament) {
-		TrackedFilamentModel trackedFilamentModel = trackedFilamentModelList.stream()
-				.filter(f -> f.getTrackedFilament().equals(trackedFilament)).findFirst().orElse(null);
-		trackedFilamentModelList.remove(trackedFilamentModel);
-		trackedFilaments.remove(trackedFilament);
+	private void setMultipleSelectionDetail() {
 
-		overlayService.remove(trackedFilament);
+		List<TrackedFilamentModel> trackedFilamentModels = this.getSelectionModel().getSelectedItems();
+
+		// Set the overlay
+		for (TrackedFilamentModel trackedFilamentModel : trackedFilamentModels) {
+			overlayService.setSelected(trackedFilamentModel.getTrackedFilament(), true, false);
+		}
+
+		VBox vbox = new VBox();
+
+		vbox.setPadding(new Insets(10, 10, 10, 10));
+		vbox.setSpacing(10);
+
+		Label label = new Label(trackedFilamentModels.size() + " tracked filaments selected.");
+		Button button = new Button("Delete Tracked Filaments");
+
+		button.setOnAction((event) -> {
+			removeTrackedFilaments(this.getSelectionModel().getSelectedItems());
+			this.getSelectionModel().clearSelection();
+		});
+
+		vbox.getChildren().add(label);
+		vbox.getChildren().add(button);
+
+		detailPane.getChildren().clear();
+		detailPane.getChildren().add(vbox);
+	}
+
+	private void removeTrackedFilament(TrackedFilament trackedFilament) {
+		TrackedFilamentModel trackedFilamentModel = this.getItems().stream()
+				.filter(f -> f.getTrackedFilament().equals(trackedFilament)).findFirst().orElse(null);
+		removeTrackedFilament(trackedFilamentModel);
+	}
+
+	private void removeTrackedFilament(TrackedFilamentModel trackedFilamentModel) {
+		this.getItems().remove(trackedFilamentModel);
+		overlayService.remove(trackedFilamentModel.getTrackedFilament());
+	}
+
+	private void removeTrackedFilaments(List<TrackedFilamentModel> trackedFilamentModels) {
+		for (TrackedFilamentModel filamentModel : trackedFilamentModels) {
+			overlayService.remove(filamentModel.getTrackedFilament());
+		}
+		this.getItems().removeAll(trackedFilamentModels);
 	}
 
 	@EventHandler
 	public void filamentSelected(TrackedFilamentSelectedEvent event) {
-		TrackedFilamentModel trackedFilamentModel = trackedFilamentModelList.stream()
+		TrackedFilamentModel trackedFilamentModel = this.getItems().stream()
 				.filter(f -> f.getTrackedFilament().equals(event.getTrackedFilament())).findFirst().orElse(null);
 		if (trackedFilamentModel != null) {
 			// Require to not mix AWT and JavaFX thread.

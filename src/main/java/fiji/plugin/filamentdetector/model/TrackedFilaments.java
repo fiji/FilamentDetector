@@ -22,6 +22,9 @@ public class TrackedFilaments extends ArrayList<TrackedFilament> {
 		context.inject(this);
 	}
 
+	public TrackedFilaments() {
+	}
+
 	/*
 	 * Add a new link. If source does not exist in any of the last elements, then
 	 * create a new TrackedFilament.
