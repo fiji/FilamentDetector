@@ -74,10 +74,10 @@ public class WelcomeController extends Controller implements Initializable {
 
 	private void loadWelcomeText() {
 		String text = "<h1><a id=\"Welcome_to_FilamentDetector_0\"></a>Welcome to FilamentDetector</h1>\n"
-				+ "<p><strong>FilamentDetector</strong> allows you to <em>detect</em> and <em>track</em> filaments in an image or a stack of images. <strong>Detection</strong> is done independently on all the images while <strong>tracking</strong> is done on the whole stack in the TIME dimensions.</p>\n"
+				+ "<p><strong>FilamentDetector</strong> allows you to <em>detect</em> and <em>track</em> filaments in an image or a stack of images. <strong>Detection</strong> is done independently on all the images while <strong>tracking</strong> is done on the whole stack in the TIME dimension.</p>\n"
 				+ "<p>Once those steps are done, you can <strong>export the data</strong> to CSV files, saves detected filaments as <strong>kymographs</strong>, or run a <strong>specific analysis module</strong> (to analyze microtubule dynamics for example).</p>\n"
 				+ "<p>Note that:</p>\n" + "<ul>\n"
-				+ "<li>Detection and tracking are done on a single channel you need to use.</li>\n"
+				+ "<li>Detection and tracking are done on a single channel.</li>\n"
 				+ "<li>Detection only work on 8-bit images.</li>\n" + "</ul>";
 		welcomeTextField.getEngine().loadContent(text);
 	}
