@@ -103,7 +103,7 @@
                                                       <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                          <children>
                                                             <Label text="Tip Diameter" />
-                                                            <Slider fx:id="tipDiameterSlider" blockIncrement="1.0" onMouseClicked="#updateOverlaySettings" onMouseDragged="#updateOverlaySettings" />
+                                                            <Slider fx:id="tipDiameterSlider" blockIncrement="1.0" onMouseClicked="#updateOverlaySettings" />
                                                             <Label fx:id="tipDiameterValueLabel" />
                                                          </children>
                                                          <padding>

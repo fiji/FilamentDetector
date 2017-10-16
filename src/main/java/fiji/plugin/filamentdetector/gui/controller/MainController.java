@@ -190,13 +190,22 @@ public class MainController extends Controller implements Initializable {
 
 	@FXML
 	void updateOverlaySettings(Event event) {
-		overlay.setColorAlpha((int) transparencySlider.getValue());
-		overlay.setFilamentWidth((int) lineWidthSlider.getValue());
-		overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());
-		overlay.setDrawPlusTips(drawPlusTipsCheckbox.isSelected());
-		overlay.setDrawMinusTips(drawMinusTipsCheckbox.isSelected());
-		overlay.setTipDiameter((int) tipDiameterSlider.getValue());
-		overlay.refresh();
+
+		if (event.getSource().equals(transparencySlider)) {
+			overlay.setColorAlpha((int) transparencySlider.getValue());
+			overlay.updateTransparency();
+
+		} else if (event.getSource().equals(lineWidthSlider)) {
+			overlay.setFilamentWidth((int) lineWidthSlider.getValue());
+			overlay.updateLineWidth();
+			
+		} else {
+			overlay.setTipDiameter((int) tipDiameterSlider.getValue());
+			overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());
+			overlay.setDrawPlusTips(drawPlusTipsCheckbox.isSelected());
+			overlay.setDrawMinusTips(drawMinusTipsCheckbox.isSelected());
+			overlay.refresh();
+		}
 	}
 
 	@FXML

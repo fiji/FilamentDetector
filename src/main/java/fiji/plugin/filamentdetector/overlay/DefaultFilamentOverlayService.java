@@ -509,4 +509,59 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		this.tipDiameter = tipDiameter;
 	}
 
+	@Override
+	public void updateTransparency() {
+
+		Color color;
+		Color newColor;
+
+		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
+			color = entry.getValue().getStrokeColor();
+			newColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorAlpha);
+			entry.getValue().setStrokeColor(newColor);
+		}
+		for (Map.Entry<Filament, Roi> entry : filamentBoundingBoxesMap.entrySet()) {
+			color = entry.getValue().getStrokeColor();
+			newColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorAlpha);
+			entry.getValue().setStrokeColor(newColor);
+		}
+		for (Map.Entry<TrackedFilament, List<Roi>> entry : filamentPlusTipsMap.entrySet()) {
+			for (Roi roi : entry.getValue()) {
+				color = roi.getStrokeColor();
+				newColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorAlpha);
+				roi.setStrokeColor(newColor);
+			}
+		}
+		for (Map.Entry<TrackedFilament, List<Roi>> entry : filamentMinusTipsMap.entrySet()) {
+			for (Roi roi : entry.getValue()) {
+				color = roi.getStrokeColor();
+				newColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), colorAlpha);
+				roi.setStrokeColor(newColor);
+			}
+		}
+		getImagePlus().repaintWindow();
+	}
+
+	@Override
+	public void updateLineWidth() {
+
+		for (Map.Entry<Filament, Roi> entry : filamentROIMap.entrySet()) {
+			entry.getValue().setStrokeWidth(filamentWidth);
+		}
+		for (Map.Entry<Filament, Roi> entry : filamentBoundingBoxesMap.entrySet()) {
+			entry.getValue().setStrokeWidth(filamentWidth);
+		}
+		for (Map.Entry<TrackedFilament, List<Roi>> entry : filamentPlusTipsMap.entrySet()) {
+			for (Roi roi : entry.getValue()) {
+				roi.setStrokeWidth(filamentWidth);
+			}
+		}
+		for (Map.Entry<TrackedFilament, List<Roi>> entry : filamentMinusTipsMap.entrySet()) {
+			for (Roi roi : entry.getValue()) {
+				roi.setStrokeWidth(filamentWidth);
+			}
+		}
+		getImagePlus().repaintWindow();
+	}
+
 }
