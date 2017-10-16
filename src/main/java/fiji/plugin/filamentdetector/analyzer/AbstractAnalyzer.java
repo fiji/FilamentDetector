@@ -6,7 +6,7 @@ public abstract class AbstractAnalyzer implements Analyzer {
 
 	protected String name;
 	protected String description;
-	private FilamentWorkflow filamentWorkflow;
+	protected FilamentWorkflow filamentWorkflow;
 
 	public AbstractAnalyzer(FilamentWorkflow filamentWorkflow) {
 		this.filamentWorkflow = filamentWorkflow;

@@ -113,7 +113,7 @@ public class AnalyzeController extends Controller implements Initializable {
 
 		// Add one analyzer
 		LengthOverTimeAnalyzer lengthOverTimeAnalyzer = new LengthOverTimeAnalyzer(filamentWorkflow);
-		AnalyzerController lengthOverTimeAnalyzerController = new LengthOverTimeAnalyzerController(
+		AnalyzerController lengthOverTimeAnalyzerController = new LengthOverTimeAnalyzerController(context,
 				lengthOverTimeAnalyzer);
 		analyzers.add(lengthOverTimeAnalyzer);
 		analyzerControllers.put(lengthOverTimeAnalyzer, lengthOverTimeAnalyzerController);
@@ -170,28 +170,35 @@ public class AnalyzeController extends Controller implements Initializable {
 		analyzerTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
-
+				analyzerCombobox.setDisable(true);
+				Analyzer analyzer = analyzerCombobox.getSelectionModel().getSelectedItem();
+				status.showStatus("Run analysis : ");
+				status.showStatus(analyzer.getInfo());
+				analyzer.analyze();
 				return 0;
 			}
 
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-
 				Analyzer analyzer = analyzerCombobox.getSelectionModel().getSelectedItem();
-				status.showStatus("Run analysis : ");
-				status.showStatus(analyzer.getInfo());
-				analyzer.analyze();
+				status.showStatus("Analysis Results are : ");
+				status.showStatus(analyzer.getResultMessage());
+
+				analyzerCombobox.setDisable(false);
+				analyzerControllers.get(analyzer).runPostAnalysisAction();
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
+				analyzerCombobox.setDisable(false);
 			}
 
 			@Override
 			protected void failed() {
 				super.failed();
+				analyzerCombobox.setDisable(false);
 				status.showStatus("Something failed during analysis : ");
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(

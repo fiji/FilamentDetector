@@ -14,4 +14,8 @@ public interface Analyzer {
 	String toString();
 
 	String getInfo();
+
+	String getResultMessage();
+
+	Object getResults();
 }

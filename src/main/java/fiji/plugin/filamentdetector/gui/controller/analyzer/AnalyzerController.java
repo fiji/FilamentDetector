@@ -4,4 +4,5 @@ public interface AnalyzerController {
 
 	public String getViewFXMlFile();
 
+	void runPostAnalysisAction();
 }

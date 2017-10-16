@@ -12,7 +12,7 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <CheckBox fx:id="saveResultsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save results next to the image file." />
+                  <CheckBox fx:id="saveResultsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save results next to the image file." wrapText="true" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -20,7 +20,15 @@
             </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <CheckBox fx:id="savePlotsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save plots." />
+                  <CheckBox fx:id="showPlotsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show plots." wrapText="true" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <CheckBox fx:id="savePlotsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save plots next to the image file (it will automatically show the plots)." wrapText="true" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

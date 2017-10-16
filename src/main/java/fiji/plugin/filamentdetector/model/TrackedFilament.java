@@ -50,6 +50,22 @@ public class TrackedFilament extends Filaments {
 		}
 	}
 
+	public List<Double> getLengths() {
+		List<Double> lengths = new ArrayList<>();
+		for (Filament filament : this) {
+			lengths.add(filament.getLength());
+		}
+		return lengths;
+	}
+
+	public List<Double> getFrames() {
+		List<Double> frames = new ArrayList<>();
+		for (Filament filament : this) {
+			frames.add((double) filament.getFrame());
+		}
+		return frames;
+	}
+
 	public Tip getPlusTip() {
 		if (plusTip == null) {
 			this.detectTips();
