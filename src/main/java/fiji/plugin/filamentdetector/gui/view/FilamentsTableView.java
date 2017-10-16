@@ -1,6 +1,8 @@
 package fiji.plugin.filamentdetector.gui.view;
 
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
@@ -19,13 +21,17 @@ import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 public class FilamentsTableView extends TableView<FilamentModel> {
 
@@ -41,9 +47,6 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	@Parameter
 	private EventService eventService;
 
-	private ObservableList<FilamentModel> filamentModelList;
-	private Filaments filaments;
-
 	private DecimalFormat formatter;
 
 	private AnchorPane detailPane;
@@ -51,8 +54,8 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	public FilamentsTableView(Context context, Filaments filaments) {
 		context.inject(this);
 
-		this.filamentModelList = FXCollections.observableArrayList();
-		this.filaments = filaments;
+		// Enable multiple selection
+		this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		TableColumn<FilamentModel, Integer> idColumn = new TableColumn<>("ID");
 		TableColumn<FilamentModel, Double> lengthColumn = new TableColumn<>("Length");
@@ -92,6 +95,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 		colorColumn.setCellFactory(column -> {
 			return new TableCell<FilamentModel, String>() {
+
 				@Override
 				protected void updateItem(String item, boolean empty) {
 					super.updateItem(item, empty);
@@ -106,8 +110,6 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 			};
 		});
 
-		this.setItems(filamentModelList);
-
 		// Initialize detailed view
 		detailPane = new AnchorPane(this);
 		AnchorPane.setTopAnchor(detailPane, 0.0);
@@ -119,7 +121,10 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		setNoDetail();
 
 		this.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			if (newSelection != null && oldSelection != newSelection) {
+
+			List<FilamentModel> filamentModels = this.getSelectionModel().getSelectedItems();
+
+			if (filamentModels.size() == 1 && oldSelection != newSelection) {
 				// Set the overlay
 				overlayService.setSelected(newSelection.getFilament(), true, true);
 
@@ -141,27 +146,29 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				controller.getRemoveFilamentLabel().setOnAction((event) -> {
 					removeFilament(controller.getFilament());
 				});
+			} else if (filamentModels.size() > 1) {
+				setMultipleSelectionDetail();
 
 			} else {
 				setNoDetail();
 			}
 		});
 
+		// Add filaments
+		setFilaments(filaments);
+
 		// Handle filament selection
 		eventService.subscribe(this);
 	}
 
 	public Filaments getFilaments() {
-		return filaments;
+		return this.getItems().stream().map(x -> x.getFilament()).collect(Collectors.toCollection(Filaments::new));
 	}
 
 	public void setFilaments(Filaments filaments) {
-		this.filaments = filaments;
-	}
 
-	public void updateFilaments() {
+		ObservableList<FilamentModel> filamentModelList = FXCollections.observableArrayList();
 
-		filamentModelList = FXCollections.observableArrayList();
 		for (Filament filament : filaments) {
 			filamentModelList.add(new FilamentModel(filament));
 		}
@@ -173,8 +180,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	}
 
 	public void addFilament(Filament filament) {
-		filaments.add(filament);
-		filamentModelList.add(new FilamentModel(filament));
+		this.getItems().add(new FilamentModel(filament));
 		overlayService.add(filament);
 	}
 
@@ -188,19 +194,57 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		detailPane.getChildren().add(noDetail);
 	}
 
-	private void removeFilament(Filament filament) {
-		FilamentModel filamentModel = filamentModelList.stream().filter(f -> f.getFilament().equals(filament))
-				.findFirst().orElse(null);
-		filamentModelList.remove(filamentModel);
-		filaments.remove(filament);
+	private void setMultipleSelectionDetail() {
 
-		overlayService.remove(filament);
+		List<FilamentModel> filamentModels = this.getSelectionModel().getSelectedItems();
+
+		// Set the overlay
+		for (FilamentModel filamentModel : filamentModels) {
+			overlayService.setSelected(filamentModel.getFilament(), true, false);
+		}
+
+		VBox vbox = new VBox();
+
+		vbox.setPadding(new Insets(10, 10, 10, 10));
+		vbox.setSpacing(10);
+
+		Label label = new Label(filamentModels.size() + " filaments selected.");
+		Button button = new Button("Delete Filaments");
+
+		button.setOnAction((event) -> {
+			removeFilaments(this.getSelectionModel().getSelectedItems());
+			this.getSelectionModel().clearSelection();
+		});
+
+		vbox.getChildren().add(label);
+		vbox.getChildren().add(button);
+
+		detailPane.getChildren().clear();
+		detailPane.getChildren().add(vbox);
+	}
+
+	private void removeFilament(Filament filament) {
+		FilamentModel filamentModel = this.getItems().stream().filter(f -> f.getFilament().equals(filament)).findFirst()
+				.orElse(null);
+		removeFilament(filamentModel);
+	}
+
+	private void removeFilament(FilamentModel filamentModel) {
+		this.getItems().remove(filamentModel);
+		overlayService.remove(filamentModel.getFilament());
+	}
+
+	private void removeFilaments(List<FilamentModel> filamentModels) {
+		for (FilamentModel filamentModel : filamentModels) {
+			overlayService.remove(filamentModel.getFilament());
+		}
+		this.getItems().removeAll(filamentModels);
 	}
 
 	@EventHandler
 	public void filamentSelected(FilamentSelectedEvent event) {
-		FilamentModel filamentModel = filamentModelList.stream()
-				.filter(f -> f.getFilament().equals(event.getFilament())).findFirst().orElse(null);
+		FilamentModel filamentModel = this.getItems().stream().filter(f -> f.getFilament().equals(event.getFilament()))
+				.findFirst().orElse(null);
 		if (filamentModel != null) {
 			// Require to not mix AWT and JavaFX thread.
 			Platform.runLater(() -> {

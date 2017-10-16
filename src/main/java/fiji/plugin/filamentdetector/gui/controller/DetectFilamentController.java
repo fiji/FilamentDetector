@@ -245,7 +245,6 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	private void updateFilamentsList() {
 		filamentsTableView.setFilaments(filamentWorkflow.getFilaments());
-		filamentsTableView.updateFilaments();
 	}
 
 	@FXML

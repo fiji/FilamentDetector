@@ -431,15 +431,18 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		if (clearSelection) {
 			this.clearSelection();
 		}
-		this.selectedFilaments.add(filament);
 
-		Roi roi = filamentROIMap.get(filament);
-		roi.setStrokeWidth(roi.getStrokeWidth() * 2);
-		ImagePlus imp = getImagePlus();
-		if (moveToFrame) {
-			imp.setT(filament.getFrame());
+		if (!selectedFilaments.contains(filament)) {
+			this.selectedFilaments.add(filament);
+
+			Roi roi = filamentROIMap.get(filament);
+			roi.setStrokeWidth(roi.getStrokeWidth() * 2);
+			ImagePlus imp = getImagePlus();
+			if (moveToFrame) {
+				imp.setT(filament.getFrame());
+			}
+			imp.repaintWindow();
 		}
-		imp.repaintWindow();
 	}
 
 	@Override
@@ -472,9 +475,11 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		if (imageDisplay != null && imp == null) {
 			eventService.publish(new ImageNotFoundEvent());
 		}
-		ij.measure.Calibration cal = imp.getCalibration();
-		if (cal == null) {
-			imp.setCalibration(new ij.measure.Calibration());
+		if (imp != null) {
+			ij.measure.Calibration cal = imp.getCalibration();
+			if (cal == null) {
+				imp.setCalibration(new ij.measure.Calibration());
+			}
 		}
 		return imp;
 	}
