@@ -1,7 +1,10 @@
 package fiji.plugin.filamentdetector.analyzer;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +13,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 
-import au.com.bytecode.opencsv.CSV;
-import au.com.bytecode.opencsv.CSVWriteProc;
-import au.com.bytecode.opencsv.CSVWriter;
+import com.opencsv.CSVWriter;
+
 import fiji.plugin.filamentdetector.Calibrations;
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
@@ -95,26 +97,27 @@ public class LengthOverTimeAnalyzer extends AbstractAnalyzer implements Analyzer
 				filePath += "-LengthOverTime.csv";
 
 				File file = new File(filePath);
+				try {
+					CSVWriter writer = new CSVWriter(new FileWriter(file), ';');
 
-				CSV csv = CSV.separator(';').skipLines(1).charset("UTF-8").create();
-
-				csv.write(file, new CSVWriteProc() {
-					public void process(CSVWriter out) {
-						out.writeNext("filament id", "time", "length");
-						List<String[]> data = new ArrayList<>();
-						List<String> row;
-						for (int i = 0; i < lengths.size(); i++) {
-							row = new ArrayList<>();
-							row.add(Integer.toString(filamentIDs.get(i)));
-							row.add(Double.toString(times.get(i)));
-							row.add(Double.toString(lengths.get(i)));
-							data.add(row.toArray(new String[0]));
-						}
-						out.writeAll(data);
+					writer.writeNext(Arrays.asList("filament id", "time", "length").stream().toArray(String[]::new));
+					List<String[]> data = new ArrayList<>();
+					List<String> row;
+					for (int i = 0; i < lengths.size(); i++) {
+						row = new ArrayList<>();
+						row.add(Integer.toString(filamentIDs.get(i)));
+						row.add(Double.toString(times.get(i)));
+						row.add(Double.toString(lengths.get(i)));
+						data.add(row.toArray(new String[0]));
 					}
-				});
+					writer.writeAll(data);
 
-			} else {
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			else {
 				this.resultMessage += "Can't save the result file !";
 			}
 		}

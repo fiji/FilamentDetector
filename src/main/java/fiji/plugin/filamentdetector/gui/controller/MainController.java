@@ -198,7 +198,7 @@ public class MainController extends Controller implements Initializable {
 		} else if (event.getSource().equals(lineWidthSlider)) {
 			overlay.setFilamentWidth((int) lineWidthSlider.getValue());
 			overlay.updateLineWidth();
-			
+
 		} else {
 			overlay.setTipDiameter((int) tipDiameterSlider.getValue());
 			overlay.setDrawBoundingBoxes(drawBoundsCheckbox.isSelected());

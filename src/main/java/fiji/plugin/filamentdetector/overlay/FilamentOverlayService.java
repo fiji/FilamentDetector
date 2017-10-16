@@ -66,8 +66,8 @@ public interface FilamentOverlayService extends ImageJService {
 	void setTipDiameter(int tipDiameter);
 
 	int getTipDiameter();
-	
+
 	public void updateTransparency();
-		
+
 	public void updateLineWidth();
 }

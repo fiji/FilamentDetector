@@ -1,6 +1,8 @@
 package fiji.plugin.filamentdetector.exporter;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +11,8 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import au.com.bytecode.opencsv.CSV;
-import au.com.bytecode.opencsv.CSVWriteProc;
-import au.com.bytecode.opencsv.CSVWriter;
+import com.opencsv.CSVWriter;
+
 import fiji.plugin.filamentdetector.Calibrations;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
@@ -69,32 +70,33 @@ public class CSVFilamentExporter extends FilamentsExporter<Filaments> {
 	@Override
 	public void export(Filaments filaments, File file) {
 
-		CSV csv = CSV.separator(';').skipLines(1).charset("UTF-8").create();
+		try {
+			CSVWriter writer = new CSVWriter(new FileWriter(file), ';');
 
-		csv.write(file, new CSVWriteProc() {
+			String[] columns = Arrays.asList("id", "length", "frame", "sinuosity", "size", "color").stream()
+					.toArray(String[]::new);
+			writer.writeNext(columns);
 
-			public void process(CSVWriter out) {
-				out.writeNext("id", "length", "frame", "sinuosity", "size", "color");
+			List<String[]> data = new ArrayList<>();
+			List<String> row;
 
-				List<String[]> data = new ArrayList<>();
-				List<String> row;
+			for (Filament filament : filaments) {
+				row = new ArrayList<>();
 
-				for (Filament filament : filaments) {
-					row = new ArrayList<>();
+				row.add(Integer.toString(filament.getID()));
+				row.add(Double.toString(filament.getLength() * calibrations.getDx()));
+				row.add(Integer.toString(filament.getFrame()));
+				row.add(Double.toString(filament.getSinuosity()));
+				row.add(Integer.toString(filament.getSize()));
+				row.add(filament.getColorAsHex());
 
-					row.add(Integer.toString(filament.getID()));
-					row.add(Double.toString(filament.getLength() * calibrations.getDx()));
-					row.add(Integer.toString(filament.getFrame()));
-					row.add(Double.toString(filament.getSinuosity()));
-					row.add(Integer.toString(filament.getSize()));
-					row.add(filament.getColorAsHex());
-
-					data.add(row.toArray(new String[0]));
-				}
-
-				out.writeAll(data);
+				data.add(row.toArray(new String[0]));
 			}
-		});
+
+			writer.writeAll(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 }

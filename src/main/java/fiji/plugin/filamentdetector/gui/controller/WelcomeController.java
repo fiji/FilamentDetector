@@ -79,8 +79,7 @@ public class WelcomeController extends Controller implements Initializable {
 				+ "on the whole stack in the TIME dimension.</p>\n"
 				+ "<p>Once those steps are done, you can <strong>export the data</strong> to CSV files, saves detected filaments as <strong>kymographs</strong>, "
 				+ "or run a <strong>specific analysis module</strong> (to analyze microtubule dynamics for example).</p>\n"
-				+ "<p>Note that:</p>\n" + "<ul>\n"
-				+ "<li>Detection and tracking are done on a single channel.</li>\n"
+				+ "<p>Note that:</p>\n" + "<ul>\n" + "<li>Detection and tracking are done on a single channel.</li>\n"
 				+ "<li>Detection only work on 8-bit images.</li>\n" + "</ul>";
 		welcomeTextField.getEngine().loadContent(text);
 	}
