@@ -38,6 +38,7 @@ import net.imagej.display.OverlayService;
 public class DefaultFilamentOverlayService extends AbstractService implements FilamentOverlayService, MouseListener {
 
 	private static int DEFAULT_COLOR_ALPHA = 190;
+	private static int DEFAULT_FILAMENT_WIDTH = 1;
 
 	@Parameter
 	private ConvertService convert;
@@ -54,7 +55,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Parameter
 	private EventService eventService;
 
-	private int filamentWidth = 2;
+	private int filamentWidth = DEFAULT_FILAMENT_WIDTH;
 	private int colorAlpha = DEFAULT_COLOR_ALPHA;
 
 	private HashMap<Filament, Roi> filamentROIMap = new HashMap<>();
