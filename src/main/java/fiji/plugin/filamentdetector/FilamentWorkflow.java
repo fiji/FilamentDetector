@@ -12,6 +12,7 @@ import fiji.plugin.filamentdetector.detection.FilamentsDetector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
+import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import fiji.plugin.filamentdetector.tracking.TrackingParameters;
@@ -38,6 +39,8 @@ public class FilamentWorkflow {
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
 
+	private ImagePreprocessor imagePreprocessor;
+
 	private DetectionParameters detectionParameters;
 	private TrackingParameters trackingParameters;
 
@@ -53,6 +56,8 @@ public class FilamentWorkflow {
 	public FilamentWorkflow(Context context, ImageDisplay imd) {
 		context.inject(this);
 		this.imageDisplay = imd;
+
+		this.imagePreprocessor = new ImagePreprocessor(context, imd);
 
 		this.filaments = new Filaments();
 		this.filteredFilaments = this.filaments;
@@ -73,7 +78,13 @@ public class FilamentWorkflow {
 
 	public void initDetection() {
 		detectionParameters = new DetectionParameters();
-		filamentsDetector = new FilamentsDetector(context, imageDisplay, detectionParameters);
+		Dataset data;
+		if (imagePreprocessor.getPreprocessedImage() != null) {
+			data = imagePreprocessor.getPreprocessedImage();
+		} else {
+			data = getDataset();
+		}
+		filamentsDetector = new FilamentsDetector(context, imageDisplay, data, detectionParameters);
 	}
 
 	public void initTracking() {
@@ -154,6 +165,10 @@ public class FilamentWorkflow {
 		} else {
 			this.filteredTrackedFilaments = this.trackedFilaments;
 		}
+	}
+
+	public ImagePreprocessor getImagePreprocessor() {
+		return imagePreprocessor;
 	}
 
 }

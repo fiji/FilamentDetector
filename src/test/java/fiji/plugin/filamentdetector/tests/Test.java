@@ -54,7 +54,7 @@ public class Test {
 		params.setSigma(2.5);
 
 		// Detect filaments
-		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, params);
+		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, dataset, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 

@@ -111,7 +111,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 				// Fill the detailed view
 				DetailedTrackedFilamentController controller = new DetailedTrackedFilamentController(
 						newSelection.getTrackedFilament());
-				Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DetailedTrackedFilamentView.fxml",
+				Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/tracking/DetailedTrackedFilamentView.fxml",
 						controller);
 
 				detailPane.getChildren().clear();

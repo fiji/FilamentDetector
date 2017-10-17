@@ -16,6 +16,7 @@ import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.overlay.ColorService;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
+import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 
 public class FilamentsDetector {
@@ -30,26 +31,32 @@ public class FilamentsDetector {
 	private ColorService colorService;
 
 	private ImageDisplay imageDisplay;
+	private Dataset dataset;
+	
 	private DetectionParameters parameters;
 
 	private LineDetector lineDetector;
 
 	private ImagePlus imp;
+	private ImagePlus impData;
 
 	private Filaments filaments;
 
-	public FilamentsDetector(Context context, ImageDisplay imageDisplay) {
-		new FilamentsDetector(context, imageDisplay, new DetectionParameters());
+	public FilamentsDetector(Context context, ImageDisplay imageDisplay, Dataset dataset) {
+		new FilamentsDetector(context, imageDisplay, dataset, new DetectionParameters());
 	}
 
-	public FilamentsDetector(Context context, ImageDisplay imageDisplay, DetectionParameters params) {
+	public FilamentsDetector(Context context, ImageDisplay imageDisplay, Dataset dataset,
+			DetectionParameters params) {
 		context.inject(this);
 		this.imageDisplay = imageDisplay;
+		this.dataset = dataset;
 		this.parameters = params;
 		this.lineDetector = new LineDetector();
 
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
 		this.imp = convertService.convert(this.imageDisplay, ImagePlus.class);
+		this.impData = convertService.convert(this.imageDisplay, ImagePlus.class);
 	}
 
 	public void detect() {
@@ -101,7 +108,7 @@ public class FilamentsDetector {
 		}
 
 		this.imp.setT(frame);
-		ImageProcessor ip = this.imp.getProcessor();
+		ImageProcessor ip = this.impData.getProcessor();
 
 		// Detect lines
 		Lines lines = this.lineDetector.detectLines(ip, this.parameters.getSigma(), this.parameters.getUpperThresh(),

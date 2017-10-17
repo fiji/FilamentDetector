@@ -400,6 +400,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void cancelled() {
 				super.cancelled();
+				detectionProgressIndicator.setVisible(false);
 			}
 
 			@Override

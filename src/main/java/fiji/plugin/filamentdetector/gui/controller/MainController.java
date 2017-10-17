@@ -83,6 +83,7 @@ public class MainController extends Controller implements Initializable {
 	private FilamentWorkflow filamentWorkflow;
 
 	private WelcomeController welcomeController;
+	private ImagePreprocessorController imagePreprocessorController;
 	private DetectFilamentController detectFilamentController;
 	private AboutController aboutController;
 	private DataExporterController dataExporterController;
@@ -124,6 +125,7 @@ public class MainController extends Controller implements Initializable {
 
 		// Load all the panes
 		loadWelcome();
+		loadImagePreprocessor();
 		loadDetectFilament();
 		loadTrackingFilament();
 		loadDataExporter();
@@ -229,10 +231,18 @@ public class MainController extends Controller implements Initializable {
 		TitledPane titledPane = new TitledPane("Welcome", pane);
 		mainPane.getPanes().add(titledPane);
 	}
+	
+	public void loadImagePreprocessor() {
+		imagePreprocessorController = new ImagePreprocessorController(context, filamentWorkflow);
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/ImagePreprocessorView.fxml", imagePreprocessorController);
+
+		TitledPane titledPane = new TitledPane("Preprocessing", pane);
+		mainPane.getPanes().add(titledPane);
+	}
 
 	public void loadDetectFilament() {
 		detectFilamentController = new DetectFilamentController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DetectFilamentView.fxml",
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/detection/DetectFilamentView.fxml",
 				detectFilamentController);
 
 		TitledPane titledPane = new TitledPane("Detect Filaments", pane);
@@ -241,7 +251,7 @@ public class MainController extends Controller implements Initializable {
 
 	public void loadTrackingFilament() {
 		trackingFilamentController = new TrackingFilamentController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/TrackingFilamentView.fxml",
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/tracking/TrackingFilamentView.fxml",
 				trackingFilamentController);
 
 		TitledPane titledPane = new TitledPane("Track Filaments", pane);

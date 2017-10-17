@@ -132,7 +132,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 				// Fill the detailed view
 				DetailedFilamentController controller = new DetailedFilamentController(newSelection.getFilament());
-				Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DetailedFilamentView.fxml",
+				Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/detection/DetailedFilamentView.fxml",
 						controller);
 
 				detailPane.getChildren().clear();

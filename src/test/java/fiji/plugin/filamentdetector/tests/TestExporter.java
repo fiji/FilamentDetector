@@ -48,7 +48,7 @@ public class TestExporter {
 		trackingParams.setCostThreshold(0.5);
 
 		// Detect filaments
-		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, params);
+		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, dataset, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 

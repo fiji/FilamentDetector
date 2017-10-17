@@ -33,7 +33,7 @@ public class TestKymograph {
 
 		// Detect filaments
 		DetectionParameters params = new DetectionParameters();
-		FilamentsDetector detector = new FilamentsDetector(ij.context(), imageDisplay, params);
+		FilamentsDetector detector = new FilamentsDetector(ij.context(), imageDisplay, dataset, params);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 
