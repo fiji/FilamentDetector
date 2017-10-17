@@ -50,6 +50,8 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	private DecimalFormat formatter;
 
 	private AnchorPane detailPane;
+	
+	private Filaments filaments;
 
 	public FilamentsTableView(Context context, Filaments filaments) {
 		context.inject(this);
@@ -163,11 +165,13 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	}
 
 	public Filaments getFilaments() {
-		return this.getItems().stream().map(x -> x.getFilament()).collect(Collectors.toCollection(Filaments::new));
+		return this.filaments;
 	}
 
 	public void setFilaments(Filaments filaments) {
 
+		this.filaments = filaments;
+		
 		ObservableList<FilamentModel> filamentModelList = FXCollections.observableArrayList();
 
 		for (Filament filament : filaments) {
@@ -182,6 +186,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 	public void addFilament(Filament filament) {
 		this.getItems().add(new FilamentModel(filament));
+		this.filaments.add(filament);
 		overlayService.add(filament);
 	}
 
@@ -232,12 +237,14 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 	private void removeFilament(FilamentModel filamentModel) {
 		this.getItems().remove(filamentModel);
+		this.filaments.remove(filamentModel.getFilament());
 		overlayService.remove(filamentModel.getFilament());
 	}
 
 	private void removeFilaments(List<FilamentModel> filamentModels) {
 		for (FilamentModel filamentModel : filamentModels) {
 			overlayService.remove(filamentModel.getFilament());
+			this.filaments.remove(filamentModel.getFilament());
 		}
 		this.getItems().removeAll(filamentModels);
 	}

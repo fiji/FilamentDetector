@@ -15,6 +15,7 @@ import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.gui.controller.DetailedTrackedFilamentController;
 import fiji.plugin.filamentdetector.gui.model.FilamentModel;
 import fiji.plugin.filamentdetector.gui.model.TrackedFilamentModel;
+import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -48,6 +49,8 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	private EventService eventService;
 
 	private AnchorPane detailPane;
+	
+	private TrackedFilaments trackedFilaments;
 
 	public TrackedFilamentsTableView(Context context, TrackedFilaments trackedFilaments) {
 		context.inject(this);
@@ -141,12 +144,13 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	}
 
 	public TrackedFilaments getTrackedFilaments() {
-		return this.getItems().stream().map(x -> x.getTrackedFilament())
-				.collect(Collectors.toCollection(TrackedFilaments::new));
+		return this.trackedFilaments;
 	}
 
 	public void setTrackedFilaments(TrackedFilaments trackedFilaments) {
 
+		this.trackedFilaments = trackedFilaments;
+		
 		ObservableList<TrackedFilamentModel> trackedFilamentModelList = FXCollections.observableArrayList();
 		for (TrackedFilament trackedFilament : trackedFilaments) {
 			trackedFilamentModelList.add(new TrackedFilamentModel(trackedFilament));
@@ -160,6 +164,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 
 	public void addTrackedFilament(TrackedFilament trackedFilament) {
 		this.getItems().add(new TrackedFilamentModel(trackedFilament));
+		this.trackedFilaments.add(trackedFilament);
 		overlayService.add(trackedFilament);
 	}
 
@@ -210,12 +215,14 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 
 	private void removeTrackedFilament(TrackedFilamentModel trackedFilamentModel) {
 		this.getItems().remove(trackedFilamentModel);
+		this.trackedFilaments.remove(trackedFilamentModel.getTrackedFilament());
 		overlayService.remove(trackedFilamentModel.getTrackedFilament());
 	}
 
 	private void removeTrackedFilaments(List<TrackedFilamentModel> trackedFilamentModels) {
-		for (TrackedFilamentModel filamentModel : trackedFilamentModels) {
-			overlayService.remove(filamentModel.getTrackedFilament());
+		for (TrackedFilamentModel trackedFilamentModel : trackedFilamentModels) {
+			overlayService.remove(trackedFilamentModel.getTrackedFilament());
+			this.trackedFilaments.remove(trackedFilamentModel.getTrackedFilament());
 		}
 		this.getItems().removeAll(trackedFilamentModels);
 	}
