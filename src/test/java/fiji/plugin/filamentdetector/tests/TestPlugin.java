@@ -12,7 +12,7 @@ public class TestPlugin {
 		final ImageJ ij = net.imagej.Main.launch(args);
 		Context context = ij.getContext();
 
-		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-8bit-Gaussian-Filtered.tif";
+		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-8bit.tif";
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 

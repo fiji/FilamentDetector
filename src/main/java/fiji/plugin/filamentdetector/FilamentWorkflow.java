@@ -6,6 +6,7 @@ import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.ui.UIService;
 
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
 import fiji.plugin.filamentdetector.detection.FilamentsDetector;
@@ -35,6 +36,9 @@ public class FilamentWorkflow {
 
 	@Parameter
 	private LogService log;
+	
+	@Parameter
+	private UIService ui;
 
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
@@ -79,7 +83,7 @@ public class FilamentWorkflow {
 	public void initDetection() {
 		detectionParameters = new DetectionParameters();
 		Dataset data;
-		if (imagePreprocessor.getPreprocessedImage() != null) {
+		if (imagePreprocessor.isHasBeenPreprocessed()) {
 			data = imagePreprocessor.getPreprocessedImage();
 		} else {
 			data = getDataset();

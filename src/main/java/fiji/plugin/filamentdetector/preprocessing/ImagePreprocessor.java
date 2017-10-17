@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.scijava.Context;
+import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
@@ -11,12 +12,13 @@ import org.scijava.ui.UIService;
 import io.scif.services.DatasetIOService;
 import net.imagej.Dataset;
 import net.imagej.DatasetService;
-import net.imagej.ImgPlus;
+import net.imagej.axis.Axes;
+import net.imagej.axis.CalibratedAxis;
 import net.imagej.display.ImageDisplay;
 import net.imagej.ops.OpService;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.type.numeric.RealType;
 
 public class ImagePreprocessor {
 
@@ -41,6 +43,9 @@ public class ImagePreprocessor {
 	@Parameter
 	private UIService ui;
 
+	@Parameter
+	ConvertService convertService;
+
 	private ImageDisplay image;
 	private Dataset preprocessedImage;
 
@@ -48,7 +53,9 @@ public class ImagePreprocessor {
 	private boolean doGaussianFilter = DEFAULT_DO_GAUSSIAN_FILTER;
 	private boolean savePreprocessedImage = DEFAULT_SAVE_IMAGE;
 	private boolean showPreprocessedImage = DEFAULT_SHOW_IMAGE;
-	private boolean convertTo8Bit = DEFAULT_CONVERT_TO_8BIT;
+	private boolean doConvertTo8Bit = DEFAULT_CONVERT_TO_8BIT;
+
+	private boolean hasBeenPreprocessed = false;
 
 	public ImagePreprocessor(Context context, ImageDisplay imd) {
 		context.inject(this);
@@ -57,24 +64,28 @@ public class ImagePreprocessor {
 
 	public void preprocess() {
 
-		if (savePreprocessedImage) {
+		if (doConvertTo8Bit) {
+			converTo8Bit();
+			hasBeenPreprocessed = true;
+		}
 
-			// Apply Gaussian filter
-			Dataset dataset = (Dataset) image.getActiveView().getData();
-			ImgPlus img = dataset.getImgPlus();
-			Img<FloatType> floatImg = ops.convert().float32(img);
-			RandomAccessibleInterval<FloatType> blurredImg = ops.filter().gauss(floatImg, gaussianFilterSize);
+		if (doGaussianFilter) {
+			applyGaussianFilter();
+			hasBeenPreprocessed = true;
+		}
 
-			this.preprocessedImage = ds.create(blurredImg);
-			
+		if (hasBeenPreprocessed) {
+
+			// Show if needed
 			if (showPreprocessedImage) {
 				ui.show(this.preprocessedImage);
 			}
-			
+
 			// Save if needed
 			if (savePreprocessedImage) {
-				if (dataset.getSource() != null) {
-					String filePath = FilenameUtils.removeExtension(dataset.getSource());
+				Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
+				if (originalDataset.getSource() != null) {
+					String filePath = FilenameUtils.removeExtension(originalDataset.getSource());
 					filePath += "-Preprocessed.tif";
 					try {
 						dsio.save(this.preprocessedImage, filePath);
@@ -129,11 +140,40 @@ public class ImagePreprocessor {
 	}
 
 	public boolean isConvertTo8Bit() {
-		return convertTo8Bit;
+		return doConvertTo8Bit;
 	}
 
 	public void setConvertTo8Bit(boolean convertTo8Bit) {
-		this.convertTo8Bit = convertTo8Bit;
+		this.doConvertTo8Bit = convertTo8Bit;
+	}
+
+	public boolean isHasBeenPreprocessed() {
+		return hasBeenPreprocessed;
+	}
+
+	private void converTo8Bit() {
+		this.preprocessedImage = (Dataset) image.getActiveView().getData();
+
+	}
+
+	private <T extends RealType<T>> void applyGaussianFilter() {
+		// Apply Gaussian filter
+		Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
+		Dataset dataset = originalDataset.duplicate();
+
+		int[] fixedAxisIndexes = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
+
+		RandomAccessibleInterval<T> blurredImg = (RandomAccessibleInterval<T>) ops.create().img(dataset.getImgPlus());
+
+		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.gauss", dataset.getImgPlus(), gaussianFilterSize);
+		ops.slice(blurredImg, (RandomAccessibleInterval<T>) dataset.getImgPlus(), op, fixedAxisIndexes);
+
+		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
+		for (int i = 0; i != axes.length; i++) {
+			axes[i] = dataset.axis(i);
+		}
+		this.preprocessedImage = ds.create(blurredImg);
+		this.preprocessedImage.setAxes(axes);
 	}
 
 }

@@ -243,6 +243,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 		overlayService.setImageDisplay(filamentWorkflow.getImageDisplay());
 	}
 
+	public void initPane() {
+		this.filamentWorkflow.initDetection();
+		status.showStatus("Initialize detection.");
+	}
+
 	private void updateFilamentsList() {
 		filamentsTableView.setFilaments(filamentWorkflow.getFilaments());
 	}

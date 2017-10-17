@@ -56,7 +56,7 @@ public class FilamentsDetector {
 
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
 		this.imp = convertService.convert(this.imageDisplay, ImagePlus.class);
-		this.impData = convertService.convert(this.imageDisplay, ImagePlus.class);
+		this.impData = convertService.convert(this.dataset, ImagePlus.class);
 	}
 
 	public void detect() {
@@ -70,9 +70,9 @@ public class FilamentsDetector {
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
 
-		this.imp.setC(channelIndex);
+		this.impData.setC(channelIndex);
 
-		for (int frame = 1; frame < this.imp.getNFrames() + 1; frame++) {
+		for (int frame = 1; frame < this.impData.getNFrames() + 1; frame++) {
 			this.detectFrame(frame);
 		}
 		this.imp.setT(currentFrame);
@@ -89,13 +89,13 @@ public class FilamentsDetector {
 		colorService.initialize();
 
 		this.filaments = new Filaments();
+		
 		int currentFrame = this.imp.getFrame();
-
 		int currentChannel = this.imp.getChannel();
-		this.imp.setC(channelIndex);
-
+		
+		this.impData.setC(channelIndex);
 		this.detectFrame(currentFrame);
-
+		
 		this.imp.setC(currentChannel);
 
 		this.simplify();
@@ -107,7 +107,7 @@ public class FilamentsDetector {
 			this.filaments = new Filaments();
 		}
 
-		this.imp.setT(frame);
+		this.impData.setT(frame);
 		ImageProcessor ip = this.impData.getProcessor();
 
 		// Detect lines

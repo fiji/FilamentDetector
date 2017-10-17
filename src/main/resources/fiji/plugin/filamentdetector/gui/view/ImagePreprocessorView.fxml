@@ -67,7 +67,7 @@
                </padding>
                <children>
                   <ProgressIndicator fx:id="detectionProgressIndicator" maxHeight="26.0" />
-                  <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image" />
+                  <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image (NOT WORKING)" />
                </children>
             </HBox>
          </children>

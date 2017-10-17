@@ -139,6 +139,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 			this.getPane().setDisable(true);
 			nFilamentsField.setText("");
 		} else {
+			this.filamentWorkflow.initTracking();
 			this.getPane().setDisable(false);
 			nFilamentsField.setText(Integer.toString(filamentWorkflow.getFilaments().size()));
 		}

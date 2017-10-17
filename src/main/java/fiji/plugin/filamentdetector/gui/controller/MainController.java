@@ -112,10 +112,13 @@ public class MainController extends Controller implements Initializable {
 						kymographBuilderController.initPane();
 					} else if (new_val.getContent().equals(analyzerController.getPane())) {
 						analyzerController.initPane();
+					} else if (new_val.getContent().equals(detectFilamentController.getPane())) {
+						detectFilamentController.initPane();
 					}
 				}
 			}
 		});
+
 	}
 
 	public void loadPanes() {
@@ -231,10 +234,11 @@ public class MainController extends Controller implements Initializable {
 		TitledPane titledPane = new TitledPane("Welcome", pane);
 		mainPane.getPanes().add(titledPane);
 	}
-	
+
 	public void loadImagePreprocessor() {
 		imagePreprocessorController = new ImagePreprocessorController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/ImagePreprocessorView.fxml", imagePreprocessorController);
+		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/ImagePreprocessorView.fxml",
+				imagePreprocessorController);
 
 		TitledPane titledPane = new TitledPane("Preprocessing", pane);
 		mainPane.getPanes().add(titledPane);
