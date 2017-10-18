@@ -384,9 +384,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 		detectionTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
-				Platform.runLater(() -> {
-					eventService.publish(new PreventPanelSwitchEvent(true));
-				});
+				if (!liveDetectionButton.isSelected()) {
+					Platform.runLater(() -> {
+						eventService.publish(new PreventPanelSwitchEvent(true));
+					});
+				}
 				if (detectCurrentFrameButton.isSelected()) {
 					filamentWorkflow.detectCurrentFrame();
 				} else {
@@ -405,20 +407,27 @@ public class DetectFilamentController extends Controller implements Initializabl
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
 				eventService.publish(new FilterFilamentEvent(filteringParameters));
-				eventService.publish(new PreventPanelSwitchEvent(false));
+
+				if (!liveDetectionButton.isSelected()) {
+					eventService.publish(new PreventPanelSwitchEvent(false));
+				}
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
 				detectionProgressIndicator.setVisible(false);
-				eventService.publish(new PreventPanelSwitchEvent(false));
+				if (!liveDetectionButton.isSelected()) {
+					eventService.publish(new PreventPanelSwitchEvent(false));
+				}
 			}
 
 			@Override
 			protected void failed() {
 				super.failed();
-				eventService.publish(new PreventPanelSwitchEvent(false));
+				if (!liveDetectionButton.isSelected()) {
+					eventService.publish(new PreventPanelSwitchEvent(false));
+				}
 				status.showStatus("Something failed during detection: ");
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(
@@ -452,8 +461,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 		filterTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
+
 				Platform.runLater(() -> {
-					eventService.publish(new PreventPanelSwitchEvent(true));
+					if (!liveDetectionButton.isSelected()) {
+						eventService.publish(new PreventPanelSwitchEvent(true));
+					}
 					filamentWorkflow.filterFilament(event.getFilteringParameters());
 					updateFilamentsList();
 				});
@@ -464,9 +476,11 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-				Platform.runLater(() -> {
-					eventService.publish(new PreventPanelSwitchEvent(false));
-				});
+				if (!liveDetectionButton.isSelected()) {
+					Platform.runLater(() -> {
+						eventService.publish(new PreventPanelSwitchEvent(false));
+					});
+				}
 				if (!filteringParameters.isDisableFiltering()) {
 					status.showStatus("Filtering with the following parameters : ");
 					status.showStatus(filteringParameters.toString());
@@ -480,13 +494,17 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void cancelled() {
 				super.cancelled();
-				eventService.publish(new PreventPanelSwitchEvent(false));
+				if (!liveDetectionButton.isSelected()) {
+					eventService.publish(new PreventPanelSwitchEvent(false));
+				}
 			}
 
 			@Override
 			protected void failed() {
 				super.failed();
-				eventService.publish(new PreventPanelSwitchEvent(false));
+				if (!liveDetectionButton.isSelected()) {
+					eventService.publish(new PreventPanelSwitchEvent(false));
+				}
 				status.showStatus("Something failed during filtering: ");
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(
