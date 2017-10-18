@@ -9,6 +9,8 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
 
+import ij.ImagePlus;
+import ij.process.StackConverter;
 import io.scif.services.DatasetIOService;
 import javafx.application.Platform;
 import net.imagej.Dataset;
@@ -47,6 +49,9 @@ public class ImagePreprocessor {
 
 	@Parameter
 	private UIService ui;
+
+	@Parameter
+	private ConvertService convert;
 
 	@Parameter
 	ConvertService convertService;
@@ -171,8 +176,8 @@ public class ImagePreprocessor {
 
 			Img<UnsignedByteType> out = ops.create().img(dataset, new UnsignedByteType());
 
-			RealTypeConverter op = (RealTypeConverter) ops.op("convert.normalizeScale", dataset.getImgPlus().firstElement(),
-					out.firstElement());
+			RealTypeConverter op = (RealTypeConverter) ops.op("convert.normalizeScale",
+					dataset.getImgPlus().firstElement(), out.firstElement());
 			ops.convert().imageType(out, (IterableInterval<T>) dataset.getImgPlus(), op);
 
 			CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
