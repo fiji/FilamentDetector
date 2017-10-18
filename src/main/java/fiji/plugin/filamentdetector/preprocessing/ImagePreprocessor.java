@@ -24,14 +24,20 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.FloatType;
 
 public class ImagePreprocessor {
 
-	private static int DEFAULT_GAUSSIAN_FITLER_SIZE = 1;
-	private static boolean DEFAULT_DO_GAUSSIAN_FILTER = true;
+	private static double DEFAULT_GAUSSIAN_FITLER_SIZE = 1;
+
+	private static boolean DEFAULT_DO_GAUSSIAN_FILTER = false;
 	private static boolean DEFAULT_SAVE_IMAGE = false;
 	private static boolean DEFAULT_SHOW_IMAGE = false;
 	private static boolean DEFAULT_CONVERT_TO_8BIT = true;
+
+	private static boolean DEFAULT_DIFFERENCE_OF_GAUSSIAN = false;
+	private static double DEFAULT_DOG_SIGMA1 = 6;
+	private static double DEFAULT_DOG_SIGMA2 = 2;
 
 	@Parameter
 	private LogService log;
@@ -59,9 +65,14 @@ public class ImagePreprocessor {
 
 	private double gaussianFilterSize = DEFAULT_GAUSSIAN_FITLER_SIZE;
 	private boolean doGaussianFilter = DEFAULT_DO_GAUSSIAN_FILTER;
+
 	private boolean savePreprocessedImage = DEFAULT_SAVE_IMAGE;
 	private boolean showPreprocessedImage = DEFAULT_SHOW_IMAGE;
 	private boolean doConvertTo8Bit = DEFAULT_CONVERT_TO_8BIT;
+
+	private boolean doDifferenceOfGaussianFilter = DEFAULT_DIFFERENCE_OF_GAUSSIAN;
+	private double sigma1 = DEFAULT_DOG_SIGMA1;
+	private double sigma2 = DEFAULT_DOG_SIGMA2;
 
 	private boolean hasBeenPreprocessed = false;
 
@@ -82,6 +93,11 @@ public class ImagePreprocessor {
 
 		if (doGaussianFilter) {
 			temp = applyGaussianFilter(temp);
+			hasBeenPreprocessed = true;
+		}
+
+		if (doDifferenceOfGaussianFilter) {
+			temp = applyDifferenceOfGaussianFilter(temp);
 			hasBeenPreprocessed = true;
 		}
 
@@ -168,6 +184,30 @@ public class ImagePreprocessor {
 		return hasBeenPreprocessed;
 	}
 
+	public double getSigma1() {
+		return sigma1;
+	}
+
+	public void setSigma1(double sigma1) {
+		this.sigma1 = sigma1;
+	}
+
+	public double getSigma2() {
+		return sigma2;
+	}
+
+	public void setSigma2(double sigma2) {
+		this.sigma2 = sigma2;
+	}
+
+	public boolean isDoDifferenceOfGaussianFilter() {
+		return doDifferenceOfGaussianFilter;
+	}
+
+	public void setDoDifferenceOfGaussianFilter(boolean doDifferenceOfGaussianFilter) {
+		this.doDifferenceOfGaussianFilter = doDifferenceOfGaussianFilter;
+	}
+
 	private <T extends RealType<T>> Dataset converTo8Bit(Dataset input) {
 		if (input.getType().getClass() != UnsignedByteType.class) {
 			Dataset dataset = input.duplicate();
@@ -192,22 +232,49 @@ public class ImagePreprocessor {
 	}
 
 	private <T extends RealType<T>> Dataset applyGaussianFilter(Dataset input) {
-		// Apply Gaussian filter
 		Dataset dataset = input.duplicate();
 
 		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
 
-		RandomAccessibleInterval<T> blurredImg = (RandomAccessibleInterval<T>) ops.create().img(dataset.getImgPlus());
+		RandomAccessibleInterval<T> out = (RandomAccessibleInterval<T>) ops.create().img(dataset.getImgPlus());
 
 		double[] sigmas = new double[] { gaussianFilterSize, gaussianFilterSize };
 		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.gauss", dataset.getImgPlus(), sigmas);
-		ops.slice(blurredImg, (RandomAccessibleInterval<T>) dataset.getImgPlus(), op, fixedAxisIndices);
+		ops.slice(out, (RandomAccessibleInterval<T>) dataset.getImgPlus(), op, fixedAxisIndices);
 
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {
 			axes[i] = dataset.axis(i);
 		}
-		Dataset output = ds.create(blurredImg);
+		Dataset output = ds.create(out);
+		output.setAxes(axes);
+		return output;
+	}
+
+	private <T extends RealType<T>> Dataset applyDifferenceOfGaussianFilter(Dataset input) {
+		Dataset dataset = input.duplicate();
+
+		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
+
+		// Convert to 32 bits
+		Img<FloatType> out = (Img<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
+
+		// Apply filter
+		Img<FloatType> out2 = (Img<FloatType>) ops.create().img(out);
+		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.dog", out, sigma1, sigma2);
+		ops.slice(out2, out, op, fixedAxisIndices);
+
+		// Clip intensities
+		Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
+		RealTypeConverter op2 = (RealTypeConverter) ops.op("convert.clip", dataset.getImgPlus().firstElement(),
+				out2.firstElement());
+		ops.convert().imageType(out3, out2, op2);
+
+		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
+		for (int i = 0; i != axes.length; i++) {
+			axes[i] = dataset.axis(i);
+		}
+		Dataset output = ds.create(out3);
 		output.setAxes(axes);
 		return output;
 	}

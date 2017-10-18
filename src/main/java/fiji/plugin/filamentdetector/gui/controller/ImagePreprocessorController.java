@@ -54,6 +54,15 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	@FXML
 	private ProgressIndicator detectionProgressIndicator;
 
+	@FXML
+	private TextField sigma1DOGField;
+
+	@FXML
+	private TextField sigma2DOGField;
+
+	@FXML
+	private CheckBox doDifferenceOfGaussianFilterCheckbox;
+
 	private Thread thread;
 	private Task<Integer> task;
 
@@ -68,18 +77,30 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.detectionProgressIndicator.setVisible(false);
 		convert8BitCheckbox.setSelected(imagePreprocessor.isConvertTo8Bit());
+
 		doGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoGaussianFilter());
 		gaussianFilterSizeField.setText(Double.toString(imagePreprocessor.getGaussianFilterSize()));
+
 		saveImageCheckbox.setSelected(imagePreprocessor.isSavePreprocessedImage());
 		showImageCheckbox.setSelected(imagePreprocessor.isShowPreprocessedImage());
+
+		doDifferenceOfGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoDifferenceOfGaussianFilter());
+		sigma1DOGField.setText(Double.toString(imagePreprocessor.getSigma1()));
+		sigma2DOGField.setText(Double.toString(imagePreprocessor.getSigma2()));
 	}
 
 	public void updateParameters() {
 		imagePreprocessor.setConvertTo8Bit(convert8BitCheckbox.isSelected());
+
 		imagePreprocessor.setDoGaussianFilter(doGaussianFilterCheckbox.isSelected());
 		imagePreprocessor.setGaussianFilterSize(Double.parseDouble(gaussianFilterSizeField.getText()));
+
 		imagePreprocessor.setSavePreprocessedImage(saveImageCheckbox.isSelected());
 		imagePreprocessor.setShowPreprocessedImage(showImageCheckbox.isSelected());
+
+		imagePreprocessor.setDoDifferenceOfGaussianFilter(doDifferenceOfGaussianFilterCheckbox.isSelected());
+		imagePreprocessor.setSigma1(Double.parseDouble(sigma1DOGField.getText()));
+		imagePreprocessor.setSigma2(Double.parseDouble(sigma2DOGField.getText()));
 	}
 
 	@FXML
