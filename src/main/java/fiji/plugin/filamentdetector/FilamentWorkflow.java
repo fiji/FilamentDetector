@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
+import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
@@ -11,6 +12,7 @@ import org.scijava.ui.UIService;
 import fiji.plugin.filamentdetector.detection.DetectionParameters;
 import fiji.plugin.filamentdetector.detection.FilamentsDetector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
+import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
@@ -20,7 +22,6 @@ import fiji.plugin.filamentdetector.tracking.TrackingParameters;
 import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 /*
  * This class holds the necessary informations/models necessary during the use of the GUI.
@@ -39,6 +40,9 @@ public class FilamentWorkflow {
 
 	@Parameter
 	private UIService ui;
+
+	@Parameter
+	private EventService eventService;
 
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
@@ -71,11 +75,6 @@ public class FilamentWorkflow {
 	}
 
 	public void initialize() throws Exception {
-		// Check image is 8-bit
-		if (getDataset().getType().getClass() != UnsignedByteType.class) {
-			throw new Exception("Please convert the image to 8-bit first.");
-		}
-
 		// Get physical pixel sizes (um) and duration between frames (s)
 		calibrations = new Calibrations(context, getDataset(), getImagePlus());
 	}
@@ -116,7 +115,13 @@ public class FilamentWorkflow {
 	}
 
 	public Dataset getDataset() {
-		return (Dataset) imageDisplay.getActiveView().getData();
+		try {
+			Dataset dataset = (Dataset) imageDisplay.getActiveView().getData();
+			return dataset;
+		} catch (NullPointerException e) {
+			eventService.publish(new ImageNotFoundEvent());
+			return null;
+		}
 	}
 
 	public ImageDisplay getImageDisplay() {

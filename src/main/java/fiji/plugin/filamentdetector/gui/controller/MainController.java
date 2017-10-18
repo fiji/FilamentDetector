@@ -305,7 +305,9 @@ public class MainController extends Controller implements Initializable {
 				getPane().setDisable(true);
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
-				alert.setContentText("It looks like the original image disapears. Please restart the plugin.");
+				Label label = new Label("It looks like the original image disapears. Please restart the plugin.");
+				label.setWrapText(true);
+				alert.getDialogPane().setContent(label);
 				alert.showAndWait();
 			}
 		});

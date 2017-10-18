@@ -10,6 +10,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
 
 import io.scif.services.DatasetIOService;
+import javafx.application.Platform;
 import net.imagej.Dataset;
 import net.imagej.DatasetService;
 import net.imagej.axis.Axes;
@@ -19,6 +20,7 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 public class ImagePreprocessor {
 
@@ -64,26 +66,30 @@ public class ImagePreprocessor {
 
 	public void preprocess() {
 
+		Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
+		Dataset temp = originalDataset;
+
 		if (doConvertTo8Bit) {
-			converTo8Bit();
+			temp = converTo8Bit(temp);
 			hasBeenPreprocessed = true;
 		}
 
 		if (doGaussianFilter) {
-			applyGaussianFilter();
+			temp = applyGaussianFilter(temp);
 			hasBeenPreprocessed = true;
 		}
 
 		if (hasBeenPreprocessed) {
 
-			Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
-
+			this.preprocessedImage = temp;
 			this.preprocessedImage
 					.setName(FilenameUtils.removeExtension(originalDataset.getName()) + "-Preprocessed.tif");
 
 			// Show if needed
 			if (showPreprocessedImage) {
-				ui.show(this.preprocessedImage);
+				Platform.runLater(() -> {
+					ui.show(this.preprocessedImage);
+				});
 			}
 
 			// Save if needed
@@ -156,15 +162,18 @@ public class ImagePreprocessor {
 		return hasBeenPreprocessed;
 	}
 
-	private void converTo8Bit() {
-		this.preprocessedImage = (Dataset) image.getActiveView().getData();
-
+	private Dataset converTo8Bit(Dataset input) {
+		if (input.getType().getClass() != UnsignedByteType.class) {
+			Dataset dataset = input.duplicate();
+			return dataset;
+		} else {
+			return input;
+		}
 	}
 
-	private <T extends RealType<T>> void applyGaussianFilter() {
+	private <T extends RealType<T>> Dataset applyGaussianFilter(Dataset input) {
 		// Apply Gaussian filter
-		Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
-		Dataset dataset = originalDataset.duplicate();
+		Dataset dataset = input.duplicate();
 
 		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
 
@@ -178,8 +187,9 @@ public class ImagePreprocessor {
 		for (int i = 0; i != axes.length; i++) {
 			axes[i] = dataset.axis(i);
 		}
-		this.preprocessedImage = ds.create(blurredImg);
-		this.preprocessedImage.setAxes(axes);
+		Dataset output = ds.create(blurredImg);
+		output.setAxes(axes);
+		return output;
 	}
 
 }
