@@ -17,8 +17,11 @@ import net.imagej.axis.Axes;
 import net.imagej.axis.CalibratedAxis;
 import net.imagej.display.ImageDisplay;
 import net.imagej.ops.OpService;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 
@@ -162,10 +165,24 @@ public class ImagePreprocessor {
 		return hasBeenPreprocessed;
 	}
 
-	private Dataset converTo8Bit(Dataset input) {
+	private <T extends RealType<T>> Dataset converTo8Bit(Dataset input) {
 		if (input.getType().getClass() != UnsignedByteType.class) {
 			Dataset dataset = input.duplicate();
-			return dataset;
+
+			Img<UnsignedByteType> out = ops.create().img(dataset, new UnsignedByteType());
+
+			RealTypeConverter op = (RealTypeConverter) ops.op("convert.normalizeScale", dataset.getImgPlus().firstElement(),
+					out.firstElement());
+			ops.convert().imageType(out, (IterableInterval<T>) dataset.getImgPlus(), op);
+
+			CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
+			for (int i = 0; i != axes.length; i++) {
+				axes[i] = dataset.axis(i);
+			}
+			Dataset output = ds.create(out);
+			output.setAxes(axes);
+
+			return output;
 		} else {
 			return input;
 		}
