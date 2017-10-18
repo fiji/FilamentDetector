@@ -57,7 +57,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 	private LogService log;
 
 	@Parameter
-	FilamentOverlayService overlayService;
+	private FilamentOverlayService overlayService;
 
 	@FXML
 	private Slider lineWidthSlider;
@@ -240,9 +240,6 @@ public class DetectFilamentController extends Controller implements Initializabl
 		filamentViewContainer.getChildren().add(0, filamentsTableView.getInfoPane());
 		filamentViewContainer.getChildren().add(1, filamentsTableView);
 		detailViewContainer.getChildren().add(filamentsTableView.getDetailPane());
-
-		// Initialize overlay on the image
-		overlayService.setImageDisplay(filamentWorkflow.getImageDisplay());
 	}
 
 	public void initPane() {

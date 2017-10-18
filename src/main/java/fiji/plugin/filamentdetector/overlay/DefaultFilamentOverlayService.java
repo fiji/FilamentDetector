@@ -425,6 +425,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void setImageDisplay(ImageDisplay imageDisplay) {
 		this.imageDisplay = imageDisplay;
 		getImagePlus().getWindow().getCanvas().addMouseListener(this);
+		this.refresh();
 	}
 
 	@Override

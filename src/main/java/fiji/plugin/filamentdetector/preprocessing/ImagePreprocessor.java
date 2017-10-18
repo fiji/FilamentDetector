@@ -39,6 +39,8 @@ public class ImagePreprocessor {
 	private static double DEFAULT_DOG_SIGMA1 = 6;
 	private static double DEFAULT_DOG_SIGMA2 = 2;
 
+	private static boolean DEFAULT_USE_FOR_OVERLAY = false;
+
 	@Parameter
 	private LogService log;
 
@@ -60,7 +62,7 @@ public class ImagePreprocessor {
 	@Parameter
 	ConvertService convertService;
 
-	private ImageDisplay image;
+	private ImageDisplay imageDisplay;
 	private Dataset preprocessedImage;
 
 	private double gaussianFilterSize = DEFAULT_GAUSSIAN_FITLER_SIZE;
@@ -74,16 +76,18 @@ public class ImagePreprocessor {
 	private double sigma1 = DEFAULT_DOG_SIGMA1;
 	private double sigma2 = DEFAULT_DOG_SIGMA2;
 
+	private boolean useForOverlay = DEFAULT_USE_FOR_OVERLAY;
+
 	private boolean hasBeenPreprocessed = false;
 
 	public ImagePreprocessor(Context context, ImageDisplay imd) {
 		context.inject(this);
-		this.image = imd;
+		this.imageDisplay = imd;
 	}
 
 	public void preprocess() {
 
-		Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
+		Dataset originalDataset = (Dataset) this.imageDisplay.getActiveView().getData();
 		Dataset temp = originalDataset;
 
 		if (doConvertTo8Bit) {
@@ -132,8 +136,8 @@ public class ImagePreprocessor {
 		}
 	}
 
-	public ImageDisplay getImage() {
-		return image;
+	public ImageDisplay getImageDisplay() {
+		return imageDisplay;
 	}
 
 	public Dataset getPreprocessedImage() {
@@ -206,6 +210,14 @@ public class ImagePreprocessor {
 
 	public void setDoDifferenceOfGaussianFilter(boolean doDifferenceOfGaussianFilter) {
 		this.doDifferenceOfGaussianFilter = doDifferenceOfGaussianFilter;
+	}
+
+	public boolean isUseForOverlay() {
+		return useForOverlay;
+	}
+
+	public void setUseForOverlay(boolean useForOverlay) {
+		this.useForOverlay = useForOverlay;
 	}
 
 	private <T extends RealType<T>> Dataset converTo8Bit(Dataset input) {

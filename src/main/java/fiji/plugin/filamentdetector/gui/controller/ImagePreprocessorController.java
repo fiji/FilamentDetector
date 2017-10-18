@@ -9,11 +9,15 @@ import org.scijava.Context;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.ui.UIService;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
+import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +25,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import net.imagej.Dataset;
+import net.imagej.display.ImageDisplay;
+import net.imagej.display.ImageDisplayService;
 
 public class ImagePreprocessorController extends Controller implements Initializable {
 
@@ -35,6 +42,15 @@ public class ImagePreprocessorController extends Controller implements Initializ
 
 	@Parameter
 	private EventService eventService;
+
+	@Parameter
+	private FilamentOverlayService overlay;
+
+	@Parameter
+	private UIService ui;
+
+	@Parameter
+	private ImageDisplayService ids;
 
 	@FXML
 	private CheckBox convert8BitCheckbox;
@@ -63,13 +79,18 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	@FXML
 	private CheckBox doDifferenceOfGaussianFilterCheckbox;
 
+	@FXML
+	private CheckBox useForOverlayCheckbox;
+
 	private Thread thread;
 	private Task<Integer> task;
 
 	private ImagePreprocessor imagePreprocessor;
+	private FilamentWorkflow filamentWorkflow;
 
 	public ImagePreprocessorController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
+		this.filamentWorkflow = filamentWorkflow;
 		this.imagePreprocessor = filamentWorkflow.getImagePreprocessor();
 	}
 
@@ -87,6 +108,17 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		doDifferenceOfGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoDifferenceOfGaussianFilter());
 		sigma1DOGField.setText(Double.toString(imagePreprocessor.getSigma1()));
 		sigma2DOGField.setText(Double.toString(imagePreprocessor.getSigma2()));
+
+		useForOverlayCheckbox.setSelected(imagePreprocessor.isUseForOverlay());
+
+		useForOverlayCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+				if (old_val != new_val) {
+					usePreprocessedImageForOverlay();
+				}
+			}
+		});
+
 	}
 
 	public void updateParameters() {
@@ -101,6 +133,8 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		imagePreprocessor.setDoDifferenceOfGaussianFilter(doDifferenceOfGaussianFilterCheckbox.isSelected());
 		imagePreprocessor.setSigma1(Double.parseDouble(sigma1DOGField.getText()));
 		imagePreprocessor.setSigma2(Double.parseDouble(sigma2DOGField.getText()));
+
+		imagePreprocessor.setUseForOverlay(useForOverlayCheckbox.isSelected());
 	}
 
 	@FXML
@@ -129,6 +163,8 @@ public class ImagePreprocessorController extends Controller implements Initializ
 				String statusMessage = "The image has been successfully preprocessed.";
 				status.showStatus(statusMessage);
 				detectionProgressIndicator.setVisible(false);
+
+				usePreprocessedImageForOverlay();
 			}
 
 			@Override
@@ -153,5 +189,33 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		thread = new Thread(task);
 		thread.setDaemon(true);
 		thread.start();
+	}
+
+	private void usePreprocessedImageForOverlay() {
+		if (useForOverlayCheckbox.isSelected()) {
+			Dataset dataset = imagePreprocessor.getPreprocessedImage();
+
+			if (dataset != null) {
+
+				ImageDisplay imageDisplay = ids.getImageDisplays().stream()
+						.filter(imd -> ((Dataset) imd.getActiveView().getData()).equals(dataset)).findFirst()
+						.orElse(null);
+
+				if (imageDisplay == null) {
+					ui.show(dataset);
+					imageDisplay = ids.getImageDisplays().stream()
+							.filter(imd -> ((Dataset) imd.getActiveView().getData()).equals(dataset)).findFirst()
+							.orElse(null);
+				}
+
+				log.info(imageDisplay);
+				if (imageDisplay != null) {
+					overlay.setImageDisplay(imageDisplay);
+				}
+			}
+
+		} else {
+			overlay.setImageDisplay(imagePreprocessor.getImageDisplay());
+		}
 	}
 }

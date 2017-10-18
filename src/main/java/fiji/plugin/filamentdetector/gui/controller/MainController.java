@@ -138,6 +138,7 @@ public class MainController extends Controller implements Initializable {
 		loadAbout();
 
 		// Initialize overlay settings UI
+		overlay.setImageDisplay(filamentWorkflow.getImageDisplay());
 		initOverlaySettings();
 
 		// Enable the first welcome pane
