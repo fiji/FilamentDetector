@@ -76,6 +76,11 @@ public class ImagePreprocessor {
 
 		if (hasBeenPreprocessed) {
 
+			Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
+
+			this.preprocessedImage
+					.setName(FilenameUtils.removeExtension(originalDataset.getName()) + "-Preprocessed.tif");
+
 			// Show if needed
 			if (showPreprocessedImage) {
 				ui.show(this.preprocessedImage);
@@ -83,7 +88,7 @@ public class ImagePreprocessor {
 
 			// Save if needed
 			if (savePreprocessedImage) {
-				Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
+
 				if (originalDataset.getSource() != null) {
 					String filePath = FilenameUtils.removeExtension(originalDataset.getSource());
 					filePath += "-Preprocessed.tif";
@@ -161,12 +166,13 @@ public class ImagePreprocessor {
 		Dataset originalDataset = (Dataset) this.image.getActiveView().getData();
 		Dataset dataset = originalDataset.duplicate();
 
-		int[] fixedAxisIndexes = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
+		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
 
 		RandomAccessibleInterval<T> blurredImg = (RandomAccessibleInterval<T>) ops.create().img(dataset.getImgPlus());
 
-		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.gauss", dataset.getImgPlus(), gaussianFilterSize);
-		ops.slice(blurredImg, (RandomAccessibleInterval<T>) dataset.getImgPlus(), op, fixedAxisIndexes);
+		double[] sigmas = new double[] { gaussianFilterSize, gaussianFilterSize };
+		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.gauss", dataset.getImgPlus(), sigmas);
+		ops.slice(blurredImg, (RandomAccessibleInterval<T>) dataset.getImgPlus(), op, fixedAxisIndices);
 
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {

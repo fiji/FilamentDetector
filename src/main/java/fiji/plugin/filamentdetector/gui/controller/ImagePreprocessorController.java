@@ -86,7 +86,6 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		if (thread != null) {
 			thread.stop();
 		}
-
 		this.detectionProgressIndicator.setVisible(true);
 
 		task = new Task<Integer>() {

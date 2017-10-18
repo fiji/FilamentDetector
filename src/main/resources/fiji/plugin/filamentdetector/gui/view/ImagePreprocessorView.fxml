@@ -38,7 +38,7 @@
             <HBox alignment="CENTER_LEFT" spacing="5.0">
                <children>
                   <CheckBox fx:id="doGaussianFilterCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Gaussian Filter" />
-                  <TextField fx:id="gaussianFilterSizeField" onAction="#updateParameters" prefWidth="60.0" />
+                  <TextField fx:id="gaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
                   <Label text="pixel(s)" />
                </children>
                <padding>
@@ -67,7 +67,7 @@
                </padding>
                <children>
                   <ProgressIndicator fx:id="detectionProgressIndicator" maxHeight="26.0" />
-                  <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image (NOT WORKING)" />
+                  <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image" />
                </children>
             </HBox>
          </children>
