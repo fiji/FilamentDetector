@@ -384,7 +384,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 		detectionTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
-				eventService.publish(new PreventPanelSwitchEvent(true));
+				Platform.runLater(() -> {
+					eventService.publish(new PreventPanelSwitchEvent(true));
+				});
 				if (detectCurrentFrameButton.isSelected()) {
 					filamentWorkflow.detectCurrentFrame();
 				} else {
@@ -462,7 +464,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void succeeded() {
 				super.succeeded();
-				eventService.publish(new PreventPanelSwitchEvent(false));
+				Platform.runLater(() -> {
+					eventService.publish(new PreventPanelSwitchEvent(false));
+				});
 				if (!filteringParameters.isDisableFiltering()) {
 					status.showStatus("Filtering with the following parameters : ");
 					status.showStatus(filteringParameters.toString());
