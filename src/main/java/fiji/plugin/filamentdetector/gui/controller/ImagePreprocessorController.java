@@ -6,10 +6,12 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
+import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import javafx.concurrent.Task;
@@ -30,6 +32,9 @@ public class ImagePreprocessorController extends Controller implements Initializ
 
 	@Parameter
 	private GUIStatusService status;
+
+	@Parameter
+	private EventService eventService;
 
 	@FXML
 	private CheckBox convert8BitCheckbox;
@@ -91,6 +96,7 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		task = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
+				eventService.publish(new PreventPanelSwitchEvent(true));
 				imagePreprocessor.preprocess();
 				return 0;
 			}
@@ -98,6 +104,7 @@ public class ImagePreprocessorController extends Controller implements Initializ
 			@Override
 			protected void succeeded() {
 				super.succeeded();
+				eventService.publish(new PreventPanelSwitchEvent(false));
 				String statusMessage = "The image has been successfully preprocessed.";
 				status.showStatus(statusMessage);
 				detectionProgressIndicator.setVisible(false);
@@ -107,6 +114,7 @@ public class ImagePreprocessorController extends Controller implements Initializ
 			protected void cancelled() {
 				super.cancelled();
 				detectionProgressIndicator.setVisible(false);
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
@@ -117,6 +125,7 @@ public class ImagePreprocessorController extends Controller implements Initializ
 				status.showStatus(
 						Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
 				detectionProgressIndicator.setVisible(false);
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 		};
 

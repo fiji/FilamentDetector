@@ -15,6 +15,7 @@ import org.scijava.plugin.Parameter;
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
 import fiji.plugin.filamentdetector.event.FilterFilamentEvent;
+import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
@@ -382,6 +383,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 		detectionTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
+				eventService.publish(new PreventPanelSwitchEvent(true));
 				if (detectCurrentFrameButton.isSelected()) {
 					filamentWorkflow.detectCurrentFrame();
 				} else {
@@ -400,17 +402,20 @@ public class DetectFilamentController extends Controller implements Initializabl
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
 				eventService.publish(new FilterFilamentEvent(filteringParameters));
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
 				detectionProgressIndicator.setVisible(false);
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
 			protected void failed() {
 				super.failed();
+				eventService.publish(new PreventPanelSwitchEvent(false));
 				status.showStatus("Something failed during detection: ");
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(
@@ -445,7 +450,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected Integer call() throws Exception {
 				Platform.runLater(() -> {
-
+					eventService.publish(new PreventPanelSwitchEvent(true));
 					filamentWorkflow.filterFilament(event.getFilteringParameters());
 					updateFilamentsList();
 				});
@@ -456,6 +461,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void succeeded() {
 				super.succeeded();
+				eventService.publish(new PreventPanelSwitchEvent(false));
 				if (!filteringParameters.isDisableFiltering()) {
 					status.showStatus("Filtering with the following parameters : ");
 					status.showStatus(filteringParameters.toString());
@@ -469,11 +475,13 @@ public class DetectFilamentController extends Controller implements Initializabl
 			@Override
 			protected void cancelled() {
 				super.cancelled();
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
 			protected void failed() {
 				super.failed();
+				eventService.publish(new PreventPanelSwitchEvent(false));
 				status.showStatus("Something failed during filtering: ");
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(

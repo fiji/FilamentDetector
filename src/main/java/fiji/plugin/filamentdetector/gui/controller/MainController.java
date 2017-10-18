@@ -10,6 +10,7 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
+import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -308,7 +309,19 @@ public class MainController extends Controller implements Initializable {
 				alert.showAndWait();
 			}
 		});
+	}
 
+	@EventHandler
+	private void preventPanelSwitch(PreventPanelSwitchEvent event) {
+		if (event.getPreventPaneSwitch()) {
+			for (TitledPane pane : mainPane.getPanes()) {
+				pane.setDisable(true);
+			}
+		} else {
+			for (TitledPane pane : mainPane.getPanes()) {
+				pane.setDisable(false);
+			}
+		}
 	}
 
 }

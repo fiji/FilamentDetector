@@ -13,6 +13,7 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.FilterTrackedFilamentEvent;
+import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
@@ -164,6 +165,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 		trackingTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
+				eventService.publish(new PreventPanelSwitchEvent(true));
 				filamentWorkflow.track();
 				return filamentWorkflow.getTrackedFilaments().size();
 			}
@@ -177,11 +179,14 @@ public class TrackingFilamentController extends Controller implements Initializa
 				trackingProgressIndicator.setVisible(false);
 				updateTrackedFilamentsList();
 				eventService.publish(new FilterTrackedFilamentEvent(filteringParameters));
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
+				eventService.publish(new PreventPanelSwitchEvent(false));
+				trackingProgressIndicator.setVisible(false);
 			}
 
 			@Override
@@ -192,6 +197,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 				status.showStatus(
 						Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
 				trackingProgressIndicator.setVisible(false);
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 		};
 
@@ -241,6 +247,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 			@Override
 			protected Integer call() throws Exception {
 				Platform.runLater(() -> {
+					eventService.publish(new PreventPanelSwitchEvent(true));
 					filamentWorkflow.filterTrackedFilament(event.getFilteringTrackedFilamentsParameters());
 					updateTrackedFilamentsList();
 				});
@@ -259,11 +266,13 @@ public class TrackingFilamentController extends Controller implements Initializa
 					status.showStatus("Filtering is disabled. " + filamentWorkflow.getTrackedFilaments().size()
 							+ " tracks detected.");
 				}
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
 			@Override
@@ -273,6 +282,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(
 						Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
+				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 		};
 
