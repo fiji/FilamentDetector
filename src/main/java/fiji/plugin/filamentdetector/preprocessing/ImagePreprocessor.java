@@ -9,8 +9,6 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
 
-import ij.ImagePlus;
-import ij.process.StackConverter;
 import io.scif.services.DatasetIOService;
 import javafx.application.Platform;
 import net.imagej.Dataset;

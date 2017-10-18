@@ -24,7 +24,7 @@ public class Test8bitConvert {
 		Dataset ij2 = ij2Convert(ij, dataset);
 		ij2.setName("ij2");
 		ij.ui().show(ij2);
-		
+
 		Dataset ij1 = ij1Convert(ij, dataset);
 		ij1.setName("ij1");
 		ij.ui().show(ij1);
