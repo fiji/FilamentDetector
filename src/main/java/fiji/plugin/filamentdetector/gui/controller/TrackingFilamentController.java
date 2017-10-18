@@ -126,7 +126,8 @@ public class TrackingFilamentController extends Controller implements Initializa
 
 		// Initialize tracked filaments list
 		trackedFilamentsTableView = new TrackedFilamentsTableView(context, filamentWorkflow.getTrackedFilaments());
-		trackedFilamentViewContainer.getChildren().add(0, trackedFilamentsTableView);
+		trackedFilamentViewContainer.getChildren().add(0, trackedFilamentsTableView.getInfoPane());
+		trackedFilamentViewContainer.getChildren().add(1, trackedFilamentsTableView);
 		detailViewContainer.getChildren().add(trackedFilamentsTableView.getDetailPane());
 	}
 

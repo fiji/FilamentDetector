@@ -237,7 +237,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 		// Initialize filaments list
 		filamentsTableView = new FilamentsTableView(context, filamentWorkflow.getFilaments());
-		filamentViewContainer.getChildren().add(0, filamentsTableView);
+		filamentViewContainer.getChildren().add(0, filamentsTableView.getInfoPane());
+		filamentViewContainer.getChildren().add(1, filamentsTableView);
 		detailViewContainer.getChildren().add(filamentsTableView.getDetailPane());
 
 		// Initialize overlay on the image

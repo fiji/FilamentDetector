@@ -36,7 +36,7 @@ public class FilamentWorkflow {
 
 	@Parameter
 	private LogService log;
-	
+
 	@Parameter
 	private UIService ui;
 

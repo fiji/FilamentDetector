@@ -1,7 +1,6 @@
 package fiji.plugin.filamentdetector.gui.view;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
@@ -13,9 +12,7 @@ import fiji.plugin.filamentdetector.event.TrackedFilamentSelectedEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.gui.controller.DetailedTrackedFilamentController;
-import fiji.plugin.filamentdetector.gui.model.FilamentModel;
 import fiji.plugin.filamentdetector.gui.model.TrackedFilamentModel;
-import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -49,8 +46,11 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	private EventService eventService;
 
 	private AnchorPane detailPane;
-	
+
 	private TrackedFilaments trackedFilaments;
+
+	private Label nFilamentsField;
+	private Pane infoPane;
 
 	public TrackedFilamentsTableView(Context context, TrackedFilaments trackedFilaments) {
 		context.inject(this);
@@ -111,8 +111,8 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 				// Fill the detailed view
 				DetailedTrackedFilamentController controller = new DetailedTrackedFilamentController(
 						newSelection.getTrackedFilament());
-				Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/tracking/DetailedTrackedFilamentView.fxml",
-						controller);
+				Pane pane = GUIUtils.loadFXML(
+						"/fiji/plugin/filamentdetector/gui/view/tracking/DetailedTrackedFilamentView.fxml", controller);
 
 				detailPane.getChildren().clear();
 				detailPane.getChildren().add(pane);
@@ -127,14 +127,24 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 				controller.getRemoveFilamentLabel().setOnAction((event) -> {
 					removeTrackedFilament(controller.getTrackedFilament());
 				});
-				
+
 			} else if (trackedFilamentModels.size() > 1) {
 				setMultipleSelectionDetail();
-				
+
 			} else {
 				setNoDetail();
 			}
 		});
+
+		// Setup info pane
+		this.infoPane = new Pane();
+		this.infoPane.setMinHeight(25);
+		VBox vbox = new VBox();
+		vbox.setPadding(new Insets(3, 3, 3, 3));
+		vbox.setSpacing(3);
+		this.nFilamentsField = new Label("");
+		vbox.getChildren().add(this.nFilamentsField);
+		this.infoPane.getChildren().add(vbox);
 
 		// Add filaments
 		setTrackedFilaments(trackedFilaments);
@@ -150,7 +160,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	public void setTrackedFilaments(TrackedFilaments trackedFilaments) {
 
 		this.trackedFilaments = trackedFilaments;
-		
+
 		ObservableList<TrackedFilamentModel> trackedFilamentModelList = FXCollections.observableArrayList();
 		for (TrackedFilament trackedFilament : trackedFilaments) {
 			trackedFilamentModelList.add(new TrackedFilamentModel(trackedFilament));
@@ -160,12 +170,14 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 		// Update overlay
 		overlayService.reset();
 		overlayService.add(trackedFilaments);
+		this.updateNFilamentsField();
 	}
 
 	public void addTrackedFilament(TrackedFilament trackedFilament) {
 		this.getItems().add(new TrackedFilamentModel(trackedFilament));
 		this.trackedFilaments.add(trackedFilament);
 		overlayService.add(trackedFilament);
+		this.updateNFilamentsField();
 	}
 
 	public Pane getDetailPane() {
@@ -217,6 +229,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 		this.getItems().remove(trackedFilamentModel);
 		this.trackedFilaments.remove(trackedFilamentModel.getTrackedFilament());
 		overlayService.remove(trackedFilamentModel.getTrackedFilament());
+		this.updateNFilamentsField();
 	}
 
 	private void removeTrackedFilaments(List<TrackedFilamentModel> trackedFilamentModels) {
@@ -225,6 +238,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 			this.trackedFilaments.remove(trackedFilamentModel.getTrackedFilament());
 		}
 		this.getItems().removeAll(trackedFilamentModels);
+		this.updateNFilamentsField();
 	}
 
 	@EventHandler
@@ -237,6 +251,18 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 				this.getSelectionModel().clearSelection();
 				this.getSelectionModel().select(trackedFilamentModel);
 			});
+		}
+	}
+
+	public Pane getInfoPane() {
+		return infoPane;
+	}
+
+	public void updateNFilamentsField() {
+		if (this.trackedFilaments.size() == 0) {
+			this.nFilamentsField.setText("");
+		} else {
+			this.nFilamentsField.setText(this.trackedFilaments.size() + " Tracked Filaments.");
 		}
 	}
 

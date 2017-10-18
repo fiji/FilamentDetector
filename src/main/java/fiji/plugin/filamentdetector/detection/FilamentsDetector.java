@@ -32,7 +32,7 @@ public class FilamentsDetector {
 
 	private ImageDisplay imageDisplay;
 	private Dataset dataset;
-	
+
 	private DetectionParameters parameters;
 
 	private LineDetector lineDetector;
@@ -46,8 +46,7 @@ public class FilamentsDetector {
 		new FilamentsDetector(context, imageDisplay, dataset, new DetectionParameters());
 	}
 
-	public FilamentsDetector(Context context, ImageDisplay imageDisplay, Dataset dataset,
-			DetectionParameters params) {
+	public FilamentsDetector(Context context, ImageDisplay imageDisplay, Dataset dataset, DetectionParameters params) {
 		context.inject(this);
 		this.imageDisplay = imageDisplay;
 		this.dataset = dataset;
@@ -89,13 +88,13 @@ public class FilamentsDetector {
 		colorService.initialize();
 
 		this.filaments = new Filaments();
-		
+
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
-		
+
 		this.impData.setC(channelIndex);
 		this.detectFrame(currentFrame);
-		
+
 		this.imp.setC(currentChannel);
 
 		this.simplify();

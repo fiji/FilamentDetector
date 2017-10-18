@@ -2,7 +2,6 @@ package fiji.plugin.filamentdetector.gui.view;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.event.EventHandler;
@@ -50,8 +49,11 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	private DecimalFormat formatter;
 
 	private AnchorPane detailPane;
-	
+
 	private Filaments filaments;
+
+	private Label nFilamentsField;
+	private Pane infoPane;
 
 	public FilamentsTableView(Context context, Filaments filaments) {
 		context.inject(this);
@@ -132,8 +134,8 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 
 				// Fill the detailed view
 				DetailedFilamentController controller = new DetailedFilamentController(newSelection.getFilament());
-				Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/detection/DetailedFilamentView.fxml",
-						controller);
+				Pane pane = GUIUtils.loadFXML(
+						"/fiji/plugin/filamentdetector/gui/view/detection/DetailedFilamentView.fxml", controller);
 
 				detailPane.getChildren().clear();
 				detailPane.getChildren().add(pane);
@@ -148,7 +150,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				controller.getRemoveFilamentLabel().setOnAction((event) -> {
 					removeFilament(controller.getFilament());
 				});
-				
+
 			} else if (filamentModels.size() > 1) {
 				setMultipleSelectionDetail();
 
@@ -157,11 +159,21 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 			}
 		});
 
-		// Add filaments
-		setFilaments(filaments);
-
 		// Handle filament selection
 		eventService.subscribe(this);
+
+		// Setup info pane
+		this.infoPane = new Pane();
+		this.infoPane.setMinHeight(25);
+		VBox vbox = new VBox();
+		vbox.setPadding(new Insets(3, 3, 3, 3));
+		vbox.setSpacing(3);
+		this.nFilamentsField = new Label("");
+		vbox.getChildren().add(this.nFilamentsField);
+		this.infoPane.getChildren().add(vbox);
+
+		// Add filaments
+		setFilaments(filaments);
 	}
 
 	public Filaments getFilaments() {
@@ -171,7 +183,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	public void setFilaments(Filaments filaments) {
 
 		this.filaments = filaments;
-		
+
 		ObservableList<FilamentModel> filamentModelList = FXCollections.observableArrayList();
 
 		for (Filament filament : filaments) {
@@ -182,12 +194,14 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		// Update overlay
 		overlayService.reset();
 		overlayService.add(filaments);
+		this.updateNFilamentsField();
 	}
 
 	public void addFilament(Filament filament) {
 		this.getItems().add(new FilamentModel(filament));
 		this.filaments.add(filament);
 		overlayService.add(filament);
+		this.updateNFilamentsField();
 	}
 
 	public Pane getDetailPane() {
@@ -239,6 +253,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 		this.getItems().remove(filamentModel);
 		this.filaments.remove(filamentModel.getFilament());
 		overlayService.remove(filamentModel.getFilament());
+		this.updateNFilamentsField();
 	}
 
 	private void removeFilaments(List<FilamentModel> filamentModels) {
@@ -247,6 +262,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 			this.filaments.remove(filamentModel.getFilament());
 		}
 		this.getItems().removeAll(filamentModels);
+		this.updateNFilamentsField();
 	}
 
 	@EventHandler
@@ -259,6 +275,18 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 				this.getSelectionModel().clearSelection();
 				this.getSelectionModel().select(filamentModel);
 			});
+		}
+	}
+
+	public Pane getInfoPane() {
+		return infoPane;
+	}
+
+	public void updateNFilamentsField() {
+		if (this.filaments.size() == 0) {
+			this.nFilamentsField.setText("");
+		} else {
+			this.nFilamentsField.setText(this.filaments.size() + " Filaments.");
 		}
 	}
 

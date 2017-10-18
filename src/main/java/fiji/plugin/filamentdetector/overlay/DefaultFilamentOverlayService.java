@@ -437,12 +437,14 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			this.selectedFilaments.add(filament);
 
 			Roi roi = filamentROIMap.get(filament);
-			roi.setStrokeWidth(roi.getStrokeWidth() * 2);
-			ImagePlus imp = getImagePlus();
-			if (moveToFrame) {
-				imp.setT(filament.getFrame());
+			if (roi != null) {
+				roi.setStrokeWidth(roi.getStrokeWidth() * 2);
+				ImagePlus imp = getImagePlus();
+				if (moveToFrame) {
+					imp.setT(filament.getFrame());
+				}
+				imp.repaintWindow();
 			}
-			imp.repaintWindow();
 		}
 	}
 
