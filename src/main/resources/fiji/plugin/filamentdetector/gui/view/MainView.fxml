@@ -116,7 +116,7 @@
                                           </TitledPane>
                                           <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                              <children>
-                                                <Button fx:id="compositeButton" mnemonicParsing="false" onMouseClicked="#exportToROIManager" text="Composite View" />
+                                                <Button fx:id="compositeButton" mnemonicParsing="false" text="Composite View" />
                                                 <Button mnemonicParsing="false" onMouseClicked="#exportToROIManager" text="Export to ROI Manager" />
                                              </children>
                                              <padding>
