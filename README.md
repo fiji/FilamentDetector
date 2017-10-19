@@ -1,5 +1,3 @@
-**Important**: *This plugin is in heavy development and not yet suitable for use*.
-
 # FilamentDetector
 
 [![](https://travis-ci.org/hadim/FilamentDetector.svg?branch=master)](https://travis-ci.org/hadim/FilamentDetector)
@@ -12,9 +10,11 @@ Please visit https://imagej.net/FilamentDetector for more information.
 
 ## Installation
 
-- Download the last released version [here](http://maven.imagej.net/service/local/artifact/maven/redirect?r=releases&g=org.scijava&a=FilamentDetector&v=RELEASE&e=jar).
-- Copy the .jar file to your Fiji plugins directory.
-- Launch Fiji.
+- Go to `Help ▶ Update...`.
+- In the new window, click on `Manage update sites`.
+- Scroll to find `FilamentDetector` in the column `Name`. Click on it.
+- Click `Close` and then `Apply changes`.
+- Restart Fiji.
 - You can run the plugin with `Plugins ► Tracking ► FilamentDetector`.
 
 ## Authors
