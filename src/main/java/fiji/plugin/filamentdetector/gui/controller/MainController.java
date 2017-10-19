@@ -14,6 +14,7 @@ import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
+import fiji.plugin.filamentdetector.overlay.ImageDisplayMode;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -80,6 +82,9 @@ public class MainController extends Controller implements Initializable {
 
 	@FXML
 	private Label tipDiameterValueLabel;
+
+	@FXML
+	Button compositeButton;
 
 	private FilamentWorkflow filamentWorkflow;
 
@@ -193,6 +198,25 @@ public class MainController extends Controller implements Initializable {
 
 		drawPlusTipsCheckbox.setSelected(overlay.isDrawPlusTips());
 		drawMinusTipsCheckbox.setSelected(overlay.isDrawMinusTips());
+
+		compositeButton.setOnAction((event) -> {
+			String compositeText = "Composite View";
+			String colorText = "One Color View";
+			String grayText = "Gray View";
+
+			if (compositeButton.getText().equals(compositeText)) {
+				overlay.setViewMode(ImageDisplayMode.COMPOSITE);
+				compositeButton.setText(colorText);
+			} else if (compositeButton.getText().equals(colorText)) {
+				overlay.setViewMode(ImageDisplayMode.COLOR);
+				compositeButton.setText(grayText);
+			} else if (compositeButton.getText().equals(grayText)) {
+				overlay.setViewMode(ImageDisplayMode.GRAYSCALE);
+				compositeButton.setText(compositeText);
+			} else {
+				compositeButton.setText(colorText);
+			}
+		});
 	}
 
 	@FXML

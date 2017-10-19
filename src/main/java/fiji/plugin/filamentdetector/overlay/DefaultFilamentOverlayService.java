@@ -23,6 +23,7 @@ import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.Tip;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
@@ -571,6 +572,19 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			}
 		}
 		getImagePlus().repaintWindow();
+	}
+
+	public void setViewMode(ImageDisplayMode viewMode) {
+		ImagePlus imp = getImagePlus();
+		if (imp != null) {
+			if (viewMode == ImageDisplayMode.COLOR) {
+				imp.setDisplayMode(IJ.COLOR);
+			} else if (viewMode == ImageDisplayMode.COMPOSITE) {
+				imp.setDisplayMode(IJ.COMPOSITE);
+			} else if (viewMode == ImageDisplayMode.GRAYSCALE) {
+				imp.setDisplayMode(IJ.GRAYSCALE);
+			}
+		}
 	}
 
 }
