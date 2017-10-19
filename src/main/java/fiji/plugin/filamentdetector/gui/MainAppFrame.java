@@ -75,7 +75,7 @@ public class MainAppFrame extends JFrame {
 	public void initFX(JFXPanel fxPanel) {
 		try {
 			// Load the main UI
-			URL fxmlUrl = MainAppFrame.class.getResource("/fiji/plugin/filamentdetector/gui/view/Scene.fxml");
+			URL fxmlUrl = MainAppFrame.class.getResource("/fiji/plugin/filamentdetector/gui/view/MainView.fxml");
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);
 
 			// Create and set the main controller
