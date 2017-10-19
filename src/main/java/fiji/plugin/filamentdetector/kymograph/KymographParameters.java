@@ -9,9 +9,9 @@ public class KymographParameters {
 	private boolean saveKymographs = false;
 	private boolean showKymographs = true;
 	private boolean saveKymographLines = false;
-	private double lineThickness = 4;
-	private double startOffsetLength = 10;
-	private double endOffsetLength = 10;
+	private double lineThickness = 8;
+	private double startOffsetLength = 20;
+	private double endOffsetLength = 20;
 	private LineDrawer lineDrawer = new LongestFilamentLineDrawer();
 
 	public boolean isBuildOneRandomKymograph() {
