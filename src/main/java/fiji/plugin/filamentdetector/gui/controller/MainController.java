@@ -269,7 +269,7 @@ public class MainController extends Controller implements Initializable {
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DataExporterView.fxml",
 				dataExporterController);
 
-		TitledPane titledPane = new TitledPane("Export Data", pane);
+		TitledPane titledPane = new TitledPane("Export Filaments", pane);
 		mainPane.getPanes().add(titledPane);
 	}
 
@@ -286,7 +286,7 @@ public class MainController extends Controller implements Initializable {
 		analyzerController = new AnalyzeController(context, filamentWorkflow);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/AnalyzerView.fxml", analyzerController);
 
-		TitledPane titledPane = new TitledPane("Analyze the Data", pane);
+		TitledPane titledPane = new TitledPane("Analyze Filaments", pane);
 		mainPane.getPanes().add(titledPane);
 	}
 
