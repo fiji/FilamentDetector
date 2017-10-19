@@ -47,8 +47,11 @@ public class FilamentDetectorPlugin implements Command {
 			MainAppFrame app = new MainAppFrame(ij, filamentDetector);
 			app.setTitle(PLUGIN_NAME + " version " + VERSION);
 			app.init();
+			
 		} catch (Exception e) {
-			ij.ui().showDialog(e.getMessage(), "Error during initialization", DialogPrompt.MessageType.ERROR_MESSAGE);
+			ij.ui().showDialog("Error during initialization", e.getMessage(), DialogPrompt.MessageType.ERROR_MESSAGE);
+			log.error("Error during initialization");
+			log.error(e.getStackTrace());
 		}
 
 	}
