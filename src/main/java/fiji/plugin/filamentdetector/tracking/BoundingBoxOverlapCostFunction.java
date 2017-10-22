@@ -50,7 +50,7 @@ public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Fi
 		// area and dividing it by the sum of prediction + ground-truth
 		// areas - the intersection area
 		double iou = interArea / unionArea;
-
+		
 		return 1 - iou;
 	}
 

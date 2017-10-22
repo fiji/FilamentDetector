@@ -64,7 +64,7 @@ public class FilamentsTracker {
 
 		// Initialize variables
 
-		double alternativeCostFactor = 1.01;
+		double alternativeCostFactor = 1.1;
 		double percentile = 1;
 
 		JaqamanLinkingCostMatrixCreator<Filament, Filament> creator;
