@@ -114,7 +114,10 @@ public class TrackedFilament extends Filaments {
 				tip2Frame.stream().mapToInt(d -> d).toArray());
 
 		boolean reverseCoordinates = false;
-		if ((tip1.getStdX() + tip1.getStdY()) > (tip2.getStdX() + tip2.getStdY())) {
+		double scoreTip1 = (tip1.getStdX() * tip1.getDispX() + tip1.getStdY() * tip1.getDispY());
+		double scoreTip2 = (tip2.getStdX() * tip2.getDispX() + tip2.getStdY() * tip2.getDispY());
+
+		if (scoreTip1 > scoreTip2) {
 			plusTip = tip1;
 			minusTip = tip2;
 			reverseCoordinates = true;

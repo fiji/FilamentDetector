@@ -70,6 +70,14 @@ public class Tip {
 		return stdY;
 	}
 
+	public double getDispX() {
+		return x[x.length - 1] - x[0];
+	}
+
+	public double getDispY() {
+		return y[y.length - 1] - y[0];
+	}
+
 	public String toString() {
 		String out = "";
 		out += "Average x : " + getAverageX() + " | ";
