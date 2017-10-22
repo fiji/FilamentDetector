@@ -132,4 +132,8 @@ public class TrackedFilament extends Filaments {
 		}
 	}
 
+	public Filament getFilamentByFrame(double frame) {
+		return this.stream().filter(x -> x.getFrame() == frame).findFirst().orElse(null);
+	}
+
 }

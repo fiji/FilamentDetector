@@ -26,6 +26,7 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
+import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.tracking.lap.BoundingBoxOverlapCostFunction;
 import fiji.plugin.filamentdetector.tracking.lap.JaqamanFilamentSegmentCostMatrixCreator;
@@ -211,7 +212,25 @@ public class FilamentsTracker {
 	}
 
 	public void interpolateFilaments() {
-		// TODO
+		double maxFrames;
+		Filament filament;
+		Filament filamentBefore;
+		Filament filamentAfter;
+
+		for (TrackedFilament trackedFilament : trackedFilaments) {
+			maxFrames = trackedFilament.get(trackedFilament.size() - 1).getFrame();
+
+			for (int frame = 0; frame < maxFrames; frame++) {
+				filament = trackedFilament.getFilamentByFrame(frame);
+				filamentBefore = trackedFilament.getFilamentByFrame(frame - 1);
+				if (filament == null && filamentBefore != null) {
+					System.out.println("********");
+					System.out.println(filament);
+					System.out.println(filamentBefore);
+				}
+			}
+
+		}
 	}
 
 }
