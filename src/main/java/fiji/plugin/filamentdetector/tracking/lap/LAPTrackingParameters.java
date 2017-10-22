@@ -1,6 +1,8 @@
-package fiji.plugin.filamentdetector.tracking;
+package fiji.plugin.filamentdetector.tracking.lap;
 
-public class TrackingParameters {
+import fiji.plugin.filamentdetector.tracking.TrackingParameters;
+
+public class LAPTrackingParameters implements TrackingParameters {
 
 	private double costThreshold = 2;
 
@@ -12,6 +14,9 @@ public class TrackingParameters {
 		this.costThreshold = costThreshold;
 	}
 
+	/* (non-Javadoc)
+	 * @see fiji.plugin.filamentdetector.tracking.lap.TrackingParameters#toString()
+	 */
 	@Override
 	public String toString() {
 		String out = "";

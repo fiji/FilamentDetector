@@ -16,9 +16,11 @@ import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
-import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.FilamentTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import fiji.plugin.filamentdetector.tracking.TrackingParameters;
+import fiji.plugin.filamentdetector.tracking.lap.LAPFilamentTracker;
+import fiji.plugin.filamentdetector.tracking.lap.LAPTrackingParameters;
 import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
@@ -50,10 +52,10 @@ public class FilamentWorkflow {
 	private ImagePreprocessor imagePreprocessor;
 
 	private DetectionParameters detectionParameters;
-	private TrackingParameters trackingParameters;
+	private LAPTrackingParameters trackingParameters;
 
 	private FilamentsDetector filamentsDetector;
-	private FilamentsTracker filamentsTracker;
+	private FilamentTracker filamentsTracker;
 
 	private Filaments filaments;
 	private Filaments filteredFilaments;
@@ -91,8 +93,8 @@ public class FilamentWorkflow {
 	}
 
 	public void initTracking() {
-		trackingParameters = new TrackingParameters();
-		filamentsTracker = new FilamentsTracker(context, getFilaments(), trackingParameters);
+		trackingParameters = new LAPTrackingParameters();
+		filamentsTracker = new LAPFilamentTracker(context, getFilaments(), trackingParameters);
 	}
 
 	public void detectCurrentFrame() {
@@ -140,7 +142,7 @@ public class FilamentWorkflow {
 		return detectionParameters;
 	}
 
-	public TrackingParameters getTrackingParameters() {
+	public LAPTrackingParameters getTrackingParameters() {
 		return trackingParameters;
 	}
 
