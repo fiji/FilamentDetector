@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.tracking;
+package fiji.plugin.filamentdetector.tracking.lap;
 
 import java.util.List;
 import java.util.Map;
@@ -11,11 +11,13 @@ import org.scijava.plugin.Parameter;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
+import fiji.plugin.filamentdetector.tracking.FilamentTracker;
+import fiji.plugin.filamentdetector.tracking.TrackingParameters;
 import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
 import fiji.plugin.trackmate.tracking.sparselap.costmatrix.JaqamanLinkingCostMatrixCreator;
 import fiji.plugin.trackmate.tracking.sparselap.linker.JaqamanLinker;
 
-public class FilamentsTracker {
+public class LAPFilamentTracker implements FilamentTracker {
 
 	@Parameter
 	private LogService log;
@@ -26,26 +28,39 @@ public class FilamentsTracker {
 	private Filaments filaments;
 	private TrackedFilaments trackedFilaments;
 
-	private TrackingParameters trackingParameters;
+	private LAPTrackingParameters trackingParameters;
 
-	public FilamentsTracker(Context context, Filaments filaments) {
-		new FilamentsTracker(context, filaments, new TrackingParameters());
+	public LAPFilamentTracker(Context context, Filaments filaments) {
+		new LAPFilamentTracker(context, filaments, new LAPTrackingParameters());
 	}
 
-	public FilamentsTracker(Context context, Filaments filaments, TrackingParameters trackingParameters) {
+	public LAPFilamentTracker(Context context, Filaments filaments, LAPTrackingParameters trackingParameters) {
 		context.inject(this);
 		this.setFilaments(filaments);
 		this.trackingParameters = trackingParameters;
 	}
 
+	@Override
 	public Filaments getFilaments() {
 		return filaments;
 	}
 
+	@Override
 	public void setFilaments(Filaments filaments) {
 		this.filaments = filaments;
 	}
 
+	@Override
+	public TrackedFilaments getTrackedFilaments() {
+		return trackedFilaments;
+	}
+
+	@Override
+	public TrackingParameters getTrackingParameters() {
+		return trackingParameters;
+	}
+
+	@Override
 	public void track() {
 
 		// TODO: implement multi-threading
@@ -107,14 +122,6 @@ public class FilamentsTracker {
 			}
 
 		}
-	}
-
-	public TrackedFilaments getTrackedFilaments() {
-		return trackedFilaments;
-	}
-
-	public TrackingParameters getTrackingParameters() {
-		return trackingParameters;
 	}
 
 }

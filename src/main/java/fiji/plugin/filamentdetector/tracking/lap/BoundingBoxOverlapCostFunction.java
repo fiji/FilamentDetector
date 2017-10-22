@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.tracking;
+package fiji.plugin.filamentdetector.tracking.lap;
 
 import java.util.Arrays;
 
