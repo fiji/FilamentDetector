@@ -2,6 +2,7 @@ package fiji.plugin.filamentdetector.model;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.IntStream;
 
 import de.biomedical_imaging.ij.steger.Line;
@@ -247,4 +248,9 @@ public class Filament implements Comparable<Filament> {
 		this.line = new Line(newX, newY);
 	}
 
+	public final static Comparator<Filament> frameComparator = Comparator.comparing(s -> s.getFrame());
+
+	public Filament copy() {
+		return new Filament(this.getXCoordinates(), this.getYCoordinates(), this.getFrame());
+	}
 }

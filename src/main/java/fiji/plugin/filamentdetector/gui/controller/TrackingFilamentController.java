@@ -57,6 +57,12 @@ public class TrackingFilamentController extends Controller implements Initializa
 	private TextField costThresholdField;
 
 	@FXML
+	private Slider maxFrameGapSlider;
+
+	@FXML
+	private TextField maxFrameGapField;
+
+	@FXML
 	private ProgressIndicator trackingProgressIndicator;
 
 	@FXML
@@ -87,6 +93,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 	private Task<Integer> filterTask;
 
 	private SliderLabelSynchronizer costThresholdSync;
+	private SliderLabelSynchronizer maxFrameGapSync;
 	private UpperLowerSynchronizer sizeSync;
 
 	private FilamentWorkflow filamentWorkflow;
@@ -111,6 +118,9 @@ public class TrackingFilamentController extends Controller implements Initializa
 		costThresholdSync.setTooltip(
 				"Discard links between filaments when the IoU of the bounding boxes is below this value (0 to 1).");
 		costThresholdSync.setValue(this.filamentWorkflow.getTrackingParameters().getCostThreshold());
+
+		maxFrameGapSync = new SliderLabelSynchronizer(maxFrameGapSlider, maxFrameGapField);
+		maxFrameGapSync.setValue(this.filamentWorkflow.getTrackingParameters().getMaxFrameGap());
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
@@ -225,6 +235,9 @@ public class TrackingFilamentController extends Controller implements Initializa
 		if (costThresholdSync.isEvent(event)) {
 			costThresholdSync.update(event);
 			filamentWorkflow.getTrackingParameters().setCostThreshold(costThresholdSync.getValue());
+		} else if (maxFrameGapSync.isEvent(event)) {
+			maxFrameGapSync.update(event);
+			filamentWorkflow.getTrackingParameters().setMaxFrameGap(maxFrameGapSync.getValue());
 		}
 	}
 

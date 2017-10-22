@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.tracking;
+package fiji.plugin.filamentdetector.tracking.lap;
 
 import java.util.Arrays;
 
@@ -50,8 +50,11 @@ public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Fi
 		// area and dividing it by the sum of prediction + ground-truth
 		// areas - the intersection area
 		double iou = interArea / unionArea;
-		
-		return 1 - iou;
+		double score = 1 - iou;
+
+		// System.out.println(score);
+
+		return score;
 	}
 
 	private boolean checkOverlap(double[] bboxSource, double[] bboxTarget) {
