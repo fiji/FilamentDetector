@@ -63,6 +63,9 @@ public class TrackingFilamentController extends Controller implements Initializa
 	private TextField maxFrameGapField;
 
 	@FXML
+	private CheckBox interpolateFilamentsCheckbox;
+
+	@FXML
 	private ProgressIndicator trackingProgressIndicator;
 
 	@FXML
@@ -121,6 +124,9 @@ public class TrackingFilamentController extends Controller implements Initializa
 
 		maxFrameGapSync = new SliderLabelSynchronizer(maxFrameGapSlider, maxFrameGapField);
 		maxFrameGapSync.setValue(this.filamentWorkflow.getTrackingParameters().getMaxFrameGap());
+
+		interpolateFilamentsCheckbox
+				.setSelected(this.filamentWorkflow.getTrackingParameters().isInterpolateFilaments());
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
@@ -238,6 +244,8 @@ public class TrackingFilamentController extends Controller implements Initializa
 		} else if (maxFrameGapSync.isEvent(event)) {
 			maxFrameGapSync.update(event);
 			filamentWorkflow.getTrackingParameters().setMaxFrameGap(maxFrameGapSync.getValue());
+		} else if (event.getSource().equals(interpolateFilamentsCheckbox)) {
+			filamentWorkflow.getTrackingParameters().setInterpolateFilaments(interpolateFilamentsCheckbox.isSelected());
 		}
 	}
 

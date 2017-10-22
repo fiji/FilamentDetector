@@ -52,6 +52,10 @@ public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Fi
 		double iou = interArea / unionArea;
 		double score = 1 - iou;
 
+		if (score == 1) {
+			score = source.dist(target);
+		}
+
 		// System.out.println(score);
 
 		return score;

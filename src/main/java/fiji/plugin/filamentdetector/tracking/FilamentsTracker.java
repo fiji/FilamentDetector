@@ -73,6 +73,11 @@ public class FilamentsTracker {
 
 		trackedFilaments = new TrackedFilaments(context);
 		trackedFilaments.buildTracks(graph);
+
+		if (this.trackingParameters.isInterpolateFilaments()) {
+			interpolateFilaments();
+		}
+
 	}
 
 	/*
@@ -161,7 +166,7 @@ public class FilamentsTracker {
 
 		settings.put(KEY_ALLOW_GAP_CLOSING, true);
 		settings.put(KEY_GAP_CLOSING_FEATURE_PENALTIES, new HashMap<String, Double>());
-		settings.put(KEY_GAP_CLOSING_MAX_DISTANCE, this.getTrackingParameters().getCostThreshold());
+		settings.put(KEY_GAP_CLOSING_MAX_DISTANCE, 1000.0);
 		settings.put(KEY_GAP_CLOSING_MAX_FRAME_GAP, (int) this.getTrackingParameters().getMaxFrameGap());
 
 		settings.put(KEY_ALLOW_TRACK_SPLITTING, false);
@@ -172,7 +177,7 @@ public class FilamentsTracker {
 		settings.put(KEY_MERGING_FEATURE_PENALTIES, new HashMap<String, Double>());
 		settings.put(KEY_MERGING_MAX_DISTANCE, 15.0);
 
-		settings.put(KEY_ALTERNATIVE_LINKING_COST_FACTOR, 1.1);
+		settings.put(KEY_ALTERNATIVE_LINKING_COST_FACTOR, 2000.0);
 		settings.put(KEY_CUTOFF_PERCENTILE, 1.0);
 
 		final JaqamanFilamentSegmentCostMatrixCreator costMatrixCreator = new JaqamanFilamentSegmentCostMatrixCreator(
@@ -203,6 +208,10 @@ public class FilamentsTracker {
 
 	public TrackingParameters getTrackingParameters() {
 		return trackingParameters;
+	}
+
+	public void interpolateFilaments() {
+		// TODO
 	}
 
 }

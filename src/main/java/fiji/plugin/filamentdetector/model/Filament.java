@@ -253,4 +253,18 @@ public class Filament implements Comparable<Filament> {
 	public Filament copy() {
 		return new Filament(this.getXCoordinates(), this.getYCoordinates(), this.getFrame());
 	}
+
+	public double dist(Filament filament) {
+		double[] bbox1 = this.getBoundingBox();
+		double[] bbox2 = filament.getBoundingBox();
+
+		double center1_x = 2 * bbox1[0] + bbox1[2];
+		double center1_y = 2 * bbox1[1] + bbox1[3];
+
+		double center2_x = 2 * bbox2[0] + bbox2[2];
+		double center2_y = 2 * bbox2[1] + bbox2[3];
+
+		double dist = Math.sqrt(Math.pow(center1_x - center2_x, 2) + Math.pow(center1_y - center2_y, 2));
+		return dist;
+	}
 }

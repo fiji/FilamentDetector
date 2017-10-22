@@ -60,7 +60,7 @@
                                                             <TextField fx:id="costThresholdField" maxWidth="80.0" minWidth="45.0" onAction="#updateTrackingParameters" />
                                                          </children>
                                                          <padding>
-                                                            <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                                            <Insets left="5.0" right="5.0" top="5.0" />
                                                          </padding>
                                                       </HBox>
                                                       <Label prefHeight="50.0" text="Maximum overlap difference in the filament's bounding boxes. Between 0 and 1." wrapText="true">
@@ -68,7 +68,7 @@
                                                             <Font size="10.0" />
                                                          </font>
                                                          <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" />
                                                          </padding>
                                                       </Label>
                                                    </children>
@@ -82,7 +82,7 @@
                                                             <TextField fx:id="maxFrameGapField" maxWidth="80.0" minWidth="45.0" onAction="#updateTrackingParameters" />
                                                          </children>
                                                          <padding>
-                                                            <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                                            <Insets left="5.0" right="5.0" top="5.0" />
                                                          </padding>
                                                       </HBox>
                                                       <Label prefHeight="50.0" text="Maximum number of frames between two filaments to allow to close the gap." wrapText="true">
@@ -90,7 +90,24 @@
                                                             <Font size="10.0" />
                                                          </font>
                                                          <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" />
+                                                         </padding>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox disable="true">
+                                                   <children>
+                                                      <CheckBox fx:id="interpolateFilamentsCheckbox" mnemonicParsing="false" onAction="#updateTrackingParameters" text="Interpolate Filaments">
+                                                         <padding>
+                                                            <Insets left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                      </CheckBox>
+                                                      <Label prefHeight="50.0" text="Interpolate missing filaments after tracking (not available yet)." wrapText="true">
+                                                         <font>
+                                                            <Font size="10.0" />
+                                                         </font>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" />
                                                          </padding>
                                                       </Label>
                                                    </children>
