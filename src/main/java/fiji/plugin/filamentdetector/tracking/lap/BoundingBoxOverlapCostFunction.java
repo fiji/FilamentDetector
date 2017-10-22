@@ -60,10 +60,10 @@ public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Fi
 			score = source.dist(target);
 		}
 
-//		System.out.println("**********");
-//		System.out.println(source);
-//		System.out.println(target);
-//		System.out.println(score);
+		// System.out.println("**********");
+		// System.out.println(source);
+		// System.out.println(target);
+		// System.out.println(score);
 
 		return score;
 	}

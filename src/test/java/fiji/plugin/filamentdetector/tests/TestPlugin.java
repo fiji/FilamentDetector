@@ -13,7 +13,7 @@ public class TestPlugin {
 		Context context = ij.getContext();
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small2-8bit.tif";
-		//fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/test-tracking.tif";
+		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/test-tracking.tif";
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 

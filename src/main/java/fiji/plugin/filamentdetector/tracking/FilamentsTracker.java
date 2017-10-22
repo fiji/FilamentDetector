@@ -26,7 +26,6 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
-import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.tracking.lap.BoundingBoxOverlapCostFunction;
 import fiji.plugin.filamentdetector.tracking.lap.JaqamanFilamentSegmentCostMatrixCreator;
@@ -212,59 +211,63 @@ public class FilamentsTracker {
 	}
 
 	public void interpolateFilaments() {
-//		double maxFrames;
-//		Filament filament;
-//		Filament filamentBefore;
-//		Filament filamentAfter;
-//		int nFrames;
-//		float[] x;
-//		float[] y;
-//		int divider;
-//		int indexAfter;
-//
-//		for (TrackedFilament trackedFilament : trackedFilaments) {
-//			maxFrames = trackedFilament.get(trackedFilament.size() - 1).getFrame();
-//
-//			for (int frame = 0; frame < maxFrames; frame++) {
-//
-//				filament = trackedFilament.getFilamentByFrame(frame);
-//				if (filament == null) {
-//					filamentBefore = trackedFilament.getFilamentByFrame(frame - 1);
-//
-//					if (filamentBefore != null) {
-//
-//						indexAfter = trackedFilament.indexOf(filamentBefore) + 1;
-//						if (indexAfter >= trackedFilament.size()) {
-//							filamentAfter = trackedFilament.get(indexAfter);
-//							if (filamentAfter != null) {
-//								nFrames = filamentAfter.getFrame() - filamentBefore.getFrame() - 1;
-//								System.out.println(nFrames);
-//
-//								x = new float[2];
-//								y = new float[2];
-//
-//								divider = nFrames - 1 + 2;
-//
-//								x[0] = (float) (filamentBefore.getTips()[0] + filamentAfter.getTips()[0]) / divider;
-//								y[0] = (float) (filamentBefore.getTips()[1] + filamentAfter.getTips()[1]) / divider;
-//								x[1] = (float) (filamentBefore.getTips()[2] + filamentAfter.getTips()[2]) / divider;
-//								y[1] = (float) (filamentBefore.getTips()[3] + filamentAfter.getTips()[3]) / divider;
-//
-//								filament = new Filament(x, y, frame);
-//								trackedFilament.add(filament);
-//								filament.setColor(trackedFilament.getColor());
-//
-//								trackedFilament = trackedFilament.stream()
-//										.sorted((f1, f2) -> Double.compare(f1.getFrame(), f2.getFrame()))
-//										.collect(Collectors.toCollection(TrackedFilament::new));
-//							}
-//						}
-//					}
-//
-//				}
-//			}
-//
-//		}
+		// double maxFrames;
+		// Filament filament;
+		// Filament filamentBefore;
+		// Filament filamentAfter;
+		// int nFrames;
+		// float[] x;
+		// float[] y;
+		// int divider;
+		// int indexAfter;
+		//
+		// for (TrackedFilament trackedFilament : trackedFilaments) {
+		// maxFrames = trackedFilament.get(trackedFilament.size() - 1).getFrame();
+		//
+		// for (int frame = 0; frame < maxFrames; frame++) {
+		//
+		// filament = trackedFilament.getFilamentByFrame(frame);
+		// if (filament == null) {
+		// filamentBefore = trackedFilament.getFilamentByFrame(frame - 1);
+		//
+		// if (filamentBefore != null) {
+		//
+		// indexAfter = trackedFilament.indexOf(filamentBefore) + 1;
+		// if (indexAfter >= trackedFilament.size()) {
+		// filamentAfter = trackedFilament.get(indexAfter);
+		// if (filamentAfter != null) {
+		// nFrames = filamentAfter.getFrame() - filamentBefore.getFrame() - 1;
+		// System.out.println(nFrames);
+		//
+		// x = new float[2];
+		// y = new float[2];
+		//
+		// divider = nFrames - 1 + 2;
+		//
+		// x[0] = (float) (filamentBefore.getTips()[0] + filamentAfter.getTips()[0]) /
+		// divider;
+		// y[0] = (float) (filamentBefore.getTips()[1] + filamentAfter.getTips()[1]) /
+		// divider;
+		// x[1] = (float) (filamentBefore.getTips()[2] + filamentAfter.getTips()[2]) /
+		// divider;
+		// y[1] = (float) (filamentBefore.getTips()[3] + filamentAfter.getTips()[3]) /
+		// divider;
+		//
+		// filament = new Filament(x, y, frame);
+		// trackedFilament.add(filament);
+		// filament.setColor(trackedFilament.getColor());
+		//
+		// trackedFilament = trackedFilament.stream()
+		// .sorted((f1, f2) -> Double.compare(f1.getFrame(), f2.getFrame()))
+		// .collect(Collectors.toCollection(TrackedFilament::new));
+		// }
+		// }
+		// }
+		//
+		// }
+		// }
+		//
+		// }
 	}
 
 }
