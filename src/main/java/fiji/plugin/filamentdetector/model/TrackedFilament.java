@@ -82,6 +82,8 @@ public class TrackedFilament extends Filaments {
 
 	protected void detectTips() {
 
+		this.matchTips();
+
 		List<Double> tip1X = new ArrayList<>();
 		List<Double> tip1Y = new ArrayList<>();
 		List<Double> tip2X = new ArrayList<>();
@@ -137,6 +139,30 @@ public class TrackedFilament extends Filaments {
 
 	public Filament getFilamentByFrame(double frame) {
 		return this.stream().filter(x -> x.getFrame() == frame).findFirst().orElse(null);
+	}
+
+	// Reverse coordinates when needed so they match
+	protected void matchTips() {
+		Filament lastFilament = this.get(0);
+		double[] tip1;
+		double[] tip2;
+		double dist1;
+		double dist2;
+
+		for (Filament filament : this) {
+
+			tip1 = lastFilament.getTips();
+			tip2 = filament.getTips();
+
+			dist1 = Math.pow(tip1[0] - tip2[0], 2) + Math.pow(tip1[1] - tip2[1], 2);
+			dist2 = Math.pow(tip1[0] - tip2[2], 2) + Math.pow(tip1[1] - tip2[3], 2);
+
+			if (dist1 > dist2) {
+				filament.reverseCoordinates();
+			}
+
+			lastFilament = filament;
+		}
 	}
 
 }
