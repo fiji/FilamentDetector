@@ -80,6 +80,12 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	private CheckBox doDifferenceOfGaussianFilterCheckbox;
 
 	@FXML
+	private CheckBox doflatFieldCorrectionCheckbox;
+
+	@FXML
+	private TextField flatFieldCorrectionGaussianFilterSizeField;
+
+	@FXML
 	private CheckBox useForOverlayCheckbox;
 
 	private Thread thread;
@@ -109,6 +115,10 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		sigma1DOGField.setText(Double.toString(imagePreprocessor.getSigma1()));
 		sigma2DOGField.setText(Double.toString(imagePreprocessor.getSigma2()));
 
+		doflatFieldCorrectionCheckbox.setSelected(imagePreprocessor.isDoPseudoFlatFieldCorrection());
+		flatFieldCorrectionGaussianFilterSizeField
+				.setText(Double.toString(imagePreprocessor.getFlatFieldCorrectionGaussianFilterSize()));
+
 		useForOverlayCheckbox.setSelected(imagePreprocessor.isUseForOverlay());
 
 		useForOverlayCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -133,6 +143,10 @@ public class ImagePreprocessorController extends Controller implements Initializ
 		imagePreprocessor.setDoDifferenceOfGaussianFilter(doDifferenceOfGaussianFilterCheckbox.isSelected());
 		imagePreprocessor.setSigma1(Double.parseDouble(sigma1DOGField.getText()));
 		imagePreprocessor.setSigma2(Double.parseDouble(sigma2DOGField.getText()));
+
+		imagePreprocessor.setDoPseudoFlatFieldCorrection(doflatFieldCorrectionCheckbox.isSelected());
+		imagePreprocessor.setFlatFieldCorrectionGaussianFilterSize(
+				Double.parseDouble(flatFieldCorrectionGaussianFilterSizeField.getText()));
 
 		imagePreprocessor.setUseForOverlay(useForOverlayCheckbox.isSelected());
 	}

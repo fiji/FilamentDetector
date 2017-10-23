@@ -39,6 +39,9 @@ public class ImagePreprocessor {
 	private static double DEFAULT_DOG_SIGMA1 = 6;
 	private static double DEFAULT_DOG_SIGMA2 = 2;
 
+	private static double DEFAULT_FLAT_FIELD_CORRECTION_SIZE = 50;
+	private static boolean DEFAULT_FLAT_FIELD_CORRECTION = false;
+
 	private static boolean DEFAULT_USE_FOR_OVERLAY = false;
 
 	@Parameter
@@ -74,6 +77,9 @@ public class ImagePreprocessor {
 
 	private boolean doDifferenceOfGaussianFilter = DEFAULT_DIFFERENCE_OF_GAUSSIAN;
 	private double sigma1 = DEFAULT_DOG_SIGMA1;
+
+	private boolean doPseudoFlatFieldCorrection = DEFAULT_FLAT_FIELD_CORRECTION;
+	private double flatFieldCorrectionGaussianFilterSize = DEFAULT_FLAT_FIELD_CORRECTION_SIZE;
 	private double sigma2 = DEFAULT_DOG_SIGMA2;
 
 	private boolean useForOverlay = DEFAULT_USE_FOR_OVERLAY;
@@ -102,6 +108,11 @@ public class ImagePreprocessor {
 
 		if (doDifferenceOfGaussianFilter) {
 			temp = applyDifferenceOfGaussianFilter(temp);
+			hasBeenPreprocessed = true;
+		}
+
+		if (doPseudoFlatFieldCorrection) {
+			temp = doPseudoFlatFieldCorrection(temp);
 			hasBeenPreprocessed = true;
 		}
 
@@ -220,7 +231,23 @@ public class ImagePreprocessor {
 		this.useForOverlay = useForOverlay;
 	}
 
-	private <T extends RealType<T>> Dataset converTo8Bit(Dataset input) {
+	public boolean isDoPseudoFlatFieldCorrection() {
+		return doPseudoFlatFieldCorrection;
+	}
+
+	public void setDoPseudoFlatFieldCorrection(boolean doPseudoFlatFieldCorrection) {
+		this.doPseudoFlatFieldCorrection = doPseudoFlatFieldCorrection;
+	}
+
+	public double getFlatFieldCorrectionGaussianFilterSize() {
+		return flatFieldCorrectionGaussianFilterSize;
+	}
+
+	public void setFlatFieldCorrectionGaussianFilterSize(double flatFieldCorrectionGaussianFilterSize) {
+		this.flatFieldCorrectionGaussianFilterSize = flatFieldCorrectionGaussianFilterSize;
+	}
+
+	public <T extends RealType<T>> Dataset converTo8Bit(Dataset input) {
 		if (input.getType().getClass() != UnsignedByteType.class) {
 			Dataset dataset = input.duplicate();
 
@@ -243,7 +270,11 @@ public class ImagePreprocessor {
 		}
 	}
 
-	private <T extends RealType<T>> Dataset applyGaussianFilter(Dataset input) {
+	public <T extends RealType<T>> Dataset applyGaussianFilter(Dataset input) {
+		return applyGaussianFilter(input, this.gaussianFilterSize);
+	}
+
+	public <T extends RealType<T>> Dataset applyGaussianFilter(Dataset input, double gaussianFilterSize) {
 		Dataset dataset = input.duplicate();
 
 		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
@@ -263,7 +294,7 @@ public class ImagePreprocessor {
 		return output;
 	}
 
-	private <T extends RealType<T>> Dataset applyDifferenceOfGaussianFilter(Dataset input) {
+	public <T extends RealType<T>> Dataset applyDifferenceOfGaussianFilter(Dataset input) {
 		Dataset dataset = input.duplicate();
 
 		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
@@ -275,6 +306,43 @@ public class ImagePreprocessor {
 		Img<FloatType> out2 = (Img<FloatType>) ops.create().img(out);
 		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.dog", out, sigma1, sigma2);
 		ops.slice(out2, out, op, fixedAxisIndices);
+
+		// Clip intensities
+		Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
+		RealTypeConverter op2 = (RealTypeConverter) ops.op("convert.clip", dataset.getImgPlus().firstElement(),
+				out2.firstElement());
+		ops.convert().imageType(out3, out2, op2);
+
+		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
+		for (int i = 0; i != axes.length; i++) {
+			axes[i] = dataset.axis(i);
+		}
+		Dataset output = ds.create(out3);
+		output.setAxes(axes);
+		return output;
+	}
+
+	public <T extends RealType<T>> Dataset doPseudoFlatFieldCorrection(Dataset input) {
+		return doPseudoFlatFieldCorrection(input, this.flatFieldCorrectionGaussianFilterSize);
+	}
+
+	public <T extends RealType<T>> Dataset doPseudoFlatFieldCorrection(Dataset input, double gaussianFilterSize) {
+		Dataset dataset = input.duplicate();
+
+		// Get Gaussian filtered image and use it as a background
+		Dataset background = this.applyGaussianFilter(dataset, gaussianFilterSize);
+
+		// Convert to 32 bits
+		IterableInterval<FloatType> out = (IterableInterval<FloatType>) ops.run("convert.float32",
+				dataset.getImgPlus());
+		IterableInterval<FloatType> original = (IterableInterval<FloatType>) ops.run("convert.float32",
+				dataset.getImgPlus());
+		IterableInterval<FloatType> backgroundFloat = (IterableInterval<FloatType>) ops.run("convert.float32",
+				background.getImgPlus());
+
+		// Do subtraction
+		IterableInterval<FloatType> out2 = (IterableInterval<FloatType>) ops.create().img(out);
+		ops.math().subtract(out2, original, backgroundFloat);
 
 		// Clip intensities
 		Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
