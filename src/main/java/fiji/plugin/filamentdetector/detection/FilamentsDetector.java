@@ -5,12 +5,14 @@ import java.util.stream.Collectors;
 
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
+import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import de.biomedical_imaging.ij.steger.Line;
 import de.biomedical_imaging.ij.steger.LineDetector;
 import de.biomedical_imaging.ij.steger.Lines;
+import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.overlay.ColorService;
@@ -29,6 +31,9 @@ public class FilamentsDetector {
 
 	@Parameter
 	private ColorService colorService;
+
+	@Parameter
+	private EventService eventService;
 
 	private ImageDisplay imageDisplay;
 	private Dataset dataset;
@@ -54,8 +59,12 @@ public class FilamentsDetector {
 		this.lineDetector = new LineDetector();
 
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
-		this.imp = convertService.convert(this.imageDisplay, ImagePlus.class);
-		this.impData = convertService.convert(this.dataset, ImagePlus.class);
+		try {
+			this.imp = convertService.convert(this.imageDisplay, ImagePlus.class);
+			this.impData = convertService.convert(this.dataset, ImagePlus.class);
+		} catch (NullPointerException e) {
+			eventService.publish(new ImageNotFoundEvent());
+		}
 	}
 
 	public void detect() {
