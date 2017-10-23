@@ -38,9 +38,12 @@ public class TestPreprocessing {
 		ij.ui().show(background);
 
 		// Convert to 32 bits
-		IterableInterval<FloatType> out = (IterableInterval<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
-		IterableInterval<FloatType> original = (IterableInterval<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
-		IterableInterval<FloatType> backgroundFloat = (IterableInterval<FloatType>) ops.run("convert.float32", background.getImgPlus());
+		IterableInterval<FloatType> out = (IterableInterval<FloatType>) ops.run("convert.float32",
+				dataset.getImgPlus());
+		IterableInterval<FloatType> original = (IterableInterval<FloatType>) ops.run("convert.float32",
+				dataset.getImgPlus());
+		IterableInterval<FloatType> backgroundFloat = (IterableInterval<FloatType>) ops.run("convert.float32",
+				background.getImgPlus());
 
 		// Do subtraction
 		IterableInterval<FloatType> out2 = (IterableInterval<FloatType>) ops.create().img(out);
@@ -52,15 +55,13 @@ public class TestPreprocessing {
 				out2.firstElement());
 		ops.convert().imageType(out3, out2, op2);
 
-		
-		
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {
 			axes[i] = dataset.axis(i);
 		}
 		Dataset output = ds.create(out3);
 		output.setAxes(axes);
-		
+
 		ij.ui().show(output);
 
 	}
