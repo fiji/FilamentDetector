@@ -1,7 +1,9 @@
 package fiji.plugin.filamentdetector.analyzer.tipfitter;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -29,41 +31,54 @@ public class FilamentTipFitter {
 	private LogService log;
 
 	private TrackedFilaments seeds;
-	private TrackedFilaments trackedFilaments;
+	private Map<TrackedFilament, TrackedFilament> side1Filaments;
+	private Map<TrackedFilament, TrackedFilament> side2Filaments;
 	private ImageDisplay imageDisplay;
 
 	private int polynomDegree = 5;
 	private double relativePositionFromEnd = 0.5;
 	private double lineFitLength = 20;
-	private double channelIndex = 0;
+	private int channelIndex = 0;
 	private double lineWidth = 4;
 
-	public FilamentTipFitter(Context context, TrackedFilaments seeds, ImageDisplay imageDisplay) {
+	public FilamentTipFitter(Context context) {
 		context.inject(this);
-		this.seeds = seeds;
-		this.imageDisplay = imageDisplay;
 	}
 
 	public void fit() {
-		this.trackedFilaments = new TrackedFilaments();
-		TrackedFilament trackedFilament;
+		this.side1Filaments = new HashMap<>();
+		this.side2Filaments = new HashMap<>();
+
+		TrackedFilament side1Filament;
+		TrackedFilament side2Filament;
 		Filament filament;
 
 		for (TrackedFilament seed : this.seeds) {
-			trackedFilament = new TrackedFilament();
+			side1Filament = new TrackedFilament();
+			side2Filament = new TrackedFilament();
 
 			for (Filament singleSeed : seed) {
-				// Fit from one side
+				// Fit the side 1
 				filament = this.fitSeed(singleSeed, true);
-				trackedFilament.add(filament);
+				if (filament != null) {
+					side1Filament.add(filament);
+				}
 
-				// Fit the other side
+				// Fit the side 2
 				filament = this.fitSeed(singleSeed, false);
-				trackedFilament.add(filament);
+				if (filament != null) {
+					side2Filament.add(filament);
+				}
 			}
 
-			trackedFilaments.add(trackedFilament);
-			trackedFilament.setColor(seed.getColor());
+			if (side1Filament.size() > 0) {
+				side1Filament.setColor(seed.getColor());
+				this.side1Filaments.put(seed, side1Filament);
+			}
+			if (side2Filament.size() > 0) {
+				side2Filament.setColor(seed.getColor());
+				this.side2Filaments.put(seed, side2Filament);
+			}
 		}
 	}
 
@@ -112,6 +127,11 @@ public class FilamentTipFitter {
 		// Find the two consecutive roots with the greatest difference
 		double[] diff = IntStream.range(0, xRoots.size() - 1).mapToDouble(i -> xRoots.get(i + 1) - xRoots.get(i))
 				.toArray();
+
+		if (diff.length == 0) {
+			return null;
+		}
+
 		int maxIndex = IntStream.range(0, diff.length).reduce((i, j) -> diff[i] < diff[j] ? j : i).getAsInt();
 
 		// Get the start and end position of the half Gaussian estimating the tip
@@ -143,15 +163,18 @@ public class FilamentTipFitter {
 		trueFilament.setColor(filament.getColor());
 
 		return trueFilament;
-
 	}
 
 	public TrackedFilaments getSeeds() {
 		return seeds;
 	}
 
-	public TrackedFilaments getFilaments() {
-		return trackedFilaments;
+	public Map<TrackedFilament, TrackedFilament> getSide1Filaments() {
+		return side1Filaments;
+	}
+
+	public Map<TrackedFilament, TrackedFilament> getSide2Filaments() {
+		return side2Filaments;
 	}
 
 	public int getPolynomDegree() {
@@ -182,11 +205,11 @@ public class FilamentTipFitter {
 		return imageDisplay;
 	}
 
-	public double getChannelIndex() {
+	public int getChannelIndex() {
 		return channelIndex;
 	}
 
-	public void setChannelIndex(double channelIndex) {
+	public void setChannelIndex(int channelIndex) {
 		this.channelIndex = channelIndex;
 	}
 
@@ -196,6 +219,14 @@ public class FilamentTipFitter {
 
 	public void setLineWidth(double lineWidth) {
 		this.lineWidth = lineWidth;
+	}
+
+	public void setSeeds(TrackedFilaments seeds) {
+		this.seeds = seeds;
+	}
+
+	public void setImageDisplay(ImageDisplay imageDisplay) {
+		this.imageDisplay = imageDisplay;
 	}
 
 	static private float[] getPointOnVectorFromDistance(float[] start, float[] end, double distance) {

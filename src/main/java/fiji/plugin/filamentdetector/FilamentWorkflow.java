@@ -180,4 +180,8 @@ public class FilamentWorkflow {
 		return imagePreprocessor;
 	}
 
+	public Context getContext() {
+		return this.context;
+	}
+
 }

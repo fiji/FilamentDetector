@@ -42,10 +42,12 @@ public class TestTipFitter {
 		seed.setColor(Color.red);
 		seeds.add(seed);
 
-		FilamentTipFitter tipFitter = new FilamentTipFitter(context, seeds, imd);
+		FilamentTipFitter tipFitter = new FilamentTipFitter(context);
+		tipFitter.setImageDisplay(imd);
+		tipFitter.setSeeds(seeds);
 		tipFitter.fit();
 
 		overlay.reset();
-		overlay.add(tipFitter.getFilaments());
+		//overlay.add(tipFitter.getFilaments());
 	}
 }

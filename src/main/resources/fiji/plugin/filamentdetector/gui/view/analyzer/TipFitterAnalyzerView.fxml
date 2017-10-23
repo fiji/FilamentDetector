@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TabPane tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Basic Parameters">
+                  <content>
+                    <AnchorPane>
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label minWidth="-Infinity" text="Channel Index" />
+                                                <TextField fx:id="channelIndexField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" text="0" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <VBox>
+                                             <children>
+                                                <Label maxWidth="350.0" text="The index of the channel used to fit the intensities." wrapText="true">
+                                                   <font>
+                                                      <Font name="System Italic" size="10.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label minWidth="-Infinity" text="Line Width" />
+                                                <Slider fx:id="lineWidthSlider" blockIncrement="1.0" majorTickUnit="5.0" max="10.0" min="1.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" value="1.0" />
+                                                <TextField fx:id="lineWidthField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <VBox>
+                                             <children>
+                                                <Label maxWidth="350.0" text="The length of the line used to gather the intensities before the 1D fitting." wrapText="true">
+                                                   <font>
+                                                      <Font name="System Italic" size="10.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label minWidth="-Infinity" text="Line Fit Length" />
+                                                <Slider fx:id="lineFitLengthSlider" blockIncrement="1.0" majorTickUnit="5.0" min="1.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" value="20.0" />
+                                                <TextField fx:id="lineFitLengthField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <VBox>
+                                             <children>
+                                                <Label maxWidth="350.0" text="The length of the line used to gather the intensities before the 1D fitting. Value in pixel." wrapText="true">
+                                                   <font>
+                                                      <Font name="System Italic" size="10.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Advanced Parameters">
+                  <content>
+                    <AnchorPane>
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label minWidth="-Infinity" text="Polynome Degree" />
+                                                <Slider fx:id="polynomDegreeSlider" blockIncrement="1.0" majorTickUnit="5.0" max="10.0" min="1.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" value="1.0" />
+                                                <TextField fx:id="polynomDegreeField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <VBox>
+                                             <children>
+                                                <Label text="The degree of the polynome used to fit the intensities data.">
+                                                   <font>
+                                                      <Font name="System Italic" size="10.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <Label minWidth="-Infinity" text="Relative Distance From End" />
+                                                <Slider fx:id="relativeDistSlider" blockIncrement="0.1" majorTickUnit="5.0" max="1.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" value="0.5" />
+                                                <TextField fx:id="relativeDistField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <VBox>
+                                             <children>
+                                                <Label maxWidth="350.0" text="The distance used to determine the position of the tip. It's the distance between the two local extrema defining the tip. The position is normalized according to the end between the local extrema. Value between 0 and 1." wrapText="true">
+                                                   <font>
+                                                      <Font name="System Italic" size="10.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </TabPane>
+            <Separator prefWidth="200.0" />
+            <VBox>
+               <children>
+                  <CheckBox fx:id="overlayFilamentsCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Overlay the fitted filaments (seeds will be disappear) ?" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

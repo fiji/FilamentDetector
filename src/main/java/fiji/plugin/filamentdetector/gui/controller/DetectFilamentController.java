@@ -166,9 +166,9 @@ public class DetectFilamentController extends Controller implements Initializabl
 	private UpperLowerSynchronizer lengthSync;
 	private UpperLowerSynchronizer sinuositySync;
 
-	public DetectFilamentController(Context context, FilamentWorkflow filamentDetector) {
+	public DetectFilamentController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
-		this.filamentWorkflow = filamentDetector;
+		this.filamentWorkflow = filamentWorkflow;
 	}
 
 	@Override

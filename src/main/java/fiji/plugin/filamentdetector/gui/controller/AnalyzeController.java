@@ -16,10 +16,12 @@ import org.scijava.plugin.Parameter;
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.analyzer.Analyzer;
 import fiji.plugin.filamentdetector.analyzer.LengthOverTimeAnalyzer;
+import fiji.plugin.filamentdetector.analyzer.tipfitter.TipFitterAnalyzer;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import fiji.plugin.filamentdetector.gui.controller.analyzer.AnalyzerController;
 import fiji.plugin.filamentdetector.gui.controller.analyzer.LengthOverTimeAnalyzerController;
+import fiji.plugin.filamentdetector.gui.controller.analyzer.TipFitterAnalyzerController;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -111,12 +113,18 @@ public class AnalyzeController extends Controller implements Initializable {
 		analyzers = new ArrayList<>();
 		analyzerControllers = new HashMap<>();
 
-		// Add one analyzer
+		// Add analyzers one by one
 		LengthOverTimeAnalyzer lengthOverTimeAnalyzer = new LengthOverTimeAnalyzer(filamentWorkflow);
 		AnalyzerController lengthOverTimeAnalyzerController = new LengthOverTimeAnalyzerController(context,
 				lengthOverTimeAnalyzer);
 		analyzers.add(lengthOverTimeAnalyzer);
 		analyzerControllers.put(lengthOverTimeAnalyzer, lengthOverTimeAnalyzerController);
+		
+		TipFitterAnalyzer tipFitterAnalyzer = new TipFitterAnalyzer(filamentWorkflow);
+		AnalyzerController tipFitterAnalyzerController = new TipFitterAnalyzerController(context,
+				tipFitterAnalyzer);
+		analyzers.add(tipFitterAnalyzer);
+		analyzerControllers.put(tipFitterAnalyzer, tipFitterAnalyzerController);
 
 		// Sync the analyzers with the combobox
 		analyzerCombobox.setItems(FXCollections.observableList(analyzers));
