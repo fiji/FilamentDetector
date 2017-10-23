@@ -24,8 +24,8 @@ import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 
 /*
- * This class holds the necessary informations/models necessary during the use of the GUI.
- * Can be also used for scripting.
+ * This class holds the necessary informations/models necessary during
+ *  the use of the GUI. Can be also used for scripting.
  */
 public class FilamentWorkflow {
 

@@ -1,11 +1,25 @@
 package fiji.plugin.filamentdetector.model;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.scijava.Context;
+import org.scijava.convert.ConvertService;
+
+import com.google.common.primitives.Doubles;
+
 import de.biomedical_imaging.ij.steger.Line;
+import ij.ImagePlus;
+import ij.gui.PolygonRoi;
+import ij.gui.ProfilePlot;
+import ij.gui.Roi;
+import ij.process.FloatPolygon;
+import net.imagej.display.ImageDisplay;
 
 /* A container for Line */
 public class Filament implements Comparable<Filament> {
@@ -145,7 +159,9 @@ public class Filament implements Comparable<Filament> {
 
 	@Override
 	public String toString() {
-		return "Frame: " + this.getFrame() + " | ID: " + this.getID();
+		String out = "";
+		out += "Frame: " + this.getFrame() + " | ID: " + this.getID();
+		return out;
 	}
 
 	public String info() {
@@ -266,5 +282,58 @@ public class Filament implements Comparable<Filament> {
 
 		double dist = Math.sqrt(Math.pow(center1_x - center2_x, 2) + Math.pow(center1_y - center2_y, 2));
 		return dist;
+	}
+
+	public Roi getRoi() {
+		float[] x = this.getXCoordinates();
+		float[] y = this.getYCoordinates();
+
+		FloatPolygon positions = new FloatPolygon(x, y, this.getNumber());
+		return new PolygonRoi(positions, Roi.FREELINE);
+	}
+
+	public List<Double> getIntensities(Context context, ImageDisplay imd, double channel, double width) {
+		// TODO: Make an IJ2 version
+		ConvertService convert = (ConvertService) context.getService(ConvertService.class);
+		ImagePlus imp = convert.convert(imd, ImagePlus.class).duplicate();
+
+		Roi roi = this.getRoi();
+		roi.setStrokeWidth(width);
+		imp.setC((int) channel);
+		imp.setRoi(roi);
+		imp.setT(this.getFrame());
+		ProfilePlot profiler = new ProfilePlot(imp);
+		List<Double> profile = Doubles.asList(profiler.getProfile());
+		imp.deleteRoi();
+
+		return profile;
+	}
+
+	public double[] getIntensitiesAsArray(Context context, ImageDisplay imd, double channel, double width) {
+		List<Double> profile = getIntensities(context, imd, channel, width);
+		return ArrayUtils.toPrimitive(profile.toArray(new Double[profile.size()]));
+
+	}
+
+	public List<Double> getStartTip() {
+		List<Double> position = new ArrayList<>();
+		position.add(this.getTips()[0]);
+		position.add(this.getTips()[1]);
+		return position;
+	}
+
+	public List<Double> getEndTip() {
+		List<Double> position = new ArrayList<>();
+		position.add(this.getTips()[2]);
+		position.add(this.getTips()[3]);
+		return position;
+	}
+
+	public double[] getStartTipAsArray() {
+		return Doubles.toArray(this.getStartTip());
+	}
+
+	public double[] getEndTipAsArray() {
+		return Doubles.toArray(this.getEndTip());
 	}
 }

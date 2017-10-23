@@ -27,10 +27,8 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
-import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
-import ij.process.FloatPolygon;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 import net.imagej.display.OverlayService;
@@ -85,11 +83,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		Dataset data = (Dataset) imageDisplay.getActiveView().getData();
 		ImagePlus imp = getImagePlus();
 
-		float[] x = filament.getXCoordinates();
-		float[] y = filament.getYCoordinates();
-
-		FloatPolygon positions = new FloatPolygon(x, y, filament.getNumber());
-		Roi roi = new PolygonRoi(positions, Roi.FREELINE);
+		Roi roi = filament.getRoi();
 
 		if (data.numDimensions() > 3) {
 			roi.setPosition(-1, -1, filament.getFrame());
@@ -476,17 +470,23 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	private ImagePlus getImagePlus() {
-		ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
-		if (imageDisplay != null && imp == null) {
-			eventService.publish(new ImageNotFoundEvent());
-		}
-		if (imp != null) {
-			ij.measure.Calibration cal = imp.getCalibration();
-			if (cal == null) {
-				imp.setCalibration(new ij.measure.Calibration());
+		try {
+			ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
+			if (imageDisplay != null && imp == null) {
+				eventService.publish(new ImageNotFoundEvent());
 			}
+			if (imp != null) {
+				ij.measure.Calibration cal = imp.getCalibration();
+				if (cal == null) {
+					imp.setCalibration(new ij.measure.Calibration());
+				}
+			}
+			return imp;
+		} catch (NullPointerException e) {
+			eventService.publish(new ImageNotFoundEvent());
+			return null;
 		}
-		return imp;
+
 	}
 
 	@Override
