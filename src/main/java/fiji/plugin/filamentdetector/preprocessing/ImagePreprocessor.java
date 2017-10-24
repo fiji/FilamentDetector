@@ -350,11 +350,17 @@ public class ImagePreprocessor {
 				out2.firstElement());
 		ops.convert().imageType(out3, out2, op2);
 
+		// Normalize intensity
+		Img<T> out4 = (Img<T>) ops.create().img(out3);
+		RealTypeConverter scaleOp = (RealTypeConverter) ops.op("convert.normalizeScale", out4.firstElement(),
+				out3.firstElement());
+		ops.convert().imageType(out4, out3, scaleOp);
+
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {
 			axes[i] = dataset.axis(i);
 		}
-		Dataset output = ds.create(out3);
+		Dataset output = ds.create(out4);
 		output.setAxes(axes);
 		return output;
 	}
