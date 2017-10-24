@@ -47,7 +47,7 @@ if [ -n "$TRAVIS_TAG" ]; then
 
 	if [ "$UPLOAD_WITH_DEPENDENCIES" = false ]; then
 	    echo "Upload only \"jars/$NAME.jar\"."
-	    $IJ_LAUNCHER --update upload --update-site "$UPDATE_SITE_NAME" --force-shadow "jars/$NAME.jar"
+	    $IJ_LAUNCHER --update upload --update-site "$UPDATE_SITE_NAME" --force-shadow --forget-missing-dependencies "jars/$NAME.jar"
 	else
 		echo "Upload $NAME with its dependencies."
 		$IJ_LAUNCHER --update upload-complete-site --force-shadow "$UPDATE_SITE_NAME"
