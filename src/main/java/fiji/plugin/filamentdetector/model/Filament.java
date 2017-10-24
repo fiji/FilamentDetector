@@ -292,29 +292,6 @@ public class Filament implements Comparable<Filament> {
 		return new PolygonRoi(positions, Roi.FREELINE);
 	}
 
-	public List<Double> getIntensities(Context context, ImageDisplay imd, double channel, double width) {
-		// TODO: Make an IJ2 version
-		ConvertService convert = (ConvertService) context.getService(ConvertService.class);
-		ImagePlus imp = convert.convert(imd, ImagePlus.class).duplicate();
-
-		Roi roi = this.getRoi();
-		roi.setStrokeWidth(width);
-		imp.setC((int) channel);
-		imp.setRoi(roi);
-		imp.setT(this.getFrame());
-		ProfilePlot profiler = new ProfilePlot(imp);
-		List<Double> profile = Doubles.asList(profiler.getProfile());
-		imp.deleteRoi();
-
-		return profile;
-	}
-
-	public double[] getIntensitiesAsArray(Context context, ImageDisplay imd, double channel, double width) {
-		List<Double> profile = getIntensities(context, imd, channel, width);
-		return ArrayUtils.toPrimitive(profile.toArray(new Double[profile.size()]));
-
-	}
-
 	public List<Double> getStartTip() {
 		List<Double> position = new ArrayList<>();
 		position.add(this.getTips()[0]);
@@ -335,5 +312,29 @@ public class Filament implements Comparable<Filament> {
 
 	public double[] getEndTipAsArray() {
 		return Doubles.toArray(this.getEndTip());
+	}
+
+	public List<Double> getIntensities(Context context, ImageDisplay imd, double channel, double width) {
+		// TODO: Make an IJ2 version
+		// See https://gitter.im/imglib/imglib2?at=59ee2d4e8808bed73d1b5198
+		ConvertService convert = (ConvertService) context.getService(ConvertService.class);
+		ImagePlus imp = convert.convert(imd, ImagePlus.class).duplicate();
+
+		Roi roi = this.getRoi();
+		roi.setStrokeWidth(width);
+		imp.setC((int) channel);
+		imp.setRoi(roi);
+		imp.setT(this.getFrame());
+		ProfilePlot profiler = new ProfilePlot(imp);
+		List<Double> profile = Doubles.asList(profiler.getProfile());
+		imp.deleteRoi();
+
+		return profile;
+	}
+
+	public double[] getIntensitiesAsArray(Context context, ImageDisplay imd, double channel, double width) {
+		List<Double> profile = getIntensities(context, imd, channel, width);
+		return ArrayUtils.toPrimitive(profile.toArray(new Double[profile.size()]));
+
 	}
 }
