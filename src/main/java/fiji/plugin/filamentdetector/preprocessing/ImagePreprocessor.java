@@ -101,6 +101,11 @@ public class ImagePreprocessor {
 			hasBeenPreprocessed = true;
 		}
 
+		if (doPseudoFlatFieldCorrection) {
+			temp = doPseudoFlatFieldCorrection(temp);
+			hasBeenPreprocessed = true;
+		}
+
 		if (doGaussianFilter) {
 			temp = applyGaussianFilter(temp);
 			hasBeenPreprocessed = true;
@@ -108,11 +113,6 @@ public class ImagePreprocessor {
 
 		if (doDifferenceOfGaussianFilter) {
 			temp = applyDifferenceOfGaussianFilter(temp);
-			hasBeenPreprocessed = true;
-		}
-
-		if (doPseudoFlatFieldCorrection) {
-			temp = doPseudoFlatFieldCorrection(temp);
 			hasBeenPreprocessed = true;
 		}
 

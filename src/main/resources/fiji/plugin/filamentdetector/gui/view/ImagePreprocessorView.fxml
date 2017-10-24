@@ -60,6 +60,38 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
+                        <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction" />
+                        <TextField fx:id="flatFieldCorrectionGaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
+                        <Label text="pixel(s)" />
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets bottom="2.0" />
+                     </opaqueInsets>
+                  </HBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label prefWidth="400.0" text="Pseudo flat field correction estimate the background by applying a large filter size. Then it uses this &quot;pseudo background&quot; image to subtract it from the original image." wrapText="true">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets top="2.0" />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
                         <CheckBox fx:id="doGaussianFilterCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Gaussian Filter" />
                         <TextField fx:id="gaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
                         <Label text="pixel(s)" />
@@ -122,38 +154,6 @@
                   <VBox spacing="5.0">
                      <children>
                         <Label prefWidth="400.0" text="Difference of Gaussians (DoG) is a feature enhancement algorithm that involves the subtraction of one blurred version of an original image from another, less blurred version of the original.  This method  discard high and low frequencies information, it's a band-pass filter." wrapText="true">
-                           <font>
-                              <Font name="System Italic" size="10.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" />
-                     </padding>
-                     <opaqueInsets>
-                        <Insets top="2.0" />
-                     </opaqueInsets>
-                  </VBox>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="5.0">
-                     <children>
-                        <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction" />
-                        <TextField fx:id="flatFieldCorrectionGaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
-                        <Label text="pixel(s)" />
-                     </children>
-                     <padding>
-                        <Insets left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                     <opaqueInsets>
-                        <Insets bottom="2.0" />
-                     </opaqueInsets>
-                  </HBox>
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label prefWidth="400.0" text="Pseudo flat field correction estimate the background by applying a large filter size. Then it uses this &quot;pseudo background&quot; image to subtract it from the original image." wrapText="true">
                            <font>
                               <Font name="System Italic" size="10.0" />
                            </font>
