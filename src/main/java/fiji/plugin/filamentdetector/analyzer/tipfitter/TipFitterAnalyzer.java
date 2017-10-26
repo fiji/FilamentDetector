@@ -48,7 +48,7 @@ public class TipFitterAnalyzer extends AbstractAnalyzer implements Analyzer {
 		this.results = new HashMap<>();
 		this.results.put("side1Filaments", this.fitter.getSide1Filaments());
 		this.results.put("side2Filaments", this.fitter.getSide2Filaments());
-		
+
 		this.resultMessage = "Tip Fitting done.\n";
 		this.resultMessage += this.fitter.getSide1Filaments().size() + this.fitter.getSide2Filaments().size();
 		this.resultMessage += " filaments have been detected.";

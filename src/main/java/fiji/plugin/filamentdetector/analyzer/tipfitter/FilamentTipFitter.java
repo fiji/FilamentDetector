@@ -16,6 +16,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
+import fiji.plugin.filamentdetector.GeometryUtils;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
@@ -94,7 +95,7 @@ public class FilamentTipFitter {
 			otherTip = new float[] { (float) filament.getTips()[0], (float) filament.getTips()[1] };
 		}
 
-		float[] fitEnd = FilamentTipFitter.getPointOnVectorFromDistance(seedTip, otherTip, -lineFitLength);
+		float[] fitEnd = GeometryUtils.getPointOnVectorFromDistance(seedTip, otherTip, -lineFitLength);
 
 		float[] x = new float[] { seedTip[0], fitEnd[0] };
 		float[] y = new float[] { seedTip[1], fitEnd[1] };
@@ -142,7 +143,7 @@ public class FilamentTipFitter {
 		double tipPosition1D = endPosition - ((endPosition - startPosition) / (1 / relativePositionFromEnd));
 
 		// Get the position of the tip in the image 2D space
-		double[] tipPosition = FilamentTipFitter.getPointOnVectorFromDistance(fitLine.getStartTipAsArray(),
+		double[] tipPosition = GeometryUtils.getPointOnVectorFromDistance(fitLine.getStartTipAsArray(),
 				fitLine.getEndTipAsArray(), tipPosition1D);
 
 		// Only for debugging
@@ -227,22 +228,6 @@ public class FilamentTipFitter {
 
 	public void setImageDisplay(ImageDisplay imageDisplay) {
 		this.imageDisplay = imageDisplay;
-	}
-
-	static private float[] getPointOnVectorFromDistance(float[] start, float[] end, double distance) {
-		float distRatio = (float) (distance
-				/ Math.sqrt(Math.pow(start[0] - end[0], 2) + Math.pow(start[1] - end[1], 2)));
-		float x = (float) ((1 - distRatio) * start[0] + distRatio * end[0]);
-		float y = (float) ((1 - distRatio) * start[1] + distRatio * end[1]);
-		return new float[] { x, y };
-	}
-
-	static private double[] getPointOnVectorFromDistance(double[] start, double[] end, double distance) {
-		double distRatio = (double) (distance
-				/ Math.sqrt(Math.pow(start[0] - end[0], 2) + Math.pow(start[1] - end[1], 2)));
-		double x = (double) ((1 - distRatio) * start[0] + distRatio * end[0]);
-		double y = (double) ((1 - distRatio) * start[1] + distRatio * end[1]);
-		return new double[] { x, y };
 	}
 
 }

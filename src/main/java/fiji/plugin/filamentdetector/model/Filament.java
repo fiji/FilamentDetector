@@ -20,6 +20,7 @@ import ij.gui.ProfilePlot;
 import ij.gui.Roi;
 import ij.process.FloatPolygon;
 import net.imagej.display.ImageDisplay;
+import net.imglib2.RealPoint;
 
 /* A container for Line */
 public class Filament implements Comparable<Filament> {
@@ -43,6 +44,21 @@ public class Filament implements Comparable<Filament> {
 
 	public Filament(Line line, int frame) {
 		this.line = line;
+		this.frame = frame;
+	}
+
+	public Filament(List<RealPoint> points, int frame) {
+
+		float[] x = new float[points.size()];
+		float[] y = new float[points.size()];
+		int i = 0;
+		for (RealPoint point : points) {
+			x[i] = point.getFloatPosition(0);
+			y[i] = point.getFloatPosition(1);
+			i++;
+		}
+		this.line = new Line(x, y);
+
 		this.frame = frame;
 	}
 

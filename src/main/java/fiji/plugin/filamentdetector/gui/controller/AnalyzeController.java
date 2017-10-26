@@ -119,10 +119,9 @@ public class AnalyzeController extends Controller implements Initializable {
 				lengthOverTimeAnalyzer);
 		analyzers.add(lengthOverTimeAnalyzer);
 		analyzerControllers.put(lengthOverTimeAnalyzer, lengthOverTimeAnalyzerController);
-		
+
 		TipFitterAnalyzer tipFitterAnalyzer = new TipFitterAnalyzer(filamentWorkflow);
-		AnalyzerController tipFitterAnalyzerController = new TipFitterAnalyzerController(context,
-				tipFitterAnalyzer);
+		AnalyzerController tipFitterAnalyzerController = new TipFitterAnalyzerController(context, tipFitterAnalyzer);
 		analyzers.add(tipFitterAnalyzer);
 		analyzerControllers.put(tipFitterAnalyzer, tipFitterAnalyzerController);
 

@@ -48,6 +48,6 @@ public class TestTipFitter {
 		tipFitter.fit();
 
 		overlay.reset();
-		//overlay.add(tipFitter.getFilaments());
+		// overlay.add(tipFitter.getFilaments());
 	}
 }
