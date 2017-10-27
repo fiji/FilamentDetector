@@ -3,8 +3,10 @@ package fiji.plugin.filamentdetector.model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -12,8 +14,9 @@ import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 
 import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
 
-import de.biomedical_imaging.ij.steger.Line;
+import fiji.plugin.filamentdetector.GeometryUtils;
 import ij.ImagePlus;
 import ij.gui.PolygonRoi;
 import ij.gui.ProfilePlot;
@@ -26,89 +29,102 @@ import net.imglib2.RealPoint;
 public class Filament implements Comparable<Filament> {
 
 	public static Color DEFAULT_COLOR = Color.orange;
+	public static int xIndex = 0;
+	public static int yIndex = 1;
+	private static int idCounter = 0;
 
-	private Line line;
 	private final int frame;
+
+	private int id;
+	private List<RealPoint> points;
 
 	private double length = Double.NaN;
 	private double[] lengths;
+	private double tipLength = Double.NaN;
+
 	private double sinuosity = Double.NaN;
 	private double[] boundingBox;
 
 	private Color color = DEFAULT_COLOR;
 
-	public Filament(float[] x, float[] y, int frame) {
-		this.line = new Line(x, y);
-		this.frame = frame;
-	}
-
-	public Filament(Line line, int frame) {
-		this.line = line;
-		this.frame = frame;
-	}
-
 	public Filament(List<RealPoint> points, int frame) {
-
-		float[] x = new float[points.size()];
-		float[] y = new float[points.size()];
-		int i = 0;
-		for (RealPoint point : points) {
-			x[i] = point.getFloatPosition(0);
-			y[i] = point.getFloatPosition(1);
-			i++;
-		}
-		this.line = new Line(x, y);
-
+		assignID();
+		this.points = points;
 		this.frame = frame;
 	}
 
-	public Line getLine() {
-		return line;
+	public Filament(double[] x, double[] y, int frame) {
+		assignID();
+		this.frame = frame;
+		this.points = IntStream.range(0, x.length).mapToObj(i -> new RealPoint(x[i], y[i]))
+				.collect(Collectors.toList());
 	}
 
-	public float[] getXCoordinates() {
-		return this.line.getXCoordinates();
+	public Filament(float[] x, float[] y, int frame) {
+		assignID();
+		this.frame = frame;
+		this.points = IntStream.range(0, x.length).mapToObj(i -> new RealPoint(x[i], y[i]))
+				.collect(Collectors.toList());
 	}
 
-	public float[] getYCoordinates() {
-		return this.line.getYCoordinates();
+	public double[] getXCoordinates() {
+		return this.points.stream().mapToDouble(p -> p.getDoublePosition(xIndex)).toArray();
 	}
 
-	public double[] getXCoordinatesAsDouble() {
-		return IntStream.range(0, this.getXCoordinates().length).mapToDouble(i -> this.getXCoordinates()[i]).toArray();
+	public double[] getYCoordinates() {
+		return this.points.stream().mapToDouble(p -> p.getDoublePosition(yIndex)).toArray();
 	}
 
-	public double[] getYCoordinatesAsDouble() {
-		return IntStream.range(0, this.getYCoordinates().length).mapToDouble(i -> this.getYCoordinates()[i]).toArray();
+	public float[] getXCoordinatesAsFloat() {
+		return Floats.toArray(this.points.stream().mapToDouble(p -> p.getDoublePosition(xIndex)).boxed()
+				.collect(Collectors.toList()));
 	}
 
-	public int getNumber() {
-		return this.line.getNumber();
+	public float[] getYCoordinatesAsFloat() {
+		return Floats.toArray(this.points.stream().mapToDouble(p -> p.getDoublePosition(yIndex)).boxed()
+				.collect(Collectors.toList()));
 	}
 
 	public int getFrame() {
 		return this.frame;
 	}
 
-	public int getID() {
-		return this.line.getID();
+	public int getId() {
+		return this.id;
 	}
 
 	public int getSize() {
-		return this.getXCoordinates().length;
+		return this.points.size();
+	}
+
+	public RealPoint getFirstPoint() {
+		return this.points.get(0);
+	}
+
+	public RealPoint getLastPoint() {
+		return this.points.get(this.getSize() - 1);
+	}
+
+	public double getTipLength() {
+		if (Double.isNaN(this.tipLength)) {
+			this.tipLength = GeometryUtils.distance(this.getFirstPoint(), this.getLastPoint());
+		}
+		return this.tipLength;
 	}
 
 	public double getLength() {
 		if (Double.isNaN(this.length)) {
 
-			float[] x = this.getXCoordinates();
-			float[] y = this.getYCoordinates();
-
-			this.lengths = new double[x.length - 1];
+			this.lengths = new double[this.getSize() - 1];
 			this.length = 0;
 
-			for (int i = 0; i < x.length - 1; i++) {
-				this.lengths[i] = Math.sqrt(Math.pow(x[i] - x[i + 1], 2) + Math.pow(y[i] - y[i + 1], 2));
+			RealPoint point1;
+			RealPoint point2;
+
+			for (int i = 0; i < this.getSize() - 1; i++) {
+				point1 = this.points.get(i);
+				point2 = this.points.get(i + 1);
+				this.lengths[i] = GeometryUtils.distance(point1, point2);
 				this.length += this.lengths[i];
 			}
 
@@ -124,8 +140,8 @@ public class Filament implements Comparable<Filament> {
 	public double getSinuosity() {
 		if (Double.isNaN(this.sinuosity)) {
 
-			float[] x = this.getXCoordinates();
-			float[] y = this.getYCoordinates();
+			double[] x = this.getXCoordinates();
+			double[] y = this.getYCoordinates();
 
 			double shortLength = Math.sqrt(Math.pow(x[0] - x[x.length - 1], 2) + Math.pow(y[0] - y[x.length - 1], 2));
 
@@ -142,28 +158,13 @@ public class Filament implements Comparable<Filament> {
 
 		boundingBox = new double[4];
 
-		float[] x = this.getXCoordinates();
-		float[] y = this.getYCoordinates();
+		double xMin = this.points.stream().mapToDouble(x -> x.getDoublePosition(xIndex)).min().getAsDouble();
+		double yMin = this.points.stream().mapToDouble(x -> x.getDoublePosition(yIndex)).min().getAsDouble();
+		// RealPoint minPoint = new RealPoint(xMin, yMin);
 
-		double xMin = x[0];
-		double xMax = x[0];
-		double yMin = y[0];
-		double yMax = y[0];
-
-		for (int i = 1; i < x.length; i++) {
-			if (x[i] < xMin) {
-				xMin = x[i];
-			}
-			if (x[i] > xMax) {
-				xMax = x[i];
-			}
-			if (y[i] < yMin) {
-				yMin = y[i];
-			}
-			if (y[i] > yMax) {
-				yMax = y[i];
-			}
-		}
+		double xMax = this.points.stream().mapToDouble(x -> x.getDoublePosition(xIndex)).max().getAsDouble();
+		double yMax = this.points.stream().mapToDouble(x -> x.getDoublePosition(yIndex)).max().getAsDouble();
+		// RealPoint maxPoint = new RealPoint(xMax, yMax);
 
 		boundingBox[0] = xMin;
 		boundingBox[1] = yMin;
@@ -176,7 +177,7 @@ public class Filament implements Comparable<Filament> {
 	@Override
 	public String toString() {
 		String out = "";
-		out += "Frame: " + this.getFrame() + " | ID: " + this.getID();
+		out += "Frame: " + this.getFrame() + " | ID: " + this.getId();
 		return out;
 	}
 
@@ -198,14 +199,14 @@ public class Filament implements Comparable<Filament> {
 
 	/* Simplify the filament by reducing the number of points */
 	public Filament simplify(double toleranceDistance) {
-		double[] x = this.getXCoordinatesAsDouble();
-		double[] y = this.getYCoordinatesAsDouble();
+		double[] x = this.getXCoordinates();
+		double[] y = this.getYCoordinates();
 
-		float[] newX = new float[x.length];
-		float[] newY = new float[y.length];
+		double[] newX = new double[x.length];
+		double[] newY = new double[y.length];
 
-		newX[0] = (float) x[0];
-		newY[0] = (float) y[0];
+		newX[0] = x[0];
+		newY[0] = y[0];
 
 		double totDist = 0;
 		double dist;
@@ -215,8 +216,8 @@ public class Filament implements Comparable<Filament> {
 			dist = Math.sqrt(Math.pow(x[i] - x[i - 1], 2) + Math.pow(y[i] - y[i - 1], 2));
 
 			if (totDist > toleranceDistance) {
-				newX[newSize] = (float) x[i];
-				newY[newSize] = (float) y[i];
+				newX[newSize] = x[i];
+				newY[newSize] = y[i];
 				totDist = 0;
 				newSize++;
 			} else {
@@ -227,16 +228,14 @@ public class Filament implements Comparable<Filament> {
 		newX = Arrays.copyOf(newX, newSize);
 		newY = Arrays.copyOf(newY, newSize);
 
-		Line line = new Line(newX, newY);
-
-		Filament newFilament = new Filament(line, this.getFrame());
+		Filament newFilament = new Filament(newX, newY, this.getFrame());
 		newFilament.setColor(this.getColor());
 		return newFilament;
 	}
 
 	@Override
 	public int compareTo(Filament filament) {
-		return this.getID() - filament.getID();
+		return this.getId() - filament.getId();
 	}
 
 	public Color getColor() {
@@ -256,28 +255,19 @@ public class Filament implements Comparable<Filament> {
 	 */
 	public double[] getTips() {
 		double[] coords = new double[4];
-
-		coords[0] = this.getXCoordinatesAsDouble()[0];
-		coords[1] = this.getYCoordinatesAsDouble()[0];
-		coords[2] = this.getXCoordinatesAsDouble()[this.getSize() - 1];
-		coords[3] = this.getYCoordinatesAsDouble()[this.getSize() - 1];
-
+		coords[0] = this.getFirstPoint().getDoublePosition(xIndex);
+		coords[1] = this.getFirstPoint().getDoublePosition(yIndex);
+		coords[2] = this.getLastPoint().getDoublePosition(xIndex);
+		coords[3] = this.getLastPoint().getDoublePosition(yIndex);
 		return coords;
 	}
 
 	public void reverseCoordinates() {
-
-		int length = getXCoordinates().length;
-
-		float[] newX = new float[length];
-		float[] newY = new float[length];
-
-		for (int i = 0; i < length; i++) {
-			newX[i] = getXCoordinates()[length - i - 1];
-			newY[i] = getYCoordinates()[length - i - 1];
-		}
-
-		this.line = new Line(newX, newY);
+		Collections.reverse(this.points);
+		this.boundingBox = null;
+		this.length = Double.NaN;
+		this.lengths = null;
+		this.tipLength = Double.NaN;
 	}
 
 	public final static Comparator<Filament> frameComparator = Comparator.comparing(s -> s.getFrame());
@@ -286,25 +276,23 @@ public class Filament implements Comparable<Filament> {
 		return new Filament(this.getXCoordinates(), this.getYCoordinates(), this.getFrame());
 	}
 
-	public double dist(Filament filament) {
+	public double distanceFromCenter(Filament filament) {
 		double[] bbox1 = this.getBoundingBox();
 		double[] bbox2 = filament.getBoundingBox();
 
 		double center1_x = (2 * bbox1[0] + bbox1[2]) / 2;
 		double center1_y = (2 * bbox1[1] + bbox1[3]) / 2;
-
 		double center2_x = (2 * bbox2[0] + bbox2[2]) / 2;
 		double center2_y = (2 * bbox2[1] + bbox2[3]) / 2;
 
-		double dist = Math.sqrt(Math.pow(center1_x - center2_x, 2) + Math.pow(center1_y - center2_y, 2));
+		double dist = GeometryUtils.distance(new RealPoint(center1_x, center1_y), new RealPoint(center2_x, center2_y));
 		return dist;
 	}
 
 	public Roi getRoi() {
-		float[] x = this.getXCoordinates();
-		float[] y = this.getYCoordinates();
-
-		FloatPolygon positions = new FloatPolygon(x, y, this.getNumber());
+		float[] x = this.getXCoordinatesAsFloat();
+		float[] y = this.getYCoordinatesAsFloat();
+		FloatPolygon positions = new FloatPolygon(x, y, this.getSize());
 		return new PolygonRoi(positions, Roi.FREELINE);
 	}
 
@@ -352,5 +340,10 @@ public class Filament implements Comparable<Filament> {
 		List<Double> profile = getIntensities(context, imd, channel, width);
 		return ArrayUtils.toPrimitive(profile.toArray(new Double[profile.size()]));
 
+	}
+
+	private synchronized void assignID() {
+		this.id = idCounter;
+		idCounter++;
 	}
 }

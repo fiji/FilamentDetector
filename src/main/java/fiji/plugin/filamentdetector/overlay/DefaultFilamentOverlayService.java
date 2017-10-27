@@ -90,7 +90,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		} else {
 			roi.setPosition(filament.getFrame());
 		}
-		roi.setName(Integer.toString(filament.getID()));
+		roi.setName(Integer.toString(filament.getId()));
 		roi.setStrokeWidth(filamentWidth);
 
 		Color color = filament.getColor();

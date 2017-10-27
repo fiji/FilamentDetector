@@ -29,8 +29,8 @@ public class TestTipFitter {
 
 		ImageDisplay imd = ij.imageDisplay().getActiveImageDisplay();
 
-		float[] x = new float[] { 28, 22 };
-		float[] y = new float[] { 48, 37 };
+		double[] x = new double[] { 28, 22 };
+		double[] y = new double[] { 48, 37 };
 		Filament singleSeed = new Filament(x, y, 13);
 
 		overlay.setImageDisplay(imd);

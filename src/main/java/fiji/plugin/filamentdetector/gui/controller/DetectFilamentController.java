@@ -280,8 +280,8 @@ public class DetectFilamentController extends Controller implements Initializabl
 			} else if (roi.getType() == Roi.LINE) {
 
 				Line line = (Line) roi;
-				float[] x = new float[] { (float) line.x1d, (float) line.x2d };
-				float[] y = new float[] { (float) line.y1d, (float) line.y2d };
+				double[] x = new double[] { line.x1d, line.x2d };
+				double[] y = new double[] { line.y1d, line.y2d };
 				filament = new Filament(x, y, roi.getTPosition());
 				rm.select(i);
 				rm.runCommand("Delete");

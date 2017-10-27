@@ -43,7 +43,7 @@ public class DetailedFilamentController extends Controller implements Initializa
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		DecimalFormat f = new DecimalFormat("##.00");
 
-		idLabel.setText(Integer.toString(filament.getID()));
+		idLabel.setText(Integer.toString(filament.getId()));
 		frameLabel.setText(Integer.toString(filament.getFrame()));
 		lenghtLabel.setText(f.format(filament.getLength()));
 		sizeLabel.setText(Integer.toString(filament.getSize()));

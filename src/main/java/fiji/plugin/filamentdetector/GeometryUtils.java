@@ -18,6 +18,30 @@ import net.imglib2.view.Views;
 
 public class GeometryUtils {
 
+	public static RealPoint add(RealPoint point1, RealPoint point2) {
+		RealPoint point = new RealPoint();
+		for (int d = 0; d < point1.numDimensions(); d++) {
+			point.setPosition(point1.getDoublePosition(d) + point2.getDoublePosition(d), d);
+		}
+		return point;
+	}
+
+	public static RealPoint subtract(RealPoint point1, RealPoint point2) {
+		RealPoint point = new RealPoint();
+		for (int d = 0; d < point1.numDimensions(); d++) {
+			point.setPosition(point1.getDoublePosition(d) - point2.getDoublePosition(d), d);
+		}
+		return point;
+	}
+
+	public static double distance(RealPoint point1, RealPoint point2) {
+		double sum = 0;
+		for (int d = 0; d < point1.numDimensions(); d++) {
+			sum += Math.pow(point1.getDoublePosition(d) - point2.getDoublePosition(d), 2);
+		}
+		return Math.sqrt(sum);
+	}
+
 	public static <T> double[] getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z) {
 		InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator = new NLinearInterpolatorFactory();
 		return getIntensities(line, dataset, interpolator, frame, channel, z);
@@ -76,14 +100,6 @@ public class GeometryUtils {
 		}
 		// line.add(end);
 		return line;
-	}
-
-	public static double distance(RealPoint point1, RealPoint point2) {
-		double sum = 0;
-		for (int d = 0; d < point1.numDimensions(); d++) {
-			sum += Math.pow(point1.getDoublePosition(d) - point2.getDoublePosition(d), 2);
-		}
-		return Math.sqrt(sum);
 	}
 
 	public static RealPoint getPointOnVectorFromDistance(RealPoint start, RealPoint end, double distance) {

@@ -34,13 +34,13 @@ public class TestIntensityProfile {
 
 		ImageDisplay imd = ij.imageDisplay().getActiveImageDisplay();
 
-		float[] start = new float[] { 122, 80 };
-		float[] end = new float[] { 154, 67 };
-		// float[] start = new float[] { 22, 36 };
-		// float[] end = new float[] { 13, 21 };
+		double[] start = new double[] { 122, 80 };
+		double[] end = new double[] { 154, 67 };
+		// double[] start = new double[] { 22, 36 };
+		// double[] end = new double[] { 13, 21 };
 
-		float[] x = new float[] { start[0], end[0] };
-		float[] y = new float[] { start[1], end[1] };
+		double[] x = new double[] { start[0], end[0] };
+		double[] y = new double[] { start[1], end[1] };
 		Filament filament = new Filament(x, y, 13);
 
 		overlay.setImageDisplay(imd);

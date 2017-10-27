@@ -85,20 +85,20 @@ public class FilamentTipFitter {
 
 	private Filament fitSeed(Filament filament, boolean fitFromStart) {
 
-		float[] seedTip;
-		float[] otherTip;
+		double[] seedTip;
+		double[] otherTip;
 		if (fitFromStart) {
-			seedTip = new float[] { (float) filament.getTips()[0], (float) filament.getTips()[1] };
-			otherTip = new float[] { (float) filament.getTips()[2], (float) filament.getTips()[3] };
+			seedTip = new double[] { filament.getTips()[0], filament.getTips()[1] };
+			otherTip = new double[] { filament.getTips()[2], filament.getTips()[3] };
 		} else {
-			seedTip = new float[] { (float) filament.getTips()[2], (float) filament.getTips()[3] };
-			otherTip = new float[] { (float) filament.getTips()[0], (float) filament.getTips()[1] };
+			seedTip = new double[] { filament.getTips()[2], filament.getTips()[3] };
+			otherTip = new double[] { filament.getTips()[0], filament.getTips()[1] };
 		}
 
-		float[] fitEnd = GeometryUtils.getPointOnVectorFromDistance(seedTip, otherTip, -lineFitLength);
+		double[] fitEnd = GeometryUtils.getPointOnVectorFromDistance(seedTip, otherTip, -lineFitLength);
 
-		float[] x = new float[] { seedTip[0], fitEnd[0] };
-		float[] y = new float[] { seedTip[1], fitEnd[1] };
+		double[] x = new double[] { seedTip[0], fitEnd[0] };
+		double[] y = new double[] { seedTip[1], fitEnd[1] };
 		Filament fitLine = new Filament(x, y, filament.getFrame());
 
 		// Get intensities
@@ -158,8 +158,8 @@ public class FilamentTipFitter {
 			plot2.show();
 		}
 
-		x = new float[] { seedTip[0], (float) tipPosition[0] };
-		y = new float[] { seedTip[1], (float) tipPosition[1] };
+		x = new double[] { seedTip[0], tipPosition[0] };
+		y = new double[] { seedTip[1], tipPosition[1] };
 		Filament trueFilament = new Filament(x, y, filament.getFrame());
 		trueFilament.setColor(filament.getColor());
 

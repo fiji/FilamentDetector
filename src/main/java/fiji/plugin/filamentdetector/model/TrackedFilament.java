@@ -96,8 +96,8 @@ public class TrackedFilament extends Filaments {
 		double[] y;
 
 		for (Filament filament : this) {
-			x = filament.getXCoordinatesAsDouble();
-			y = filament.getYCoordinatesAsDouble();
+			x = filament.getXCoordinates();
+			y = filament.getYCoordinates();
 
 			tip1X.add(x[0]);
 			tip1Y.add(y[0]);

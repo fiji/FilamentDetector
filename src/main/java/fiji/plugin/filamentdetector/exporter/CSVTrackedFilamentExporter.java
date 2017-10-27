@@ -86,7 +86,7 @@ public class CSVTrackedFilamentExporter extends TrackedFilamentsExporter<Tracked
 					row = new ArrayList<>();
 
 					row.add(Integer.toString(trackedFilament.getId()));
-					row.add(Integer.toString(filament.getID()));
+					row.add(Integer.toString(filament.getId()));
 					row.add(Double.toString(filament.getLength() * calibrations.getDx()));
 					row.add(Integer.toString(filament.getFrame()));
 					row.add(Double.toString(filament.getSinuosity()));

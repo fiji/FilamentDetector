@@ -57,7 +57,7 @@ public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Fi
 		}
 
 		if (score == 1) {
-			score = source.dist(target);
+			score = source.distanceFromCenter(target);
 		}
 
 		// System.out.println("**********");

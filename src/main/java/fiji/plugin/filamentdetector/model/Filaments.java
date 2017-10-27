@@ -8,7 +8,7 @@ public class Filaments extends ArrayList<Filament> {
 
 	public int getIndexByID(int id) {
 		for (int i = 0; i < this.size(); i++) {
-			if (this.get(i).getID() == id) {
+			if (this.get(i).getId() == id) {
 				return i;
 			}
 		}

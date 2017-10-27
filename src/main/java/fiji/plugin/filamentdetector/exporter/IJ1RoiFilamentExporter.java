@@ -74,14 +74,14 @@ public class IJ1RoiFilamentExporter extends FilamentsExporter<Filaments> {
 		}
 
 		for (Filament filament : filaments) {
-			float[] x = filament.getXCoordinates();
-			float[] y = filament.getYCoordinates();
+			float[] x = filament.getXCoordinatesAsFloat();
+			float[] y = filament.getYCoordinatesAsFloat();
 
-			FloatPolygon positions = new FloatPolygon(x, y, filament.getNumber());
+			FloatPolygon positions = new FloatPolygon(x, y, filament.getSize());
 			Roi roi = new PolygonRoi(positions, Roi.FREELINE);
 
 			roi.setPosition(-1, -1, filament.getFrame());
-			roi.setName(Integer.toString(filament.getID()));
+			roi.setName(Integer.toString(filament.getId()));
 			roi.setStrokeColor(filament.getColor());
 
 			rm.addRoi(roi);

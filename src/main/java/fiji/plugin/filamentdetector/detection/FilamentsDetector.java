@@ -14,6 +14,7 @@ import de.biomedical_imaging.ij.steger.LineDetector;
 import de.biomedical_imaging.ij.steger.Lines;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filament;
+import fiji.plugin.filamentdetector.model.FilamentFactory;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.overlay.ColorService;
 import ij.ImagePlus;
@@ -126,7 +127,7 @@ public class FilamentsDetector {
 				this.parameters.getOverlapOption());
 
 		for (Line line : lines) {
-			Filament filament = new Filament(line, frame);
+			Filament filament = FilamentFactory.fromLine(line, frame);
 
 			Color color = colorService.getColor(this.filaments.size() + 1);
 			filament.setColor(color);

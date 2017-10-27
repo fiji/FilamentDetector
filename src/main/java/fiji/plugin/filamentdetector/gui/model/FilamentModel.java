@@ -20,7 +20,7 @@ public class FilamentModel {
 	public FilamentModel(Filament filament) {
 		this.filament = filament;
 
-		this.id = new SimpleIntegerProperty(filament.getID());
+		this.id = new SimpleIntegerProperty(filament.getId());
 		this.length = new SimpleDoubleProperty(filament.getLength());
 		this.frame = new SimpleIntegerProperty(filament.getFrame());
 		this.color = new SimpleStringProperty(filament.getColorAsHex());
