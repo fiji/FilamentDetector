@@ -21,6 +21,7 @@ import fiji.plugin.filamentdetector.gui.controller.Controller;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.preprocessing.Convert8BitPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
+import fiji.plugin.filamentdetector.preprocessing.FrangiFilterPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.GaussianFilterPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
@@ -120,6 +121,9 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 			} else if (imagePreprocessor.getClass().equals(NormalizeIntensitiesPreprocessor.class)) {
 				imagePreprocessorController = new NormalizeIntensitiesController(context, imagePreprocessor);
 
+			} else if (imagePreprocessor.getClass().equals(FrangiFilterPreprocessor.class)) {
+				imagePreprocessorController = new FrangiFilterController(context, imagePreprocessor);
+				
 			} else {
 				log.error(imagePreprocessor + " is can't be loaded.");
 			}
