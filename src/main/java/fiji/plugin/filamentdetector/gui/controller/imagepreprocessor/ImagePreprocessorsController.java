@@ -106,17 +106,17 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 		for (ImagePreprocessor imagePreprocessor : this.imagePreprocessors.getImagePreprocessors()) {
 
 			if (imagePreprocessor.getClass().equals(Convert8BitPreprocessor.class)) {
-				imagePreprocessorController = new Convert8BitProcessorController(context, imagePreprocessor);
+				imagePreprocessorController = new Convert8BitController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(GaussianFilterPreprocessor.class)) {
-				imagePreprocessorController = new GaussianFilterPreprocessorController(context, imagePreprocessor);
+				imagePreprocessorController = new GaussianFilterController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(PseudoFlatFieldCorrectionPreprocessor.class)) {
-				imagePreprocessorController = new PseudoFlatFieldCorrectionPreprocessorController(context,
+				imagePreprocessorController = new PseudoFlatFieldCorrectionController(context,
 						imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(DOGFilterPreprocessor.class)) {
-				imagePreprocessorController = new DOGFilterPreprocessorController(context, imagePreprocessor);
+				imagePreprocessorController = new DOGFilterController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(NormalizeIntensitiesPreprocessor.class)) {
 				imagePreprocessorController = new NormalizeIntensitiesController(context, imagePreprocessor);

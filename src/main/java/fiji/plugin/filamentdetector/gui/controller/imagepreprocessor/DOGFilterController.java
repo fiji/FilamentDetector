@@ -11,9 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
-public class DOGFilterPreprocessorController extends ImagePreprocessorController {
+public class DOGFilterController extends ImagePreprocessorController {
 
-	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/DOGFilterPreprocessorView.fxml";
+	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/DOGFilterView.fxml";
 
 	@FXML
 	private TextField sigma1DOGField;
@@ -24,7 +24,7 @@ public class DOGFilterPreprocessorController extends ImagePreprocessorController
 	@FXML
 	private CheckBox doDifferenceOfGaussianFilterCheckbox;
 
-	public DOGFilterPreprocessorController(Context context, ImagePreprocessor imagePreprocessor) {
+	public DOGFilterController(Context context, ImagePreprocessor imagePreprocessor) {
 		super(context, imagePreprocessor);
 		setFXMLPath(FXML_PATH);
 	}
