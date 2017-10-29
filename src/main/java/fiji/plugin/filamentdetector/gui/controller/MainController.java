@@ -13,6 +13,7 @@ import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.ImagePreprocessorsController;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.overlay.ImageDisplayMode;
 import javafx.application.Platform;
@@ -89,7 +90,7 @@ public class MainController extends Controller implements Initializable {
 	private FilamentWorkflow filamentWorkflow;
 
 	private WelcomeController welcomeController;
-	private ImagePreprocessorController imagePreprocessorController;
+	private ImagePreprocessorsController imagePreprocessorController;
 	private DetectFilamentController detectFilamentController;
 	private AboutController aboutController;
 	private DataExporterController dataExporterController;
@@ -262,7 +263,7 @@ public class MainController extends Controller implements Initializable {
 	}
 
 	public void loadImagePreprocessor() {
-		imagePreprocessorController = new ImagePreprocessorController(context, filamentWorkflow);
+		imagePreprocessorController = new ImagePreprocessorsController(context, filamentWorkflow);
 		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/ImagePreprocessorView.fxml",
 				imagePreprocessorController);
 

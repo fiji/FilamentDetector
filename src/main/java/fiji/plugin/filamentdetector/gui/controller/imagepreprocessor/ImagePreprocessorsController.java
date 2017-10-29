@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.gui.controller;
+package fiji.plugin.filamentdetector.gui.controller.imagepreprocessor;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -14,8 +14,9 @@ import org.scijava.ui.UIService;
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
+import fiji.plugin.filamentdetector.gui.controller.Controller;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
-import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
+import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -29,7 +30,7 @@ import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 import net.imagej.display.ImageDisplayService;
 
-public class ImagePreprocessorController extends Controller implements Initializable {
+public class ImagePreprocessorsController extends Controller implements Initializable {
 
 	@Parameter
 	private Context context;
@@ -91,10 +92,10 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	private Thread thread;
 	private Task<Integer> task;
 
-	private ImagePreprocessor imagePreprocessor;
+	private ImagePreprocessors imagePreprocessor;
 	private FilamentWorkflow filamentWorkflow;
 
-	public ImagePreprocessorController(Context context, FilamentWorkflow filamentWorkflow) {
+	public ImagePreprocessorsController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
 		this.filamentWorkflow = filamentWorkflow;
 		this.imagePreprocessor = filamentWorkflow.getImagePreprocessor();
@@ -103,21 +104,22 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.detectionProgressIndicator.setVisible(false);
-		convert8BitCheckbox.setSelected(imagePreprocessor.isConvertTo8Bit());
 
-		doGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoGaussianFilter());
-		gaussianFilterSizeField.setText(Double.toString(imagePreprocessor.getGaussianFilterSize()));
+		// convert8BitCheckbox.setSelected(imagePreprocessor.isConvertTo8Bit());
+		//
+		// doGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoGaussianFilter());
+		// gaussianFilterSizeField.setText(Double.toString(imagePreprocessor.getGaussianFilterSize()));
+		//
+		// doDifferenceOfGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoDifferenceOfGaussianFilter());
+		// sigma1DOGField.setText(Double.toString(imagePreprocessor.getSigma1()));
+		// sigma2DOGField.setText(Double.toString(imagePreprocessor.getSigma2()));
+		//
+		// doflatFieldCorrectionCheckbox.setSelected(imagePreprocessor.isDoPseudoFlatFieldCorrection());
+		// flatFieldCorrectionGaussianFilterSizeField
+		// .setText(Double.toString(imagePreprocessor.getFlatFieldCorrectionGaussianFilterSize()));
 
 		saveImageCheckbox.setSelected(imagePreprocessor.isSavePreprocessedImage());
 		showImageCheckbox.setSelected(imagePreprocessor.isShowPreprocessedImage());
-
-		doDifferenceOfGaussianFilterCheckbox.setSelected(imagePreprocessor.isDoDifferenceOfGaussianFilter());
-		sigma1DOGField.setText(Double.toString(imagePreprocessor.getSigma1()));
-		sigma2DOGField.setText(Double.toString(imagePreprocessor.getSigma2()));
-
-		doflatFieldCorrectionCheckbox.setSelected(imagePreprocessor.isDoPseudoFlatFieldCorrection());
-		flatFieldCorrectionGaussianFilterSizeField
-				.setText(Double.toString(imagePreprocessor.getFlatFieldCorrectionGaussianFilterSize()));
 
 		useForOverlayCheckbox.setSelected(imagePreprocessor.isUseForOverlay());
 
@@ -132,21 +134,21 @@ public class ImagePreprocessorController extends Controller implements Initializ
 	}
 
 	public void updateParameters() {
-		imagePreprocessor.setConvertTo8Bit(convert8BitCheckbox.isSelected());
-
-		imagePreprocessor.setDoGaussianFilter(doGaussianFilterCheckbox.isSelected());
-		imagePreprocessor.setGaussianFilterSize(Double.parseDouble(gaussianFilterSizeField.getText()));
+		// imagePreprocessor.setConvertTo8Bit(convert8BitCheckbox.isSelected());
+		//
+		// imagePreprocessor.setDoGaussianFilter(doGaussianFilterCheckbox.isSelected());
+		// imagePreprocessor.setGaussianFilterSize(Double.parseDouble(gaussianFilterSizeField.getText()));
+		//
+		// imagePreprocessor.setDoDifferenceOfGaussianFilter(doDifferenceOfGaussianFilterCheckbox.isSelected());
+		// imagePreprocessor.setSigma1(Double.parseDouble(sigma1DOGField.getText()));
+		// imagePreprocessor.setSigma2(Double.parseDouble(sigma2DOGField.getText()));
+		//
+		// imagePreprocessor.setDoPseudoFlatFieldCorrection(doflatFieldCorrectionCheckbox.isSelected());
+		// imagePreprocessor.setFlatFieldCorrectionGaussianFilterSize(
+		// Double.parseDouble(flatFieldCorrectionGaussianFilterSizeField.getText()));
 
 		imagePreprocessor.setSavePreprocessedImage(saveImageCheckbox.isSelected());
 		imagePreprocessor.setShowPreprocessedImage(showImageCheckbox.isSelected());
-
-		imagePreprocessor.setDoDifferenceOfGaussianFilter(doDifferenceOfGaussianFilterCheckbox.isSelected());
-		imagePreprocessor.setSigma1(Double.parseDouble(sigma1DOGField.getText()));
-		imagePreprocessor.setSigma2(Double.parseDouble(sigma2DOGField.getText()));
-
-		imagePreprocessor.setDoPseudoFlatFieldCorrection(doflatFieldCorrectionCheckbox.isSelected());
-		imagePreprocessor.setFlatFieldCorrectionGaussianFilterSize(
-				Double.parseDouble(flatFieldCorrectionGaussianFilterSizeField.getText()));
 
 		imagePreprocessor.setUseForOverlay(useForOverlayCheckbox.isSelected());
 	}
