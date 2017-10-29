@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 public class DOGFilterController extends ImagePreprocessorController {
 
 	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/DOGFilterView.fxml";
+	private static String tooltipImagePath = "/fiji/plugin/filamentdetector/gui/preprocessorexamples/dogFiltering.png";
 
 	@FXML
 	private TextField sigma1DOGField;
@@ -27,6 +28,7 @@ public class DOGFilterController extends ImagePreprocessorController {
 	public DOGFilterController(Context context, ImagePreprocessor imagePreprocessor) {
 		super(context, imagePreprocessor);
 		setFXMLPath(FXML_PATH);
+		setTooltipImagePath(tooltipImagePath);
 	}
 
 	@Override

@@ -13,7 +13,8 @@ import javafx.scene.control.TextField;
 
 public class GaussianFilterController extends ImagePreprocessorController {
 
-	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/GaussianFilterView.fxml";
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/GaussianFilterView.fxml";
+	private static String tooltipImagePath = "/fiji/plugin/filamentdetector/gui/preprocessorexamples/gaussianFilter.png";
 
 	@FXML
 	private CheckBox doGaussianFilterCheckbox;
@@ -24,6 +25,7 @@ public class GaussianFilterController extends ImagePreprocessorController {
 	public GaussianFilterController(Context context, ImagePreprocessor imagePreprocessor) {
 		super(context, imagePreprocessor);
 		setFXMLPath(FXML_PATH);
+		setTooltipImagePath(tooltipImagePath);
 	}
 
 	@Override

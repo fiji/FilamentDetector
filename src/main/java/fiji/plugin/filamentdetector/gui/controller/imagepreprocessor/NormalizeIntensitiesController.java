@@ -13,6 +13,7 @@ import javafx.scene.control.CheckBox;
 public class NormalizeIntensitiesController extends ImagePreprocessorController {
 
 	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/NormalizeIntensitiesView.fxml";
+	private static String tooltipImagePath = "/fiji/plugin/filamentdetector/gui/preprocessorexamples/normalizeIntensities.png";
 
 	@FXML
 	private CheckBox doProcessCheckbox;
@@ -20,6 +21,7 @@ public class NormalizeIntensitiesController extends ImagePreprocessorController 
 	public NormalizeIntensitiesController(Context context, ImagePreprocessor imagePreprocessor) {
 		super(context, imagePreprocessor);
 		setFXMLPath(FXML_PATH);
+		setTooltipImagePath(tooltipImagePath);
 	}
 
 	@Override

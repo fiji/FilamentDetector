@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 public class PseudoFlatFieldCorrectionController extends ImagePreprocessorController {
 
 	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/PseudoFlatFieldCorrectionView.fxml";
+	private static String tooltipImagePath = "/fiji/plugin/filamentdetector/gui/preprocessorexamples/pseudoFlatFieldCorrection.png";
 
 	@FXML
 	private CheckBox doflatFieldCorrectionCheckbox;
@@ -24,6 +25,7 @@ public class PseudoFlatFieldCorrectionController extends ImagePreprocessorContro
 	public PseudoFlatFieldCorrectionController(Context context, ImagePreprocessor imagePreprocessor) {
 		super(context, imagePreprocessor);
 		setFXMLPath(FXML_PATH);
+		setTooltipImagePath(tooltipImagePath);
 	}
 
 	@Override

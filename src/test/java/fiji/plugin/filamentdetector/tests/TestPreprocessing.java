@@ -44,25 +44,22 @@ public class TestPreprocessing {
 
 		// Filter parameter
 		double[] spacing = new double[] { 1, 1 };
-		int scale = 2;
-		double sigma1 = 6;
-		double sigma2 = 2;
+		int scale = 4;
 
 		// Convert to 32 bits
 		Img<FloatType> out = (Img<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
 
 		// Apply filter
 		Img<FloatType> out2 = (Img<FloatType>) ops.create().img(out);
-		// UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness",
-		// out2, out, spacing, scale);
-		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.dog", out2, out, sigma1, sigma2);
+		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness", out2, out, spacing, scale);
+		// sigma1, sigma2);
 		ops.slice(out2, out, op, fixedAxisIndices);
 
-		// Clip intensities
+		// Normalize intensity
 		Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
-		RealTypeConverter op3 = (RealTypeConverter) ops.op("convert.clip", dataset.getImgPlus().firstElement(),
-				out2.firstElement());
-		ops.convert().imageType(out3, out2, op3);
+		RealTypeConverter op2 = (RealTypeConverter) ops.op("convert.normalizeScale",
+				dataset.getImgPlus().firstElement(), out2.firstElement());
+		ops.convert().imageType(out3, out2, op2);
 
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {

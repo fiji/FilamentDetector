@@ -112,8 +112,7 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 				imagePreprocessorController = new GaussianFilterController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(PseudoFlatFieldCorrectionPreprocessor.class)) {
-				imagePreprocessorController = new PseudoFlatFieldCorrectionController(context,
-						imagePreprocessor);
+				imagePreprocessorController = new PseudoFlatFieldCorrectionController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(DOGFilterPreprocessor.class)) {
 				imagePreprocessorController = new DOGFilterController(context, imagePreprocessor);
@@ -150,6 +149,11 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 				}
 			}
 		});
+
+		// Enable tooltips
+		for (ImagePreprocessorController controller : this.imagePreprocessorControllers) {
+			controller.enableTooltip();
+		}
 
 	}
 
