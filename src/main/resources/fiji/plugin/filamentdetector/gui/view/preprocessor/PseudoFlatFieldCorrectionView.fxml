@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -11,37 +12,56 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <AnchorPane maxWidth="30.0" minWidth="20.0" prefWidth="30.0">
                <children>
-                  <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction" />
-                  <TextField fx:id="flatFieldCorrectionGaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
-                  <Label text="pixel(s)" />
+                  <VBox alignment="CENTER" spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Separator prefWidth="200.0" />
+                        <Separator />
+                        <Separator />
+                        <Separator />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="2.0" right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
                </children>
-               <padding>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <opaqueInsets>
-                  <Insets bottom="2.0" />
-               </opaqueInsets>
-            </HBox>
-            <VBox spacing="5.0">
+            </AnchorPane>
+            <VBox>
                <children>
-                  <Label prefWidth="400.0" text="Pseudo flat field correction estimate the background by applying a large filter size. Then it uses this &quot;pseudo background&quot; image to subtract it from the original image." wrapText="true">
-                     <font>
-                        <Font name="System Italic" size="10.0" />
-                     </font>
-                  </Label>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction" />
+                        <TextField fx:id="flatFieldCorrectionGaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
+                        <Label text="pixel(s)" />
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets bottom="2.0" />
+                     </opaqueInsets>
+                  </HBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label prefWidth="400.0" text="Pseudo flat field correction estimate the background by applying a large filter size. Then it uses this &quot;pseudo background&quot; image to subtract it from the original image." wrapText="true">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets top="2.0" />
+                     </opaqueInsets>
+                  </VBox>
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </padding>
-               <opaqueInsets>
-                  <Insets top="2.0" />
-               </opaqueInsets>
             </VBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>

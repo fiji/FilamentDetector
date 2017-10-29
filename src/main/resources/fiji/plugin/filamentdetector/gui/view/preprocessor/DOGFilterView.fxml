@@ -12,57 +12,76 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <AnchorPane maxWidth="30.0" minWidth="20.0" prefWidth="30.0">
                <children>
-                  <CheckBox fx:id="doDifferenceOfGaussianFilterCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Difference Of Gaussian" />
-                  <Separator orientation="VERTICAL" />
-                  <VBox>
+                  <VBox alignment="CENTER" spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox spacing="5.0">
-                           <children>
-                              <Label text="Sigma 1 : " />
-                              <TextField fx:id="sigma1DOGField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
-                              <Label text="pixel(s)" />
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox spacing="5.0">
-                           <children>
-                              <Label text="Sigma 2 : " />
-                              <TextField fx:id="sigma2DOGField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
-                              <Label text="pixel(s)" />
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <Separator />
+                        <Separator />
+                        <Separator />
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="2.0" right="5.0" top="10.0" />
+                     </padding>
                   </VBox>
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <VBox spacing="5.0">
+            </AnchorPane>
+            <VBox>
                <children>
-                  <Label prefWidth="400.0" text="Difference of Gaussians (DoG) is a feature enhancement algorithm that involves the subtraction of one blurred version of an original image from another, less blurred version of the original.  This method  discard high and low frequencies information, it's a band-pass filter." wrapText="true">
-                     <font>
-                        <Font name="System Italic" size="10.0" />
-                     </font>
-                  </Label>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="doDifferenceOfGaussianFilterCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Difference Of Gaussian" />
+                        <Separator orientation="VERTICAL" />
+                        <VBox>
+                           <children>
+                              <HBox spacing="5.0">
+                                 <children>
+                                    <Label text="Sigma 1 : " />
+                                    <TextField fx:id="sigma1DOGField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
+                                    <Label text="pixel(s)" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox spacing="5.0">
+                                 <children>
+                                    <Label text="Sigma 2 : " />
+                                    <TextField fx:id="sigma2DOGField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
+                                    <Label text="pixel(s)" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label prefWidth="400.0" text="Difference of Gaussians (DoG) is a feature enhancement algorithm that involves the subtraction of one blurred version of an original image from another, less blurred version of the original.  This method  discard high and low frequencies information, it's a band-pass filter." wrapText="true">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets top="2.0" />
+                     </opaqueInsets>
+                  </VBox>
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </padding>
-               <opaqueInsets>
-                  <Insets top="2.0" />
-               </opaqueInsets>
             </VBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>
