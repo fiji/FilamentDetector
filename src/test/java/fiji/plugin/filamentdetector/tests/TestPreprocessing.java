@@ -7,7 +7,11 @@ import fiji.plugin.filamentdetector.preprocessing.GaussianFilterPreprocessor;
 import net.imagej.Dataset;
 import net.imagej.DatasetService;
 import net.imagej.ImageJ;
+import net.imagej.axis.Axes;
+import net.imagej.axis.CalibratedAxis;
 import net.imagej.ops.OpService;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
 public class TestPreprocessing {
@@ -24,14 +28,35 @@ public class TestPreprocessing {
 		Dataset dataset = ij.dataset().open(fpath);
 		ij.ui().show(dataset);
 
-		GaussianFilterPreprocessor proc = new GaussianFilterPreprocessor(context);
-		proc.setDoPreprocess(true);
-		proc.setGaussianFilterSize(20);
+//		// Gaussian filter
+//		GaussianFilterPreprocessor proc = new GaussianFilterPreprocessor(context);
+//		proc.setDoPreprocess(true);
+//		proc.setGaussianFilterSize(20);
+//
+//		proc.setInput(dataset);
+//		proc.preprocess();
+//		Dataset output = proc.getOutput();
+//
+//		ij.ui().show(output);
+		
+		Dataset input = dataset.duplicate();
 
-		proc.setInput(dataset);
-		proc.preprocess();
-		Dataset output = proc.getOutput();
+		int[] fixedAxisIndices = new int[] { input.dimensionIndex(Axes.X), input.dimensionIndex(Axes.Y) };
 
+		RandomAccessibleInterval<T> out = (RandomAccessibleInterval<T>) ops.create().img(input.getImgPlus());
+
+		double[] spacing = new double[] { 1, 3 };
+		int scale = 1;
+		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness", out, input.getImgPlus(), spacing, scale);
+		ops.slice(out, (RandomAccessibleInterval<T>) input.getImgPlus(), op, fixedAxisIndices);
+
+		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
+		for (int i = 0; i != axes.length; i++) {
+			axes[i] = dataset.axis(i);
+		}
+		Dataset output = ds.create(out);
+		output.setAxes(axes);
+		
 		ij.ui().show(output);
 
 	}
