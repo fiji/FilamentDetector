@@ -4,7 +4,6 @@ import org.scijava.Context;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
-import net.imagej.axis.CalibratedAxis;
 import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.img.Img;

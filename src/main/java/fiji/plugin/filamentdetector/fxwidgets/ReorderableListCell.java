@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 public class ReorderableListCell extends ListCell<Pane> {
 
 	public ReorderableListCell() {
-		super();	
+		super();
 	}
 
 	@Override

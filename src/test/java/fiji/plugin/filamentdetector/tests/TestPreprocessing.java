@@ -3,16 +3,17 @@ package fiji.plugin.filamentdetector.tests;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 
-import fiji.plugin.filamentdetector.preprocessing.GaussianFilterPreprocessor;
 import net.imagej.Dataset;
 import net.imagej.DatasetService;
 import net.imagej.ImageJ;
 import net.imagej.axis.Axes;
 import net.imagej.axis.CalibratedAxis;
 import net.imagej.ops.OpService;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.FloatType;
 
 public class TestPreprocessing {
 
@@ -28,35 +29,48 @@ public class TestPreprocessing {
 		Dataset dataset = ij.dataset().open(fpath);
 		ij.ui().show(dataset);
 
-//		// Gaussian filter
-//		GaussianFilterPreprocessor proc = new GaussianFilterPreprocessor(context);
-//		proc.setDoPreprocess(true);
-//		proc.setGaussianFilterSize(20);
-//
-//		proc.setInput(dataset);
-//		proc.preprocess();
-//		Dataset output = proc.getOutput();
-//
-//		ij.ui().show(output);
-		
-		Dataset input = dataset.duplicate();
+		// // Gaussian filter
+		// GaussianFilterPreprocessor proc = new GaussianFilterPreprocessor(context);
+		// proc.setDoPreprocess(true);
+		// proc.setGaussianFilterSize(20);
+		//
+		// proc.setInput(dataset);
+		// proc.preprocess();
+		// Dataset output = proc.getOutput();
+		//
+		// ij.ui().show(output);
 
-		int[] fixedAxisIndices = new int[] { input.dimensionIndex(Axes.X), input.dimensionIndex(Axes.Y) };
+		int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
 
-		RandomAccessibleInterval<T> out = (RandomAccessibleInterval<T>) ops.create().img(input.getImgPlus());
+		// Filter parameter
+		double[] spacing = new double[] { 1, 1 };
+		int scale = 2;
+		double sigma1 = 6;
+		double sigma2 = 2;
 
-		double[] spacing = new double[] { 1, 3 };
-		int scale = 1;
-		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness", out, input.getImgPlus(), spacing, scale);
-		ops.slice(out, (RandomAccessibleInterval<T>) input.getImgPlus(), op, fixedAxisIndices);
+		// Convert to 32 bits
+		Img<FloatType> out = (Img<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
+
+		// Apply filter
+		Img<FloatType> out2 = (Img<FloatType>) ops.create().img(out);
+		// UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness",
+		// out2, out, spacing, scale);
+		UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.dog", out2, out, sigma1, sigma2);
+		ops.slice(out2, out, op, fixedAxisIndices);
+
+		// Clip intensities
+		Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
+		RealTypeConverter op3 = (RealTypeConverter) ops.op("convert.clip", dataset.getImgPlus().firstElement(),
+				out2.firstElement());
+		ops.convert().imageType(out3, out2, op3);
 
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {
 			axes[i] = dataset.axis(i);
 		}
-		Dataset output = ds.create(out);
+		Dataset output = ds.create(out3);
 		output.setAxes(axes);
-		
+
 		ij.ui().show(output);
 
 	}

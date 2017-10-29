@@ -19,7 +19,7 @@ public abstract class AbstractImagePreprocessor implements ImagePreprocessor {
 
 	@Parameter
 	protected Context context;
-	
+
 	@Parameter
 	protected OpService ops;
 
@@ -54,7 +54,7 @@ public abstract class AbstractImagePreprocessor implements ImagePreprocessor {
 	public void setDoPreprocess(boolean doPreprocess) {
 		this.doPreprocess = doPreprocess;
 	}
-	
+
 	public <T extends RealType<T>> Dataset matchRAIToDataset(RandomAccessibleInterval<T> rai, Dataset dataset) {
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {
@@ -64,7 +64,7 @@ public abstract class AbstractImagePreprocessor implements ImagePreprocessor {
 		output.setAxes(axes);
 		return output;
 	}
-	
+
 	public <T extends RealType<T>> Dataset matchRAIToDataset(Img<T> rai, Dataset dataset) {
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {

@@ -3,7 +3,6 @@ package fiji.plugin.filamentdetector.preprocessing;
 import org.scijava.Context;
 
 import net.imagej.Dataset;
-import net.imagej.axis.CalibratedAxis;
 import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
@@ -55,9 +54,9 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 
 			// Normalize intensity
 			Img<T> out4 = (Img<T>) ops.create().img(out3);
-			RealTypeConverter scaleOp = (RealTypeConverter) ops.op("convert.normalizeScale", out4.firstElement(),
+			RealTypeConverter op3 = (RealTypeConverter) ops.op("convert.normalizeScale", out4.firstElement(),
 					out3.firstElement());
-			ops.convert().imageType(out4, out3, scaleOp);
+			ops.convert().imageType(out4, out3, op3);
 
 			this.output = matchRAIToDataset(out4, dataset);
 		} else {

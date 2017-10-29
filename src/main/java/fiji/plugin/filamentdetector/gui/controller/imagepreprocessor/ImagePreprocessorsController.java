@@ -24,6 +24,7 @@ import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.GaussianFilterPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
+import fiji.plugin.filamentdetector.preprocessing.NormalizeIntensitiesPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.PseudoFlatFieldCorrectionPreprocessor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -117,6 +118,9 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 			} else if (imagePreprocessor.getClass().equals(DOGFilterPreprocessor.class)) {
 				imagePreprocessorController = new DOGFilterPreprocessorController(context, imagePreprocessor);
 
+			} else if (imagePreprocessor.getClass().equals(NormalizeIntensitiesPreprocessor.class)) {
+				imagePreprocessorController = new NormalizeIntensitiesController(context, imagePreprocessor);
+
 			} else {
 				log.error(imagePreprocessor + " is can't be loaded.");
 			}
@@ -171,9 +175,9 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 			protected Integer call() throws Exception {
 				eventService.publish(new PreventPanelSwitchEvent(true));
 
-				String statusMessage = "Preprocessing steps are : \n"
-						+ imagePreprocessorControllers.stream().filter(c -> c.getImagePreprocessor().isDoPreprocess())
-								.map(c -> c.getImagePreprocessor().getClass().getName()).collect(Collectors.joining("\n"));
+				String statusMessage = "Preprocessing steps are : \n" + imagePreprocessorControllers.stream()
+						.filter(c -> c.getImagePreprocessor().isDoPreprocess())
+						.map(c -> c.getImagePreprocessor().getClass().getName()).collect(Collectors.joining("\n"));
 				status.showStatus(statusMessage);
 
 				imagePreprocessors.setImagePreprocessors(imagePreprocessorControllers.stream()

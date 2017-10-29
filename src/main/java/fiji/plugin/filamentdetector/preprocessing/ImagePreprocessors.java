@@ -69,6 +69,7 @@ public class ImagePreprocessors {
 		this.imagePreprocessors.add(new GaussianFilterPreprocessor(context));
 		this.imagePreprocessors.add(new PseudoFlatFieldCorrectionPreprocessor(context));
 		this.imagePreprocessors.add(new DOGFilterPreprocessor(context));
+		this.imagePreprocessors.add(new NormalizeIntensitiesPreprocessor(context));
 	}
 
 	public void preprocess() {
@@ -76,11 +77,11 @@ public class ImagePreprocessors {
 		Dataset originalDataset = (Dataset) this.imageDisplay.getActiveView().getData();
 		Dataset temp = originalDataset;
 
-		for (ImagePreprocessor processor : imagePreprocessors) {		
+		for (ImagePreprocessor processor : imagePreprocessors) {
 			processor.setInput(temp);
 			processor.preprocess();
 			temp = processor.getOutput();
-			
+
 			if (processor.isDoPreprocess()) {
 				hasBeenPreprocessed = true;
 			}
