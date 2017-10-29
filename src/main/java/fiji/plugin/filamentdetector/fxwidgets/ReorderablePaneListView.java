@@ -3,6 +3,7 @@ package fiji.plugin.filamentdetector.fxwidgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import fiji.plugin.filamentdetector.gui.controller.Controller;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,8 +22,14 @@ public class ReorderablePaneListView extends ListView<Pane> {
 
 	private Pane selectedPane = null;
 
-	public ReorderablePaneListView() {
+	public <T extends Controller> ReorderablePaneListView() {
+		new ReorderablePaneListView(null);
+	}
+
+	public <T extends Controller> ReorderablePaneListView(List<T> controllers) {
 		super();
+
+		this.setStyle(".table-row-cell:empty {\n" + "    -fx-background-color: transparent;\n" + "}");
 
 		this.setCellFactory(param -> {
 
@@ -83,6 +90,15 @@ public class ReorderablePaneListView extends ListView<Pane> {
 					items.set(thisIdx, selectedPane);
 					List<Pane> itemscopy = new ArrayList<>(cell.getListView().getItems());
 					cell.getListView().getItems().setAll(itemscopy);
+
+					// Switch controllers
+					if (controllers != null) {
+						Controller controller1 = controllers.get(draggedIdx);
+						Controller controller2 = controllers.get(thisIdx);
+						controllers.set(thisIdx, (T) controller1);
+						controllers.set(draggedIdx, (T) controller2);
+					}
+
 					success = true;
 				}
 
@@ -94,6 +110,12 @@ public class ReorderablePaneListView extends ListView<Pane> {
 			cell.setOnDragDone(DragEvent::consume);
 			return cell;
 		});
+
+		if (controllers != null) {
+			for (Controller controller : controllers) {
+				this.getItems().add(controller.loadPane());
+			}
+		}
 
 	}
 

@@ -11,18 +11,16 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 
-public class DOGFilterProcessor extends AbstractImagePreprocessor {
+public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
 
-	private static boolean DEFAULT_DO_PREPROCESS = true;
-	private static double DEFAULT_GAUSSIAN_FITLER_SIZE = 1;
+	private static boolean DEFAULT_DO_PREPROCESS = false;
 	private static double DEFAULT_DOG_SIGMA1 = 6;
 	private static double DEFAULT_DOG_SIGMA2 = 2;
 
-	private double gaussianFilterSize = DEFAULT_GAUSSIAN_FITLER_SIZE;
 	private double sigma1 = DEFAULT_DOG_SIGMA1;
 	private double sigma2 = DEFAULT_DOG_SIGMA2;
 
-	public DOGFilterProcessor(Context context) {
+	public DOGFilterPreprocessor(Context context) {
 		super(context);
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
@@ -52,14 +50,6 @@ public class DOGFilterProcessor extends AbstractImagePreprocessor {
 		} else {
 			this.output = getInput();
 		}
-	}
-
-	public double getGaussianFilterSize() {
-		return gaussianFilterSize;
-	}
-
-	public void setGaussianFilterSize(double gaussianFilterSize) {
-		this.gaussianFilterSize = gaussianFilterSize;
 	}
 
 	public double getSigma1() {

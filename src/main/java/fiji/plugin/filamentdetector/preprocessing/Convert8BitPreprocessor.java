@@ -10,11 +10,11 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 
-public class Convert8BitProcessor extends AbstractImagePreprocessor {
+public class Convert8BitPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = true;
 
-	public Convert8BitProcessor(Context context) {
+	public Convert8BitPreprocessor(Context context) {
 		super(context);
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}

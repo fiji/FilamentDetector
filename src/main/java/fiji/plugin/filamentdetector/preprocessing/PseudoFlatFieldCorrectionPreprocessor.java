@@ -10,14 +10,14 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 
-public class PseudoFlatFieldCorrectionProcessor extends AbstractImagePreprocessor {
+public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreprocessor {
 
-	private static boolean DEFAULT_DO_PREPROCESS = true;
+	private static boolean DEFAULT_DO_PREPROCESS = false;
 	private static double DEFAULT_FLAT_FIELD_CORRECTION_SIZE = 50;
 
 	private double flatFieldCorrectionGaussianFilterSize = DEFAULT_FLAT_FIELD_CORRECTION_SIZE;
 
-	public PseudoFlatFieldCorrectionProcessor(Context context) {
+	public PseudoFlatFieldCorrectionPreprocessor(Context context) {
 		super(context);
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
@@ -28,7 +28,8 @@ public class PseudoFlatFieldCorrectionProcessor extends AbstractImagePreprocesso
 			Dataset dataset = getInput().duplicate();
 
 			// Get Gaussian filtered image and use it as a background
-			GaussianFilterProcessor processor = new GaussianFilterProcessor(context);
+			GaussianFilterPreprocessor processor = new GaussianFilterPreprocessor(context);
+			processor.setDoPreprocess(true);
 			processor.setInput(dataset);
 			processor.setGaussianFilterSize(flatFieldCorrectionGaussianFilterSize);
 			processor.preprocess();

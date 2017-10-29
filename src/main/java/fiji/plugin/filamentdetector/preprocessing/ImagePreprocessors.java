@@ -65,10 +65,10 @@ public class ImagePreprocessors {
 
 		this.imagePreprocessors = new ArrayList<>();
 
-		this.imagePreprocessors.add(new Convert8BitProcessor(context));
-		this.imagePreprocessors.add(new GaussianFilterProcessor(context));
-		this.imagePreprocessors.add(new PseudoFlatFieldCorrectionProcessor(context));
-		this.imagePreprocessors.add(new DOGFilterProcessor(context));
+		this.imagePreprocessors.add(new Convert8BitPreprocessor(context));
+		this.imagePreprocessors.add(new GaussianFilterPreprocessor(context));
+		this.imagePreprocessors.add(new PseudoFlatFieldCorrectionPreprocessor(context));
+		this.imagePreprocessors.add(new DOGFilterPreprocessor(context));
 	}
 
 	public void preprocess() {
@@ -76,10 +76,11 @@ public class ImagePreprocessors {
 		Dataset originalDataset = (Dataset) this.imageDisplay.getActiveView().getData();
 		Dataset temp = originalDataset;
 
-		for (ImagePreprocessor processor : imagePreprocessors) {
+		for (ImagePreprocessor processor : imagePreprocessors) {		
 			processor.setInput(temp);
 			processor.preprocess();
 			temp = processor.getOutput();
+			
 			if (processor.isDoPreprocess()) {
 				hasBeenPreprocessed = true;
 			}
@@ -121,6 +122,10 @@ public class ImagePreprocessors {
 
 	public List<ImagePreprocessor> getImagePreprocessors() {
 		return imagePreprocessors;
+	}
+
+	public void setImagePreprocessors(List<ImagePreprocessor> imagePreprocessors) {
+		this.imagePreprocessors = imagePreprocessors;
 	}
 
 	public Dataset getPreprocessedImage() {

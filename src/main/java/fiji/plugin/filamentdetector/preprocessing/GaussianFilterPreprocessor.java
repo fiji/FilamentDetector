@@ -9,14 +9,14 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
-public class GaussianFilterProcessor extends AbstractImagePreprocessor {
+public class GaussianFilterPreprocessor extends AbstractImagePreprocessor {
 
-	private static boolean DEFAULT_DO_PREPROCESS = true;
+	private static boolean DEFAULT_DO_PREPROCESS = false;
 	private static double DEFAULT_GAUSSIAN_FITLER_SIZE = 1;
 
 	private double gaussianFilterSize = DEFAULT_GAUSSIAN_FITLER_SIZE;
 
-	public GaussianFilterProcessor(Context context) {
+	public GaussianFilterPreprocessor(Context context) {
 		super(context);
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
