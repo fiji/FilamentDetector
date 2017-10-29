@@ -5,8 +5,6 @@ import java.util.List;
 
 import fiji.plugin.filamentdetector.fxwidgets.ReorderablePaneListView;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,12 +23,12 @@ public class TestJFXReorderList extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		
-		List <Pane> panes = new ArrayList<>();
+
+		List<Pane> panes = new ArrayList<>();
 		panes.add(getPane("salut"));
 		panes.add(getPane("pane 2"));
 		panes.add(getPane("again another"));
-						
+
 		ReorderablePaneListView panesList = new ReorderablePaneListView();
 		panesList.getItems().setAll(panes);
 
@@ -41,13 +39,13 @@ public class TestJFXReorderList extends Application {
 	}
 
 	public static Pane getPane(String title) {
-		
+
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(25, 25, 25, 25));
-		
+
 		Text scenetitle = new Text(title);
 		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 		grid.add(scenetitle, 0, 0, 2, 1);
@@ -63,16 +61,14 @@ public class TestJFXReorderList extends Application {
 
 		PasswordField pwBox = new PasswordField();
 		grid.add(pwBox, 1, 2);
-		
+
 		grid.setId(title);
-		
+
 		return grid;
 	}
-	
+
 	public static void main(String[] args) {
 		launch(TestJFXReorderList.class);
 	}
-
-
 
 }

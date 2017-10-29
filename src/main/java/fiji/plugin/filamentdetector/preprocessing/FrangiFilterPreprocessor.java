@@ -10,16 +10,16 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 
-public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
+public class FrangiFilterPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = false;
-	private static double DEFAULT_DOG_SIGMA1 = 6;
-	private static double DEFAULT_DOG_SIGMA2 = 2;
+	private static double DEFAULT_SPACING = 1;
+	private static int DEFAULT_SCALE = 2;
 
-	private double sigma1 = DEFAULT_DOG_SIGMA1;
-	private double sigma2 = DEFAULT_DOG_SIGMA2;
+	private double spacing = DEFAULT_SPACING;
+	private int scale = DEFAULT_SCALE;
 
-	public DOGFilterPreprocessor(Context context) {
+	public FrangiFilterPreprocessor(Context context) {
 		super(context);
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
@@ -31,18 +31,22 @@ public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
 
 			int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
 
+			// Filter parameter
+			double[] spacingArray = new double[] { spacing, spacing };
+
 			// Convert to 32 bits
 			Img<FloatType> out = (Img<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
 
 			// Apply filter
 			Img<FloatType> out2 = (Img<FloatType>) ops.create().img(out);
-			UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.dog", out, sigma1, sigma2);
+			UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness", out2, out, spacingArray, scale);
+			// sigma1, sigma2);
 			ops.slice(out2, out, op, fixedAxisIndices);
 
-			// Clip intensities
+			// Normalize intensity
 			Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
-			RealTypeConverter op2 = (RealTypeConverter) ops.op("convert.clip", dataset.getImgPlus().firstElement(),
-					out2.firstElement());
+			RealTypeConverter op2 = (RealTypeConverter) ops.op("convert.normalizeScale",
+					dataset.getImgPlus().firstElement(), out2.firstElement());
 			ops.convert().imageType(out3, out2, op2);
 
 			this.output = matchRAIToDataset(out3, dataset);
@@ -51,20 +55,20 @@ public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
 		}
 	}
 
-	public double getSigma1() {
-		return sigma1;
+	public double getSpacing() {
+		return spacing;
 	}
 
-	public void setSigma1(double sigma1) {
-		this.sigma1 = sigma1;
+	public void setSpacing(double spacing) {
+		this.spacing = spacing;
 	}
 
-	public double getSigma2() {
-		return sigma2;
+	public int getScale() {
+		return scale;
 	}
 
-	public void setSigma2(double sigma2) {
-		this.sigma2 = sigma2;
+	public void setScale(int scale) {
+		this.scale = scale;
 	}
 
 }

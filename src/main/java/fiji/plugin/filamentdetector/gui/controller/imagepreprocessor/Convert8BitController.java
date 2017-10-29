@@ -10,14 +10,14 @@ import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 
-public class Convert8BitProcessorController extends ImagePreprocessorController {
+public class Convert8BitController extends ImagePreprocessorController {
 
-	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/Convert8BitPreprocessorView.fxml";
+	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/Convert8BitView.fxml";
 
 	@FXML
 	private CheckBox convert8BitCheckbox;
 
-	public Convert8BitProcessorController(Context context, ImagePreprocessor imagePreprocessor) {
+	public Convert8BitController(Context context, ImagePreprocessor imagePreprocessor) {
 		super(context, imagePreprocessor);
 		setFXMLPath(FXML_PATH);
 	}

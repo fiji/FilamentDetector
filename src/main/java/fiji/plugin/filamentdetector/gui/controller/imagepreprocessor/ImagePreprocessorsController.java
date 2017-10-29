@@ -21,9 +21,11 @@ import fiji.plugin.filamentdetector.gui.controller.Controller;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.preprocessing.Convert8BitPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
+import fiji.plugin.filamentdetector.preprocessing.FrangiFilterPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.GaussianFilterPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
+import fiji.plugin.filamentdetector.preprocessing.NormalizeIntensitiesPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.PseudoFlatFieldCorrectionPreprocessor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -105,18 +107,23 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 		for (ImagePreprocessor imagePreprocessor : this.imagePreprocessors.getImagePreprocessors()) {
 
 			if (imagePreprocessor.getClass().equals(Convert8BitPreprocessor.class)) {
-				imagePreprocessorController = new Convert8BitProcessorController(context, imagePreprocessor);
+				imagePreprocessorController = new Convert8BitController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(GaussianFilterPreprocessor.class)) {
-				imagePreprocessorController = new GaussianFilterPreprocessorController(context, imagePreprocessor);
+				imagePreprocessorController = new GaussianFilterController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(PseudoFlatFieldCorrectionPreprocessor.class)) {
-				imagePreprocessorController = new PseudoFlatFieldCorrectionPreprocessorController(context,
-						imagePreprocessor);
+				imagePreprocessorController = new PseudoFlatFieldCorrectionController(context, imagePreprocessor);
 
 			} else if (imagePreprocessor.getClass().equals(DOGFilterPreprocessor.class)) {
-				imagePreprocessorController = new DOGFilterPreprocessorController(context, imagePreprocessor);
+				imagePreprocessorController = new DOGFilterController(context, imagePreprocessor);
 
+			} else if (imagePreprocessor.getClass().equals(NormalizeIntensitiesPreprocessor.class)) {
+				imagePreprocessorController = new NormalizeIntensitiesController(context, imagePreprocessor);
+
+			} else if (imagePreprocessor.getClass().equals(FrangiFilterPreprocessor.class)) {
+				imagePreprocessorController = new FrangiFilterController(context, imagePreprocessor);
+				
 			} else {
 				log.error(imagePreprocessor + " is can't be loaded.");
 			}
@@ -147,6 +154,11 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 			}
 		});
 
+		// Enable tooltips
+		for (ImagePreprocessorController controller : this.imagePreprocessorControllers) {
+			controller.enableTooltip();
+		}
+
 	}
 
 	public void updateParameters() {
@@ -171,9 +183,9 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 			protected Integer call() throws Exception {
 				eventService.publish(new PreventPanelSwitchEvent(true));
 
-				String statusMessage = "Preprocessing steps are : \n"
-						+ imagePreprocessorControllers.stream().filter(c -> c.getImagePreprocessor().isDoPreprocess())
-								.map(c -> c.getImagePreprocessor().getClass().getName()).collect(Collectors.joining("\n"));
+				String statusMessage = "Preprocessing steps are : \n" + imagePreprocessorControllers.stream()
+						.filter(c -> c.getImagePreprocessor().isDoPreprocess())
+						.map(c -> c.getImagePreprocessor().getClass().getName()).collect(Collectors.joining("\n"));
 				status.showStatus(statusMessage);
 
 				imagePreprocessors.setImagePreprocessors(imagePreprocessorControllers.stream()

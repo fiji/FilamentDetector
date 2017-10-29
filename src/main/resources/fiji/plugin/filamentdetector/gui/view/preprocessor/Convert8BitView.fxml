@@ -4,7 +4,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -29,24 +28,19 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <VBox>
+            <VBox disable="true">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction" />
-                        <TextField fx:id="flatFieldCorrectionGaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
-                        <Label text="pixel(s)" />
+                        <CheckBox fx:id="convert8BitCheckbox" mnemonicParsing="false" onAction="#updateParameters" selected="true" text="Convert to 8 bit (mandatory at the moment)." />
                      </children>
                      <padding>
-                        <Insets left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
-                     <opaqueInsets>
-                        <Insets bottom="2.0" />
-                     </opaqueInsets>
                   </HBox>
                   <VBox spacing="5.0">
                      <children>
-                        <Label prefWidth="400.0" text="Pseudo flat field correction estimate the background by applying a large filter size. Then it uses this &quot;pseudo background&quot; image to subtract it from the original image." wrapText="true">
+                        <Label prefWidth="400.0" text="The detection algorithm only works on 8-bit images." wrapText="true">
                            <font>
                               <Font name="System Italic" size="10.0" />
                            </font>

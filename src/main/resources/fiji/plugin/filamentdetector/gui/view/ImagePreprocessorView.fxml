@@ -15,58 +15,55 @@
    <children>
       <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT">
+            <VBox spacing="5.0">
                <children>
-                  <VBox spacing="5.0">
+                  <Label prefWidth="400.0" text="Note that it's possible to re-order the preprocessing operations by drag and drop." wrapText="true">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Separator />
+            <AnchorPane fx:id="preprocessorContainer" VBox.vgrow="ALWAYS" />
+            <Separator />
+            <VBox VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label prefWidth="400.0" text="Note that it's possible to re-order the preprocessing operations by drag and drop." wrapText="true">
-                           <font>
-                              <Font name="System Italic" size="11.0" />
-                           </font>
-                        </Label>
+                        <CheckBox fx:id="showImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show Preprocessed Image." />
                      </children>
-                  </VBox>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="saveImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save Preprocessed Image next to the Original." />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="useForOverlayCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Use Preprocessed Image for overlay." />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="BOTTOM_RIGHT">
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <children>
+                        <ProgressIndicator fx:id="detectionProgressIndicator" maxHeight="26.0" />
+                        <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image" />
+                     </children>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <Separator prefWidth="200.0" />
-            <AnchorPane fx:id="preprocessorContainer" />
-            <Separator prefWidth="200.0" />
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <children>
-                  <CheckBox fx:id="showImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show Preprocessed Image." />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <children>
-                  <CheckBox fx:id="saveImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save Preprocessed Image next to the Original." />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <children>
-                  <CheckBox fx:id="useForOverlayCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Use Preprocessed Image for overlay." />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
-               <padding>
-                  <Insets left="5.0" right="5.0" top="5.0" />
-               </padding>
-               <children>
-                  <ProgressIndicator fx:id="detectionProgressIndicator" maxHeight="26.0" />
-                  <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image" />
-               </children>
-            </HBox>
+            </VBox>
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
