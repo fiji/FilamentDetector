@@ -85,11 +85,12 @@ public class FilamentWorkflow {
 		} else {
 			data = getDataset();
 		}
-		filamentsDetector = new FilamentsDetector(context, imageDisplay, data, detectionParameters);
+		this.filamentsDetector = new FilamentsDetector(context, imageDisplay, data, detectionParameters);
 	}
 
-	public void initTracking() {
-		filamentsTracker = new FilamentsTracker(context, getFilaments());
+	public void initTracking(FilamentsTracker filamentsTracker) {
+		this.filamentsTracker = filamentsTracker;
+		this.filamentsTracker.setFilaments(getFilaments());
 	}
 
 	public void detectCurrentFrame() {

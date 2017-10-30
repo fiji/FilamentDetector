@@ -18,6 +18,7 @@ import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.TrackedFilamentsTableView;
+import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -117,7 +118,8 @@ public class TrackingFilamentController extends AbstractController implements In
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.trackingProgressIndicator.setVisible(false);
 
-		this.filamentWorkflow.initTracking();
+		FilamentsTracker filamentTracker = new FilamentsTracker(context);
+		this.filamentWorkflow.initTracking(filamentTracker);
 
 		// Fill fields with default values
 		costThresholdSync = new SliderLabelSynchronizer(costThresholdSlider, costThresholdField);
@@ -128,8 +130,7 @@ public class TrackingFilamentController extends AbstractController implements In
 		maxFrameGapSync = new SliderLabelSynchronizer(maxFrameGapSlider, maxFrameGapField);
 		maxFrameGapSync.setValue(this.filamentWorkflow.getFilamentsTracker().getMaxFrameGap());
 
-		interpolateFilamentsCheckbox
-				.setSelected(this.filamentWorkflow.getFilamentsTracker().isInterpolateFilaments());
+		interpolateFilamentsCheckbox.setSelected(this.filamentWorkflow.getFilamentsTracker().isInterpolateFilaments());
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
@@ -160,7 +161,8 @@ public class TrackingFilamentController extends AbstractController implements In
 			this.getPane().setDisable(true);
 			nFilamentsField.setText("");
 		} else {
-			this.filamentWorkflow.initTracking();
+			FilamentsTracker filamentTracker = new FilamentsTracker(context);
+			this.filamentWorkflow.initTracking(filamentTracker);
 			this.getPane().setDisable(false);
 			nFilamentsField.setText(Integer.toString(filamentWorkflow.getFilaments().size()));
 		}

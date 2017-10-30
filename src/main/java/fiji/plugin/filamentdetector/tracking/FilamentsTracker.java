@@ -52,9 +52,8 @@ public class FilamentsTracker {
 	private double maxFrameGap = 15;
 	private boolean interpolateFilaments = true;
 
-	public FilamentsTracker(Context context, Filaments filaments) {
+	public FilamentsTracker(Context context) {
 		context.inject(this);
-		this.setFilaments(filaments);
 	}
 
 	public Filaments getFilaments() {

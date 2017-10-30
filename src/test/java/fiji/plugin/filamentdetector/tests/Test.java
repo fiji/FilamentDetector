@@ -84,7 +84,8 @@ public class Test {
 		// ROIFactory.displayInROIManager(rois);
 
 		// Track filaments over time
-		FilamentsTracker tracker = new FilamentsTracker(ij.context(), filteredFilaments);
+		FilamentsTracker tracker = new FilamentsTracker(ij.context());
+		tracker.setFilaments(filteredFilaments);
 		tracker.track();
 		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();
 
