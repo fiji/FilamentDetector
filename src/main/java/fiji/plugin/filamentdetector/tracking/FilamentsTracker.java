@@ -35,6 +35,8 @@ import fiji.plugin.trackmate.tracking.sparselap.linker.JaqamanLinker;
 
 public class FilamentsTracker {
 
+	private static String NAME = "BoundingBox LAP Tracker";
+
 	@Parameter
 	private LogService log;
 
@@ -44,16 +46,15 @@ public class FilamentsTracker {
 	private Filaments filaments;
 	private TrackedFilaments trackedFilaments;
 
-	private TrackingParameters trackingParameters;
+	final private String name = NAME;
+
+	private double costThreshold = 1.1;
+	private double maxFrameGap = 15;
+	private boolean interpolateFilaments = true;
 
 	public FilamentsTracker(Context context, Filaments filaments) {
-		new FilamentsTracker(context, filaments, new TrackingParameters());
-	}
-
-	public FilamentsTracker(Context context, Filaments filaments, TrackingParameters trackingParameters) {
 		context.inject(this);
 		this.setFilaments(filaments);
-		this.trackingParameters = trackingParameters;
 	}
 
 	public Filaments getFilaments() {
@@ -74,7 +75,7 @@ public class FilamentsTracker {
 		trackedFilaments = new TrackedFilaments(context);
 		trackedFilaments.buildTracks(graph);
 
-		if (this.trackingParameters.isInterpolateFilaments()) {
+		if (this.isInterpolateFilaments()) {
 			interpolateFilaments();
 		}
 
@@ -127,7 +128,7 @@ public class FilamentsTracker {
 
 			// Build the matrix
 			creator = new JaqamanLinkingCostMatrixCreator<Filament, Filament>(sources, targets, costFunction,
-					trackingParameters.getCostThreshold(), alternativeCostFactor, percentile);
+					this.getCostThreshold(), alternativeCostFactor, percentile);
 			linker = new JaqamanLinker<Filament, Filament>(creator);
 
 			// Solve it
@@ -167,7 +168,7 @@ public class FilamentsTracker {
 		settings.put(KEY_ALLOW_GAP_CLOSING, true);
 		settings.put(KEY_GAP_CLOSING_FEATURE_PENALTIES, new HashMap<String, Double>());
 		settings.put(KEY_GAP_CLOSING_MAX_DISTANCE, 1000.0);
-		settings.put(KEY_GAP_CLOSING_MAX_FRAME_GAP, (int) this.getTrackingParameters().getMaxFrameGap());
+		settings.put(KEY_GAP_CLOSING_MAX_FRAME_GAP, (int) this.getMaxFrameGap());
 
 		settings.put(KEY_ALLOW_TRACK_SPLITTING, false);
 		settings.put(KEY_SPLITTING_FEATURE_PENALTIES, new HashMap<String, Double>());
@@ -200,14 +201,6 @@ public class FilamentsTracker {
 		}
 
 		return graph;
-	}
-
-	public TrackedFilaments getTrackedFilaments() {
-		return trackedFilaments;
-	}
-
-	public TrackingParameters getTrackingParameters() {
-		return trackingParameters;
 	}
 
 	public void interpolateFilaments() {
@@ -268,6 +261,48 @@ public class FilamentsTracker {
 		// }
 		//
 		// }
+	}
+
+	public TrackedFilaments getTrackedFilaments() {
+		return trackedFilaments;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public double getCostThreshold() {
+		return costThreshold;
+	}
+
+	public void setCostThreshold(double costThreshold) {
+		this.costThreshold = costThreshold;
+	}
+
+	public double getMaxFrameGap() {
+		return maxFrameGap;
+	}
+
+	public void setMaxFrameGap(double maxFrameGap) {
+		this.maxFrameGap = maxFrameGap;
+	}
+
+	public boolean isInterpolateFilaments() {
+		return interpolateFilaments;
+	}
+
+	public void setInterpolateFilaments(boolean interpolateFilaments) {
+		this.interpolateFilaments = interpolateFilaments;
+	}
+
+	@Override
+	public String toString() {
+		String out = "";
+		out += "Tracker Name : " + getName() + "\n";
+		out += "Cost Threshold = " + costThreshold + "\n";
+		out += "Maximum Frame Gap = " + maxFrameGap + "\n";
+		out += "Interpolate filaments = " + interpolateFilaments + "\n";
+		return out;
 	}
 
 }

@@ -123,13 +123,13 @@ public class TrackingFilamentController extends AbstractController implements In
 		costThresholdSync = new SliderLabelSynchronizer(costThresholdSlider, costThresholdField);
 		costThresholdSync.setTooltip(
 				"Discard links between filaments when the IoU of the bounding boxes is below this value (0 to 1).");
-		costThresholdSync.setValue(this.filamentWorkflow.getTrackingParameters().getCostThreshold());
+		costThresholdSync.setValue(this.filamentWorkflow.getFilamentsTracker().getCostThreshold());
 
 		maxFrameGapSync = new SliderLabelSynchronizer(maxFrameGapSlider, maxFrameGapField);
-		maxFrameGapSync.setValue(this.filamentWorkflow.getTrackingParameters().getMaxFrameGap());
+		maxFrameGapSync.setValue(this.filamentWorkflow.getFilamentsTracker().getMaxFrameGap());
 
 		interpolateFilamentsCheckbox
-				.setSelected(this.filamentWorkflow.getTrackingParameters().isInterpolateFilaments());
+				.setSelected(this.filamentWorkflow.getFilamentsTracker().isInterpolateFilaments());
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
@@ -195,7 +195,7 @@ public class TrackingFilamentController extends AbstractController implements In
 				super.succeeded();
 				status.showStatus(filamentWorkflow.getTrackedFilaments().size()
 						+ " tracks has been created with the following parameters : ");
-				status.showStatus(filamentWorkflow.getTrackingParameters().toString());
+				status.showStatus(filamentWorkflow.getFilamentsTracker().toString());
 				trackingProgressIndicator.setVisible(false);
 				updateTrackedFilamentsList();
 				eventService.publish(new FilterTrackedFilamentEvent(filteringParameters));
@@ -243,12 +243,12 @@ public class TrackingFilamentController extends AbstractController implements In
 	void updateTrackingParameters(Event event) {
 		if (costThresholdSync.isEvent(event)) {
 			costThresholdSync.update(event);
-			filamentWorkflow.getTrackingParameters().setCostThreshold(costThresholdSync.getValue());
+			filamentWorkflow.getFilamentsTracker().setCostThreshold(costThresholdSync.getValue());
 		} else if (maxFrameGapSync.isEvent(event)) {
 			maxFrameGapSync.update(event);
-			filamentWorkflow.getTrackingParameters().setMaxFrameGap(maxFrameGapSync.getValue());
+			filamentWorkflow.getFilamentsTracker().setMaxFrameGap(maxFrameGapSync.getValue());
 		} else if (event.getSource().equals(interpolateFilamentsCheckbox)) {
-			filamentWorkflow.getTrackingParameters().setInterpolateFilaments(interpolateFilamentsCheckbox.isSelected());
+			filamentWorkflow.getFilamentsTracker().setInterpolateFilaments(interpolateFilamentsCheckbox.isSelected());
 		}
 	}
 

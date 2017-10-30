@@ -18,7 +18,6 @@ import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
-import fiji.plugin.filamentdetector.tracking.TrackingParameters;
 import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
@@ -50,7 +49,6 @@ public class FilamentWorkflow {
 	private ImagePreprocessors imagePreprocessor;
 
 	private DetectionParameters detectionParameters;
-	private TrackingParameters trackingParameters;
 
 	private FilamentsDetector filamentsDetector;
 	private FilamentsTracker filamentsTracker;
@@ -91,8 +89,7 @@ public class FilamentWorkflow {
 	}
 
 	public void initTracking() {
-		trackingParameters = new TrackingParameters();
-		filamentsTracker = new FilamentsTracker(context, getFilaments(), trackingParameters);
+		filamentsTracker = new FilamentsTracker(context, getFilaments());
 	}
 
 	public void detectCurrentFrame() {
@@ -140,8 +137,12 @@ public class FilamentWorkflow {
 		return detectionParameters;
 	}
 
-	public TrackingParameters getTrackingParameters() {
-		return trackingParameters;
+	public FilamentsDetector getFilamentsDetector() {
+		return filamentsDetector;
+	}
+
+	public FilamentsTracker getFilamentsTracker() {
+		return filamentsTracker;
 	}
 
 	public Filaments getFilaments() {
