@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.gui.controller.imagepreprocessor;
+package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,7 +17,13 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.fxwidgets.ReorderablePaneListView;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
-import fiji.plugin.filamentdetector.gui.controller.Controller;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.Convert8BitController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.DOGFilterController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.FrangiFilterController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.GaussianFilterController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.ImagePreprocessorController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.NormalizeIntensitiesController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.PseudoFlatFieldCorrectionController;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.preprocessing.Convert8BitPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
@@ -41,7 +47,9 @@ import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 import net.imagej.display.ImageDisplayService;
 
-public class ImagePreprocessorsController extends Controller implements Initializable {
+public class ImagePreprocessorsController extends AbstractController implements Initializable {
+
+	private static String FXMl_PATH = "/fiji/plugin/filamentdetector/gui/view/ImagePreprocessorView.fxml";
 
 	@Parameter
 	private Context context;
@@ -90,6 +98,7 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 
 	public ImagePreprocessorsController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
+		setFXMLPath(FXMl_PATH);
 		this.filamentWorkflow = filamentWorkflow;
 		this.imagePreprocessors = filamentWorkflow.getImagePreprocessor();
 	}
@@ -123,7 +132,7 @@ public class ImagePreprocessorsController extends Controller implements Initiali
 
 			} else if (imagePreprocessor.getClass().equals(FrangiFilterPreprocessor.class)) {
 				imagePreprocessorController = new FrangiFilterController(context, imagePreprocessor);
-				
+
 			} else {
 				log.error(imagePreprocessor + " is can't be loaded.");
 			}

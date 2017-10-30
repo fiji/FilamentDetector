@@ -10,13 +10,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.web.WebView;
 
-public class AboutController extends Controller implements Initializable {
+public class AboutController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/AboutView.fxml";
 
 	@FXML
 	private WebView aboutTextField;
 
 	public AboutController(Context context) {
 		context.inject(this);
+		setFXMLPath(FXML_PATH);
 	}
 
 	@Override

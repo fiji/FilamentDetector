@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 
 import org.scijava.ui.DialogPrompt;
 
-import fiji.plugin.filamentdetector.gui.controller.Controller;
+import fiji.plugin.filamentdetector.gui.controller.AbstractController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import net.imagej.Dataset;
@@ -21,7 +21,7 @@ import net.imagej.ImageJ;
 
 public class GUIUtils {
 
-	public static Pane loadFXML(String fxml, Controller controller) {
+	public static Pane loadFXML(String fxml, AbstractController controller) {
 		try {
 			URL fxmlUrl = GUIUtils.class.getResource(fxml);
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);

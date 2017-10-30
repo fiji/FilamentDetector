@@ -29,7 +29,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
-public class KymographBuilderController extends Controller implements Initializable {
+public class KymographBuilderController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/KymographBuilderView.fxml";
 
 	@Parameter
 	private Context context;
@@ -80,6 +82,7 @@ public class KymographBuilderController extends Controller implements Initializa
 
 	public KymographBuilderController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
+		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentWorkflow;
 		this.kymographGenerator = new KymographGenerator(context);
 	}

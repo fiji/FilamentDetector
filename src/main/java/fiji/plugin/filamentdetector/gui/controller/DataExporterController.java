@@ -33,7 +33,9 @@ import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import net.imagej.Dataset;
 
-public class DataExporterController extends Controller implements Initializable {
+public class DataExporterController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/DataExporterView.fxml";
 
 	@Parameter
 	private Context context;
@@ -75,6 +77,7 @@ public class DataExporterController extends Controller implements Initializable 
 
 	public DataExporterController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
+		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentWorkflow;
 	}
 

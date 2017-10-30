@@ -33,7 +33,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class TrackingFilamentController extends Controller implements Initializable {
+public class TrackingFilamentController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/tracking/TrackingFilamentView.fxml";
 
 	@Parameter
 	private Context context;
@@ -107,6 +109,7 @@ public class TrackingFilamentController extends Controller implements Initializa
 
 	public TrackingFilamentController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
+		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentDetector;
 	}
 

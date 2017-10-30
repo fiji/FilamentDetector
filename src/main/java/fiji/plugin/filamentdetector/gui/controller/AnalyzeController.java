@@ -36,7 +36,9 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
-public class AnalyzeController extends Controller implements Initializable {
+public class AnalyzeController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/AnalyzerView.fxml";
 
 	@Parameter
 	private Context context;
@@ -75,6 +77,7 @@ public class AnalyzeController extends Controller implements Initializable {
 
 	public AnalyzeController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
+		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentWorkflow;
 	}
 
@@ -159,7 +162,7 @@ public class AnalyzeController extends Controller implements Initializable {
 		analyzerDescription.setText(analyzer.getDescription());
 		AnalyzerController controller = analyzerControllers.get(analyzer);
 
-		Pane pane = GUIUtils.loadFXML(controller.getViewFXMlFile(), (Controller) controller);
+		Pane pane = GUIUtils.loadFXML(controller.getViewFXMlFile(), (AbstractController) controller);
 		analyzerPane.setContent(pane);
 		analyzeButton.setDisable(false);
 	}

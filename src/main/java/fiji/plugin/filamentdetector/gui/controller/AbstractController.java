@@ -3,7 +3,7 @@ package fiji.plugin.filamentdetector.gui.controller;
 import fiji.plugin.filamentdetector.gui.GUIUtils;
 import javafx.scene.layout.Pane;
 
-public abstract class Controller {
+public abstract class AbstractController {
 
 	private String FXMLPath;
 	protected Pane pane;

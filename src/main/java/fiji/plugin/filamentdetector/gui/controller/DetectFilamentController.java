@@ -42,7 +42,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class DetectFilamentController extends Controller implements Initializable {
+public class DetectFilamentController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/detection/DetectFilamentView.fxml";
 
 	@Parameter
 	private Context context;
@@ -168,6 +170,7 @@ public class DetectFilamentController extends Controller implements Initializabl
 
 	public DetectFilamentController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
+		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentWorkflow;
 	}
 

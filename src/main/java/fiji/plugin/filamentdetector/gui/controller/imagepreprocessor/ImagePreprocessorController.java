@@ -8,14 +8,14 @@ import java.net.URL;
 
 import org.scijava.Context;
 
-import fiji.plugin.filamentdetector.gui.controller.Controller;
+import fiji.plugin.filamentdetector.gui.controller.AbstractController;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public abstract class ImagePreprocessorController extends Controller implements Initializable {
+public abstract class ImagePreprocessorController extends AbstractController implements Initializable {
 
 	private ImagePreprocessor imagePreprocessor;
 	private String tooltipImagePath = null;

@@ -12,8 +12,6 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
-import fiji.plugin.filamentdetector.gui.GUIUtils;
-import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.ImagePreprocessorsController;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.overlay.ImageDisplayMode;
 import javafx.application.Platform;
@@ -34,7 +32,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-public class MainController extends Controller implements Initializable {
+public class MainController extends AbstractController implements Initializable {
 
 	@Parameter
 	private Context context;
@@ -256,71 +254,50 @@ public class MainController extends Controller implements Initializable {
 
 	public void loadWelcome() {
 		welcomeController = new WelcomeController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/WelcomeView.fxml", welcomeController);
-
-		TitledPane titledPane = new TitledPane("Welcome", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = welcomeController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Welcome", pane));
 	}
 
 	public void loadImagePreprocessor() {
 		imagePreprocessorController = new ImagePreprocessorsController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/ImagePreprocessorView.fxml",
-				imagePreprocessorController);
-
-		TitledPane titledPane = new TitledPane("Preprocessing", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = imagePreprocessorController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Preprocessing", pane));
 	}
 
 	public void loadDetectFilament() {
 		detectFilamentController = new DetectFilamentController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/detection/DetectFilamentView.fxml",
-				detectFilamentController);
-
-		TitledPane titledPane = new TitledPane("Detect Filaments", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = detectFilamentController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Detect Filaments", pane));
 	}
 
 	public void loadTrackingFilament() {
 		trackingFilamentController = new TrackingFilamentController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/tracking/TrackingFilamentView.fxml",
-				trackingFilamentController);
-
-		TitledPane titledPane = new TitledPane("Track Filaments", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = trackingFilamentController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Track Filaments", pane));
 	}
 
 	public void loadDataExporter() {
 		dataExporterController = new DataExporterController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/DataExporterView.fxml",
-				dataExporterController);
-
-		TitledPane titledPane = new TitledPane("Export Filaments", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = dataExporterController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Export Filaments", pane));
 	}
 
 	public void loadKymographBuilder() {
 		kymographBuilderController = new KymographBuilderController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/KymographBuilderView.fxml",
-				kymographBuilderController);
-
-		TitledPane titledPane = new TitledPane("Build Kymographs", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = kymographBuilderController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Build Kymographs", pane));
 	}
 
 	public void loadAnalyzer() {
 		analyzerController = new AnalyzeController(context, filamentWorkflow);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/AnalyzerView.fxml", analyzerController);
-
-		TitledPane titledPane = new TitledPane("Analyze Filaments", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = analyzerController.loadPane();
+		mainPane.getPanes().add(new TitledPane("Analyze Filaments", pane));
 	}
 
 	public void loadAbout() {
 		aboutController = new AboutController(context);
-		Pane pane = GUIUtils.loadFXML("/fiji/plugin/filamentdetector/gui/view/AboutView.fxml", aboutController);
-
-		TitledPane titledPane = new TitledPane("About FilamentDetector", pane);
-		mainPane.getPanes().add(titledPane);
+		Pane pane = aboutController.loadPane();
+		mainPane.getPanes().add(new TitledPane("About FilamentDetector", pane));
 	}
 
 	@EventHandler

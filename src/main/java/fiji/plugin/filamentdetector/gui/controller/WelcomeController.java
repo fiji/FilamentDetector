@@ -18,7 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
 
-public class WelcomeController extends Controller implements Initializable {
+public class WelcomeController extends AbstractController implements Initializable {
+
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/WelcomeView.fxml";
 
 	@Parameter
 	private LogService log;
@@ -64,6 +66,7 @@ public class WelcomeController extends Controller implements Initializable {
 	public WelcomeController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentDetector = filamentDetector;
+		setFXMLPath(FXML_PATH);
 	}
 
 	@Override

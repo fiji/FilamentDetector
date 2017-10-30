@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class DetailedTrackedFilamentController extends Controller implements Initializable {
+public class DetailedTrackedFilamentController extends AbstractController implements Initializable {
 
 	@FXML
 	private Label idLabel;
