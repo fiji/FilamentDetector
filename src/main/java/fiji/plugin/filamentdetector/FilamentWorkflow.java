@@ -9,9 +9,9 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
 
-import fiji.plugin.filamentdetector.detection.DetectionParameters;
-import fiji.plugin.filamentdetector.detection.FilamentsDetector;
+import fiji.plugin.filamentdetector.detection.FilamentDetector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
+import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
@@ -48,9 +48,7 @@ public class FilamentWorkflow {
 
 	private ImagePreprocessors imagePreprocessor;
 
-	private DetectionParameters detectionParameters;
-
-	private FilamentsDetector filamentsDetector;
+	private RidgeDetectionFilamentsDetector filamentsDetector;
 	private FilamentsTracker filamentsTracker;
 
 	private Filaments filaments;
@@ -78,14 +76,15 @@ public class FilamentWorkflow {
 	}
 
 	public void initDetection() {
-		detectionParameters = new DetectionParameters();
 		Dataset data;
 		if (imagePreprocessor.isHasBeenPreprocessed()) {
 			data = imagePreprocessor.getPreprocessedImage();
 		} else {
 			data = getDataset();
 		}
-		this.filamentsDetector = new FilamentsDetector(context, imageDisplay, data, detectionParameters);
+		this.filamentsDetector = new RidgeDetectionFilamentsDetector(context);
+		this.filamentsDetector.setDataset(data);
+		this.filamentsDetector.setImageDisplay(imageDisplay);
 	}
 
 	public void initTracking(FilamentsTracker filamentsTracker) {
@@ -134,11 +133,7 @@ public class FilamentWorkflow {
 		return calibrations;
 	}
 
-	public DetectionParameters getDetectionParameters() {
-		return detectionParameters;
-	}
-
-	public FilamentsDetector getFilamentsDetector() {
+	public RidgeDetectionFilamentsDetector getFilamentsDetector() {
 		return filamentsDetector;
 	}
 

@@ -183,19 +183,19 @@ public class DetectFilamentController extends AbstractController implements Init
 		// Fill fields with default values
 		sigmaSync = new SliderLabelSynchronizer(sigmaSlider, sigmaField);
 		sigmaSync.setTooltip("Determines the sigma for the derivatives. It depends on the line width.");
-		sigmaSync.setValue(filamentWorkflow.getDetectionParameters().getSigma());
+		sigmaSync.setValue(filamentWorkflow.getFilamentsDetector().getSigma());
 
 		thresholdSync = new UpperLowerSynchronizer(lowerThresholdSlider, lowerThresholdField, upperThresholdSlider,
 				upperThresholdField);
 		thresholdSync.setLowerTooltip("Line points with a response smaller as this threshold are rejected.");
 		thresholdSync.setUpperTooltip("Line points with a response larger as this threshold are accepted.");
-		thresholdSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowerThresh());
-		thresholdSync.setUpperValue(filamentWorkflow.getDetectionParameters().getUpperThresh());
+		thresholdSync.setLowerValue(filamentWorkflow.getFilamentsDetector().getLowerThresh());
+		thresholdSync.setUpperValue(filamentWorkflow.getFilamentsDetector().getUpperThresh());
 
 		lineWidthSync = new SliderLabelSynchronizer(lineWidthSlider, lineWidthField);
 		lineWidthSync.setTooltip(
 				"The line diameter in pixels. It estimates the parameter \"sigma\" (available in the \"Advanced\" tab).");
-		lineWidthSync.setValue(filamentWorkflow.getDetectionParameters().getLineWidth());
+		lineWidthSync.setValue(filamentWorkflow.getFilamentsDetector().getLineWidth());
 
 		contrastSync = new UpperLowerSynchronizer(lowContrastSlider, lowContrastField, highContrastSlider,
 				highContrastField);
@@ -203,13 +203,13 @@ public class DetectFilamentController extends AbstractController implements Init
 				"Lowest grayscale value of the line. It estimates the parameter \"Upper Threshold\" (available in the \\\"Advanced\\\" tab).");
 		contrastSync.setUpperTooltip(
 				"Highest grayscale value of the line. It estimates the parameter \"Lower Threshold\" (available in the \\\"Advanced\\\" tab).");
-		contrastSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowContrast());
-		contrastSync.setUpperValue(filamentWorkflow.getDetectionParameters().getHighContrast());
+		contrastSync.setLowerValue(filamentWorkflow.getFilamentsDetector().getLowContrast());
+		contrastSync.setUpperValue(filamentWorkflow.getFilamentsDetector().getHighContrast());
 
-		detectCurrentFrameButton.setSelected(filamentWorkflow.getDetectionParameters().isDetectOnlyCurrentFrame());
-		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getDetectionParameters().isSimplifyFilaments());
+		detectCurrentFrameButton.setSelected(filamentWorkflow.getFilamentsDetector().isDetectOnlyCurrentFrame());
+		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getFilamentsDetector().isSimplifyFilaments());
 		simplifyToleranceDistanceField
-				.setText(Double.toString(filamentWorkflow.getDetectionParameters().getSimplifyToleranceDistance()));
+				.setText(Double.toString(filamentWorkflow.getFilamentsDetector().getSimplifyToleranceDistance()));
 
 		// Fill filtering fields
 		filteringParameters = new FilteringParameters();
@@ -306,43 +306,43 @@ public class DetectFilamentController extends AbstractController implements Init
 
 		if (sigmaSync.isEvent(event)) {
 			sigmaSync.update(event);
-			filamentWorkflow.getDetectionParameters().setSigma(sigmaSync.getValue());
+			filamentWorkflow.getFilamentsDetector().setSigma(sigmaSync.getValue());
 
 		} else if (thresholdSync.isEvent(event)) {
 			thresholdSync.update(event);
-			filamentWorkflow.getDetectionParameters().setLowerThresh(thresholdSync.getLowerValue());
-			filamentWorkflow.getDetectionParameters().setUpperThresh(thresholdSync.getUpperValue());
+			filamentWorkflow.getFilamentsDetector().setLowerThresh(thresholdSync.getLowerValue());
+			filamentWorkflow.getFilamentsDetector().setUpperThresh(thresholdSync.getUpperValue());
 		}
 
 		if (lineWidthSync.isEvent(event)) {
 			lineWidthSync.update(event);
-			filamentWorkflow.getDetectionParameters().setLineWidth(lineWidthSync.getValue());
-			sigmaSync.setValue(filamentWorkflow.getDetectionParameters().getSigma());
+			filamentWorkflow.getFilamentsDetector().setLineWidth(lineWidthSync.getValue());
+			sigmaSync.setValue(filamentWorkflow.getFilamentsDetector().getSigma());
 
 		} else if (contrastSync.isEvent(event)) {
 			contrastSync.update(event);
-			filamentWorkflow.getDetectionParameters().setLowContrast(contrastSync.getLowerValue());
-			filamentWorkflow.getDetectionParameters().setHighContrast(contrastSync.getUpperValue());
-			thresholdSync.setLowerValue(filamentWorkflow.getDetectionParameters().getLowerThresh());
-			thresholdSync.setUpperValue(filamentWorkflow.getDetectionParameters().getUpperThresh());
+			filamentWorkflow.getFilamentsDetector().setLowContrast(contrastSync.getLowerValue());
+			filamentWorkflow.getFilamentsDetector().setHighContrast(contrastSync.getUpperValue());
+			thresholdSync.setLowerValue(filamentWorkflow.getFilamentsDetector().getLowerThresh());
+			thresholdSync.setUpperValue(filamentWorkflow.getFilamentsDetector().getUpperThresh());
 		}
 
 		else if (event.getSource().equals(detectCurrentFrameButton)) {
-			filamentWorkflow.getDetectionParameters().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
+			filamentWorkflow.getFilamentsDetector().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
 		}
 
 		else if (event.getSource().equals(simplifyToleranceDistanceField)) {
 			double newValue = Double.parseDouble(simplifyToleranceDistanceField.getText());
 			if (newValue < 0) {
 				simplifyToleranceDistanceField.setText(
-						Double.toString(filamentWorkflow.getDetectionParameters().getSimplifyToleranceDistance()));
+						Double.toString(filamentWorkflow.getFilamentsDetector().getSimplifyToleranceDistance()));
 			} else {
-				filamentWorkflow.getDetectionParameters().setSimplifyToleranceDistance(newValue);
+				filamentWorkflow.getFilamentsDetector().setSimplifyToleranceDistance(newValue);
 			}
 		}
 
 		else if (event.getSource().equals(simplifyFilamentsCheckbox)) {
-			filamentWorkflow.getDetectionParameters().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
+			filamentWorkflow.getFilamentsDetector().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
 		}
 
 		if (liveDetectionButton.isSelected()) {
@@ -403,7 +403,7 @@ public class DetectFilamentController extends AbstractController implements Init
 				super.succeeded();
 				status.showStatus(filamentWorkflow.getFilaments().size()
 						+ " filaments has been detected with the following parameters : ");
-				status.showStatus(filamentWorkflow.getDetectionParameters().toString());
+				status.showStatus(filamentWorkflow.getFilamentsDetector().toString());
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
 				eventService.publish(new FilterFilamentEvent(filteringParameters));

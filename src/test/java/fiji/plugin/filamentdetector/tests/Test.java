@@ -6,8 +6,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 
 import fiji.plugin.filamentdetector.Calibrations;
-import fiji.plugin.filamentdetector.detection.DetectionParameters;
-import fiji.plugin.filamentdetector.detection.FilamentsDetector;
+import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -50,12 +49,9 @@ public class Test {
 		log.info("Pixel size is: " + cals.getDx());
 		log.info("dt is: " + cals.getDt());
 
-		// Setup parameters
-		DetectionParameters params = new DetectionParameters();
-		params.setSigma(2.5);
-
 		// Detect filaments
-		FilamentsDetector detector = new FilamentsDetector(ij.context(), imd, dataset, params);
+		RidgeDetectionFilamentsDetector detector = new RidgeDetectionFilamentsDetector(ij.context());
+		detector.setSigma(2.5);
 		detector.detect();
 		Filaments filaments = detector.getFilaments();
 

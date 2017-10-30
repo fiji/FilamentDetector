@@ -1,9 +1,11 @@
 package fiji.plugin.filamentdetector.tracking;
 
+import org.scijava.Named;
+
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 
-public interface FilamentsTracker {
+public interface FilamentsTracker extends Named {
 
 	void setFilaments(Filaments filaments);
 
@@ -14,10 +16,6 @@ public interface FilamentsTracker {
 	TrackedFilaments getTrackedFilaments();
 
 	void setTrackedFilaments(TrackedFilaments trackedFilaments);
-
-	void setName(String name);
-
-	String getName();
 
 	String toString();
 
