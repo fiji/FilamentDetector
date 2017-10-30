@@ -162,7 +162,7 @@ public class AnalyzeController extends AbstractController implements Initializab
 		analyzerDescription.setText(analyzer.getDescription());
 		AnalyzerController controller = analyzerControllers.get(analyzer);
 
-		Pane pane = GUIUtils.loadFXML(controller.getViewFXMlFile(), (AbstractController) controller);
+		Pane pane = GUIUtils.loadFXML(controller.getViewFXMlFile(), (Controller) controller);
 		analyzerPane.setContent(pane);
 		analyzeButton.setDisable(false);
 	}

@@ -16,7 +16,7 @@ import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
-import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import ij.ImagePlus;
 import net.imagej.Dataset;
@@ -51,7 +51,7 @@ public class FilamentWorkflow {
 	private DetectionParameters detectionParameters;
 
 	private FilamentsDetector filamentsDetector;
-	private BBoxLAPFilamentsTracker filamentsTracker;
+	private FilamentsTracker filamentsTracker;
 
 	private Filaments filaments;
 	private Filaments filteredFilaments;
@@ -88,7 +88,7 @@ public class FilamentWorkflow {
 		this.filamentsDetector = new FilamentsDetector(context, imageDisplay, data, detectionParameters);
 	}
 
-	public void initTracking(BBoxLAPFilamentsTracker filamentsTracker) {
+	public void initTracking(FilamentsTracker filamentsTracker) {
 		this.filamentsTracker = filamentsTracker;
 		this.filamentsTracker.setFilaments(getFilaments());
 	}
@@ -142,7 +142,7 @@ public class FilamentWorkflow {
 		return filamentsDetector;
 	}
 
-	public BBoxLAPFilamentsTracker getFilamentsTracker() {
+	public FilamentsTracker getFilamentsTracker() {
 		return filamentsTracker;
 	}
 

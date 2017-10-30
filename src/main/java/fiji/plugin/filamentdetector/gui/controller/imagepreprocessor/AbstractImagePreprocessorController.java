@@ -15,12 +15,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public abstract class ImagePreprocessorController extends AbstractController implements Initializable {
+public abstract class AbstractImagePreprocessorController extends AbstractController implements Initializable {
 
 	private ImagePreprocessor imagePreprocessor;
 	private String tooltipImagePath = null;
 
-	public ImagePreprocessorController(Context context, ImagePreprocessor imagePreprocessor) {
+	public AbstractImagePreprocessorController(Context context, ImagePreprocessor imagePreprocessor) {
 		context.inject(this);
 		this.imagePreprocessor = imagePreprocessor;
 	}

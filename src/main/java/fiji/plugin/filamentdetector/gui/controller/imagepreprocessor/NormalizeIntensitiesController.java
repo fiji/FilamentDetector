@@ -10,7 +10,7 @@ import fiji.plugin.filamentdetector.preprocessing.NormalizeIntensitiesPreprocess
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 
-public class NormalizeIntensitiesController extends ImagePreprocessorController {
+public class NormalizeIntensitiesController extends AbstractImagePreprocessorController {
 
 	public static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/preprocessor/NormalizeIntensitiesView.fxml";
 	private static String tooltipImagePath = "/fiji/plugin/filamentdetector/gui/preprocessorexamples/normalizeIntensities.png";

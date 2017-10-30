@@ -17,11 +17,11 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.fxwidgets.ReorderablePaneListView;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.AbstractImagePreprocessorController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.Convert8BitController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.DOGFilterController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.FrangiFilterController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.GaussianFilterController;
-import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.ImagePreprocessorController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.NormalizeIntensitiesController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.PseudoFlatFieldCorrectionController;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -94,7 +94,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 	private FilamentWorkflow filamentWorkflow;
 
 	private ReorderablePaneListView processorsControllers;
-	private List<ImagePreprocessorController> imagePreprocessorControllers;
+	private List<AbstractImagePreprocessorController> imagePreprocessorControllers;
 
 	public ImagePreprocessorsController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
@@ -111,7 +111,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 		this.preprocessorContainer.getChildren().add(vbox);
 
 		this.imagePreprocessorControllers = new ArrayList<>();
-		ImagePreprocessorController imagePreprocessorController = null;
+		AbstractImagePreprocessorController imagePreprocessorController = null;
 
 		for (ImagePreprocessor imagePreprocessor : this.imagePreprocessors.getImagePreprocessors()) {
 
@@ -164,7 +164,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 		});
 
 		// Enable tooltips
-		for (ImagePreprocessorController controller : this.imagePreprocessorControllers) {
+		for (AbstractImagePreprocessorController controller : this.imagePreprocessorControllers) {
 			controller.enableTooltip();
 		}
 

@@ -1,7 +1,9 @@
 package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -15,10 +17,12 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.FilterTrackedFilamentEvent;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
-import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
+import fiji.plugin.filamentdetector.gui.controller.tracking.BBoxLAPFilamentsTrackerController;
+import fiji.plugin.filamentdetector.gui.controller.tracking.FilamentsTrackerController;
 import fiji.plugin.filamentdetector.gui.view.TrackedFilamentsTableView;
 import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -51,22 +55,10 @@ public class TrackingFilamentController extends AbstractController implements In
 	private LogService log;
 
 	@FXML
+	private AnchorPane trackerParametersPane;
+
+	@FXML
 	private Label nFilamentsField;
-
-	@FXML
-	private Slider costThresholdSlider;
-
-	@FXML
-	private TextField costThresholdField;
-
-	@FXML
-	private Slider maxFrameGapSlider;
-
-	@FXML
-	private TextField maxFrameGapField;
-
-	@FXML
-	private CheckBox interpolateFilamentsCheckbox;
 
 	@FXML
 	private ProgressIndicator trackingProgressIndicator;
@@ -98,9 +90,9 @@ public class TrackingFilamentController extends AbstractController implements In
 	private Thread filterThread;
 	private Task<Integer> filterTask;
 
-	private SliderLabelSynchronizer costThresholdSync;
-	private SliderLabelSynchronizer maxFrameGapSync;
 	private UpperLowerSynchronizer sizeSync;
+
+	private List<FilamentsTracker> filamentsTracker;
 
 	private FilamentWorkflow filamentWorkflow;
 
@@ -112,25 +104,16 @@ public class TrackingFilamentController extends AbstractController implements In
 		context.inject(this);
 		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentDetector;
+
+		this.filamentsTracker = new ArrayList<>();
+		this.filamentsTracker.add(new BBoxLAPFilamentsTracker(context));
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.trackingProgressIndicator.setVisible(false);
 
-		BBoxLAPFilamentsTracker filamentTracker = new BBoxLAPFilamentsTracker(context);
-		this.filamentWorkflow.initTracking(filamentTracker);
-
-		// Fill fields with default values
-		costThresholdSync = new SliderLabelSynchronizer(costThresholdSlider, costThresholdField);
-		costThresholdSync.setTooltip(
-				"Discard links between filaments when the IoU of the bounding boxes is below this value (0 to 1).");
-		costThresholdSync.setValue(this.filamentWorkflow.getFilamentsTracker().getCostThreshold());
-
-		maxFrameGapSync = new SliderLabelSynchronizer(maxFrameGapSlider, maxFrameGapField);
-		maxFrameGapSync.setValue(this.filamentWorkflow.getFilamentsTracker().getMaxFrameGap());
-
-		interpolateFilamentsCheckbox.setSelected(this.filamentWorkflow.getFilamentsTracker().isInterpolateFilaments());
+		this.setFilamentsTracker(this.filamentsTracker.get(0));
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
@@ -161,10 +144,24 @@ public class TrackingFilamentController extends AbstractController implements In
 			this.getPane().setDisable(true);
 			nFilamentsField.setText("");
 		} else {
-			BBoxLAPFilamentsTracker filamentTracker = new BBoxLAPFilamentsTracker(context);
-			this.filamentWorkflow.initTracking(filamentTracker);
+			this.setFilamentsTracker(this.filamentsTracker.get(0));
 			this.getPane().setDisable(false);
 			nFilamentsField.setText(Integer.toString(filamentWorkflow.getFilaments().size()));
+		}
+	}
+
+	private void setFilamentsTracker(FilamentsTracker filamentTracker) {
+		this.filamentWorkflow.initTracking(filamentTracker);
+
+		FilamentsTrackerController controller = null;
+		if (filamentTracker.getClass().equals(BBoxLAPFilamentsTracker.class)) {
+			controller = new BBoxLAPFilamentsTrackerController(context, filamentTracker);
+		} else {
+			log.error("Can't load FilamentsTracker parameters pane.");
+		}
+
+		if (controller != null) {
+			trackerParametersPane.getChildren().add(controller.loadPane());
 		}
 	}
 
@@ -239,19 +236,6 @@ public class TrackingFilamentController extends AbstractController implements In
 		}
 
 		eventService.publish(new FilterTrackedFilamentEvent(filteringParameters));
-	}
-
-	@FXML
-	void updateTrackingParameters(Event event) {
-		if (costThresholdSync.isEvent(event)) {
-			costThresholdSync.update(event);
-			filamentWorkflow.getFilamentsTracker().setCostThreshold(costThresholdSync.getValue());
-		} else if (maxFrameGapSync.isEvent(event)) {
-			maxFrameGapSync.update(event);
-			filamentWorkflow.getFilamentsTracker().setMaxFrameGap(maxFrameGapSync.getValue());
-		} else if (event.getSource().equals(interpolateFilamentsCheckbox)) {
-			filamentWorkflow.getFilamentsTracker().setInterpolateFilaments(interpolateFilamentsCheckbox.isSelected());
-		}
 	}
 
 	@FXML
