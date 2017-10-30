@@ -122,7 +122,6 @@ public class TrackingFilamentController extends AbstractController implements In
 		this.trackingProgressIndicator.setVisible(false);
 
 		this.initTrackerComboBox();
-
 		this.setFilamentsTracker(this.filamentsTrackers.get(0));
 
 		// Fill filtering fields

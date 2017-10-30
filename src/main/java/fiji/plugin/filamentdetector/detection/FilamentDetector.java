@@ -19,7 +19,7 @@ public interface FilamentDetector extends Named {
 	void detectFrame(int frame);
 
 	Filaments getFilaments();
-	
+
 	void setFilaments(Filaments filaments);
 
 	ImageDisplay getImageDisplay();
@@ -31,7 +31,7 @@ public interface FilamentDetector extends Named {
 	void setDataset(Dataset dataset);
 
 	boolean isDetectOnlyCurrentFrame();
-	
+
 	void setDetectOnlyCurrentFrame(boolean detectOnlyCurrentFrame);
 
 	boolean isSimplifyFilaments();

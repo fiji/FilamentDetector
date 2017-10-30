@@ -11,7 +11,6 @@ import org.scijava.ui.UIService;
 
 import fiji.plugin.filamentdetector.detection.FilamentDetector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
-import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
 import fiji.plugin.filamentdetector.event.ImageNotFoundEvent;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
@@ -48,7 +47,7 @@ public class FilamentWorkflow {
 
 	private ImagePreprocessors imagePreprocessor;
 
-	private RidgeDetectionFilamentsDetector filamentsDetector;
+	private FilamentDetector filamentsDetector;
 	private FilamentsTracker filamentsTracker;
 
 	private Filaments filaments;
@@ -75,14 +74,14 @@ public class FilamentWorkflow {
 		calibrations = new Calibrations(context, getDataset(), getImagePlus());
 	}
 
-	public void initDetection() {
+	public void initDetection(FilamentDetector filamentDetector) {
 		Dataset data;
 		if (imagePreprocessor.isHasBeenPreprocessed()) {
 			data = imagePreprocessor.getPreprocessedImage();
 		} else {
 			data = getDataset();
 		}
-		this.filamentsDetector = new RidgeDetectionFilamentsDetector(context);
+		this.filamentsDetector = filamentDetector;
 		this.filamentsDetector.setDataset(data);
 		this.filamentsDetector.setImageDisplay(imageDisplay);
 	}
@@ -133,7 +132,7 @@ public class FilamentWorkflow {
 		return calibrations;
 	}
 
-	public RidgeDetectionFilamentsDetector getFilamentsDetector() {
+	public FilamentDetector getFilamentDetector() {
 		return filamentsDetector;
 	}
 

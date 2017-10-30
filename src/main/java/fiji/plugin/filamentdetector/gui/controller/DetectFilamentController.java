@@ -2,7 +2,9 @@
 package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -13,11 +15,14 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
+import fiji.plugin.filamentdetector.detection.FilamentDetector;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
+import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
 import fiji.plugin.filamentdetector.event.FilterFilamentEvent;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
-import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
+import fiji.plugin.filamentdetector.gui.controller.detection.FilamentDetectorController;
+import fiji.plugin.filamentdetector.gui.controller.detection.RidgeDetectionFilamentDetectorController;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.FilamentsTableView;
 import fiji.plugin.filamentdetector.model.Filament;
@@ -27,6 +32,7 @@ import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -34,6 +40,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -41,10 +50,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 public class DetectFilamentController extends AbstractController implements Initializable {
 
-	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/detection/DetectFilamentView.fxml";
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/DetectFilamentView.fxml";
 
 	@Parameter
 	private Context context;
@@ -62,40 +72,10 @@ public class DetectFilamentController extends AbstractController implements Init
 	private FilamentOverlayService overlayService;
 
 	@FXML
-	private Slider lineWidthSlider;
+	private ComboBox<FilamentDetector> detectorComboBox;
 
 	@FXML
-	private TextField lineWidthField;
-
-	@FXML
-	private Slider highContrastSlider;
-
-	@FXML
-	private TextField highContrastField;
-
-	@FXML
-	private Slider lowContrastSlider;
-
-	@FXML
-	private TextField lowContrastField;
-
-	@FXML
-	private Slider sigmaSlider;
-
-	@FXML
-	private TextField sigmaField;
-
-	@FXML
-	private Slider lowerThresholdSlider;
-
-	@FXML
-	private TextField lowerThresholdField;
-
-	@FXML
-	private Slider upperThresholdSlider;
-
-	@FXML
-	private TextField upperThresholdField;
+	private AnchorPane detectorParametersPane;
 
 	@FXML
 	private Button detectButton;
@@ -160,56 +140,31 @@ public class DetectFilamentController extends AbstractController implements Init
 
 	private FilteringParameters filteringParameters;
 
-	private SliderLabelSynchronizer sigmaSync;
-	private UpperLowerSynchronizer thresholdSync;
-	private SliderLabelSynchronizer lineWidthSync;
-	private UpperLowerSynchronizer contrastSync;
-
 	private UpperLowerSynchronizer lengthSync;
 	private UpperLowerSynchronizer sinuositySync;
+
+	private List<FilamentDetector> filamentDetectors;
 
 	public DetectFilamentController(Context context, FilamentWorkflow filamentWorkflow) {
 		context.inject(this);
 		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentWorkflow;
+
+		this.filamentDetectors = new ArrayList<>();
+		this.filamentDetectors.add(new RidgeDetectionFilamentsDetector(context));
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		this.detectionProgressIndicator.setVisible(false);
 
-		this.filamentWorkflow.initDetection();
+		this.initDetectionComboBox();
+		this.setFilamentDetector(this.filamentDetectors.get(0));
 
-		// Fill fields with default values
-		sigmaSync = new SliderLabelSynchronizer(sigmaSlider, sigmaField);
-		sigmaSync.setTooltip("Determines the sigma for the derivatives. It depends on the line width.");
-		sigmaSync.setValue(filamentWorkflow.getFilamentsDetector().getSigma());
-
-		thresholdSync = new UpperLowerSynchronizer(lowerThresholdSlider, lowerThresholdField, upperThresholdSlider,
-				upperThresholdField);
-		thresholdSync.setLowerTooltip("Line points with a response smaller as this threshold are rejected.");
-		thresholdSync.setUpperTooltip("Line points with a response larger as this threshold are accepted.");
-		thresholdSync.setLowerValue(filamentWorkflow.getFilamentsDetector().getLowerThresh());
-		thresholdSync.setUpperValue(filamentWorkflow.getFilamentsDetector().getUpperThresh());
-
-		lineWidthSync = new SliderLabelSynchronizer(lineWidthSlider, lineWidthField);
-		lineWidthSync.setTooltip(
-				"The line diameter in pixels. It estimates the parameter \"sigma\" (available in the \"Advanced\" tab).");
-		lineWidthSync.setValue(filamentWorkflow.getFilamentsDetector().getLineWidth());
-
-		contrastSync = new UpperLowerSynchronizer(lowContrastSlider, lowContrastField, highContrastSlider,
-				highContrastField);
-		contrastSync.setLowerTooltip(
-				"Lowest grayscale value of the line. It estimates the parameter \"Upper Threshold\" (available in the \\\"Advanced\\\" tab).");
-		contrastSync.setUpperTooltip(
-				"Highest grayscale value of the line. It estimates the parameter \"Lower Threshold\" (available in the \\\"Advanced\\\" tab).");
-		contrastSync.setLowerValue(filamentWorkflow.getFilamentsDetector().getLowContrast());
-		contrastSync.setUpperValue(filamentWorkflow.getFilamentsDetector().getHighContrast());
-
-		detectCurrentFrameButton.setSelected(filamentWorkflow.getFilamentsDetector().isDetectOnlyCurrentFrame());
-		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getFilamentsDetector().isSimplifyFilaments());
+		detectCurrentFrameButton.setSelected(filamentWorkflow.getFilamentDetector().isDetectOnlyCurrentFrame());
+		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getFilamentDetector().isSimplifyFilaments());
 		simplifyToleranceDistanceField
-				.setText(Double.toString(filamentWorkflow.getFilamentsDetector().getSimplifyToleranceDistance()));
+				.setText(Double.toString(filamentWorkflow.getFilamentDetector().getSimplifyToleranceDistance()));
 
 		// Fill filtering fields
 		filteringParameters = new FilteringParameters();
@@ -246,8 +201,57 @@ public class DetectFilamentController extends AbstractController implements Init
 	}
 
 	public void initPane() {
-		this.filamentWorkflow.initDetection();
+		this.detectorComboBox.getSelectionModel().select(0);
 		status.showStatus("Initialize detection.");
+	}
+
+	private void setFilamentDetector(FilamentDetector filamentDetector) {
+		this.filamentWorkflow.initDetection(filamentDetector);
+
+		FilamentDetectorController controller = null;
+		if (filamentDetector.getClass().equals(RidgeDetectionFilamentsDetector.class)) {
+			controller = new RidgeDetectionFilamentDetectorController(context, filamentDetector);
+		} else {
+			log.error("Can't load FilamentDetector parameters pane.");
+		}
+
+		if (controller != null) {
+			detectorParametersPane.getChildren().add(controller.loadPane());
+		}
+	}
+
+	public void initDetectionComboBox() {
+
+		Callback<ListView<FilamentDetector>, ListCell<FilamentDetector>> cellFactory = new Callback<ListView<FilamentDetector>, ListCell<FilamentDetector>>() {
+			@Override
+			public ListCell<FilamentDetector> call(ListView<FilamentDetector> p) {
+				return new ListCell<FilamentDetector>() {
+					@Override
+					protected void updateItem(FilamentDetector t, boolean bln) {
+						super.updateItem(t, bln);
+						if (t != null) {
+							setText(t.getName());
+						} else {
+							setText(null);
+						}
+					}
+				};
+			}
+		};
+
+		this.detectorComboBox.setButtonCell((ListCell<FilamentDetector>) cellFactory.call(null));
+		this.detectorComboBox.setCellFactory(cellFactory);
+
+		this.detectorComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				setFilamentDetector(newValue);
+			} else {
+				setFilamentDetector(this.filamentDetectors.get(0));
+			}
+		});
+
+		this.detectorComboBox.setItems(FXCollections.observableList(this.filamentDetectors));
+		this.detectorComboBox.getSelectionModel().selectFirst();
 	}
 
 	private void updateFilamentsList() {
@@ -303,46 +307,22 @@ public class DetectFilamentController extends AbstractController implements Init
 
 	@FXML
 	public void updateDetectionParameters(Event event) {
-
-		if (sigmaSync.isEvent(event)) {
-			sigmaSync.update(event);
-			filamentWorkflow.getFilamentsDetector().setSigma(sigmaSync.getValue());
-
-		} else if (thresholdSync.isEvent(event)) {
-			thresholdSync.update(event);
-			filamentWorkflow.getFilamentsDetector().setLowerThresh(thresholdSync.getLowerValue());
-			filamentWorkflow.getFilamentsDetector().setUpperThresh(thresholdSync.getUpperValue());
-		}
-
-		if (lineWidthSync.isEvent(event)) {
-			lineWidthSync.update(event);
-			filamentWorkflow.getFilamentsDetector().setLineWidth(lineWidthSync.getValue());
-			sigmaSync.setValue(filamentWorkflow.getFilamentsDetector().getSigma());
-
-		} else if (contrastSync.isEvent(event)) {
-			contrastSync.update(event);
-			filamentWorkflow.getFilamentsDetector().setLowContrast(contrastSync.getLowerValue());
-			filamentWorkflow.getFilamentsDetector().setHighContrast(contrastSync.getUpperValue());
-			thresholdSync.setLowerValue(filamentWorkflow.getFilamentsDetector().getLowerThresh());
-			thresholdSync.setUpperValue(filamentWorkflow.getFilamentsDetector().getUpperThresh());
-		}
-
-		else if (event.getSource().equals(detectCurrentFrameButton)) {
-			filamentWorkflow.getFilamentsDetector().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
+		if (event.getSource().equals(detectCurrentFrameButton)) {
+			filamentWorkflow.getFilamentDetector().setDetectOnlyCurrentFrame(detectCurrentFrameButton.isSelected());
 		}
 
 		else if (event.getSource().equals(simplifyToleranceDistanceField)) {
 			double newValue = Double.parseDouble(simplifyToleranceDistanceField.getText());
 			if (newValue < 0) {
 				simplifyToleranceDistanceField.setText(
-						Double.toString(filamentWorkflow.getFilamentsDetector().getSimplifyToleranceDistance()));
+						Double.toString(filamentWorkflow.getFilamentDetector().getSimplifyToleranceDistance()));
 			} else {
-				filamentWorkflow.getFilamentsDetector().setSimplifyToleranceDistance(newValue);
+				filamentWorkflow.getFilamentDetector().setSimplifyToleranceDistance(newValue);
 			}
 		}
 
 		else if (event.getSource().equals(simplifyFilamentsCheckbox)) {
-			filamentWorkflow.getFilamentsDetector().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
+			filamentWorkflow.getFilamentDetector().setSimplifyFilaments(simplifyFilamentsCheckbox.isSelected());
 		}
 
 		if (liveDetectionButton.isSelected()) {
@@ -403,7 +383,7 @@ public class DetectFilamentController extends AbstractController implements Init
 				super.succeeded();
 				status.showStatus(filamentWorkflow.getFilaments().size()
 						+ " filaments has been detected with the following parameters : ");
-				status.showStatus(filamentWorkflow.getFilamentsDetector().toString());
+				status.showStatus(filamentWorkflow.getFilamentDetector().toString());
 				detectionProgressIndicator.setVisible(false);
 				updateFilamentsList();
 				eventService.publish(new FilterFilamentEvent(filteringParameters));

@@ -56,35 +56,32 @@ public abstract class AbstractFilamentDetector implements FilamentDetector {
 	public void setDataset(Dataset dataset) {
 		this.dataset = dataset;
 	}
-	
+
 	@Override
 	public void setFilaments(Filaments filaments) {
 		this.filaments = filaments;
 	}
-	
+
 	@Override
 	public Filaments getFilaments() {
 		return this.filaments;
 	}
-	
 
 	@Override
 	public ImageDisplay getImageDisplay() {
 		return imageDisplay;
 	}
 
-
 	@Override
 	public void setImageDisplay(ImageDisplay imageDisplay) {
 		this.imageDisplay = imageDisplay;
 	}
 
-
 	@Override
 	public Dataset getDataset() {
 		return dataset;
 	}
-	
+
 	public boolean isDetectOnlyCurrentFrame() {
 		return detectOnlyCurrentFrame;
 	}

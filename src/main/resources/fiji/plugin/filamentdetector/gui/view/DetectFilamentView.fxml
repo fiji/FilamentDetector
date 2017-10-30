@@ -30,7 +30,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                                        <children>
-                                          <Label text="Detector : " />
+                                          <Label text="Detector :" />
                                           <ComboBox fx:id="detectorComboBox" />
                                        </children>
                                     </HBox>
