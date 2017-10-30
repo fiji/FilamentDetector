@@ -11,6 +11,7 @@ import fiji.plugin.filamentdetector.detection.FilamentsDetector;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
+import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
@@ -84,7 +85,7 @@ public class Test {
 		// ROIFactory.displayInROIManager(rois);
 
 		// Track filaments over time
-		FilamentsTracker tracker = new FilamentsTracker(ij.context());
+		FilamentsTracker tracker = new BBoxLAPFilamentsTracker(ij.context());
 		tracker.setFilaments(filteredFilaments);
 		tracker.track();
 		TrackedFilaments trackedFilaments = tracker.getTrackedFilaments();

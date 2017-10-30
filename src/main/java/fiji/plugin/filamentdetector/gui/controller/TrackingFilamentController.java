@@ -18,7 +18,7 @@ import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.TrackedFilamentsTableView;
-import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -118,7 +118,7 @@ public class TrackingFilamentController extends AbstractController implements In
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.trackingProgressIndicator.setVisible(false);
 
-		FilamentsTracker filamentTracker = new FilamentsTracker(context);
+		BBoxLAPFilamentsTracker filamentTracker = new BBoxLAPFilamentsTracker(context);
 		this.filamentWorkflow.initTracking(filamentTracker);
 
 		// Fill fields with default values
@@ -161,7 +161,7 @@ public class TrackingFilamentController extends AbstractController implements In
 			this.getPane().setDisable(true);
 			nFilamentsField.setText("");
 		} else {
-			FilamentsTracker filamentTracker = new FilamentsTracker(context);
+			BBoxLAPFilamentsTracker filamentTracker = new BBoxLAPFilamentsTracker(context);
 			this.filamentWorkflow.initTracking(filamentTracker);
 			this.getPane().setDisable(false);
 			nFilamentsField.setText(Integer.toString(filamentWorkflow.getFilaments().size()));
