@@ -25,18 +25,23 @@ import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 public class TrackingFilamentController extends AbstractController implements Initializable {
 
@@ -53,6 +58,9 @@ public class TrackingFilamentController extends AbstractController implements In
 
 	@Parameter
 	private LogService log;
+
+	@FXML
+	private ComboBox<FilamentsTracker> trackerComboBox;
 
 	@FXML
 	private AnchorPane trackerParametersPane;
@@ -92,7 +100,7 @@ public class TrackingFilamentController extends AbstractController implements In
 
 	private UpperLowerSynchronizer sizeSync;
 
-	private List<FilamentsTracker> filamentsTracker;
+	private List<FilamentsTracker> filamentsTrackers;
 
 	private FilamentWorkflow filamentWorkflow;
 
@@ -105,15 +113,17 @@ public class TrackingFilamentController extends AbstractController implements In
 		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentDetector;
 
-		this.filamentsTracker = new ArrayList<>();
-		this.filamentsTracker.add(new BBoxLAPFilamentsTracker(context));
+		this.filamentsTrackers = new ArrayList<>();
+		this.filamentsTrackers.add(new BBoxLAPFilamentsTracker(context));
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.trackingProgressIndicator.setVisible(false);
 
-		this.setFilamentsTracker(this.filamentsTracker.get(0));
+		this.initTrackerComboBox();
+
+		this.setFilamentsTracker(this.filamentsTrackers.get(0));
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
@@ -144,7 +154,7 @@ public class TrackingFilamentController extends AbstractController implements In
 			this.getPane().setDisable(true);
 			nFilamentsField.setText("");
 		} else {
-			this.setFilamentsTracker(this.filamentsTracker.get(0));
+			this.trackerComboBox.getSelectionModel().select(0);
 			this.getPane().setDisable(false);
 			nFilamentsField.setText(Integer.toString(filamentWorkflow.getFilaments().size()));
 		}
@@ -163,6 +173,40 @@ public class TrackingFilamentController extends AbstractController implements In
 		if (controller != null) {
 			trackerParametersPane.getChildren().add(controller.loadPane());
 		}
+	}
+
+	public void initTrackerComboBox() {
+
+		Callback<ListView<FilamentsTracker>, ListCell<FilamentsTracker>> cellFactory = new Callback<ListView<FilamentsTracker>, ListCell<FilamentsTracker>>() {
+			@Override
+			public ListCell<FilamentsTracker> call(ListView<FilamentsTracker> p) {
+				return new ListCell<FilamentsTracker>() {
+					@Override
+					protected void updateItem(FilamentsTracker t, boolean bln) {
+						super.updateItem(t, bln);
+						if (t != null) {
+							setText(t.getName());
+						} else {
+							setText(null);
+						}
+					}
+				};
+			}
+		};
+
+		this.trackerComboBox.setButtonCell((ListCell<FilamentsTracker>) cellFactory.call(null));
+		this.trackerComboBox.setCellFactory(cellFactory);
+
+		this.trackerComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				setFilamentsTracker(newValue);
+			} else {
+				setFilamentsTracker(this.filamentsTrackers.get(0));
+			}
+		});
+
+		this.trackerComboBox.setItems(FXCollections.observableList(this.filamentsTrackers));
+		this.trackerComboBox.getSelectionModel().selectFirst();
 	}
 
 	private void updateTrackedFilamentsList() {
