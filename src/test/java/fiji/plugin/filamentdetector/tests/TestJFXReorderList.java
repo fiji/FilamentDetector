@@ -3,7 +3,7 @@ package fiji.plugin.filamentdetector.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import fiji.plugin.filamentdetector.fxwidgets.ReorderablePaneListView;
+import fiji.plugin.filamentdetector.gui.fxwidgets.ReorderablePaneListView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

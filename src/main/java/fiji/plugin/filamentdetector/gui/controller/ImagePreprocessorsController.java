@@ -15,7 +15,6 @@ import org.scijava.ui.UIService;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
-import fiji.plugin.filamentdetector.fxwidgets.ReorderablePaneListView;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.AbstractImagePreprocessorController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.Convert8BitController;
@@ -24,6 +23,7 @@ import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.FrangiFilte
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.GaussianFilterController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.NormalizeIntensitiesController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.PseudoFlatFieldCorrectionController;
+import fiji.plugin.filamentdetector.gui.fxwidgets.ReorderablePaneListView;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.preprocessing.Convert8BitPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
