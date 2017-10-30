@@ -40,7 +40,7 @@ import javafx.scene.layout.VBox;
 
 public class TrackingFilamentController extends AbstractController implements Initializable {
 
-	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/tracking/TrackingFilamentView.fxml";
+	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/TrackingFilamentView.fxml";
 
 	@Parameter
 	private Context context;
