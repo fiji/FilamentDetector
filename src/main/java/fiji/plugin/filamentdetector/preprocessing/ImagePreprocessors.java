@@ -22,7 +22,7 @@ public class ImagePreprocessors {
 
 	private static boolean DEFAULT_SAVE_IMAGE = false;
 	private static boolean DEFAULT_SHOW_IMAGE = false;
-	private static boolean DEFAULT_USE_FOR_OVERLAY = false;
+	private static boolean DEFAULT_USE_FOR_OVERLAY = true;
 
 	@Parameter
 	private Context context;
