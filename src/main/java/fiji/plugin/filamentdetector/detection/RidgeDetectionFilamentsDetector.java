@@ -20,6 +20,7 @@ import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.overlay.ColorService;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
+import net.imagej.display.ImageDisplayService;
 
 public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 
@@ -36,6 +37,9 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 
 	@Parameter
 	private EventService eventService;
+
+	@Parameter
+	private ImageDisplayService imds;
 
 	private double sigma = 1.51;
 	private double upperThresh = 7.99;
@@ -65,14 +69,7 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 		this.lineDetector = new LineDetector();
 	}
 
-	@Override
-	public void detect() {
-		detect(0);
-	}
-
-	@Override
-	public void detect(int channelIndex) {
-
+	private void initDetection() {
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
 		try {
 			this.imp = convertService.convert(getImageDisplay(), ImagePlus.class);
@@ -83,6 +80,17 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 
 		colorService.initialize();
 		setFilaments(new Filaments());
+	}
+
+	@Override
+	public void detect() {
+		detect(0);
+	}
+
+	@Override
+	public void detect(int channelIndex) {
+
+		this.initDetection();
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
 
@@ -93,7 +101,6 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 		}
 		this.imp.setT(currentFrame);
 		this.imp.setC(currentChannel);
-
 		this.simplify();
 	}
 
@@ -105,24 +112,13 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 	@Override
 	public void detectCurrentFrame(int channelIndex) {
 
-		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
-		try {
-			this.imp = convertService.convert(getImageDisplay(), ImagePlus.class);
-			this.impData = convertService.convert(getDataset(), ImagePlus.class);
-		} catch (NullPointerException e) {
-			eventService.publish(new ImageNotFoundEvent());
-		}
-
-		colorService.initialize();
-
+		this.initDetection();
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
 
 		this.impData.setC(channelIndex);
 		this.detectFrame(currentFrame);
-
 		this.imp.setC(currentChannel);
-
 		this.simplify();
 	}
 

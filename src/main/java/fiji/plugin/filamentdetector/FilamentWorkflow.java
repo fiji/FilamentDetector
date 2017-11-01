@@ -2,8 +2,6 @@ package fiji.plugin.filamentdetector;
 
 import java.util.stream.Collectors;
 
-import javax.swing.SwingUtilities;
-
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;
@@ -86,7 +84,7 @@ public class FilamentWorkflow {
 		this.filamentsTracker = filamentsTracker;
 	}
 
-	public void detectCurrentFrame() {
+	private void initDetection() {
 		Dataset data;
 		if (this.imagePreprocessors.isHasBeenPreprocessed()) {
 			data = this.imagePreprocessors.getPreprocessedDataset();
@@ -95,29 +93,20 @@ public class FilamentWorkflow {
 		}
 		this.filamentsDetector.setDataset(data);
 		this.filamentsDetector.setImageDisplay(imageDisplay);
+	}
 
-		SwingUtilities.invokeLater(() -> {
-			this.filamentsDetector.detectCurrentFrame(calibrations.getChannelToUseIndex());
-			this.filaments = filamentsDetector.getFilaments();
-			this.filteredFilaments = this.filaments;
-		});
+	public void detectCurrentFrame() {
+		this.initDetection();
+		this.filamentsDetector.detectCurrentFrame(calibrations.getChannelToUseIndex());
+		this.filaments = filamentsDetector.getFilaments();
+		this.filteredFilaments = this.filaments;
 	}
 
 	public void detect() {
-		Dataset data;
-		if (this.imagePreprocessors.isHasBeenPreprocessed()) {
-			data = this.imagePreprocessors.getPreprocessedDataset();
-		} else {
-			data = getDataset();
-		}
-		this.filamentsDetector.setDataset(data);
-		this.filamentsDetector.setImageDisplay(imageDisplay);
-
-		SwingUtilities.invokeLater(() -> {
-			this.filamentsDetector.detect(calibrations.getChannelToUseIndex());
-			this.filaments = filamentsDetector.getFilaments();
-			this.filteredFilaments = this.filaments;
-		});
+		this.initDetection();
+		this.filamentsDetector.detect(calibrations.getChannelToUseIndex());
+		this.filaments = filamentsDetector.getFilaments();
+		this.filteredFilaments = this.filaments;
 	}
 
 	public void track() {
