@@ -17,9 +17,10 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.event.FilterTrackedFilamentEvent;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
-import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.controller.tracking.BBoxLAPFilamentsTrackerController;
 import fiji.plugin.filamentdetector.gui.controller.tracking.FilamentsTrackerController;
+import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
+import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.TrackedFilamentsTableView;
 import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
@@ -84,6 +85,12 @@ public class TrackingFilamentController extends AbstractController implements In
 	private TextField minSizeField;
 
 	@FXML
+	private Slider limitBorderSlider;
+
+	@FXML
+	private TextField limitBorderField;
+
+	@FXML
 	private CheckBox disableFilteringBox;
 
 	@FXML
@@ -99,6 +106,7 @@ public class TrackingFilamentController extends AbstractController implements In
 	private Task<Integer> filterTask;
 
 	private UpperLowerSynchronizer sizeSync;
+	private SliderLabelSynchronizer limitBorderSync;
 
 	private List<FilamentsTracker> filamentsTrackers;
 
@@ -126,13 +134,15 @@ public class TrackingFilamentController extends AbstractController implements In
 
 		// Fill filtering fields
 		filteringParameters = new FilteringTrackedFilamentsParameters();
-		filteringParameters.setDisableFiltering(true);
 
 		sizeSync = new UpperLowerSynchronizer(minSizeSlider, minSizeField, maxSizeSlider, maxSizeField);
 		sizeSync.setLowerTooltip("Keep tracks with a minimum number of filaments.");
 		sizeSync.setUpperTooltip("Keep tracks with a maximum number of filaments.");
 		sizeSync.setLowerValue(filteringParameters.getMinSize());
 		sizeSync.setUpperValue(filteringParameters.getMaxSize());
+
+		limitBorderSync = new SliderLabelSynchronizer(limitBorderSlider, limitBorderField);
+		limitBorderSync.setValue(filteringParameters.getBorderLimit());
 
 		disableFilteringBox.setSelected(filteringParameters.isDisableFiltering());
 
@@ -274,6 +284,9 @@ public class TrackingFilamentController extends AbstractController implements In
 			sizeSync.update(event);
 			filteringParameters.setMinSize(sizeSync.getLowerValue());
 			filteringParameters.setMaxSize(sizeSync.getUpperValue());
+		} else if (limitBorderSync.isEvent(event)) {
+			limitBorderSync.update(event);
+			filteringParameters.setBorderLimit(limitBorderSync.getValue());
 		} else if (event.getSource().equals(disableFilteringBox)) {
 			filteringParameters.setDisableFiltering(disableFilteringBox.isSelected());
 		}

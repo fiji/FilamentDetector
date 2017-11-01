@@ -346,4 +346,20 @@ public class Filament implements Comparable<Filament> {
 		this.id = idCounter;
 		idCounter++;
 	}
+
+	public boolean insideBbox(double[] bbox) {
+
+		for (RealPoint point : points) {
+			if (point.getDoublePosition(xIndex) < bbox[0]) {
+				return false;
+			} else if (point.getDoublePosition(xIndex) > bbox[1]) {
+				return false;
+			} else if (point.getDoublePosition(yIndex) < bbox[2]) {
+				return false;
+			} else if (point.getDoublePosition(yIndex) > bbox[3]) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

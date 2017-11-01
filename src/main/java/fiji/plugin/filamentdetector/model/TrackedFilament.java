@@ -165,4 +165,14 @@ public class TrackedFilament extends Filaments {
 		}
 	}
 
+	public boolean insideBbox(double[] bbox) {
+
+		for (Filament filament : this) {
+			if (!filament.insideBbox(bbox)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

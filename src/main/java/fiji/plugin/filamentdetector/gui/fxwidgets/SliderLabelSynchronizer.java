@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.gui.controller.helper;
+package fiji.plugin.filamentdetector.gui.fxwidgets;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;

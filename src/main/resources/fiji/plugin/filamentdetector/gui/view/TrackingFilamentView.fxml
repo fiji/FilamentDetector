@@ -101,6 +101,32 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </HBox>
+                                          <VBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                   <children>
+                                                      <Label minWidth="-Infinity" text="Exclude distance" />
+                                                      <Slider fx:id="limitBorderSlider" blockIncrement="1.0" majorTickUnit="5.0" minorTickCount="1" onMouseClicked="#updateFilteringParameters" onMouseDragged="#updateFilteringParameters" onMousePressed="#updateFilteringParameters" />
+                                                      <TextField fx:id="limitBorderField" maxWidth="45.0" minWidth="45.0" onAction="#updateFilteringParameters" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label maxWidth="300.0" text="Exclude filaments closer than the specified distance from the border. Distance is in pixel." wrapText="true">
+                                                         <font>
+                                                            <Font name="System Italic" size="10.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </VBox>
                                     <VBox alignment="BOTTOM_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">

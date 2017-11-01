@@ -7,8 +7,8 @@ import org.scijava.Context;
 
 import fiji.plugin.filamentdetector.detection.FilamentDetector;
 import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
-import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
-import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
+import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
+import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;

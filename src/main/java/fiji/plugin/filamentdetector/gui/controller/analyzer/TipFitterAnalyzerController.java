@@ -11,7 +11,7 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.analyzer.tipfitter.TipFitterAnalyzer;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
-import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
+import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;

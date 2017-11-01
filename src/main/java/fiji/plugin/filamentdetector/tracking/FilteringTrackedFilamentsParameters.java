@@ -4,6 +4,7 @@ public class FilteringTrackedFilamentsParameters {
 
 	private double maxSize = Double.POSITIVE_INFINITY;
 	private double minSize = 1;
+	private double borderLimit = 0;
 
 	private boolean disableFiltering = false;
 
@@ -31,12 +32,21 @@ public class FilteringTrackedFilamentsParameters {
 		this.disableFiltering = disableFiltering;
 	}
 
+	public double getBorderLimit() {
+		return borderLimit;
+	}
+
+	public void setBorderLimit(double borderLimit) {
+		this.borderLimit = borderLimit;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";
 
 		out += "maxSize = " + maxSize + "\n";
-		out += "minSize = " + minSize;
+		out += "minSize = " + minSize + "\n";
+		out += "borderLimit = " + borderLimit;
 
 		return out;
 	}

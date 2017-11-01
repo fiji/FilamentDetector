@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.gui.controller.helper;
+package fiji.plugin.filamentdetector.gui.fxwidgets;
 
 import javafx.event.Event;
 import javafx.scene.control.Slider;

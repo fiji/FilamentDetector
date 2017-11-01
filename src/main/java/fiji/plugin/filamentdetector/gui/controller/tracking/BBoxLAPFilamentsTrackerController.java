@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import org.scijava.Context;
 
-import fiji.plugin.filamentdetector.gui.controller.helper.SliderLabelSynchronizer;
+import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import javafx.event.Event;

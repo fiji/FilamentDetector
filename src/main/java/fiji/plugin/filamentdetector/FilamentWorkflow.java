@@ -177,9 +177,17 @@ public class FilamentWorkflow {
 
 	public void filterTrackedFilament(FilteringTrackedFilamentsParameters filteringParameters) {
 		if (!filteringParameters.isDisableFiltering()) {
+
+			double[] bbox = new double[] { 0, getCalibrations().getSizeX(), 0, getCalibrations().getSizeY() };
+			bbox[0] += filteringParameters.getBorderLimit();
+			bbox[1] -= filteringParameters.getBorderLimit();
+			bbox[2] += filteringParameters.getBorderLimit();
+			bbox[3] -= filteringParameters.getBorderLimit();
+
 			this.filteredTrackedFilaments = this.trackedFilaments.stream()
 					.filter(trackedFilament -> trackedFilament.size() <= filteringParameters.getMaxSize())
 					.filter(trackedFilament -> trackedFilament.size() >= filteringParameters.getMinSize())
+					.filter(trackedFilament -> trackedFilament.insideBbox(bbox))
 					.collect(Collectors.toCollection(() -> new TrackedFilaments(context)));
 		} else {
 			this.filteredTrackedFilaments = this.trackedFilaments;

@@ -23,7 +23,7 @@ import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.detection.FilamentDetectorController;
 import fiji.plugin.filamentdetector.gui.controller.detection.RidgeDetectionFilamentDetectorController;
-import fiji.plugin.filamentdetector.gui.controller.helper.UpperLowerSynchronizer;
+import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.FilamentsTableView;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;

@@ -26,6 +26,11 @@ public class Calibrations {
 	private double dz;
 	private double dt;
 
+	private double sizeX;
+	private double sizeY;
+	private double sizeZ;
+	private double sizeT;
+
 	private String unitX;
 	private String unitY;
 	private String unitZ;
@@ -61,6 +66,11 @@ public class Calibrations {
 		this.unitY = yIndex != -1 ? this.data.axis(yIndex).unit() : "";
 		this.unitZ = zIndex != -1 ? this.data.axis(zIndex).unit() : "";
 		this.unitT = timeIndex != -1 ? this.data.axis(timeIndex).unit() : "";
+
+		this.sizeX = xIndex != -1 ? this.data.dimension(xIndex) : -1;
+		this.sizeY = yIndex != -1 ? this.data.dimension(yIndex) : -1;
+		this.sizeZ = zIndex != -1 ? this.data.dimension(zIndex) : -1;
+		this.sizeT = timeIndex != -1 ? this.data.dimension(timeIndex) : -1;
 
 		channelList = new ArrayList<>();
 		for (int i = 1; i <= this.data.dimension(Axes.CHANNEL); i++) {
@@ -122,6 +132,22 @@ public class Calibrations {
 
 	public String getUnitT() {
 		return unitT;
+	}
+
+	public double getSizeX() {
+		return sizeX;
+	}
+
+	public double getSizeY() {
+		return sizeY;
+	}
+
+	public double getSizeZ() {
+		return sizeZ;
+	}
+
+	public double getSizeT() {
+		return sizeT;
 	}
 
 	public List<String> getChannelList() {
