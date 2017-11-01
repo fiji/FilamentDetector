@@ -151,6 +151,10 @@ public class Calibrations {
 		return channelToUseIndex;
 	}
 
+	public void setChannelToUseIndex(int channelToUseIndex) {
+		this.channelToUseIndex = channelToUseIndex;
+	}
+
 	private void setImagePlusCalibration() {
 		if (imp != null) {
 			ij.measure.Calibration cal = imp.getCalibration();

@@ -162,4 +162,9 @@ public class ImagePreprocessors {
 	public void setUseForOverlay(boolean useForOverlay) {
 		this.useForOverlay = useForOverlay;
 	}
+
+	public ImagePreprocessor getPreProcessorByName(String name) {
+		return this.getImagePreprocessors().stream().filter(x -> x.getClass().getSimpleName().equals(name)).findFirst()
+				.orElse(null);
+	}
 }
