@@ -159,7 +159,6 @@ public class DetectFilamentController extends AbstractController implements Init
 		this.detectionProgressIndicator.setVisible(false);
 
 		this.initDetectionComboBox();
-		this.setFilamentDetector(this.filamentDetectors.get(0));
 
 		detectCurrentFrameButton.setSelected(filamentWorkflow.getFilamentDetector().isDetectOnlyCurrentFrame());
 		simplifyFilamentsCheckbox.setSelected(filamentWorkflow.getFilamentDetector().isSimplifyFilaments());
@@ -206,7 +205,7 @@ public class DetectFilamentController extends AbstractController implements Init
 	}
 
 	private void setFilamentDetector(FilamentDetector filamentDetector) {
-		this.filamentWorkflow.initDetection(filamentDetector);
+		this.filamentWorkflow.setFilamentDetector(filamentDetector);
 
 		FilamentDetectorController controller = null;
 		if (filamentDetector.getClass().equals(RidgeDetectionFilamentsDetector.class)) {
@@ -419,7 +418,6 @@ public class DetectFilamentController extends AbstractController implements Init
 		detectionThread = new Thread(detectionTask);
 		detectionThread.setDaemon(true);
 		detectionThread.start();
-
 	}
 
 	@FXML

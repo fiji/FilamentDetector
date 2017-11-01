@@ -91,8 +91,8 @@ public class LengthOverTimeAnalyzer extends AbstractAnalyzer implements Analyzer
 		if (saveResults) {
 
 			// Set the name of the file
-			Dataset dataset = (Dataset) filamentWorkflow.getImageDisplay().getActiveView().getData();
-			if (dataset.getSource() != null) {
+			Dataset dataset = (Dataset) filamentWorkflow.getSourceImage().getActiveView().getData();
+			if (dataset.getSource() != null && dataset.getSource() != "") {
 				String filePath = FilenameUtils.removeExtension(dataset.getSource());
 				filePath += "-LengthOverTime.csv";
 

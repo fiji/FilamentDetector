@@ -53,7 +53,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <CheckBox fx:id="liveDetectionButton" mnemonicParsing="false" onMouseClicked="#liveDetectionClicked" text="LIve Detection" />
+                                                <CheckBox fx:id="liveDetectionButton" mnemonicParsing="false" onMouseClicked="#liveDetectionClicked" text="Live Detection" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_RIGHT" spacing="10.0">

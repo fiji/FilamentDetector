@@ -38,6 +38,7 @@ public class KymographGenerator {
 	private DatasetIOService io;
 
 	private ImageDisplay imageDisplay;
+	
 	private TrackedFilaments trackedFilaments;
 	private KymographParameters kymographParameters;
 	private List<Dataset> kymographs;

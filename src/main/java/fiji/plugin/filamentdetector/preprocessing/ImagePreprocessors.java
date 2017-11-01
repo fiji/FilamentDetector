@@ -49,9 +49,9 @@ public class ImagePreprocessors {
 	ConvertService convertService;
 
 	private ImageDisplay imageDisplay;
-	private Dataset preprocessedImage;
+	private Dataset preprocessedDataset;
 
-	private List<ImagePreprocessor> imagePreprocessors;
+	private List<ImagePreprocessor> imagePreprocessorList;
 
 	private boolean savePreprocessedImage = DEFAULT_SAVE_IMAGE;
 	private boolean showPreprocessedImage = DEFAULT_SHOW_IMAGE;
@@ -63,15 +63,15 @@ public class ImagePreprocessors {
 		context.inject(this);
 		this.imageDisplay = imd;
 
-		this.imagePreprocessors = new ArrayList<>();
+		this.imagePreprocessorList = new ArrayList<>();
 
-		this.imagePreprocessors.add(new Convert8BitPreprocessor(context));
-		this.imagePreprocessors.add(new GaussianFilterPreprocessor(context));
-		this.imagePreprocessors.add(new PseudoFlatFieldCorrectionPreprocessor(context));
-		this.imagePreprocessors.add(new DOGFilterPreprocessor(context));
-		this.imagePreprocessors.add(new TubenessFilterPreprocessor(context));
-		this.imagePreprocessors.add(new FrangiFilterPreprocessor(context));
-		this.imagePreprocessors.add(new NormalizeIntensitiesPreprocessor(context));
+		this.imagePreprocessorList.add(new Convert8BitPreprocessor(context));
+		this.imagePreprocessorList.add(new GaussianFilterPreprocessor(context));
+		this.imagePreprocessorList.add(new PseudoFlatFieldCorrectionPreprocessor(context));
+		this.imagePreprocessorList.add(new DOGFilterPreprocessor(context));
+		this.imagePreprocessorList.add(new TubenessFilterPreprocessor(context));
+		this.imagePreprocessorList.add(new FrangiFilterPreprocessor(context));
+		this.imagePreprocessorList.add(new NormalizeIntensitiesPreprocessor(context));
 	}
 
 	public void preprocess() {
@@ -79,7 +79,7 @@ public class ImagePreprocessors {
 		Dataset originalDataset = (Dataset) this.imageDisplay.getActiveView().getData();
 		Dataset temp = originalDataset;
 
-		for (ImagePreprocessor processor : imagePreprocessors) {
+		for (ImagePreprocessor processor : imagePreprocessorList) {
 			processor.setInput(temp);
 			processor.preprocess();
 			temp = processor.getOutput();
@@ -91,14 +91,14 @@ public class ImagePreprocessors {
 
 		if (hasBeenPreprocessed) {
 
-			this.preprocessedImage = temp;
-			this.preprocessedImage
+			this.preprocessedDataset = temp;
+			this.preprocessedDataset
 					.setName(FilenameUtils.removeExtension(originalDataset.getName()) + "-Preprocessed.tif");
 
 			// Show if needed
 			if (showPreprocessedImage) {
 				Platform.runLater(() -> {
-					ui.show(this.preprocessedImage);
+					ui.show(this.preprocessedDataset);
 				});
 			}
 
@@ -108,7 +108,7 @@ public class ImagePreprocessors {
 					String filePath = FilenameUtils.removeExtension(originalDataset.getSource());
 					filePath += "-Preprocessed.tif";
 					try {
-						dsio.save(this.preprocessedImage, filePath);
+						dsio.save(this.preprocessedDataset, filePath);
 					} catch (IOException e) {
 						log.error("Can't save the result file.");
 					}
@@ -124,15 +124,15 @@ public class ImagePreprocessors {
 	}
 
 	public List<ImagePreprocessor> getImagePreprocessors() {
-		return imagePreprocessors;
+		return imagePreprocessorList;
 	}
 
 	public void setImagePreprocessors(List<ImagePreprocessor> imagePreprocessors) {
-		this.imagePreprocessors = imagePreprocessors;
+		this.imagePreprocessorList = imagePreprocessors;
 	}
 
-	public Dataset getPreprocessedImage() {
-		return preprocessedImage;
+	public Dataset getPreprocessedDataset() {
+		return preprocessedDataset;
 	}
 
 	public boolean isSavePreprocessedImage() {

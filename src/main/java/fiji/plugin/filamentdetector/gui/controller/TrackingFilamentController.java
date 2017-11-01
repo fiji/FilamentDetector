@@ -160,7 +160,7 @@ public class TrackingFilamentController extends AbstractController implements In
 	}
 
 	private void setFilamentsTracker(FilamentsTracker filamentTracker) {
-		this.filamentWorkflow.initTracking(filamentTracker);
+		this.filamentWorkflow.setFilamentsTracker(filamentTracker);
 
 		FilamentsTrackerController controller = null;
 		if (filamentTracker.getClass().equals(BBoxLAPFilamentsTracker.class)) {

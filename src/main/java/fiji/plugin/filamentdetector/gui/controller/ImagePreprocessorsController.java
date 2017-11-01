@@ -216,7 +216,6 @@ public class ImagePreprocessorsController extends AbstractController implements 
 				String statusMessage = "The image has been successfully preprocessed.";
 				status.showStatus(statusMessage);
 				detectionProgressIndicator.setVisible(false);
-
 				usePreprocessedImageForOverlay();
 			}
 
@@ -246,7 +245,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 
 	private void usePreprocessedImageForOverlay() {
 		if (useForOverlayCheckbox.isSelected()) {
-			Dataset dataset = imagePreprocessors.getPreprocessedImage();
+			Dataset dataset = imagePreprocessors.getPreprocessedDataset();
 
 			if (dataset != null) {
 
@@ -263,11 +262,18 @@ public class ImagePreprocessorsController extends AbstractController implements 
 
 				if (imageDisplay != null) {
 					overlay.setImageDisplay(imageDisplay);
+					filamentWorkflow.setImageDisplay(imageDisplay);
+					status.showStatus("Using preprocessed image for overlay.");
+				} else {
+					overlay.setImageDisplay(imagePreprocessors.getImageDisplay());
+					filamentWorkflow.setImageDisplay(imagePreprocessors.getImageDisplay());
+					log.error("Cannot use the preprocessed image for overlay.");
 				}
 			}
 
 		} else {
 			overlay.setImageDisplay(imagePreprocessors.getImageDisplay());
+			filamentWorkflow.setImageDisplay(imagePreprocessors.getImageDisplay());
 		}
 	}
 }

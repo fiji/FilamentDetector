@@ -104,9 +104,16 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 
 	@Override
 	public void detectCurrentFrame(int channelIndex) {
-		colorService.initialize();
 
-		setFilaments(new Filaments());
+		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
+		try {
+			this.imp = convertService.convert(getImageDisplay(), ImagePlus.class);
+			this.impData = convertService.convert(getDataset(), ImagePlus.class);
+		} catch (NullPointerException e) {
+			eventService.publish(new ImageNotFoundEvent());
+		}
+
+		colorService.initialize();
 
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
@@ -146,7 +153,6 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 		}
 
 		this.setFilaments(filaments);
-
 	}
 
 	private void simplify() {

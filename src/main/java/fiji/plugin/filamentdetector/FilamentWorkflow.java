@@ -2,6 +2,8 @@ package fiji.plugin.filamentdetector;
 
 import java.util.stream.Collectors;
 
+import javax.swing.SwingUtilities;
+
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;
@@ -42,10 +44,11 @@ public class FilamentWorkflow {
 	@Parameter
 	private EventService eventService;
 
+	final private ImageDisplay sourceImage;
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
 
-	private ImagePreprocessors imagePreprocessor;
+	private ImagePreprocessors imagePreprocessors;
 
 	private FilamentDetector filamentsDetector;
 	private FilamentsTracker filamentsTracker;
@@ -59,8 +62,9 @@ public class FilamentWorkflow {
 	public FilamentWorkflow(Context context, ImageDisplay imd) {
 		context.inject(this);
 		this.imageDisplay = imd;
+		this.sourceImage = imd;
 
-		this.imagePreprocessor = new ImagePreprocessors(context, imd);
+		this.imagePreprocessors = new ImagePreprocessors(context, this.sourceImage);
 
 		this.filaments = new Filaments();
 		this.filteredFilaments = this.filaments;
@@ -74,33 +78,46 @@ public class FilamentWorkflow {
 		calibrations = new Calibrations(context, getDataset(), getImagePlus());
 	}
 
-	public void initDetection(FilamentDetector filamentDetector) {
-		Dataset data;
-		if (imagePreprocessor.isHasBeenPreprocessed()) {
-			data = imagePreprocessor.getPreprocessedImage();
-		} else {
-			data = getDataset();
-		}
+	public void setFilamentDetector(FilamentDetector filamentDetector) {
 		this.filamentsDetector = filamentDetector;
-		this.filamentsDetector.setDataset(data);
-		this.filamentsDetector.setImageDisplay(imageDisplay);
 	}
 
-	public void initTracking(FilamentsTracker filamentsTracker) {
+	public void setFilamentsTracker(FilamentsTracker filamentsTracker) {
 		this.filamentsTracker = filamentsTracker;
-		this.filamentsTracker.setFilaments(getFilaments());
 	}
 
 	public void detectCurrentFrame() {
-		this.filamentsDetector.detectCurrentFrame(calibrations.getChannelToUseIndex());
-		this.filaments = filamentsDetector.getFilaments();
-		this.filteredFilaments = this.filaments;
+		Dataset data;
+		if (this.imagePreprocessors.isHasBeenPreprocessed()) {
+			data = this.imagePreprocessors.getPreprocessedDataset();
+		} else {
+			data = getDataset();
+		}
+		this.filamentsDetector.setDataset(data);
+		this.filamentsDetector.setImageDisplay(imageDisplay);
+
+		SwingUtilities.invokeLater(() -> {
+			this.filamentsDetector.detectCurrentFrame(calibrations.getChannelToUseIndex());
+			this.filaments = filamentsDetector.getFilaments();
+			this.filteredFilaments = this.filaments;
+		});
 	}
 
 	public void detect() {
-		this.filamentsDetector.detect(calibrations.getChannelToUseIndex());
-		this.filaments = filamentsDetector.getFilaments();
-		this.filteredFilaments = this.filaments;
+		Dataset data;
+		if (this.imagePreprocessors.isHasBeenPreprocessed()) {
+			data = this.imagePreprocessors.getPreprocessedDataset();
+		} else {
+			data = getDataset();
+		}
+		this.filamentsDetector.setDataset(data);
+		this.filamentsDetector.setImageDisplay(imageDisplay);
+
+		SwingUtilities.invokeLater(() -> {
+			this.filamentsDetector.detect(calibrations.getChannelToUseIndex());
+			this.filaments = filamentsDetector.getFilaments();
+			this.filteredFilaments = this.filaments;
+		});
 	}
 
 	public void track() {
@@ -120,8 +137,16 @@ public class FilamentWorkflow {
 		}
 	}
 
+	public void setImageDisplay(ImageDisplay imageDisplay) {
+		this.imageDisplay = imageDisplay;
+	}
+
 	public ImageDisplay getImageDisplay() {
 		return imageDisplay;
+	}
+
+	public ImageDisplay getSourceImage() {
+		return sourceImage;
 	}
 
 	public ImagePlus getImagePlus() {
@@ -173,7 +198,7 @@ public class FilamentWorkflow {
 	}
 
 	public ImagePreprocessors getImagePreprocessor() {
-		return imagePreprocessor;
+		return imagePreprocessors;
 	}
 
 	public Context getContext() {

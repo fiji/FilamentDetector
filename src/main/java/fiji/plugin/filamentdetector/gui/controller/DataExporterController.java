@@ -200,7 +200,7 @@ public class DataExporterController extends AbstractController implements Initia
 	private File fileChooser(DataExporter<?> exporter) {
 		FileChooser fileChooser = new FileChooser();
 
-		Dataset dataset = (Dataset) filamentWorkflow.getImageDisplay().getActiveView().getData();
+		Dataset dataset = (Dataset) filamentWorkflow.getSourceImage().getActiveView().getData();
 		if (dataset.getSource() != null) {
 			String parentPath = new File(dataset.getSource()).getParent();
 			fileChooser.setInitialDirectory(new File(parentPath));

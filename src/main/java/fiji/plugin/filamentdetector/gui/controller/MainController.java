@@ -96,6 +96,8 @@ public class MainController extends AbstractController implements Initializable 
 	private KymographBuilderController kymographBuilderController;
 	private AnalyzeController analyzerController;
 
+	private static boolean originalImageDisapearsMessageShown = false;
+
 	public MainController(Context context, FilamentWorkflow filamentDetector) {
 		context.inject(this);
 		this.filamentWorkflow = filamentDetector;
@@ -302,13 +304,13 @@ public class MainController extends AbstractController implements Initializable 
 
 	@EventHandler
 	private void disableInterface(ImageNotFoundEvent event) {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
+		Platform.runLater(() -> {
+			if (!originalImageDisapearsMessageShown) {
+				originalImageDisapearsMessageShown = true;
 				getPane().setDisable(true);
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
-				Label label = new Label("It looks like the original image disapears. Please restart the plugin.");
+				Label label = new Label("It looks like the image has been closed. Please restart the plugin.");
 				label.setWrapText(true);
 				alert.getDialogPane().setContent(label);
 				alert.showAndWait();

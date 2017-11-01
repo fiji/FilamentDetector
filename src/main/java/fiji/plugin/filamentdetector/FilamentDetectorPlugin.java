@@ -51,7 +51,7 @@ public class FilamentDetectorPlugin implements Command {
 		} catch (Exception e) {
 			ij.ui().showDialog("Error during initialization", e.getMessage(), DialogPrompt.MessageType.ERROR_MESSAGE);
 			log.error("Error during initialization");
-			log.error(e.getStackTrace());
+			e.printStackTrace();
 		}
 
 	}
