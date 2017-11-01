@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -30,9 +29,9 @@
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <Label prefHeight="50.0" text="Maximum overlap difference in the filament's bounding boxes. Between 0 and 1." wrapText="true">
+                  <Label text="Maximum overlap difference in the filament's bounding boxes. Between 0 and 1." wrapText="true">
                      <font>
-                        <Font size="10.0" />
+                        <Font name="System Italic" size="10.0" />
                      </font>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" />
@@ -40,38 +39,42 @@
                   </Label>
                </children>
             </VBox>
-            <VBox>
+            <VBox spacing="5.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                  <VBox>
                      <children>
-                        <Label minWidth="-Infinity" text="Max Frame Gap" />
-                        <Slider fx:id="maxFrameGapSlider" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1" onMouseClicked="#updateTrackingParameters" onMouseDragged="#updateTrackingParameters" onMousePressed="#updateTrackingParameters" />
-                        <TextField fx:id="maxFrameGapField" maxWidth="80.0" minWidth="45.0" onAction="#updateTrackingParameters" />
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                              <Label minWidth="-Infinity" text="Max Frame Gap" />
+                              <Slider fx:id="maxFrameGapSlider" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1" onMouseClicked="#updateTrackingParameters" onMouseDragged="#updateTrackingParameters" onMousePressed="#updateTrackingParameters" />
+                              <TextField fx:id="maxFrameGapField" maxWidth="80.0" minWidth="45.0" onAction="#updateTrackingParameters" />
+                           </children>
+                           <padding>
+                              <Insets left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <Label text="Maximum number of frames between two filaments to allow to close the gap." wrapText="true">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
                      </children>
-                     <padding>
-                        <Insets left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <Label prefHeight="50.0" text="Maximum number of frames between two filaments to allow to close the gap." wrapText="true">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" />
-                     </padding>
-                  </Label>
+                  </VBox>
                </children>
             </VBox>
-            <VBox disable="true">
+            <VBox disable="true" spacing="5.0">
                <children>
                   <CheckBox fx:id="interpolateFilamentsCheckbox" mnemonicParsing="false" onAction="#updateTrackingParameters" text="Interpolate Filaments">
                      <padding>
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </CheckBox>
-                  <Label prefHeight="50.0" text="Interpolate missing filaments after tracking (not available yet)." wrapText="true">
+                  <Label text="Interpolate missing filaments after tracking (not available yet)." wrapText="true">
                      <font>
-                        <Font size="10.0" />
+                        <Font name="System Italic" size="10.0" />
                      </font>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" />
