@@ -43,6 +43,9 @@ public abstract class AbstractImagePreprocessorController extends AbstractContro
 				targetStream = new FileInputStream(initialFile);
 				Image image = new Image(targetStream);
 				ImageView imageView = new ImageView(image);
+				imageView.setPreserveRatio(true);
+				imageView.setFitHeight(300);
+				
 				Tooltip tooltip = new Tooltip();
 				tooltip.setStyle("-fx-background-color: transparent;");
 				tooltip.setGraphic(imageView);

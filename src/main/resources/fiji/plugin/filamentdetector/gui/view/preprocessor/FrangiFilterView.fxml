@@ -37,7 +37,7 @@
                         <Separator orientation="VERTICAL" />
                         <VBox>
                            <children>
-                              <HBox spacing="5.0">
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Spacing :" />
                                     <TextField fx:id="spacing" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
@@ -47,7 +47,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <HBox spacing="5.0">
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Scale : " />
                                     <TextField fx:id="scale" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />

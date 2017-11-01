@@ -23,6 +23,7 @@ import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.FrangiFilte
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.GaussianFilterController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.NormalizeIntensitiesController;
 import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.PseudoFlatFieldCorrectionController;
+import fiji.plugin.filamentdetector.gui.controller.imagepreprocessor.TubenessFilterController;
 import fiji.plugin.filamentdetector.gui.fxwidgets.ReorderablePaneListView;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.preprocessing.Convert8BitPreprocessor;
@@ -33,6 +34,7 @@ import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessors;
 import fiji.plugin.filamentdetector.preprocessing.NormalizeIntensitiesPreprocessor;
 import fiji.plugin.filamentdetector.preprocessing.PseudoFlatFieldCorrectionPreprocessor;
+import fiji.plugin.filamentdetector.preprocessing.TubenessFilterPreprocessor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -132,6 +134,9 @@ public class ImagePreprocessorsController extends AbstractController implements 
 
 			} else if (imagePreprocessor.getClass().equals(FrangiFilterPreprocessor.class)) {
 				imagePreprocessorController = new FrangiFilterController(context, imagePreprocessor);
+
+			} else if (imagePreprocessor.getClass().equals(TubenessFilterPreprocessor.class)) {
+				imagePreprocessorController = new TubenessFilterController(context, imagePreprocessor);
 
 			} else {
 				log.error(imagePreprocessor + " is can't be loaded.");
@@ -256,7 +261,6 @@ public class ImagePreprocessorsController extends AbstractController implements 
 							.orElse(null);
 				}
 
-				log.info(imageDisplay);
 				if (imageDisplay != null) {
 					overlay.setImageDisplay(imageDisplay);
 				}

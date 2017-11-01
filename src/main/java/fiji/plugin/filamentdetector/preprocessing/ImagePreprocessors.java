@@ -69,6 +69,7 @@ public class ImagePreprocessors {
 		this.imagePreprocessors.add(new GaussianFilterPreprocessor(context));
 		this.imagePreprocessors.add(new PseudoFlatFieldCorrectionPreprocessor(context));
 		this.imagePreprocessors.add(new DOGFilterPreprocessor(context));
+		this.imagePreprocessors.add(new TubenessFilterPreprocessor(context));
 		this.imagePreprocessors.add(new FrangiFilterPreprocessor(context));
 		this.imagePreprocessors.add(new NormalizeIntensitiesPreprocessor(context));
 	}

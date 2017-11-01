@@ -12,7 +12,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER_LEFT" disable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane maxWidth="30.0" minWidth="20.0" prefWidth="30.0">
                <children>
@@ -33,17 +33,30 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="doGaussianFilterCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Gaussian Filter : " />
-                        <TextField fx:id="gaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
-                        <Label text="pixel(s)" />
+                        <CheckBox fx:id="doProcessCheckbox" mnemonicParsing="false" onAction="#updateParameters" prefWidth="180.0" text="Tubeness Filter" wrapText="true" />
+                        <Separator orientation="VERTICAL" />
+                        <VBox alignment="CENTER_LEFT">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="Sigma :" />
+                                    <TextField fx:id="sigma" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
+                                    <Label text="pixel(s)" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <VBox spacing="5.0">
+                  <VBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label prefWidth="400.0" text="The classic Gaussian filter can remove some noise and smooth the image." wrapText="true">
+                        <Label prefWidth="400.0" text="This filter produce a score for how &quot;tube-like&quot; each point in the image is. It  uses the eigenvalues of the Hessian matrix to calculate this measure of &quot;tubeness&quot; (Sato et al 1997)." wrapText="true">
                            <font>
                               <Font name="System Italic" size="10.0" />
                            </font>

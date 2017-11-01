@@ -41,7 +41,6 @@ public class DatasetUtils {
 		ImageDisplay imd = ij.imageDisplay().getActiveImageDisplay();
 
 		ImageDisplay converted = DatasetUtils.convertTo8Bit(imd, ij);
-		log.info(converted);
 	}
 
 }

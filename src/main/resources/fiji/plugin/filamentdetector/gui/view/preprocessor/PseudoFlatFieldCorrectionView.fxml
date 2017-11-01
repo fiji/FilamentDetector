@@ -33,7 +33,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction" />
+                        <CheckBox fx:id="doflatFieldCorrectionCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Pseudo Flat Field Correction : " />
                         <TextField fx:id="flatFieldCorrectionGaussianFilterSizeField" onAction="#updateParameters" onKeyReleased="#updateParameters" prefWidth="60.0" />
                         <Label text="pixel(s)" />
                      </children>
