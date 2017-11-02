@@ -2,11 +2,17 @@
 
 [![](https://travis-ci.org/hadim/FilamentDetector.svg?branch=master)](https://travis-ci.org/hadim/FilamentDetector)
 
-`FilamentDetector` is a **Fiji plugin** that allow easy, fast and accurate detection and tracking of **biological filaments**.
+`FilamentDetector` is a **Fiji plugin** that allows easy, fast and accurate detection and tracking of **biological filaments**. It comes with a bunch of **ready-to-use modules** to analyze filaments. `FilamentDetector` is also extensible which means that you can plug **your own algorithm** to detect, track and/or analyze filaments.
 
 Please visit https://imagej.net/FilamentDetector for more information.
 
-![Screenshot of FilamentDetector](./screenshot.png "Screenshot of FilamentDetector")
+## Screenshots
+
+![Screenshot of FilamentDetector](./screenshots/1.preprocess.png "Screenshot of FilamentDetector")
+![Screenshot of FilamentDetector](./screenshots/2.detect.png "Screenshot of FilamentDetector")
+![Screenshot of FilamentDetector](./screenshots/3.track.png "Screenshot of FilamentDetector")
+![Screenshot of FilamentDetector](./screenshots/4.kymo.png "Screenshot of FilamentDetector")
+![Screenshot of FilamentDetector](./screenshots/5.analyze.png "Screenshot of FilamentDetector")
 
 ## Installation
 
