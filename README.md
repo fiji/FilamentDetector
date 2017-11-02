@@ -8,10 +8,20 @@ Please visit https://imagej.net/FilamentDetector for more information.
 
 ## Screenshots
 
+### Preprocess images
 ![Screenshot of FilamentDetector](./screenshots/1.preprocess.png "Screenshot of FilamentDetector")
+
+
+### Detect filaments
 ![Screenshot of FilamentDetector](./screenshots/2.detect.png "Screenshot of FilamentDetector")
+
+### Track filaments
 ![Screenshot of FilamentDetector](./screenshots/3.track.png "Screenshot of FilamentDetector")
+
+### Generate kymographs
 ![Screenshot of FilamentDetector](./screenshots/4.kymo.png "Screenshot of FilamentDetector")
+
+### Run more analysis
 ![Screenshot of FilamentDetector](./screenshots/5.analyze.png "Screenshot of FilamentDetector")
 
 ## Installation
