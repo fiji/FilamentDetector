@@ -126,7 +126,7 @@ public class GeometryUtils {
 		double y = (double) ((1 - distRatio) * start[1] + distRatio * end[1]);
 		return new double[] { x, y };
 	}
-
+	
 	public static Plot plotPoints(double[] y) {
 		double[] x = IntStream.range(0, y.length).mapToDouble(i -> i).toArray();
 		return plotPoints(x, y);
