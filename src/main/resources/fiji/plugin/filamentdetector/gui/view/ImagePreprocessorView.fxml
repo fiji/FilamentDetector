@@ -58,7 +58,7 @@
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </padding>
                      <children>
-                        <ProgressIndicator fx:id="detectionProgressIndicator" maxHeight="26.0" />
+                        <ProgressIndicator fx:id="progressIndicator" maxHeight="26.0" />
                         <Button mnemonicParsing="false" onAction="#preprocessImage" text="Preprocess Image" />
                      </children>
                   </HBox>

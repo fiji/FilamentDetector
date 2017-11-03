@@ -84,7 +84,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 	private CheckBox useForOverlayCheckbox;
 
 	@FXML
-	private ProgressIndicator detectionProgressIndicator;
+	private ProgressIndicator progressIndicator;
 
 	@FXML
 	private AnchorPane preprocessorContainer;
@@ -107,7 +107,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.detectionProgressIndicator.setVisible(false);
+		this.progressIndicator.setVisible(false);
 
 		VBox vbox = new VBox();
 		this.preprocessorContainer.getChildren().add(vbox);
@@ -190,7 +190,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 		if (thread != null) {
 			thread.stop();
 		}
-		this.detectionProgressIndicator.setVisible(true);
+		this.progressIndicator.setVisible(true);
 
 		task = new Task<Integer>() {
 			@Override
@@ -205,7 +205,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 				imagePreprocessors.setImagePreprocessors(imagePreprocessorControllers.stream()
 						.map(c -> c.getImagePreprocessor()).collect(Collectors.toList()));
 
-				imagePreprocessors.preprocess();
+				filamentWorkflow.preProcessImages();
 				return 0;
 			}
 
@@ -215,14 +215,15 @@ public class ImagePreprocessorsController extends AbstractController implements 
 				eventService.publish(new PreventPanelSwitchEvent(false));
 				String statusMessage = "The image has been successfully preprocessed.";
 				status.showStatus(statusMessage);
-				detectionProgressIndicator.setVisible(false);
+				progressIndicator.setVisible(false);
+				overlay.reset();
 				usePreprocessedImageForOverlay();
 			}
 
 			@Override
 			protected void cancelled() {
 				super.cancelled();
-				detectionProgressIndicator.setVisible(false);
+				progressIndicator.setVisible(false);
 				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 
@@ -233,7 +234,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 				StackTraceElement[] stackTrace = this.getException().getStackTrace();
 				status.showStatus(
 						Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
-				detectionProgressIndicator.setVisible(false);
+				progressIndicator.setVisible(false);
 				eventService.publish(new PreventPanelSwitchEvent(false));
 			}
 		};

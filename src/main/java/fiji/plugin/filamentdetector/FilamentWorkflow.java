@@ -198,6 +198,17 @@ public class FilamentWorkflow {
 		return imagePreprocessors;
 	}
 
+	public void preProcessImages() {
+		this.imagePreprocessors.preprocess();
+		
+		// Reset all filaments
+		this.filaments.clear();
+		this.filteredFilaments.clear();
+		this.trackedFilaments.clear();
+		this.filteredTrackedFilaments.clear();
+		
+	}
+
 	public Context getContext() {
 		return this.context;
 	}
