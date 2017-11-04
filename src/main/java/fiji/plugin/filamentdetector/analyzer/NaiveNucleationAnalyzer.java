@@ -38,6 +38,9 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		super();
 		setName(NAME);
 		setDescription(DESCRIPTION);
+		
+		// TODO: allow line to have thickness to reduce noise
+		// TODO: set intensity threshold according to image threshold (Otsu or similar)
 	}
 
 	@Override

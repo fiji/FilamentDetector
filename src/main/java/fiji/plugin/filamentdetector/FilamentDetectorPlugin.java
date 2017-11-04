@@ -2,7 +2,7 @@ package fiji.plugin.filamentdetector;
 
 import org.scijava.ItemIO;
 import org.scijava.command.Command;
-import org.scijava.command.ContextCommand;
+import org.scijava.command.DynamicCommand;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -12,7 +12,7 @@ import fiji.plugin.filamentdetector.gui.MainAppFrame;
 import net.imagej.ImageJ;
 import net.imagej.display.ImageDisplay;
 
-@Plugin(type = ContextCommand.class, menuPath = "Plugins>Tracking>FilamentDetector")
+@Plugin(type = DynamicCommand.class, menuPath = "Plugins>Tracking>FilamentDetector")
 public class FilamentDetectorPlugin implements Command {
 
 	@Parameter
