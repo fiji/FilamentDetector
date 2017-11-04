@@ -15,7 +15,7 @@ import net.imglib2.type.numeric.RealType;
 public abstract class AbstractImagePreprocessor extends AbstractRichPlugin implements ImagePreprocessor {
 
 	private String name;
-	
+
 	private boolean doPreprocess = false;
 	private Dataset input;
 	protected Dataset output;
@@ -38,7 +38,7 @@ public abstract class AbstractImagePreprocessor extends AbstractRichPlugin imple
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public Dataset getOutput() {
 		return output;

@@ -2,19 +2,16 @@
 package fiji.plugin.filamentdetector.gui.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
-import org.scijava.InstantiableException;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.PluginInfo;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.detection.FilamentDetector;

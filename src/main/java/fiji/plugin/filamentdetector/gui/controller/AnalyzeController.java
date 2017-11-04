@@ -50,7 +50,7 @@ public class AnalyzeController extends AbstractController implements Initializab
 
 	@Parameter
 	private GUIStatusService status;
-	
+
 	@Parameter
 	private AnalyzerService analyzerService;
 

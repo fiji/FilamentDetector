@@ -60,7 +60,7 @@ public class TrackingFilamentController extends AbstractController implements In
 
 	@Parameter
 	private LogService log;
-	
+
 	@Parameter
 	private FilamentTrackerService trackerService;
 

@@ -23,7 +23,7 @@ public class TestScijavaPlugin {
 		// plugin.reloadPlugins();
 		for (PluginInfo<TestScijavaPlugin.Detector> detectorInfo : plugin
 				.getPluginsOfType(TestScijavaPlugin.Detector.class)) {
-			
+
 			Detector detector = detectorInfo.createInstance();
 			log.info(detector);
 			log.info(detector.getName());
@@ -33,8 +33,9 @@ public class TestScijavaPlugin {
 			log.info(detector.getPriority());
 			log.info("******************************");
 		}
-		
-		TestScijavaPlugin.RidgeDetector detector = (RidgeDetector) plugin.getPlugin(TestScijavaPlugin.RidgeDetector.class).createInstance();
+
+		TestScijavaPlugin.RidgeDetector detector = (RidgeDetector) plugin
+				.getPlugin(TestScijavaPlugin.RidgeDetector.class).createInstance();
 		log.info(detector.getName());
 
 	}

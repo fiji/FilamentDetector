@@ -114,9 +114,8 @@ public class GeometryUtils {
 	}
 
 	public static RealPoint getPointOnVectorFromDistance(RealPoint start, RealPoint end, double distance) {
-		double distRatio = distance
-				/ Math.sqrt(Math.pow(start.getDoublePosition(0) - end.getDoublePosition(0), 2)
-						+ Math.pow(start.getDoublePosition(1) - end.getDoublePosition(1), 2));
+		double distRatio = distance / Math.sqrt(Math.pow(start.getDoublePosition(0) - end.getDoublePosition(0), 2)
+				+ Math.pow(start.getDoublePosition(1) - end.getDoublePosition(1), 2));
 		double x = ((1 - distRatio) * start.getDoublePosition(0) + distRatio * end.getDoublePosition(0));
 		double y = ((1 - distRatio) * start.getDoublePosition(1) + distRatio * end.getDoublePosition(1));
 		return new RealPoint(x, y);
@@ -131,8 +130,7 @@ public class GeometryUtils {
 	}
 
 	public static double[] getPointOnVectorFromDistance(double[] start, double[] end, double distance) {
-		double distRatio = distance
-				/ Math.sqrt(Math.pow(start[0] - end[0], 2) + Math.pow(start[1] - end[1], 2));
+		double distRatio = distance / Math.sqrt(Math.pow(start[0] - end[0], 2) + Math.pow(start[1] - end[1], 2));
 		double x = (1 - distRatio) * start[0] + distRatio * end[0];
 		double y = (1 - distRatio) * start[1] + distRatio * end[1];
 		return new double[] { x, y };

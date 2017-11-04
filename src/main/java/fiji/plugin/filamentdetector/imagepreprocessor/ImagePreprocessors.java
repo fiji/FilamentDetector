@@ -44,7 +44,7 @@ public class ImagePreprocessors {
 
 	@Parameter
 	private ConvertService convert;
-	
+
 	@Parameter
 	private ImagePreprocessorService imageProcessorPlugin;
 

@@ -16,7 +16,7 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 
 	@Parameter
 	private ImagePreprocessorService processorService;
-	
+
 	private static boolean DEFAULT_DO_PREPROCESS = false;
 	private static double DEFAULT_FLAT_FIELD_CORRECTION_SIZE = 50;
 

@@ -31,7 +31,7 @@ public class TestFake {
 
 	public static void main(final String... args) throws Exception {
 		ImageJ ij = net.imagej.Main.launch(args);
-		
+
 		Context context = ij.getContext();
 		LogService log = ij.log();
 		DatasetService ds = ij.dataset();
@@ -53,8 +53,7 @@ public class TestFake {
 		wf.getCalibrations().setChannelToUseIndex(1);
 
 		// Enable some preprocessors
-		ImagePreprocessor proc = wf.getImagePreprocessor()
-				.getPreProcessorByName("Convert8BitPreprocessor");
+		ImagePreprocessor proc = wf.getImagePreprocessor().getPreProcessorByName("Convert8BitPreprocessor");
 		proc.setDoPreprocess(true);
 
 		// Preprocess the image
