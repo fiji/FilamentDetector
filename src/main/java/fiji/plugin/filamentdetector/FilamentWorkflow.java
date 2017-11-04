@@ -3,6 +3,7 @@ package fiji.plugin.filamentdetector;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.Initializable;
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
@@ -25,7 +26,7 @@ import net.imagej.display.ImageDisplay;
  * This class holds the necessary informations/models necessary during
  *  the use of the GUI. Can be also used for scripting.
  */
-public class FilamentWorkflow {
+public class FilamentWorkflow implements Initializable {
 
 	@Parameter
 	private Context context;
@@ -71,7 +72,8 @@ public class FilamentWorkflow {
 		this.filteredTrackedFilaments = this.trackedFilaments;
 	}
 
-	public void initialize() throws Exception {
+	@Override
+	public void initialize() {
 		// Get physical pixel sizes (um) and duration between frames (s)
 		calibrations = new Calibrations(context, getDataset(), getImagePlus());
 	}

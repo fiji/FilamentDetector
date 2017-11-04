@@ -6,6 +6,7 @@ import java.net.URL;
 import javax.swing.JFrame;
 
 import org.scijava.Context;
+import org.scijava.Initializable;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -46,7 +47,7 @@ public class MainAppFrame extends JFrame {
 	/**
 	 * Create the JFXPanel that make the link between Swing (IJ) and JavaFX plugin.
 	 */
-	public void init() throws Exception {
+	public void initialize() throws Exception {
 
 		try {
 			filamentDetector.initialize();
@@ -60,6 +61,8 @@ public class MainAppFrame extends JFrame {
 		this.fxPanel = new JFXPanel();
 		this.add(this.fxPanel);
 		this.setVisible(true);
+		
+		 Platform.setImplicitExit(false);
 
 		// Initialize the JavaFX panel
 		// The call to runLater() avoid a mix between JavaFX thread and Swing thread.
