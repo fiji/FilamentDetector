@@ -175,10 +175,6 @@ public class DetectFilamentController extends AbstractController implements Init
 
 		sinuositySync = new UpperLowerSynchronizer(minSinuositySlider, minSinuosityField, maxSinuositySlider,
 				maxSinuosityField);
-		sinuositySync.setLowerTooltip(
-				"The sinuosity define how 'straight' is a line. 1 means it's straight, more is less straight.");
-		sinuositySync.setUpperTooltip(
-				"The sinuosity define how 'straight' is a line. 1 means it's straight, more is less straight.");
 		sinuositySync.setLowerValue(filteringParameters.getMinSinuosity());
 		sinuositySync.setUpperValue(filteringParameters.getMaxSinuosity());
 

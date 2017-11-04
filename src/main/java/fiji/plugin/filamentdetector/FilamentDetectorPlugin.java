@@ -42,7 +42,7 @@ public class FilamentDetectorPlugin implements Command {
 
 		try {
 			FilamentWorkflow filamentDetector = new FilamentWorkflow(ij.context(), imd);
-			
+
 			// Launch JavaFX interface
 			MainAppFrame app = new MainAppFrame(ij, filamentDetector);
 			app.setTitle(PLUGIN_NAME + " version " + VERSION);

@@ -128,9 +128,10 @@ public class AnalyzeController extends AbstractController implements Initializab
 		AnalyzerController tipFitterAnalyzerController = new TipFitterAnalyzerController(context, tipFitterAnalyzer);
 		analyzers.add(tipFitterAnalyzer);
 		analyzerControllers.put(tipFitterAnalyzer, tipFitterAnalyzerController);
-		
+
 		NaiveNucleationAnalyzer naiveNucleationAnalyzer = new NaiveNucleationAnalyzer(context, filamentWorkflow);
-		AnalyzerController naiveNucleationAnalyzerController = new NaiveNucleationAnalyzerController(context, naiveNucleationAnalyzer);
+		AnalyzerController naiveNucleationAnalyzerController = new NaiveNucleationAnalyzerController(context,
+				naiveNucleationAnalyzer);
 		analyzers.add(naiveNucleationAnalyzer);
 		analyzerControllers.put(naiveNucleationAnalyzer, naiveNucleationAnalyzerController);
 
@@ -168,7 +169,7 @@ public class AnalyzeController extends AbstractController implements Initializab
 		analyzerDescription.setText(analyzer.getDescription());
 		AnalyzerController controller = analyzerControllers.get(analyzer);
 		Pane pane = controller.loadPane();
-		
+
 		analyzerPane.setContent(pane);
 		analyzeButton.setDisable(false);
 	}
