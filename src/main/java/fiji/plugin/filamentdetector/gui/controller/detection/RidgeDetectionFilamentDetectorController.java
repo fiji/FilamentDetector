@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import org.scijava.Context;
 
 import fiji.plugin.filamentdetector.detection.FilamentDetector;
-import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
+import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentDetector;
 import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import javafx.event.Event;
@@ -59,12 +59,12 @@ public class RidgeDetectionFilamentDetectorController extends AbstractFilamentDe
 	private SliderLabelSynchronizer lineWidthSync;
 	private UpperLowerSynchronizer contrastSync;
 
-	private RidgeDetectionFilamentsDetector filamentDetector;
+	private RidgeDetectionFilamentDetector filamentDetector;
 
 	public RidgeDetectionFilamentDetectorController(Context context, FilamentDetector filamentDetector) {
 		context.inject(this);
 		setFXMLPath(FXML_PATH);
-		this.filamentDetector = (RidgeDetectionFilamentsDetector) filamentDetector;
+		this.filamentDetector = (RidgeDetectionFilamentDetector) filamentDetector;
 	}
 
 	@Override

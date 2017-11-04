@@ -24,7 +24,7 @@ import ij.process.ImageProcessor;
 import net.imagej.display.ImageDisplayService;
 
 @Plugin(type = FilamentDetector.class, priority = Priority.HIGH)
-public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
+public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 
 	private static String NAME = "Ridge Detection";
 
@@ -65,7 +65,7 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 	private ImagePlus imp;
 	private ImagePlus impData;
 
-	public RidgeDetectionFilamentsDetector() {
+	public RidgeDetectionFilamentDetector() {
 		this.setName(NAME);
 		this.lineDetector = new LineDetector();
 	}

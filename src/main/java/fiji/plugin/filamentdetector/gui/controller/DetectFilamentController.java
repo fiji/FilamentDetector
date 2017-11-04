@@ -20,7 +20,7 @@ import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.detection.FilamentDetector;
 import fiji.plugin.filamentdetector.detection.FilamentDetectorService;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
-import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
+import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentDetector;
 import fiji.plugin.filamentdetector.event.FilterFilamentEvent;
 import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
@@ -208,7 +208,7 @@ public class DetectFilamentController extends AbstractController implements Init
 		this.filamentWorkflow.setFilamentDetector(filamentDetector);
 
 		FilamentDetectorController controller = null;
-		if (filamentDetector.getClass().equals(RidgeDetectionFilamentsDetector.class)) {
+		if (filamentDetector.getClass().equals(RidgeDetectionFilamentDetector.class)) {
 			controller = new RidgeDetectionFilamentDetectorController(context, filamentDetector);
 		} else {
 			log.error("Can't load FilamentDetector parameters pane.");

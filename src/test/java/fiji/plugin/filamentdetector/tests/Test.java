@@ -5,7 +5,7 @@ import org.scijava.log.LogService;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.detection.FilamentDetectorService;
-import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
+import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentDetector;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
@@ -58,7 +58,7 @@ public class Test {
 		overlay.setImageDisplay(imdp);
 		overlay.setViewMode(ImageDisplayMode.COMPOSITE);
 
-		RidgeDetectionFilamentsDetector detector = detectorService.getRidgeFilamentDetector();
+		RidgeDetectionFilamentDetector detector = detectorService.getRidgeFilamentDetector();
 		wf.setFilamentDetector(detector);
 		detector.setImageDisplay(imdp);
 		detector.setDataset(datasetp);

@@ -43,10 +43,10 @@ public class FilamentDetectorService extends AbstractService implements ImageJSe
 		return detectors;
 	}
 
-	public RidgeDetectionFilamentsDetector getRidgeFilamentDetector() {
-		PluginInfo<SciJavaPlugin> pluginInfo = pluginService.getPlugin(RidgeDetectionFilamentsDetector.class);
+	public RidgeDetectionFilamentDetector getRidgeFilamentDetector() {
+		PluginInfo<SciJavaPlugin> pluginInfo = pluginService.getPlugin(RidgeDetectionFilamentDetector.class);
 		try {
-			RidgeDetectionFilamentsDetector plugin = (RidgeDetectionFilamentsDetector) pluginInfo.createInstance();
+			RidgeDetectionFilamentDetector plugin = (RidgeDetectionFilamentDetector) pluginInfo.createInstance();
 			plugin.setContext(context);
 			return plugin;
 		} catch (InstantiableException e) {
