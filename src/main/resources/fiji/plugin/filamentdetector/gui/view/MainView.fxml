@@ -27,9 +27,9 @@
                      <children>
                         <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Status Messages" VBox.vgrow="ALWAYS">
                            <content>
-                              <TextArea fx:id="logField" editable="false" wrapText="true">
+                              <TextArea fx:id="logField" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font name="System Italic" size="11.0" />
                                  </font>
                               </TextArea>
                            </content>

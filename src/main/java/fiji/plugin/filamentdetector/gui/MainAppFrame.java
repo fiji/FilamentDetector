@@ -1,9 +1,13 @@
 package fiji.plugin.filamentdetector.gui;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import org.scijava.Context;
 import org.scijava.log.LogService;
@@ -41,6 +45,18 @@ public class MainAppFrame extends JFrame {
 		this.ij = ij;
 		this.filamentDetector = filamentDetector;
 		this.imd = filamentDetector.getImageDisplay();
+
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+				log.info("Quitting FilamentDetector... Bye bye !");
+				SwingUtilities.invokeLater(() -> {
+					setVisible(true);
+					dispose();
+				});
+			}
+		});
 	}
 
 	/**
@@ -61,15 +77,12 @@ public class MainAppFrame extends JFrame {
 		this.add(this.fxPanel);
 		this.setVisible(true);
 
-		Platform.setImplicitExit(false);
+		Platform.setImplicitExit(true);
 
 		// Initialize the JavaFX panel
 		// The call to runLater() avoid a mix between JavaFX thread and Swing thread.
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				initFX(fxPanel);
-			}
+		Platform.runLater(() -> {
+			initFX(fxPanel);
 		});
 
 	}

@@ -33,7 +33,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="doProcessCheckbox" mnemonicParsing="false" onAction="#updateParameters" prefWidth="180.0" text="Tubeness Filter" wrapText="true" />
+                        <CheckBox fx:id="doProcessCheckbox" mnemonicParsing="false" onAction="#updateParameters" prefWidth="180.0" text="Tubeness Filter (COMING SOON)" wrapText="true" />
                         <Separator orientation="VERTICAL" />
                         <VBox alignment="CENTER_LEFT">
                            <children>

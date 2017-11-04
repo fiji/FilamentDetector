@@ -25,8 +25,9 @@ public class GUIStatusService extends DefaultStatusService implements StatusServ
 	@Override
 	protected void publish(final StatusEvent statusEvent) {
 		eventService.publishLater(statusEvent);
+
 		if (logField != null) {
-			logField.appendText("\n· " + statusEvent.getStatusMessage());
+			logField.appendText("\n>>> " + statusEvent.getStatusMessage());
 		}
 	}
 
