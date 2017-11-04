@@ -1,10 +1,12 @@
 package fiji.plugin.filamentdetector.detection;
 
+import org.scijava.plugin.AbstractRichPlugin;
+
 import fiji.plugin.filamentdetector.model.Filaments;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 
-public abstract class AbstractFilamentDetector implements FilamentDetector {
+public abstract class AbstractFilamentDetector extends AbstractRichPlugin implements FilamentDetector {
 
 	private String name;
 

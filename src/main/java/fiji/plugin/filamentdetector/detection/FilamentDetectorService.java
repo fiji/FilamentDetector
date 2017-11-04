@@ -1,0 +1,59 @@
+package fiji.plugin.filamentdetector.detection;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.scijava.Context;
+import org.scijava.InstantiableException;
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginInfo;
+import org.scijava.plugin.PluginService;
+import org.scijava.plugin.SciJavaPlugin;
+import org.scijava.service.AbstractService;
+import org.scijava.service.Service;
+
+import net.imagej.ImageJService;
+
+@Plugin(type = Service.class)
+public class FilamentDetectorService extends AbstractService implements ImageJService {
+
+	@Parameter
+	private Context context;
+
+	@Parameter
+	private LogService log;
+
+	@Parameter
+	private PluginService pluginService;
+
+	public List<FilamentDetector> getDetectors() {
+		List<FilamentDetector> detectors = new ArrayList<>();
+		for (PluginInfo<FilamentDetector> pluginInfo : pluginService.getPluginsOfType(FilamentDetector.class)) {
+			try {
+				FilamentDetector plugin = pluginInfo.createInstance();
+				plugin.setContext(context);
+				detectors.add(plugin);
+			} catch (InstantiableException e) {
+				log.error("Can't load the following Filament Detector : " + pluginInfo.getName());
+				log.error(e.getMessage());
+			}
+		}
+		return detectors;
+	}
+
+	public RidgeDetectionFilamentsDetector getRidgeFilamentDetector() {
+		PluginInfo<SciJavaPlugin> pluginInfo = pluginService.getPlugin(RidgeDetectionFilamentsDetector.class);
+		try {
+			RidgeDetectionFilamentsDetector plugin = (RidgeDetectionFilamentsDetector) pluginInfo.createInstance();
+			plugin.setContext(context);
+			return plugin;
+		} catch (InstantiableException e) {
+			log.error("Can't load the following Filament Detector : " + pluginInfo.getName());
+			log.error(e.getMessage());
+			return null;
+		}
+	}
+
+}

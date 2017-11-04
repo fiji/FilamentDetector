@@ -9,13 +9,16 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.InstantiableException;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.PluginInfo;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.detection.FilamentDetector;
+import fiji.plugin.filamentdetector.detection.FilamentDetectorService;
 import fiji.plugin.filamentdetector.detection.FilteringParameters;
 import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
 import fiji.plugin.filamentdetector.event.FilterFilamentEvent;
@@ -70,6 +73,9 @@ public class DetectFilamentController extends AbstractController implements Init
 
 	@Parameter
 	private FilamentOverlayService overlayService;
+
+	@Parameter
+	private FilamentDetectorService filamentDetectorService;
 
 	@FXML
 	private ComboBox<FilamentDetector> detectorComboBox;
@@ -149,9 +155,7 @@ public class DetectFilamentController extends AbstractController implements Init
 		context.inject(this);
 		setFXMLPath(FXML_PATH);
 		this.filamentWorkflow = filamentWorkflow;
-
-		this.filamentDetectors = new ArrayList<>();
-		this.filamentDetectors.add(new RidgeDetectionFilamentsDetector(context));
+		this.filamentDetectors = filamentDetectorService.getDetectors();
 	}
 
 	@Override

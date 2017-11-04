@@ -3,11 +3,12 @@ package fiji.plugin.filamentdetector.detection;
 import java.awt.Color;
 import java.util.stream.Collectors;
 
-import org.scijava.Context;
+import org.scijava.Priority;
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import de.biomedical_imaging.ij.steger.Line;
 import de.biomedical_imaging.ij.steger.LineDetector;
@@ -22,6 +23,7 @@ import ij.ImagePlus;
 import ij.process.ImageProcessor;
 import net.imagej.display.ImageDisplayService;
 
+@Plugin(type = FilamentDetector.class, priority = Priority.HIGH)
 public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 
 	private static String NAME = "Ridge Detection";
@@ -63,8 +65,7 @@ public class RidgeDetectionFilamentsDetector extends AbstractFilamentDetector {
 	private ImagePlus imp;
 	private ImagePlus impData;
 
-	public RidgeDetectionFilamentsDetector(Context context) {
-		context.inject(this);
+	public RidgeDetectionFilamentsDetector() {
 		this.setName(NAME);
 		this.lineDetector = new LineDetector();
 	}

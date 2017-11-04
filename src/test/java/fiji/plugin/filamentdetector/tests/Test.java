@@ -4,12 +4,12 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
+import fiji.plugin.filamentdetector.detection.FilamentDetectorService;
 import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentsDetector;
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.overlay.ImageDisplayMode;
-import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
 import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
@@ -23,6 +23,7 @@ public class Test {
 
 		LogService log = ij.log();
 		FilamentOverlayService overlay = ij.get(FilamentOverlayService.class);
+		FilamentDetectorService detectorService = ij.get(FilamentDetectorService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake1.tif";
 		Dataset dataset = ij.dataset().open(fpath);
@@ -35,14 +36,14 @@ public class Test {
 		wf.getCalibrations().setChannelToUseIndex(2);
 
 		// Enable some preprocessors
-		ImagePreprocessor proc = wf.getImagePreprocessor()
-				.getPreProcessorByName("PseudoFlatFieldCorrectionPreprocessor");
-		proc.setDoPreprocess(true);
-		proc = wf.getImagePreprocessor().getPreProcessorByName("DOGFilterPreprocessor");
-		proc.setDoPreprocess(true);
-
-		// Preprocess the image
-		wf.getImagePreprocessor().preprocess();
+//		ImagePreprocessor proc = wf.getImagePreprocessor()
+//				.getPreProcessorByName("PseudoFlatFieldCorrectionPreprocessor");
+//		proc.setDoPreprocess(true);
+//		proc = wf.getImagePreprocessor().getPreProcessorByName("DOGFilterPreprocessor");
+//		proc.setDoPreprocess(true);
+//
+//		// Preprocess the image
+//		wf.getImagePreprocessor().preprocess();
 
 		// Get processed data and convert it to ImageDisplay
 		// TODO: that step should be easier
@@ -50,13 +51,14 @@ public class Test {
 		ij.ui().show(datasetp);
 		ImageDisplay imdp = ij.imageDisplay().getImageDisplays().stream()
 				.filter(i -> ((Dataset) i.getActiveView().getData()).equals(datasetp)).findFirst().orElse(null);
+		imdp = imd;
 		wf.setImageDisplay(imdp);
 
 		overlay.initialize();
 		overlay.setImageDisplay(imdp);
 		overlay.setViewMode(ImageDisplayMode.COMPOSITE);
 
-		RidgeDetectionFilamentsDetector detector = new RidgeDetectionFilamentsDetector(context);
+		RidgeDetectionFilamentsDetector detector = detectorService.getRidgeFilamentDetector();
 		wf.setFilamentDetector(detector);
 		detector.setImageDisplay(imdp);
 		detector.setDataset(datasetp);

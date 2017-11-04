@@ -1,12 +1,13 @@
 package fiji.plugin.filamentdetector.detection;
 
 import org.scijava.Named;
+import org.scijava.plugin.RichPlugin;
 
 import fiji.plugin.filamentdetector.model.Filaments;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 
-public interface FilamentDetector extends Named {
+public interface FilamentDetector extends Named, RichPlugin {
 
 	void detect();
 
