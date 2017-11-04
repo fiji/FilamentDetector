@@ -3,9 +3,9 @@ package fiji.plugin.filamentdetector.tests;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 
-import fiji.plugin.filamentdetector.preprocessing.TubenessFilterPreprocessor;
+import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
+import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessorService;
 import net.imagej.Dataset;
-import net.imagej.DatasetService;
 import net.imagej.ImageJ;
 import net.imagej.ops.OpService;
 import net.imglib2.type.numeric.RealType;
@@ -18,15 +18,16 @@ public class TestPreprocessing {
 
 		LogService log = ij.log();
 		OpService ops = ij.op();
-		DatasetService ds = ij.dataset();
+		ImagePreprocessorService procService = ij.get(ImagePreprocessorService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small-8bit.tif";
 		Dataset dataset = ij.dataset().open(fpath);
 		ij.ui().show(dataset);
 
-		TubenessFilterPreprocessor proc = new TubenessFilterPreprocessor(context);
+		DOGFilterPreprocessor proc = procService.getDOGFilter();
 		proc.setDoPreprocess(true);
-		proc.setSigma(5);
+		proc.setSigma1(6);
+		proc.setSigma2(2);
 
 		proc.setInput(dataset);
 		proc.preprocess();
@@ -34,5 +35,6 @@ public class TestPreprocessing {
 
 		ij.ui().show(output);
 
+		log.info("Done");
 	}
 }

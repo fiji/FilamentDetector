@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
-import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.axis.CalibratedAxis;
@@ -10,12 +11,13 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 
+@Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class Convert8BitPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = true;
 
-	public Convert8BitPreprocessor(Context context) {
-		super(context);
+	public Convert8BitPreprocessor() {
+		super();
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
 

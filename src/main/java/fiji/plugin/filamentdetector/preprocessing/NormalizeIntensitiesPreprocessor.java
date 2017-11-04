@@ -1,18 +1,20 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
-import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
+@Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class NormalizeIntensitiesPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = true;
 
-	public NormalizeIntensitiesPreprocessor(Context context) {
-		super(context);
+	public NormalizeIntensitiesPreprocessor() {
+		super();
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
 

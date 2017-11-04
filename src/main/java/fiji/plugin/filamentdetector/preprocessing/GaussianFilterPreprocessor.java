@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
-import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
@@ -8,6 +9,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
+@Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class GaussianFilterPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = false;
@@ -15,8 +17,8 @@ public class GaussianFilterPreprocessor extends AbstractImagePreprocessor {
 
 	private double gaussianFilterSize = DEFAULT_GAUSSIAN_FITLER_SIZE;
 
-	public GaussianFilterPreprocessor(Context context) {
-		super(context);
+	public GaussianFilterPreprocessor() {
+		super();
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
 

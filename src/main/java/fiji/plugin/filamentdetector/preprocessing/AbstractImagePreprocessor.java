@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
 import org.scijava.Context;
+import org.scijava.plugin.AbstractRichPlugin;
 import org.scijava.plugin.Parameter;
 
 import net.imagej.Dataset;
@@ -11,8 +12,10 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
-public abstract class AbstractImagePreprocessor implements ImagePreprocessor {
+public abstract class AbstractImagePreprocessor extends AbstractRichPlugin implements ImagePreprocessor {
 
+	private String name;
+	
 	private boolean doPreprocess = false;
 	private Dataset input;
 	protected Dataset output;
@@ -26,10 +29,16 @@ public abstract class AbstractImagePreprocessor implements ImagePreprocessor {
 	@Parameter
 	protected DatasetService ds;
 
-	public AbstractImagePreprocessor(Context context) {
-		context.inject(this);
+	@Override
+	public String getName() {
+		return name;
 	}
 
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public Dataset getOutput() {
 		return output;

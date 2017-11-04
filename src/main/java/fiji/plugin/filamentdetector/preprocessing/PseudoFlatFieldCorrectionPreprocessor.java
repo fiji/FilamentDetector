@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
-import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.ops.convert.RealTypeConverter;
@@ -9,6 +10,7 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 
+@Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = false;
@@ -16,8 +18,8 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 
 	private double flatFieldCorrectionGaussianFilterSize = DEFAULT_FLAT_FIELD_CORRECTION_SIZE;
 
-	public PseudoFlatFieldCorrectionPreprocessor(Context context) {
-		super(context);
+	public PseudoFlatFieldCorrectionPreprocessor() {
+		super();
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
 
@@ -27,7 +29,7 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 			Dataset dataset = getInput().duplicate();
 
 			// Get Gaussian filtered image and use it as a background
-			GaussianFilterPreprocessor processor = new GaussianFilterPreprocessor(context);
+			GaussianFilterPreprocessor processor = new GaussianFilterPreprocessor();
 			processor.setDoPreprocess(true);
 			processor.setInput(dataset);
 			processor.setGaussianFilterSize(flatFieldCorrectionGaussianFilterSize);

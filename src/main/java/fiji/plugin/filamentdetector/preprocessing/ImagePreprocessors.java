@@ -44,6 +44,9 @@ public class ImagePreprocessors {
 
 	@Parameter
 	private ConvertService convert;
+	
+	@Parameter
+	private ImagePreprocessorService imageProcessorPlugin;
 
 	@Parameter
 	ConvertService convertService;
@@ -64,14 +67,13 @@ public class ImagePreprocessors {
 		this.imageDisplay = imd;
 
 		this.imagePreprocessorList = new ArrayList<>();
-
-		this.imagePreprocessorList.add(new Convert8BitPreprocessor(context));
-		this.imagePreprocessorList.add(new GaussianFilterPreprocessor(context));
-		this.imagePreprocessorList.add(new PseudoFlatFieldCorrectionPreprocessor(context));
-		this.imagePreprocessorList.add(new DOGFilterPreprocessor(context));
-		this.imagePreprocessorList.add(new TubenessFilterPreprocessor(context));
-		this.imagePreprocessorList.add(new FrangiFilterPreprocessor(context));
-		this.imagePreprocessorList.add(new NormalizeIntensitiesPreprocessor(context));
+		this.imagePreprocessorList.add(imageProcessorPlugin.get8BitConverter());
+		this.imagePreprocessorList.add(imageProcessorPlugin.getGaussianFilter());
+		this.imagePreprocessorList.add(imageProcessorPlugin.getPseudoFlatFieldCorrector());
+		this.imagePreprocessorList.add(imageProcessorPlugin.getDOGFilter());
+		this.imagePreprocessorList.add(imageProcessorPlugin.getTubenessFilter());
+		this.imagePreprocessorList.add(imageProcessorPlugin.getFrangiFilter());
+		this.imagePreprocessorList.add(imageProcessorPlugin.getIntensitiesNormalizer());
 	}
 
 	public void preprocess() {

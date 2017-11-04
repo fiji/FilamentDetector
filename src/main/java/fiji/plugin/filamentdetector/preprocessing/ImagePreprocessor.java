@@ -1,10 +1,13 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
+import org.scijava.Named;
+import org.scijava.plugin.RichPlugin;
+
 import net.imagej.Dataset;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
-public interface ImagePreprocessor {
+public interface ImagePreprocessor extends Named, RichPlugin {
 	public <T extends RealType<T>> void preprocess();
 
 	public Dataset getOutput();

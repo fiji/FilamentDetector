@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
-import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
@@ -10,6 +11,7 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 
+@Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = false;
@@ -19,8 +21,7 @@ public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
 	private double sigma1 = DEFAULT_DOG_SIGMA1;
 	private double sigma2 = DEFAULT_DOG_SIGMA2;
 
-	public DOGFilterPreprocessor(Context context) {
-		super(context);
+	public DOGFilterPreprocessor() {
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
 

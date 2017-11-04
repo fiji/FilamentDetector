@@ -1,6 +1,7 @@
 package fiji.plugin.filamentdetector.preprocessing;
 
-import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
@@ -8,6 +9,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
+@Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class TubenessFilterPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = false;
@@ -16,8 +18,8 @@ public class TubenessFilterPreprocessor extends AbstractImagePreprocessor {
 	private double sigma = DEFAULT_SIGMA;
 	private double[] calibrations = new double[] { 1, 1 };
 
-	public TubenessFilterPreprocessor(Context context) {
-		super(context);
+	public TubenessFilterPreprocessor() {
+		super();
 		setDoPreprocess(DEFAULT_DO_PREPROCESS);
 	}
 
