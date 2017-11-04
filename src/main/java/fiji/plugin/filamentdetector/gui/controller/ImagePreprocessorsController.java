@@ -200,7 +200,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 
 				String statusMessage = "Preprocessing steps are : \n" + imagePreprocessorControllers.stream()
 						.filter(c -> c.getImagePreprocessor().isDoPreprocess())
-						.map(c -> c.getImagePreprocessor().getClass().getName()).collect(Collectors.joining("\n"));
+						.map(c -> c.getImagePreprocessor().getInfo().getName()).collect(Collectors.joining("\n"));
 				status.showStatus(statusMessage);
 
 				imagePreprocessors.setImagePreprocessors(imagePreprocessorControllers.stream()

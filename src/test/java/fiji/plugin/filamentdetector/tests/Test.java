@@ -11,6 +11,7 @@ import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import fiji.plugin.filamentdetector.overlay.ImageDisplayMode;
 import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.FilamentTrackerService;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imagej.display.ImageDisplay;
@@ -24,6 +25,7 @@ public class Test {
 		LogService log = ij.log();
 		FilamentOverlayService overlay = ij.get(FilamentOverlayService.class);
 		FilamentDetectorService detectorService = ij.get(FilamentDetectorService.class);
+		FilamentTrackerService tarckerService = ij.get(FilamentTrackerService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake1.tif";
 		Dataset dataset = ij.dataset().open(fpath);
@@ -69,7 +71,7 @@ public class Test {
 
 		overlay.add(filaments);
 
-		BBoxLAPFilamentsTracker tracker = new BBoxLAPFilamentsTracker(context);
+		BBoxLAPFilamentsTracker tracker = tarckerService.getBBoxTracker();
 		wf.setFilamentsTracker(tracker);
 		wf.track();
 		TrackedFilaments trackedFilaments = wf.getTrackedFilaments();

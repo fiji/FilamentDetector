@@ -1,9 +1,11 @@
 package fiji.plugin.filamentdetector.tracking;
 
+import org.scijava.plugin.AbstractRichPlugin;
+
 import fiji.plugin.filamentdetector.model.Filaments;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 
-public abstract class AbstractFilamentsTracker implements FilamentsTracker {
+public abstract class AbstractFilamentsTracker extends AbstractRichPlugin implements FilamentsTracker {
 
 	private String name;
 

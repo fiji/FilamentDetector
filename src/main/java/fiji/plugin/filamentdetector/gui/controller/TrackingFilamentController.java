@@ -23,6 +23,7 @@ import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.TrackedFilamentsTableView;
 import fiji.plugin.filamentdetector.tracking.BBoxLAPFilamentsTracker;
+import fiji.plugin.filamentdetector.tracking.FilamentTrackerService;
 import fiji.plugin.filamentdetector.tracking.FilamentsTracker;
 import fiji.plugin.filamentdetector.tracking.FilteringTrackedFilamentsParameters;
 import javafx.application.Platform;
@@ -59,6 +60,9 @@ public class TrackingFilamentController extends AbstractController implements In
 
 	@Parameter
 	private LogService log;
+	
+	@Parameter
+	private FilamentTrackerService trackerService;
 
 	@FXML
 	private ComboBox<FilamentsTracker> trackerComboBox;
@@ -122,7 +126,7 @@ public class TrackingFilamentController extends AbstractController implements In
 		this.filamentWorkflow = filamentDetector;
 
 		this.filamentsTrackers = new ArrayList<>();
-		this.filamentsTrackers.add(new BBoxLAPFilamentsTracker(context));
+		this.filamentsTrackers.add(trackerService.getBBoxTracker());
 	}
 
 	@Override

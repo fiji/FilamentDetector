@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import org.scijava.Context;
+import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
@@ -32,7 +34,8 @@ import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
 import fiji.plugin.trackmate.tracking.sparselap.costmatrix.JaqamanLinkingCostMatrixCreator;
 import fiji.plugin.trackmate.tracking.sparselap.linker.JaqamanLinker;
 
-public class BBoxLAPFilamentsTracker extends AbstractFilamentsTracker implements FilamentsTracker {
+@Plugin(type = FilamentsTracker.class, priority = Priority.HIGH)
+public class BBoxLAPFilamentsTracker extends AbstractFilamentsTracker {
 
 	private static String NAME = "BoundingBox LAP Tracker";
 
@@ -46,8 +49,8 @@ public class BBoxLAPFilamentsTracker extends AbstractFilamentsTracker implements
 	private double maxFrameGap = 15;
 	private boolean interpolateFilaments = true;
 
-	public BBoxLAPFilamentsTracker(Context context) {
-		context.inject(this);
+	public BBoxLAPFilamentsTracker() {
+		super();
 		setName(NAME);
 	}
 
