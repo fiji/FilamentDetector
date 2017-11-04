@@ -41,6 +41,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		
 		// TODO: allow line to have thickness to reduce noise
 		// TODO: set intensity threshold according to image threshold (Otsu or similar)
+		// TODO: add results to GUI
 	}
 
 	@Override
