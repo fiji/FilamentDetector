@@ -17,6 +17,7 @@ import fiji.plugin.filamentdetector.overlay.ImageDisplayMode;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,10 +27,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 public class MainController extends AbstractController implements Initializable {
@@ -47,7 +50,7 @@ public class MainController extends AbstractController implements Initializable 
 	private FilamentOverlayService overlay;
 
 	@FXML
-	private Accordion mainPane;
+	private AnchorPane mainPaneContainer;
 
 	@FXML
 	private TextArea logField;
@@ -87,6 +90,8 @@ public class MainController extends AbstractController implements Initializable 
 
 	private FilamentWorkflow filamentWorkflow;
 
+	private Accordion mainPane;
+
 	private WelcomeController welcomeController;
 	private ImagePreprocessorsController imagePreprocessorController;
 	private DetectFilamentController detectFilamentController;
@@ -106,52 +111,90 @@ public class MainController extends AbstractController implements Initializable 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 
-		// Call children controller methods when their respective panes are expanded.
-		mainPane.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
-			@Override
-			public void changed(ObservableValue<? extends TitledPane> ov, TitledPane old_val, TitledPane new_val) {
-				if (new_val != null && new_val.getContent() != null) {
-					if (new_val.getContent().equals(dataExporterController.getPane())) {
-						dataExporterController.refreshData(null);
-					} else if (new_val.getContent().equals(trackingFilamentController.getPane())) {
-						trackingFilamentController.initPane();
-					} else if (new_val.getContent().equals(kymographBuilderController.getPane())) {
-						kymographBuilderController.initPane();
-					} else if (new_val.getContent().equals(analyzerController.getPane())) {
-						analyzerController.initPane();
-					} else if (new_val.getContent().equals(detectFilamentController.getPane())) {
-						detectFilamentController.initPane();
-					}
-				}
-			}
-		});
+
 
 	}
 
 	public void loadPanes() {
 
+		ProgressIndicator startupProgress = new ProgressIndicator();
+		this.mainPaneContainer.getChildren().add(startupProgress);
+		AnchorPane.setTopAnchor(startupProgress, 300.0);
+		AnchorPane.setLeftAnchor(startupProgress, 300.0);
+		AnchorPane.setRightAnchor(startupProgress, 300.0);
+		AnchorPane.setBottomAnchor(startupProgress, 300.0);
+
+		Task<Accordion> startupTask = new Task<Accordion>() {
+
+			@Override
+			protected Accordion call() throws Exception {
+
+				Accordion mainPane = new Accordion();
+				AnchorPane.setTopAnchor(mainPane, 0.0);
+				AnchorPane.setLeftAnchor(mainPane, 0.0);
+				AnchorPane.setRightAnchor(mainPane, 0.0);
+				AnchorPane.setBottomAnchor(mainPane, 0.0);
+
+				// Load all the panes
+				Platform.runLater(() -> {
+					mainPane.getPanes().add(loadWelcome());
+					mainPane.getPanes().add(loadImagePreprocessor());
+					mainPane.getPanes().add(loadDetectFilament());
+					mainPane.getPanes().add(loadTrackingFilament());
+					mainPane.getPanes().add(loadAnalyzer());
+					mainPane.getPanes().add(loadDataExporter());
+					mainPane.getPanes().add(loadKymographBuilder());
+					mainPane.getPanes().add(loadAbout());
+
+					// Initialize overlay settings UI
+					overlay.setImageDisplay(filamentWorkflow.getImageDisplay());
+					initOverlaySettings();
+
+				});
+
+				setMainPane(mainPane);
+				return mainPane;
+			}
+		};
+		startupTask.setOnSucceeded(evt -> {
+			// Enable the first welcome pane
+			mainPane.setExpandedPane(getTitledPane("Welcome"));
+			welcomeController.loadImageCalibrations();
+
+			mainPaneContainer.getChildren().clear();
+			mainPaneContainer.getChildren().add(mainPane);
+			status.showStatus("FilamentDetector has been correctly initialized.");
+			
+			// Call children controller methods when their respective panes are expanded.
+			this.mainPane.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+				@Override
+				public void changed(ObservableValue<? extends TitledPane> ov, TitledPane old_val, TitledPane new_val) {
+					if (new_val != null && new_val.getContent() != null) {
+						if (new_val.getContent().equals(dataExporterController.getPane())) {
+							dataExporterController.refreshData(null);
+						} else if (new_val.getContent().equals(trackingFilamentController.getPane())) {
+							trackingFilamentController.initPane();
+						} else if (new_val.getContent().equals(kymographBuilderController.getPane())) {
+							kymographBuilderController.initPane();
+						} else if (new_val.getContent().equals(analyzerController.getPane())) {
+							analyzerController.initPane();
+						} else if (new_val.getContent().equals(detectFilamentController.getPane())) {
+							detectFilamentController.initPane();
+						}
+					}
+				}
+			});
+		});
+
+		startupProgress.progressProperty().bind(startupTask.progressProperty());
+		new Thread(startupTask).start();
+
 		// Allow GUIStatusService to display message in the log window
 		status.setTextField(logField);
+	}
 
-		// Load all the panes
-		loadWelcome();
-		loadImagePreprocessor();
-		loadDetectFilament();
-		loadTrackingFilament();
-		loadDataExporter();
-		loadKymographBuilder();
-		loadAnalyzer();
-		loadAbout();
-
-		// Initialize overlay settings UI
-		overlay.setImageDisplay(filamentWorkflow.getImageDisplay());
-		initOverlaySettings();
-
-		// Enable the first welcome pane
-		mainPane.setExpandedPane(getTitledPane("Welcome"));
-		welcomeController.loadImageCalibrations();
-
-		status.showStatus("FilamentDetector has been correctly initialized.");
+	private void setMainPane(Accordion mainPane) {
+		this.mainPane = mainPane;
 	}
 
 	private void initOverlaySettings() {
@@ -254,52 +297,52 @@ public class MainController extends AbstractController implements Initializable 
 		return mainPane.getPanes().stream().filter(x -> x.getText().equals(text)).findFirst().orElse(null);
 	}
 
-	public void loadWelcome() {
+	public TitledPane loadWelcome() {
 		welcomeController = new WelcomeController(context, filamentWorkflow);
 		Pane pane = welcomeController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Welcome", pane));
+		return new TitledPane("Welcome", pane);
 	}
 
-	public void loadImagePreprocessor() {
+	public TitledPane loadImagePreprocessor() {
 		imagePreprocessorController = new ImagePreprocessorsController(context, filamentWorkflow);
 		Pane pane = imagePreprocessorController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Preprocessing", pane));
+		return new TitledPane("Preprocessing", pane);
 	}
 
-	public void loadDetectFilament() {
+	public TitledPane loadDetectFilament() {
 		detectFilamentController = new DetectFilamentController(context, filamentWorkflow);
 		Pane pane = detectFilamentController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Detect Filaments", pane));
+		return new TitledPane("Detect Filaments", pane);
 	}
 
-	public void loadTrackingFilament() {
+	public TitledPane loadTrackingFilament() {
 		trackingFilamentController = new TrackingFilamentController(context, filamentWorkflow);
 		Pane pane = trackingFilamentController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Track Filaments", pane));
+		return new TitledPane("Track Filaments", pane);
 	}
 
-	public void loadDataExporter() {
+	public TitledPane loadDataExporter() {
 		dataExporterController = new DataExporterController(context, filamentWorkflow);
 		Pane pane = dataExporterController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Export Filaments", pane));
+		return new TitledPane("Export Filaments", pane);
 	}
 
-	public void loadKymographBuilder() {
+	public TitledPane loadKymographBuilder() {
 		kymographBuilderController = new KymographBuilderController(context, filamentWorkflow);
 		Pane pane = kymographBuilderController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Build Kymographs", pane));
+		return new TitledPane("Build Kymographs", pane);
 	}
 
-	public void loadAnalyzer() {
+	public TitledPane loadAnalyzer() {
 		analyzerController = new AnalyzeController(context, filamentWorkflow);
 		Pane pane = analyzerController.loadPane();
-		mainPane.getPanes().add(new TitledPane("Analyze Filaments", pane));
+		return new TitledPane("Analyze Filaments", pane);
 	}
 
-	public void loadAbout() {
+	public TitledPane loadAbout() {
 		aboutController = new AboutController(context);
 		Pane pane = aboutController.loadPane();
-		mainPane.getPanes().add(new TitledPane("About FilamentDetector", pane));
+		return new TitledPane("About FilamentDetector", pane);
 	}
 
 	@EventHandler
