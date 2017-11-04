@@ -3,11 +3,11 @@ package fiji.plugin.filamentdetector.analyzer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.scijava.Context;
+import org.scijava.plugin.AbstractRichPlugin;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 
-public abstract class AbstractAnalyzer implements Analyzer {
+public abstract class AbstractAnalyzer extends AbstractRichPlugin implements Analyzer {
 
 	protected String name;
 	protected String description;
@@ -17,9 +17,8 @@ public abstract class AbstractAnalyzer implements Analyzer {
 	protected String resultMessage;
 	protected Map<String, Object> results;
 
-	public AbstractAnalyzer(Context context, FilamentWorkflow filamentWorkflow) {
-		context.inject(this);
-		this.filamentWorkflow = filamentWorkflow;
+	public AbstractAnalyzer() {
+		super();
 		this.results = new HashMap<>();
 	}
 
@@ -51,6 +50,11 @@ public abstract class AbstractAnalyzer implements Analyzer {
 	@Override
 	public FilamentWorkflow getFilamentWorkflow() {
 		return filamentWorkflow;
+	}
+
+	@Override
+	public void setFilamentWorkflow(FilamentWorkflow filamentWorkflow) {
+		this.filamentWorkflow = filamentWorkflow;
 	}
 
 	@Override

@@ -5,18 +5,19 @@ import java.util.List;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.conditions.Conditions;
-import org.scijava.Context;
+import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.GeometryUtils;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import net.imagej.Dataset;
 import net.imglib2.RealPoint;
 
-public class NaiveNucleationAnalyzer extends AbstractAnalyzer implements Analyzer {
+@Plugin(type = Analyzer.class, priority = Priority.HIGH)
+public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 
 	public static String NAME = "Naive Nucleation Analyzer";
 	public static String DESCRIPTION = "This module uses the tracked filaments as seeds and look over "
@@ -33,14 +34,14 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer implements Analyze
 	private int maxFrame = 15;
 	private int channelIndex = 0;
 
-	public NaiveNucleationAnalyzer(Context context, FilamentWorkflow filamentWorkflow) {
-		super(context, filamentWorkflow);
+	public NaiveNucleationAnalyzer() {
+		super();
 		setName(NAME);
 		setDescription(DESCRIPTION);
 	}
 
 	@Override
-	public String getInfo() {
+	public String getAnalyzerInfo() {
 		String out = "";
 		out += "Name : " + this.name + "\n";
 		out += "Save results : " + this.saveResults + "\n";

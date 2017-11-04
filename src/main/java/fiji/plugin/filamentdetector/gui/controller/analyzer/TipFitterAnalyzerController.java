@@ -9,7 +9,7 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import fiji.plugin.filamentdetector.analyzer.tipfitter.TipFitterAnalyzer;
+import fiji.plugin.filamentdetector.analyzer.TipFitterAnalyzer;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.model.TrackedFilament;

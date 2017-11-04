@@ -1,13 +1,12 @@
 package fiji.plugin.filamentdetector.analyzer;
 
+import org.scijava.Named;
+import org.scijava.plugin.RichPlugin;
+
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 
-public interface Analyzer {
+public interface Analyzer extends Named, RichPlugin {
 	void analyze();
-
-	String getName();
-
-	void setName(String name);
 
 	String getDescription();
 
@@ -16,7 +15,7 @@ public interface Analyzer {
 	@Override
 	String toString();
 
-	String getInfo();
+	String getAnalyzerInfo();
 
 	String getResultMessage();
 
@@ -27,5 +26,7 @@ public interface Analyzer {
 	boolean isSaveResults();
 
 	FilamentWorkflow getFilamentWorkflow();
+
+	void setFilamentWorkflow(FilamentWorkflow filamentWorkflow);
 
 }

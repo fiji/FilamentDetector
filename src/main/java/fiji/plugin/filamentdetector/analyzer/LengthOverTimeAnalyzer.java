@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.scijava.Context;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 import com.opencsv.CSVWriter;
 
@@ -21,19 +23,19 @@ import fiji.plugin.filamentdetector.model.TrackedFilament;
 import fiji.plugin.filamentdetector.model.TrackedFilaments;
 import net.imagej.Dataset;
 
-public class LengthOverTimeAnalyzer extends AbstractAnalyzer implements Analyzer {
+@Plugin(type = Analyzer.class, priority = Priority.HIGH)
+public class LengthOverTimeAnalyzer extends AbstractAnalyzer  {
 
 	public static String NAME = "Filament Growth Curve";
 	public static String DESCRIPTION = "Generate the classic filament length versus time curve.";
 
-	public LengthOverTimeAnalyzer(Context context, FilamentWorkflow filamentWorkflow) {
-		super(context, filamentWorkflow);
+	public LengthOverTimeAnalyzer() {
 		setName(NAME);
 		setDescription(DESCRIPTION);
 	}
 
 	@Override
-	public String getInfo() {
+	public String getAnalyzerInfo() {
 		String out = "";
 		out += "Name : " + this.name + "\n";
 		out += "Save results : " + this.saveResults + "\n";

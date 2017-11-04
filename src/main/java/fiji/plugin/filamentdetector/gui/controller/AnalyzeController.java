@@ -15,9 +15,10 @@ import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.analyzer.Analyzer;
+import fiji.plugin.filamentdetector.analyzer.AnalyzerService;
 import fiji.plugin.filamentdetector.analyzer.LengthOverTimeAnalyzer;
 import fiji.plugin.filamentdetector.analyzer.NaiveNucleationAnalyzer;
-import fiji.plugin.filamentdetector.analyzer.tipfitter.TipFitterAnalyzer;
+import fiji.plugin.filamentdetector.analyzer.TipFitterAnalyzer;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.analyzer.AnalyzerController;
 import fiji.plugin.filamentdetector.gui.controller.analyzer.LengthOverTimeAnalyzerController;
@@ -49,6 +50,9 @@ public class AnalyzeController extends AbstractController implements Initializab
 
 	@Parameter
 	private GUIStatusService status;
+	
+	@Parameter
+	private AnalyzerService analyzerService;
 
 	@FXML
 	private Label nFilamentsField;
@@ -118,18 +122,21 @@ public class AnalyzeController extends AbstractController implements Initializab
 		analyzerControllers = new HashMap<>();
 
 		// Add analyzers one by one
-		LengthOverTimeAnalyzer lengthOverTimeAnalyzer = new LengthOverTimeAnalyzer(context, filamentWorkflow);
+		LengthOverTimeAnalyzer lengthOverTimeAnalyzer = analyzerService.getLengthOverTimeAnalyzer();
+		lengthOverTimeAnalyzer.setFilamentWorkflow(filamentWorkflow);
 		AnalyzerController lengthOverTimeAnalyzerController = new LengthOverTimeAnalyzerController(context,
 				lengthOverTimeAnalyzer);
 		analyzers.add(lengthOverTimeAnalyzer);
 		analyzerControllers.put(lengthOverTimeAnalyzer, lengthOverTimeAnalyzerController);
 
-		TipFitterAnalyzer tipFitterAnalyzer = new TipFitterAnalyzer(context, filamentWorkflow);
+		TipFitterAnalyzer tipFitterAnalyzer = analyzerService.getTipFitterAnalyzer();
+		tipFitterAnalyzer.setFilamentWorkflow(filamentWorkflow);
 		AnalyzerController tipFitterAnalyzerController = new TipFitterAnalyzerController(context, tipFitterAnalyzer);
 		analyzers.add(tipFitterAnalyzer);
 		analyzerControllers.put(tipFitterAnalyzer, tipFitterAnalyzerController);
 
-		NaiveNucleationAnalyzer naiveNucleationAnalyzer = new NaiveNucleationAnalyzer(context, filamentWorkflow);
+		NaiveNucleationAnalyzer naiveNucleationAnalyzer = analyzerService.getNaiveNucleationAnalyzer();
+		naiveNucleationAnalyzer.setFilamentWorkflow(filamentWorkflow);
 		AnalyzerController naiveNucleationAnalyzerController = new NaiveNucleationAnalyzerController(context,
 				naiveNucleationAnalyzer);
 		analyzers.add(naiveNucleationAnalyzer);
@@ -190,7 +197,7 @@ public class AnalyzeController extends AbstractController implements Initializab
 				analyzerCombobox.setDisable(true);
 				Analyzer analyzer = analyzerCombobox.getSelectionModel().getSelectedItem();
 				status.showStatus("Run analysis : ");
-				status.showStatus(analyzer.getInfo());
+				status.showStatus(analyzer.getAnalyzerInfo());
 				analyzer.analyze();
 				return 0;
 			}
