@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
+import org.scijava.Context;
 
 import com.opencsv.CSVWriter;
 
@@ -26,22 +26,10 @@ public class LengthOverTimeAnalyzer extends AbstractAnalyzer implements Analyzer
 	public static String NAME = "Filament Growth Curve";
 	public static String DESCRIPTION = "Generate the classic filament length versus time curve.";
 
-	private boolean saveResults = true;
-	private String resultMessage;
-	private Map<String, List<? extends Number>> results;
-
-	public LengthOverTimeAnalyzer(FilamentWorkflow filamentWorkflow) {
-		super(filamentWorkflow);
+	public LengthOverTimeAnalyzer(Context context, FilamentWorkflow filamentWorkflow) {
+		super(context, filamentWorkflow);
 		setName(NAME);
 		setDescription(DESCRIPTION);
-	}
-
-	public boolean isSaveResults() {
-		return saveResults;
-	}
-
-	public void setSaveResults(boolean saveResults) {
-		this.saveResults = saveResults;
 	}
 
 	public String getInfo() {
@@ -121,14 +109,6 @@ public class LengthOverTimeAnalyzer extends AbstractAnalyzer implements Analyzer
 				this.resultMessage += "Can't save the result file !";
 			}
 		}
-	}
-
-	public String getResultMessage() {
-		return resultMessage;
-	}
-
-	public Map<String, List<? extends Number>> getResults() {
-		return results;
 	}
 
 }

@@ -73,12 +73,8 @@ public class TipFitterAnalyzerController extends AbstractAnalyzerController impl
 
 	public TipFitterAnalyzerController(Context context, TipFitterAnalyzer analyzer) {
 		super(context);
+		setFXMLPath(FXML_VIEW_FILE);
 		this.analyzer = analyzer;
-	}
-
-	@Override
-	public String getViewFXMlFile() {
-		return FXML_VIEW_FILE;
 	}
 
 	@Override

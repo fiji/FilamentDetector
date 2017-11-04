@@ -1,7 +1,8 @@
 package fiji.plugin.filamentdetector.analyzer.tipfitter;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import org.scijava.Context;
 
 import fiji.plugin.filamentdetector.FilamentWorkflow;
 import fiji.plugin.filamentdetector.analyzer.AbstractAnalyzer;
@@ -12,13 +13,10 @@ public class TipFitterAnalyzer extends AbstractAnalyzer implements Analyzer {
 	public static String NAME = "Tip Fitter";
 	public static String DESCRIPTION = "Use tracked filaments as seeds to fit in 1D tip of filaments from both side.";
 
-	private String resultMessage;
-	private Map<String, Object> results;
-
 	private FilamentTipFitter fitter;
 
-	public TipFitterAnalyzer(FilamentWorkflow filamentWorkflow) {
-		super(filamentWorkflow);
+	public TipFitterAnalyzer(Context context, FilamentWorkflow filamentWorkflow) {
+		super(context, filamentWorkflow);
 		setName(NAME);
 		setDescription(DESCRIPTION);
 
@@ -52,14 +50,6 @@ public class TipFitterAnalyzer extends AbstractAnalyzer implements Analyzer {
 		this.resultMessage = "Tip Fitting done.\n";
 		this.resultMessage += this.fitter.getSide1Filaments().size() + this.fitter.getSide2Filaments().size();
 		this.resultMessage += " filaments have been detected.";
-	}
-
-	public String getResultMessage() {
-		return resultMessage;
-	}
-
-	public Map<String, Object> getResults() {
-		return results;
 	}
 
 	public FilamentTipFitter getFitter() {

@@ -9,7 +9,7 @@ public abstract class AbstractFilamentDetector implements FilamentDetector {
 	private String name;
 
 	private boolean simplifyFilaments = true;
-	private double simplifyToleranceDistance = 5;
+	private double simplifyToleranceDistance = 2;
 	private boolean detectOnlyCurrentFrame = false;
 
 	private ImageDisplay imageDisplay;

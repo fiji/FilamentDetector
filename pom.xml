@@ -49,6 +49,7 @@
 			<timezone>-5</timezone>
 		</developer>
 	</developers>
+
 	<contributors>
 		<!-- NB: Need a least one element to override the parent. See: https://issues.apache.org/jira/browse/MNG-5220 -->
 		<contributor>
@@ -65,6 +66,7 @@
 		<opencsv.version>4.0</opencsv.version>
 		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
 		<imagej-ops.version>0.39.0-SNAPSHOT</imagej-ops.version>
+		<nd4j.version>0.9.1</nd4j.version>
 
 		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
 		<releaseProfiles>deploy-to-imagej</releaseProfiles>
@@ -112,8 +114,20 @@
 
 		<dependency>
 			<groupId>org.nd4j</groupId>
-			<artifactId>nd4j</artifactId>
-			<version>0.9.1</version>
+			<artifactId>nd4j-api</artifactId>
+			<version>${nd4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-common</artifactId>
+			<version>${nd4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-native-platform</artifactId>
+			<version>${nd4j.version}</version>
 		</dependency>
 
 		<dependency>
@@ -160,10 +174,6 @@
 	</dependencies>
 
 	<repositories>
-		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
-		</repository>
 		<repository>
 			<id>imagej.public</id>
 			<url>http://maven.imagej.net/content/groups/public</url>

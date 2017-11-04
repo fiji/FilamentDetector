@@ -1,5 +1,7 @@
 package fiji.plugin.filamentdetector.analyzer;
 
+import fiji.plugin.filamentdetector.FilamentWorkflow;
+
 public interface Analyzer {
 	void analyze();
 
@@ -18,4 +20,11 @@ public interface Analyzer {
 	String getResultMessage();
 
 	Object getResults();
+
+	void setSaveResults(boolean saveResults);
+
+	boolean isSaveResults();
+
+	FilamentWorkflow getFilamentWorkflow();
+
 }

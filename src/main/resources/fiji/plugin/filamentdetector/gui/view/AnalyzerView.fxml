@@ -15,7 +15,7 @@
    <children>
       <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox spacing="5.0">
+            <VBox spacing="2.0">
                <children>
                   <HBox spacing="5.0">
                      <children>
@@ -27,7 +27,7 @@
                         <Label fx:id="nFilamentsField" />
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </padding>
                   </HBox>
                   <HBox spacing="5.0">
@@ -40,7 +40,7 @@
                         <Label fx:id="nTrackedFilamentsField" />
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </padding>
                   </HBox>
                   <Separator prefWidth="200.0" />
@@ -72,6 +72,7 @@
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
+                  <Separator prefWidth="200.0" />
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <Label fx:id="analyzerDescription" wrapText="true">
@@ -84,7 +85,14 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <TitledPane fx:id="analyzerPane" animated="false" collapsible="false" text="Analyzer Parameters" />
+                  <VBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <TitledPane fx:id="analyzerPane" animated="false" collapsible="false" text="Analyzer Parameters" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="System Italic" size="13.0" />
+                           </font></TitledPane>
+                     </children>
+                  </VBox>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                      <padding>
                         <Insets left="5.0" right="5.0" top="5.0" />

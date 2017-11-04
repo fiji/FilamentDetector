@@ -75,7 +75,7 @@ public class Test {
 		overlay.reset();
 		overlay.setDrawPlusTips(true);
 		overlay.add(trackedFilaments);
-		
+
 		log.info("Done");
 	}
 }

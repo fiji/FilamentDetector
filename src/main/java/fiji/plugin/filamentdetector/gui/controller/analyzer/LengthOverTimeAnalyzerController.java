@@ -60,12 +60,8 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 
 	public LengthOverTimeAnalyzerController(Context context, LengthOverTimeAnalyzer analyzer) {
 		super(context);
+		setFXMLPath(FXML_VIEW_FILE);
 		this.analyzer = analyzer;
-	}
-
-	@Override
-	public String getViewFXMlFile() {
-		return FXML_VIEW_FILE;
 	}
 
 	@Override
@@ -87,7 +83,12 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 
 		if (showPlots || savePlots) {
 
-			Map<String, List<? extends Number>> results = analyzer.getResults();
+			Map<String, Object> results = analyzer.getResults();
+
+			// I know this is an horrible practice....
+			List<Integer> ids = (List<Integer>) results.get("ids");
+			List<Double> lengths = (List<Double>) results.get("lengths");
+			List<Double> times = (List<Double>) results.get("times");
 
 			TabPane tabPane = new TabPane();
 			Tab tab;
@@ -114,11 +115,11 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 				lineChart.setTitle("Length vs Time Curve for Filament " + trackedFilament.getId());
 
 				series = new XYChart.Series<>();
-				for (int i = 0; i < results.get("lengths").size(); i++) {
-					if ((Integer) results.get("ids").get(i) == trackedFilament.getId()) {
+				for (int i = 0; i < lengths.size(); i++) {
+					if ((Integer) ids.get(i) == trackedFilament.getId()) {
 						data = new XYChart.Data<>();
-						data.setXValue(results.get("times").get(i));
-						data.setYValue(results.get("lengths").get(i));
+						data.setXValue((double) times.get(i));
+						data.setYValue((double) lengths.get(i));
 						series.getData().add(data);
 					}
 				}

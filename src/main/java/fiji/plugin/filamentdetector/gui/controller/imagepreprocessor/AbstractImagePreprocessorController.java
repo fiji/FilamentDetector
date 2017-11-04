@@ -45,7 +45,7 @@ public abstract class AbstractImagePreprocessorController extends AbstractContro
 				ImageView imageView = new ImageView(image);
 				imageView.setPreserveRatio(true);
 				imageView.setFitHeight(300);
-				
+
 				Tooltip tooltip = new Tooltip();
 				tooltip.setStyle("-fx-background-color: transparent;");
 				tooltip.setGraphic(imageView);

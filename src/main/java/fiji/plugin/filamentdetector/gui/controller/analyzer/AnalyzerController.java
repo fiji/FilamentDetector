@@ -1,8 +1,7 @@
 package fiji.plugin.filamentdetector.gui.controller.analyzer;
 
-public interface AnalyzerController {
+import fiji.plugin.filamentdetector.gui.controller.Controller;
 
-	public String getViewFXMlFile();
-
+public interface AnalyzerController extends Controller {
 	void runPostAnalysisAction();
 }

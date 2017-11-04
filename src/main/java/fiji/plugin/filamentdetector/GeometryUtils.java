@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+
 import ij.gui.Plot;
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
@@ -42,12 +45,12 @@ public class GeometryUtils {
 		return Math.sqrt(sum);
 	}
 
-	public static <T> double[] getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z) {
+	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z) {
 		InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator = new NLinearInterpolatorFactory();
 		return getIntensities(line, dataset, interpolator, frame, channel, z);
 	}
 
-	public static <T> double[] getIntensities(List<RealPoint> line, Dataset dataset,
+	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset,
 			InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator, int frame, int channel,
 			int z) {
 
@@ -60,9 +63,12 @@ public class GeometryUtils {
 		int zIndex = (int) dataset.dimensionIndex(Axes.Z);
 		int timeIndex = (int) dataset.dimensionIndex(Axes.TIME);
 		int channelIndex = (int) dataset.dimensionIndex(Axes.CHANNEL);
+
 		for (int i = 0; i < line.size(); i++) {
+
 			interpolated.setPosition(line.get(i).getDoublePosition(0), xIndex);
 			interpolated.setPosition(line.get(i).getDoublePosition(1), yIndex);
+
 			if (zIndex >= 0) {
 				interpolated.setPosition(z, zIndex);
 			}
@@ -72,10 +78,15 @@ public class GeometryUtils {
 			if (channelIndex >= 0) {
 				interpolated.setPosition(channel, channelIndex);
 			}
-			intensities[i] = interpolated.get().getRealDouble();
+
+			try {
+				intensities[i] = interpolated.get().getRealDouble();
+			} catch (Exception err) {
+				intensities[i] = 0;
+			}
 		}
 
-		return intensities;
+		return Nd4j.create(intensities);
 	}
 
 	public static List<RealPoint> getLinePointsFromNumberOfPoints(RealPoint start, RealPoint end, int numPts) {
@@ -126,7 +137,7 @@ public class GeometryUtils {
 		double y = (double) ((1 - distRatio) * start[1] + distRatio * end[1]);
 		return new double[] { x, y };
 	}
-	
+
 	public static Plot plotPoints(double[] y) {
 		double[] x = IntStream.range(0, y.length).mapToDouble(i -> i).toArray();
 		return plotPoints(x, y);
@@ -144,6 +155,23 @@ public class GeometryUtils {
 		double[] y = points.stream().mapToDouble(p -> p.getDoublePosition(1)).toArray();
 
 		Plot plot = new Plot("", "x", "y", x, y);
+		plot.show();
+
+		return plot;
+	}
+
+	public static Plot plotPoints(INDArray y) {
+		INDArray x = Nd4j.arange(0, y.size(1));
+		return plotPoints(x, y);
+	}
+
+	public static Plot plotPoints(INDArray x, INDArray y) {
+
+		double[] xPoints = x.data().asDouble();
+		double[] yPoints = y.data().asDouble();
+
+		Plot plot = new Plot("", "x", "y", xPoints, yPoints);
+		plot.addPoints(xPoints, yPoints, 0);
 		plot.show();
 
 		return plot;
