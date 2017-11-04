@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 
 import org.scijava.Context;
 
-import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
-import fiji.plugin.filamentdetector.preprocessing.TubenessFilterPreprocessor;
+import fiji.plugin.filamentdetector.imagepreprocessor.ImagePreprocessor;
+import fiji.plugin.filamentdetector.imagepreprocessor.TubenessFilterPreprocessor;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;

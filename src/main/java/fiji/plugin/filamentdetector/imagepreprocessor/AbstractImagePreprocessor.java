@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.preprocessing;
+package fiji.plugin.filamentdetector.imagepreprocessor;
 
 import org.scijava.Context;
 import org.scijava.plugin.AbstractRichPlugin;

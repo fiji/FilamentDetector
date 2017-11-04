@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.preprocessing;
+package fiji.plugin.filamentdetector.imagepreprocessor;
 
 import java.io.IOException;
 import java.util.ArrayList;

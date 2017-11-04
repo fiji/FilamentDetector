@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 
 import org.scijava.Context;
 
-import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
-import fiji.plugin.filamentdetector.preprocessing.NormalizeIntensitiesPreprocessor;
+import fiji.plugin.filamentdetector.imagepreprocessor.ImagePreprocessor;
+import fiji.plugin.filamentdetector.imagepreprocessor.NormalizeIntensitiesPreprocessor;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 

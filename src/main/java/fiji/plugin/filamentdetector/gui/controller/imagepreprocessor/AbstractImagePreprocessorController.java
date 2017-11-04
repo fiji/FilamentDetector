@@ -9,7 +9,7 @@ import java.net.URL;
 import org.scijava.Context;
 
 import fiji.plugin.filamentdetector.gui.controller.AbstractController;
-import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessor;
+import fiji.plugin.filamentdetector.imagepreprocessor.ImagePreprocessor;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;

@@ -3,8 +3,8 @@ package fiji.plugin.filamentdetector.tests;
 import org.scijava.Context;
 import org.scijava.log.LogService;
 
-import fiji.plugin.filamentdetector.preprocessing.DOGFilterPreprocessor;
-import fiji.plugin.filamentdetector.preprocessing.ImagePreprocessorService;
+import fiji.plugin.filamentdetector.imagepreprocessor.DOGFilterPreprocessor;
+import fiji.plugin.filamentdetector.imagepreprocessor.ImagePreprocessorService;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imagej.ops.OpService;
