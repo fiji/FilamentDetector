@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.tests;
+package fiji.plugin.filamentdetector.tests.manual;
 
 import org.scijava.Context;
 import org.scijava.log.LogService;
@@ -38,14 +38,15 @@ public class Test {
 		wf.getCalibrations().setChannelToUseIndex(2);
 
 		// Enable some preprocessors
-//		ImagePreprocessor proc = wf.getImagePreprocessor()
-//				.getPreProcessorByName("PseudoFlatFieldCorrectionPreprocessor");
-//		proc.setDoPreprocess(true);
-//		proc = wf.getImagePreprocessor().getPreProcessorByName("DOGFilterPreprocessor");
-//		proc.setDoPreprocess(true);
-//
-//		// Preprocess the image
-//		wf.getImagePreprocessor().preprocess();
+		// ImagePreprocessor proc = wf.getImagePreprocessor()
+		// .getPreProcessorByName("PseudoFlatFieldCorrectionPreprocessor");
+		// proc.setDoPreprocess(true);
+		// proc =
+		// wf.getImagePreprocessor().getPreProcessorByName("DOGFilterPreprocessor");
+		// proc.setDoPreprocess(true);
+		//
+		// // Preprocess the image
+		// wf.getImagePreprocessor().preprocess();
 
 		// Get processed data and convert it to ImageDisplay
 		// TODO: that step should be easier
@@ -82,4 +83,5 @@ public class Test {
 
 		log.info("Done");
 	}
+
 }

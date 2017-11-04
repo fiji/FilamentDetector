@@ -1,4 +1,4 @@
-package fiji.plugin.filamentdetector.tests;
+package fiji.plugin.filamentdetector.tests.manual;
 
 import java.util.ArrayList;
 import java.util.List;
