@@ -13,6 +13,7 @@ public interface Analyzer {
 
 	void setDescription(String description);
 
+	@Override
 	String toString();
 
 	String getInfo();

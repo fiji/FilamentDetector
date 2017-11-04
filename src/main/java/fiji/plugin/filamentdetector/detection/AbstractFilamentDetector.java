@@ -82,6 +82,7 @@ public abstract class AbstractFilamentDetector implements FilamentDetector {
 		return dataset;
 	}
 
+	@Override
 	public boolean isDetectOnlyCurrentFrame() {
 		return detectOnlyCurrentFrame;
 	}

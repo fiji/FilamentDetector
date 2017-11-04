@@ -111,8 +111,6 @@ public class MainController extends AbstractController implements Initializable 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
-
 	}
 
 	public void loadPanes() {
@@ -164,7 +162,7 @@ public class MainController extends AbstractController implements Initializable 
 			mainPaneContainer.getChildren().clear();
 			mainPaneContainer.getChildren().add(mainPane);
 			status.showStatus("FilamentDetector has been correctly initialized.");
-			
+
 			// Call children controller methods when their respective panes are expanded.
 			this.mainPane.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
 				@Override

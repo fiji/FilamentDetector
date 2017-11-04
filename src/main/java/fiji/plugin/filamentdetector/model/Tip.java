@@ -78,6 +78,7 @@ public class Tip {
 		return y[y.length - 1] - y[0];
 	}
 
+	@Override
 	public String toString() {
 		String out = "";
 		out += "Average x : " + getAverageX() + " | ";

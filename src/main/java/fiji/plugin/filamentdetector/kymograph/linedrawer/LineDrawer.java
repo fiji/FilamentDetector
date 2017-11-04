@@ -14,6 +14,7 @@ public interface LineDrawer {
 
 	void setDescription(String description);
 
+	@Override
 	String toString();
 
 }

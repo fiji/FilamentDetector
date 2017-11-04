@@ -203,7 +203,7 @@ public class TrackingFilamentController extends AbstractController implements In
 			}
 		};
 
-		this.trackerComboBox.setButtonCell((ListCell<FilamentsTracker>) cellFactory.call(null));
+		this.trackerComboBox.setButtonCell(cellFactory.call(null));
 		this.trackerComboBox.setCellFactory(cellFactory);
 
 		this.trackerComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {

@@ -39,6 +39,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer implements Analyze
 		setDescription(DESCRIPTION);
 	}
 
+	@Override
 	public String getInfo() {
 		String out = "";
 		out += "Name : " + this.name + "\n";

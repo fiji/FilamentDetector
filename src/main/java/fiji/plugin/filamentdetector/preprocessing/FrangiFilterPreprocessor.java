@@ -38,7 +38,7 @@ public class FrangiFilterPreprocessor extends AbstractImagePreprocessor {
 			Img<FloatType> out = (Img<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
 
 			// Apply filter
-			Img<FloatType> out2 = (Img<FloatType>) ops.create().img(out);
+			Img<FloatType> out2 = ops.create().img(out);
 			UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.frangiVesselness", out2, out, spacingArray, scale);
 			// sigma1, sigma2);
 			ops.slice(out2, out, op, fixedAxisIndices);

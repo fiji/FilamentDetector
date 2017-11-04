@@ -55,6 +55,7 @@ public abstract class AbstractImagePreprocessor implements ImagePreprocessor {
 		this.doPreprocess = doPreprocess;
 	}
 
+	@Override
 	public <T extends RealType<T>> Dataset matchRAIToDataset(RandomAccessibleInterval<T> rai, Dataset dataset) {
 		CalibratedAxis[] axes = new CalibratedAxis[dataset.numDimensions()];
 		for (int i = 0; i != axes.length; i++) {

@@ -234,7 +234,7 @@ public class DetectFilamentController extends AbstractController implements Init
 			}
 		};
 
-		this.detectorComboBox.setButtonCell((ListCell<FilamentDetector>) cellFactory.call(null));
+		this.detectorComboBox.setButtonCell(cellFactory.call(null));
 		this.detectorComboBox.setCellFactory(cellFactory);
 
 		this.detectorComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {

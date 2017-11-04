@@ -321,7 +321,7 @@ public class Filament implements Comparable<Filament> {
 	public List<Double> getIntensities(Context context, ImageDisplay imd, double channel, double width) {
 		// TODO: Make an IJ2 version
 		// See https://gitter.im/imglib/imglib2?at=59ee2d4e8808bed73d1b5198
-		ConvertService convert = (ConvertService) context.getService(ConvertService.class);
+		ConvertService convert = context.getService(ConvertService.class);
 		ImagePlus imp = convert.convert(imd, ImagePlus.class).duplicate();
 
 		Roi roi = this.getRoi();

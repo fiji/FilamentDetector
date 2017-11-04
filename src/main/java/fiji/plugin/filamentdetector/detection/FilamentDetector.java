@@ -42,6 +42,7 @@ public interface FilamentDetector extends Named {
 
 	void setSimplifyToleranceDistance(double simplifyToleranceDistance);
 
+	@Override
 	String toString();
 
 }

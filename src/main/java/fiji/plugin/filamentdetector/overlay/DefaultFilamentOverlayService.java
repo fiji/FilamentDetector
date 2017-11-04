@@ -574,6 +574,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		getImagePlus().repaintWindow();
 	}
 
+	@Override
 	public void setViewMode(ImageDisplayMode viewMode) {
 		ImagePlus imp = getImagePlus();
 		if (imp != null) {

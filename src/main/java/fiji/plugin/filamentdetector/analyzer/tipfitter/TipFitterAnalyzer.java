@@ -23,6 +23,7 @@ public class TipFitterAnalyzer extends AbstractAnalyzer implements Analyzer {
 		this.fitter = new FilamentTipFitter(filamentWorkflow.getContext());
 	}
 
+	@Override
 	public String getInfo() {
 		String out = "";
 		out += "Name : " + this.name + "\n";

@@ -43,7 +43,7 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 					background.getImgPlus());
 
 			// Do subtraction
-			IterableInterval<FloatType> out2 = (IterableInterval<FloatType>) ops.create().img(out);
+			IterableInterval<FloatType> out2 = ops.create().img(out);
 			ops.math().subtract(out2, original, backgroundFloat);
 
 			// Clip intensities

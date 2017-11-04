@@ -161,6 +161,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 		useForOverlayCheckbox.setSelected(imagePreprocessors.isUseForOverlay());
 
 		useForOverlayCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
 				if (old_val != new_val) {
 					usePreprocessedImageForOverlay();

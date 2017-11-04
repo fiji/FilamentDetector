@@ -101,7 +101,7 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	void updateParameters(Event event) {
 		if (intensityThresholdSync.isEvent(event)) {
 			intensityThresholdSync.update(event);
-			this.analyzer.setIntensityThreshold((double) intensityThresholdSync.getValue());
+			this.analyzer.setIntensityThreshold(intensityThresholdSync.getValue());
 
 		} else if (maxFrameSync.isEvent(event)) {
 			maxFrameSync.update(event);
@@ -109,15 +109,15 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 
 		} else if (lineLengthSync.isEvent(event)) {
 			lineLengthSync.update(event);
-			this.analyzer.setLineLength((double) lineLengthSync.getValue());
+			this.analyzer.setLineLength(lineLengthSync.getValue());
 
 		} else if (lineThicknessSync.isEvent(event)) {
 			lineThicknessSync.update(event);
-			this.analyzer.setLineThickness((double) lineThicknessSync.getValue());
+			this.analyzer.setLineThickness(lineThicknessSync.getValue());
 
 		} else if (pixelSpacingSync.isEvent(event)) {
 			pixelSpacingSync.update(event);
-			this.analyzer.setPixelSpacing((double) pixelSpacingSync.getValue());
+			this.analyzer.setPixelSpacing(pixelSpacingSync.getValue());
 
 		} else if (event.getSource().equals(channelIndexField)) {
 			this.analyzer.setChannelIndex(Integer.parseInt(channelIndexField.getText()));

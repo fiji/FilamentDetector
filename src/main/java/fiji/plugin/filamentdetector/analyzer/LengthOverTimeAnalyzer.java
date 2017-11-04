@@ -32,6 +32,7 @@ public class LengthOverTimeAnalyzer extends AbstractAnalyzer implements Analyzer
 		setDescription(DESCRIPTION);
 	}
 
+	@Override
 	public String getInfo() {
 		String out = "";
 		out += "Name : " + this.name + "\n";
