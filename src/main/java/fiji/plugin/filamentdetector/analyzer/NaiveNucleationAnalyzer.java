@@ -59,7 +59,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	private OpService op;
 
 	private double pixelSpacing = 1;
-	private double lineThickness = 1;
+	private double lineThickness = 4;
 	private double lineLength = 10;
 	private double intensityThreshold = 100;
 	private int maxFrame = 15;
@@ -69,9 +69,6 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		super();
 		setName(NAME);
 		setDescription(DESCRIPTION);
-
-		// TODO: allow line to have thickness to reduce noise
-		// TODO: add results to GUI
 	}
 
 	@Override
@@ -142,10 +139,17 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 				line1 = GeometryUtils.getLinePointsFromSpacing(end, p1, this.pixelSpacing);
 				line2 = GeometryUtils.getLinePointsFromSpacing(start, p2, this.pixelSpacing);
 
-				intensities1 = GeometryUtils.getIntensities(line1, dataset, frame, this.channelIndex, 0).mean(1)
-						.getDouble(0);
-				intensities2 = GeometryUtils.getIntensities(line2, dataset, frame, this.channelIndex, 0).mean(1)
-						.getDouble(0);
+				if (this.lineThickness < 2) {
+					intensities1 = GeometryUtils.getIntensities(line1, dataset, frame, this.channelIndex, 0).mean(1)
+							.getDouble(0);
+					intensities2 = GeometryUtils.getIntensities(line2, dataset, frame, this.channelIndex, 0).mean(1)
+							.getDouble(0);
+				} else {
+					intensities1 = GeometryUtils.getIntensities(line1, dataset, frame, this.channelIndex, 0,
+							this.lineThickness, this.pixelSpacing).mean(1).getDouble(0);
+					intensities2 = GeometryUtils.getIntensities(line2, dataset, frame, this.channelIndex, 0,
+							this.lineThickness, this.pixelSpacing).mean(1).getDouble(0);
+				}
 
 				if (intensities1 > this.intensityThreshold || intensities2 > this.intensityThreshold) {
 					return frame;

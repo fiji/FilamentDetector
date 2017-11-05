@@ -47,7 +47,7 @@ import net.imglib2.view.Views;
 public class GeometryUtils {
 
 	public static RealPoint add(RealPoint point1, RealPoint point2) {
-		RealPoint point = new RealPoint();
+		RealPoint point = new RealPoint(point1.numDimensions());
 		for (int d = 0; d < point1.numDimensions(); d++) {
 			point.setPosition(point1.getDoublePosition(d) + point2.getDoublePosition(d), d);
 		}
@@ -55,7 +55,7 @@ public class GeometryUtils {
 	}
 
 	public static RealPoint subtract(RealPoint point1, RealPoint point2) {
-		RealPoint point = new RealPoint();
+		RealPoint point = new RealPoint(point1.numDimensions());
 		for (int d = 0; d < point1.numDimensions(); d++) {
 			point.setPosition(point1.getDoublePosition(d) - point2.getDoublePosition(d), d);
 		}
@@ -68,6 +68,26 @@ public class GeometryUtils {
 			sum += Math.pow(point1.getDoublePosition(d) - point2.getDoublePosition(d), 2);
 		}
 		return Math.sqrt(sum);
+	}
+
+	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z,
+			double thickness, double pixelSpacing) {
+		InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator = new NLinearInterpolatorFactory();
+
+		// Get all the parallel lines according to the provided thickness
+		List<List<RealPoint>> lines = GeometryUtils.getParallelLines(line, thickness, pixelSpacing);
+
+		// Get intensities for each line
+		List<INDArray> allIntensities = new ArrayList<>();
+		for (List<RealPoint> singleLine : lines) {
+			allIntensities.add(GeometryUtils.getIntensities(singleLine, dataset, frame, channel, z));
+		}
+
+		// Average the intensities
+		INDArray intensities = Nd4j.create(allIntensities,
+				new int[] { allIntensities.size(), allIntensities.get(0).shape()[1] });
+
+		return intensities.mean(0);
 	}
 
 	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z) {
@@ -198,6 +218,48 @@ public class GeometryUtils {
 		plot.show();
 
 		return plot;
+	}
+
+	public static List<List<RealPoint>> getParallelLines(List<RealPoint> middleLine, double thickness, double spacing) {
+
+		RealPoint p1;
+		RealPoint p2;
+
+		List<List<RealPoint>> lines = new ArrayList<>();
+		lines.add(middleLine);
+		List<RealPoint> line;
+		double dist;
+
+		double xN = (middleLine.get(middleLine.size() - 1).getDoublePosition(1)
+				- middleLine.get(0).getDoublePosition(1)) * -1;
+		double yN = (middleLine.get(middleLine.size() - 1).getDoublePosition(0)
+				- middleLine.get(0).getDoublePosition(0));
+		RealPoint normalVector1 = new RealPoint(xN, yN);
+		xN = (middleLine.get(middleLine.size() - 1).getDoublePosition(1) - middleLine.get(0).getDoublePosition(1));
+		yN = (middleLine.get(middleLine.size() - 1).getDoublePosition(0) - middleLine.get(0).getDoublePosition(0)) * -1;
+		RealPoint normalVector2 = new RealPoint(xN, yN);
+
+		for (int i = 1; i < (int) (thickness / 2) + 1; i++) {
+			dist = spacing * i;
+
+			// Get a line in one direction
+			p1 = GeometryUtils.getPointOnVectorFromDistance(middleLine.get(0),
+					GeometryUtils.add(middleLine.get(0), normalVector1), dist);
+			p2 = GeometryUtils.getPointOnVectorFromDistance(middleLine.get(middleLine.size() - 1),
+					GeometryUtils.add(middleLine.get(middleLine.size() - 1), normalVector1), dist);
+			line = GeometryUtils.getLinePointsFromSpacing(p1, p2, spacing);
+			lines.add(line);
+
+			// Now in the other direction
+			p1 = GeometryUtils.getPointOnVectorFromDistance(middleLine.get(0),
+					GeometryUtils.add(middleLine.get(0), normalVector2), dist);
+			p2 = GeometryUtils.getPointOnVectorFromDistance(middleLine.get(middleLine.size() - 1),
+					GeometryUtils.add(middleLine.get(middleLine.size() - 1), normalVector2), dist);
+			line = GeometryUtils.getLinePointsFromSpacing(p1, p2, spacing);
+			lines.add(line);
+		}
+
+		return lines;
 	}
 
 }

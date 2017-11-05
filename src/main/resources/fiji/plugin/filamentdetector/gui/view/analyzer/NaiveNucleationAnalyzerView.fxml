@@ -144,7 +144,7 @@
                                           <HBox alignment="CENTER_LEFT" spacing="5.0">
                                              <children>
                                                 <Label minWidth="-Infinity" text="Line Thickness" />
-                                                <Slider fx:id="lineThicknessSlider" blockIncrement="1.0" majorTickUnit="5.0" max="19.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
+                                                <Slider fx:id="lineThicknessSlider" blockIncrement="1.0" majorTickUnit="5.0" max="10.0" min="1.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
                                                 <TextField fx:id="lineThicknessField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
                                              </children>
                                              <padding>

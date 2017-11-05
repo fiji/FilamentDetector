@@ -25,12 +25,10 @@
  */
 package fiji.plugin.filamentdetector.tests.manual;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.indexing.BooleanIndexing;
-import org.nd4j.linalg.indexing.conditions.Conditions;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -62,9 +60,10 @@ public class TestNucleationDetector {
 		ImagePlus imp = convert.convert(imd, ImagePlus.class);
 
 		// Parameters
-		int spacing = 1;
+		int pixelSpacing = 1;
 		int threshold = 100;
 		int maxFrame = 15;
+		int thickness = 2;
 
 		int frame = 13;
 		int channel = 0;
@@ -72,45 +71,30 @@ public class TestNucleationDetector {
 
 		// Setup visualization
 		overlay.setImageDisplay(imd);
+		overlay.setFilamentWidth(0);
 		imp.setT(frame);
 
 		// Create filament
-		// RealPoint start = new RealPoint(23, 38);
-		// RealPoint end = new RealPoint(28, 47);
-		RealPoint start = new RealPoint(52, 26);
-		RealPoint end = new RealPoint(64, 43);
-		List<RealPoint> line = GeometryUtils.getLinePointsFromSpacing(start, end, spacing);
-		Filament seed = new Filament(line, frame);
+		RealPoint start = new RealPoint(23, 38);
+		RealPoint end = new RealPoint(28, 47);
+		// RealPoint start = new RealPoint(52, 26);
+		// RealPoint end = new RealPoint(64, 43);
+		List<RealPoint> seedLine = GeometryUtils.getLinePointsFromSpacing(start, end, pixelSpacing);
+		Filament seed = new Filament(seedLine, frame);
+		seed.setColor(Color.RED);
 
 		double seedLength = GeometryUtils.distance(start, end);
 
 		RealPoint p1 = GeometryUtils.getPointOnVectorFromDistance(start, end, seedLength + distance);
 		RealPoint p2 = GeometryUtils.getPointOnVectorFromDistance(end, start, seedLength + distance);
 
-		List<RealPoint> line1 = GeometryUtils.getLinePointsFromSpacing(end, p1, spacing);
-		List<RealPoint> line2 = GeometryUtils.getLinePointsFromSpacing(start, p2, spacing);
+		List<RealPoint> line1 = GeometryUtils.getLinePointsFromSpacing(end, p1, pixelSpacing);
+		List<RealPoint> line2 = GeometryUtils.getLinePointsFromSpacing(start, p2, pixelSpacing);
 
-		Filament filament1 = new Filament(line1, frame);
-		Filament filament2 = new Filament(line2, frame);
+		overlay.add(new Filament(line1, frame));
+		overlay.add(new Filament(line2, frame));
 
-		overlay.add(filament1);
-		overlay.add(filament2);
-
-		INDArray intensities1 = Nd4j.create(1, maxFrame);
-		INDArray intensities2 = Nd4j.create(1, maxFrame);
-		for (int t = 0; t < maxFrame; t++) {
-			intensities1.putScalar(new int[] { 0, t },
-					GeometryUtils.getIntensities(line1, dataset, t, channel, 0).mean(1).getDouble(0));
-			intensities2.putScalar(new int[] { 0, t },
-					GeometryUtils.getIntensities(line2, dataset, t, channel, 0).mean(1).getDouble(0));
-		}
-
-		GeometryUtils.plotPoints(intensities1);
-		GeometryUtils.plotPoints(intensities2);
-
-		// Check if at least one frame of one tip is above the threshold
-		boolean hasNucleated = BooleanIndexing.and(intensities1, Conditions.greaterThan(threshold))
-				|| BooleanIndexing.and(intensities2, Conditions.greaterThan(threshold));
-		log.info(hasNucleated);
+		INDArray intensities = GeometryUtils.getIntensities(line1, dataset, frame, channel, 0, thickness, pixelSpacing);
+		log.info(intensities);
 	}
 }
