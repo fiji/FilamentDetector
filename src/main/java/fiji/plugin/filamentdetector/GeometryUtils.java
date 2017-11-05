@@ -72,7 +72,6 @@ public class GeometryUtils {
 
 	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z,
 			double thickness, double pixelSpacing) {
-		InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator = new NLinearInterpolatorFactory();
 
 		// Get all the parallel lines according to the provided thickness
 		List<List<RealPoint>> lines = GeometryUtils.getParallelLines(line, thickness, pixelSpacing);

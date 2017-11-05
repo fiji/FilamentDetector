@@ -98,7 +98,7 @@ public class MainAppFrame extends JFrame {
 		GUIUtils.userCheckImpDimensions(ij, filamentDetector.getDataset());
 
 		Platform.setImplicitExit(false);
-		
+
 		// Create the JavaFX panel
 		this.fxPanel = new JFXPanel();
 		this.add(this.fxPanel);

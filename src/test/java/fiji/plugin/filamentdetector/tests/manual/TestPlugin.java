@@ -38,11 +38,11 @@ public class TestPlugin {
 		Context context = ij.getContext();
 
 		String baseDir = "/home/hadim/.doc/Code/Postdoc/ij/testdata/";
-		
+
 		String fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit.tif";
 		fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
-		//fpath = baseDir + "10uM_emccd_lapse1-1-Preprocessed.tif";
-		
+		// fpath = baseDir + "10uM_emccd_lapse1-1-Preprocessed.tif";
+
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 

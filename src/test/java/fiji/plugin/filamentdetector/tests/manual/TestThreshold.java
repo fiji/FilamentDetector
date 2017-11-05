@@ -45,7 +45,7 @@ public class TestThreshold {
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
 		Dataset dataset = ij.dataset().open(fpath);
-		
+
 		Histogram1d<T> in = op.image().histogram((Iterable<T>) dataset.getImgPlus());
 
 		log.info(op.threshold().rosin(in));
@@ -62,7 +62,7 @@ public class TestThreshold {
 		log.info(op.threshold().shanbhag(in));
 		log.info(op.threshold().triangle(in));
 		log.info(op.threshold().yen(in));
-		
+
 	}
 
 }
