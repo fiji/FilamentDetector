@@ -39,7 +39,10 @@ import fiji.plugin.filamentdetector.GeometryUtils;
 import fiji.plugin.filamentdetector.model.Filament;
 import fiji.plugin.filamentdetector.model.TrackedFilament;
 import net.imagej.Dataset;
+import net.imagej.ops.OpService;
 import net.imglib2.RealPoint;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
 
 @Plugin(type = Analyzer.class, priority = Priority.HIGH)
 public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
@@ -52,6 +55,9 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	@Parameter
 	private LogService log;
 
+	@Parameter
+	private OpService op;
+
 	private double pixelSpacing = 1;
 	private double lineThickness = 1;
 	private double lineLength = 10;
@@ -63,9 +69,8 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		super();
 		setName(NAME);
 		setDescription(DESCRIPTION);
-		
+
 		// TODO: allow line to have thickness to reduce noise
-		// TODO: set intensity threshold according to image threshold (Otsu or similar)
 		// TODO: add results to GUI
 	}
 
@@ -198,6 +203,13 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 
 	public void setLineLength(double lineLength) {
 		this.lineLength = lineLength;
+	}
+
+	public <T extends RealType<T>> void guessIntensityThresholdFromImage() {
+		Dataset data = this.filamentWorkflow.getDataset();
+		Histogram1d<T> histogram = op.image().histogram((Iterable<T>) data.getImgPlus());
+		this.intensityThreshold = ((RealType<T>) op.threshold().isoData(histogram).get(0)).getRealDouble();
+		log.info(this.intensityThreshold);
 	}
 
 }

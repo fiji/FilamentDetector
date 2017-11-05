@@ -104,6 +104,8 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		this.analyzer.guessIntensityThresholdFromImage();
+		
 		intensityThresholdSync = new SliderLabelSynchronizer(intensityThresholdSlider, intensityThresholdField);
 		intensityThresholdSync.setValue(this.analyzer.getIntensityThreshold());
 

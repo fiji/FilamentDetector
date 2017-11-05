@@ -88,7 +88,7 @@
                                           </HBox>
                                           <VBox>
                                              <children>
-                                                <Label maxWidth="350.0" text="The intensity threshold used to determine if a nucleation event happened or not." wrapText="true">
+                                                <Label maxWidth="350.0" text="The intensity threshold used to determine if a nucleation event happened or not. The value is calculcated by applying an automatic threshold called &quot;isoData&quot; to the image." wrapText="true">
                                                    <font>
                                                       <Font name="System Italic" size="10.0" />
                                                    </font>
