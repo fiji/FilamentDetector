@@ -37,11 +37,11 @@ public class TestPlugin {
 		final ImageJ ij = net.imagej.Main.launch(args);
 		Context context = ij.getContext();
 
-		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small-8bit.tif";
-		// fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/test-tracking.tif";
-		// fpath =
-		// "/home/hadim/.doc/Code/Postdoc/ij/testdata/12,5uM_emccd_lapse1-8bit-small.tif";
-		// fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake1.tif";
+		String baseDir = "/home/hadim/.doc/Code/Postdoc/ij/testdata/";
+		
+		String fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit.tif";
+		fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
+		
 		Dataset data = ij.dataset().open(fpath);
 		ij.ui().show(data);
 

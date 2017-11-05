@@ -87,6 +87,9 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	@FXML
 	private TextField pixelSpacingField;
 
+	@FXML
+	private TextField resultMessageField;
+
 	private SliderLabelSynchronizer intensityThresholdSync;
 	private SliderLabelSynchronizer maxFrameSync;
 	private SliderLabelSynchronizer lineLengthSync;
@@ -105,7 +108,7 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	public void initialize(URL location, ResourceBundle resources) {
 
 		this.analyzer.guessIntensityThresholdFromImage();
-		
+
 		intensityThresholdSync = new SliderLabelSynchronizer(intensityThresholdSlider, intensityThresholdField);
 		intensityThresholdSync.setValue(this.analyzer.getIntensityThreshold());
 
@@ -122,6 +125,9 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 		pixelSpacingSync.setValue(this.analyzer.getPixelSpacing());
 
 		channelIndexField.setText(Integer.toString(this.analyzer.getChannelIndex()));
+
+		resultMessageField.setEditable(false);
+		resultMessageField.setStyle("-fx-background-color:transparent; -fx-background-insets: 0px;");
 	}
 
 	@FXML
@@ -154,5 +160,6 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	@Override
 	public void runPostAnalysisAction() {
 		status.showStatus(this.analyzer.getResults().toString());
+		resultMessageField.setText(this.analyzer.getResults().toString());
 	}
 }
