@@ -38,6 +38,7 @@ import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.overlay.FilamentOverlayService;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
@@ -90,6 +91,9 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	@FXML
 	private TextField resultMessageField;
 
+	@FXML
+	private CheckBox colorizedCheckbox;
+
 	private SliderLabelSynchronizer intensityThresholdSync;
 	private SliderLabelSynchronizer maxFrameSync;
 	private SliderLabelSynchronizer lineLengthSync;
@@ -126,6 +130,8 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 
 		channelIndexField.setText(Integer.toString(this.analyzer.getChannelIndex()));
 
+		colorizedCheckbox.setSelected(this.analyzer.isColorizedNucleatedSeeds());
+
 		resultMessageField.setEditable(false);
 		resultMessageField.setStyle("-fx-background-color:transparent; -fx-background-insets: 0px;");
 	}
@@ -154,6 +160,9 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 
 		} else if (event.getSource().equals(channelIndexField)) {
 			this.analyzer.setChannelIndex(Integer.parseInt(channelIndexField.getText()));
+
+		} else if (event.getSource().equals(colorizedCheckbox)) {
+			this.analyzer.setColorizedNucleatedSeeds(colorizedCheckbox.isSelected());
 		}
 	}
 
@@ -161,5 +170,6 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	public void runPostAnalysisAction() {
 		status.showStatus(this.analyzer.getResults().toString());
 		resultMessageField.setText(this.analyzer.getResults().toString());
+		overlay.refresh();
 	}
 }

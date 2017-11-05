@@ -25,6 +25,7 @@
  */
 package fiji.plugin.filamentdetector.analyzer;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -64,6 +65,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	private double intensityThreshold = 100;
 	private int maxFrame = 15;
 	private int channelIndex = 0;
+	private boolean colorizedNucleatedSeeds = true;
 
 	public NaiveNucleationAnalyzer() {
 		super();
@@ -82,6 +84,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		out += "intensityThreshold : " + this.intensityThreshold + "\n";
 		out += "maxFrame : " + this.maxFrame + "\n";
 		out += "channelIndex : " + this.channelIndex + "\n";
+		out += "colorizedNucleatedSeeds : " + this.colorizedNucleatedSeeds + "\n";
 		out += "\n";
 		return out;
 	}
@@ -152,12 +155,18 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 				}
 
 				if (intensities1 > this.intensityThreshold || intensities2 > this.intensityThreshold) {
+					if (this.colorizedNucleatedSeeds) {
+						trackedFilament.setColor(Color.GREEN);
+					}
 					return frame;
 				}
 
 			}
 		}
 
+		if (this.colorizedNucleatedSeeds) {
+			trackedFilament.setColor(Color.RED);
+		}
 		return -1;
 	}
 
@@ -209,11 +218,18 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		this.lineLength = lineLength;
 	}
 
+	public boolean isColorizedNucleatedSeeds() {
+		return colorizedNucleatedSeeds;
+	}
+
+	public void setColorizedNucleatedSeeds(boolean colorizedNucleatedSeeds) {
+		this.colorizedNucleatedSeeds = colorizedNucleatedSeeds;
+	}
+
 	public <T extends RealType<T>> void guessIntensityThresholdFromImage() {
 		Dataset data = this.filamentWorkflow.getDataset();
 		Histogram1d<T> histogram = op.image().histogram((Iterable<T>) data.getImgPlus());
 		this.intensityThreshold = ((RealType<T>) op.threshold().isoData(histogram).get(0)).getRealDouble();
-		log.info(this.intensityThreshold);
 	}
 
 }

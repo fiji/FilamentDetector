@@ -129,7 +129,6 @@ public class AnalyzeController extends AbstractController implements Initializab
 							setText(null);
 						}
 					}
-
 				};
 			}
 		});

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
@@ -116,6 +117,30 @@
                                           <VBox>
                                              <children>
                                                 <Label maxWidth="350.0" text="The frame at which new nucleation events are ignored." wrapText="true">
+                                                   <font>
+                                                      <Font name="System Italic" size="10.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                             <children>
+                                                <CheckBox fx:id="colorizedCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Colorized seeds" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
+                                          <VBox>
+                                             <children>
+                                                <Label maxWidth="350.0" text="Colorized nucleated seeds in green and the other in red." wrapText="true">
                                                    <font>
                                                       <Font name="System Italic" size="10.0" />
                                                    </font>

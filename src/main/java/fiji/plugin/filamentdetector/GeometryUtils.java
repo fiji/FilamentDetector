@@ -85,7 +85,7 @@ public class GeometryUtils {
 
 		// Average the intensities
 		INDArray intensities = Nd4j.create(allIntensities,
-				new int[] { allIntensities.size(), allIntensities.get(0).shape()[1] });
+				new int[] { allIntensities.size(), allIntensities.get(0).shape()[1] + 1 });
 
 		return intensities.mean(0);
 	}
@@ -154,7 +154,7 @@ public class GeometryUtils {
 		for (long i = 1; i <= nPoints; i++) {
 			line.add(getPointOnVectorFromDistance(start, end, spacing * i));
 		}
-		// line.add(end);
+		line.add(end);
 		return line;
 	}
 
