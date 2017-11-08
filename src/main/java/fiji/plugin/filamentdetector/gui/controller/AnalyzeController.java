@@ -255,6 +255,7 @@ public class AnalyzeController extends AbstractController implements Initializab
 		};
 
 		analyzerThread = new Thread(analyzerTask);
+		analyzerThread.setContextClassLoader(Thread.currentThread().getContextClassLoader());
 		analyzerThread.setDaemon(true);
 		analyzerThread.start();
 	}

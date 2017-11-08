@@ -227,6 +227,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	}
 
 	public <T extends RealType<T>> void guessIntensityThresholdFromImage() {
+		// TODO: do it only on the used channel
 		Dataset data = this.filamentWorkflow.getDataset();
 		Histogram1d<T> histogram = op.image().histogram((Iterable<T>) data.getImgPlus());
 		this.intensityThreshold = ((RealType<T>) op.threshold().isoData(histogram).get(0)).getRealDouble();
