@@ -98,8 +98,13 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 	private void initDetection() {
 		// Convert Dataset to IJ1 ImagePlus and ImageProcessor
 		try {
-			this.imp = convertService.convert(getImageDisplay(), ImagePlus.class);
-			this.impData = convertService.convert(getDataset(), ImagePlus.class);
+			if (this.imp == null) {
+				this.imp = convertService.convert(getImageDisplay(), ImagePlus.class);
+			}
+
+			if (this.impData == null) {
+				this.impData = convertService.convert(getDataset(), ImagePlus.class);
+			}
 		} catch (NullPointerException e) {
 			eventService.publish(new ImageNotFoundEvent());
 		}
