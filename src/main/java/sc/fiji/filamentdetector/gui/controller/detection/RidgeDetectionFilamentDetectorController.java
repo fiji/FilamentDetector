@@ -48,7 +48,7 @@ public class RidgeDetectionFilamentDetectorController extends AbstractFilamentDe
 
 	@Parameter
 	private EventService eventService;
-	
+
 	@FXML
 	private Slider lineWidthSlider;
 
@@ -153,7 +153,7 @@ public class RidgeDetectionFilamentDetectorController extends AbstractFilamentDe
 			thresholdSync.setLowerValue(this.filamentDetector.getLowerThresh());
 			thresholdSync.setUpperValue(this.filamentDetector.getUpperThresh());
 		}
-		
+
 		eventService.publish(new DetectionParametersUpdatedEvent());
 	}
 

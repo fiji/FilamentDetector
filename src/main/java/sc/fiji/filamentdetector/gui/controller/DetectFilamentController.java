@@ -351,7 +351,7 @@ public class DetectFilamentController extends AbstractController implements Init
 			this.detect(null);
 		}
 	}
-	
+
 	@EventHandler
 	public void updateDetectionParameters(DetectionParametersUpdatedEvent event) {
 		if (liveDetectionButton.isSelected()) {
