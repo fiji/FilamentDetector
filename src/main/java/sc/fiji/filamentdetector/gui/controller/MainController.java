@@ -170,6 +170,7 @@ public class MainController extends AbstractController implements Initializable 
 					mainPane.getPanes().add(loadAbout());
 
 					// Initialize overlay settings UI
+					overlay.reset();
 					overlay.setImageDisplay(filamentWorkflow.getImageDisplay());
 					initOverlaySettings();
 

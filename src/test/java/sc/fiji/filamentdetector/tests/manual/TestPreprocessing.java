@@ -46,6 +46,7 @@ public class TestPreprocessing {
 		ImagePreprocessorService procService = ij.get(ImagePreprocessorService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small-8bit.tif";
+		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1.tif";
 		Dataset dataset = ij.dataset().open(fpath);
 		ij.ui().show(dataset);
 

@@ -30,6 +30,7 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
+import net.imagej.ops.Op;
 import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.img.Img;
@@ -56,14 +57,15 @@ public class DOGFilterPreprocessor extends AbstractImagePreprocessor {
 			Dataset dataset = getInput().duplicate();
 
 			int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
-
+			
 			// Convert to 32 bits
 			Img<FloatType> out = (Img<FloatType>) ops.run("convert.float32", dataset.getImgPlus());
 
 			// Apply filter
 			Img<FloatType> out2 = ops.create().img(out);
-			UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.dog", out, sigma1, sigma2);
-			ops.slice(out2, out, op, fixedAxisIndices);
+			Op op = (Op) ops.op("filter.dog", out, sigma1, sigma2);
+			ops.slice(out2, out, (UnaryComputerOp) op, fixedAxisIndices);
+			//ops.run(net.imagej.ops.Ops.Slice.class, out2, out, op, fixedAxisIndices, true);
 
 			// Clip intensities
 			Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());

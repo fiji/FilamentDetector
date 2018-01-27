@@ -325,27 +325,30 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void remove(Filament filament) {
 		ImagePlus imp = getImagePlus();
 
-		Roi roiToRemove = filamentROIMap.get(filament);
-		Roi boundingBoxToRemove = filamentBoundingBoxesMap.get(filament);
-		Overlay overlay = imp.getOverlay();
+		if (imp != null) {
 
-		try {
-			if (overlay != null) {
-				if (roiToRemove != null) {
-					overlay.remove(roiToRemove);
+			Roi roiToRemove = filamentROIMap.get(filament);
+			Roi boundingBoxToRemove = filamentBoundingBoxesMap.get(filament);
+			Overlay overlay = imp.getOverlay();
+
+			try {
+				if (overlay != null) {
+					if (roiToRemove != null) {
+						overlay.remove(roiToRemove);
+					}
+					if (boundingBoxToRemove != null) {
+						overlay.remove(boundingBoxToRemove);
+					}
 				}
-				if (boundingBoxToRemove != null) {
-					overlay.remove(boundingBoxToRemove);
-				}
+			} catch (Exception e) {
+
 			}
-		} catch (Exception e) {
 
+			filamentROIMap.remove(filament);
+			filamentDisplayed.remove(filament);
+			filamentBoundingBoxesMap.remove(filament);
+			imp.updateAndDraw();
 		}
-
-		filamentROIMap.remove(filament);
-		filamentDisplayed.remove(filament);
-		filamentBoundingBoxesMap.remove(filament);
-		imp.updateAndDraw();
 	}
 
 	@Override
@@ -495,23 +498,27 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	private ImagePlus getImagePlus() {
+		ImagePlus imp = null;
+
 		try {
-			ImagePlus imp = convert.convert(imageDisplay, ImagePlus.class);
-			if (imageDisplay != null && imp == null) {
-				eventService.publish(new ImageNotFoundEvent());
-			}
-			if (imp != null) {
-				ij.measure.Calibration cal = imp.getCalibration();
-				if (cal == null) {
-					imp.setCalibration(new ij.measure.Calibration());
-				}
-			}
-			return imp;
+			imp = convert.convert(imageDisplay, ImagePlus.class);
 		} catch (NullPointerException e) {
 			eventService.publish(new ImageNotFoundEvent());
 			return null;
 		}
 
+		if (imageDisplay != null && imp == null) {
+			eventService.publish(new ImageNotFoundEvent());
+		}
+
+		if (imp != null) {
+			ij.measure.Calibration cal = imp.getCalibration();
+			if (cal == null) {
+				imp.setCalibration(new ij.measure.Calibration());
+			}
+		}
+
+		return imp;
 	}
 
 	@Override
