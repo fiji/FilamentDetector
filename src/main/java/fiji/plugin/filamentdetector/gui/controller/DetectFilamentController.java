@@ -48,6 +48,7 @@ import fiji.plugin.filamentdetector.event.PreventPanelSwitchEvent;
 import fiji.plugin.filamentdetector.gui.GUIStatusService;
 import fiji.plugin.filamentdetector.gui.controller.detection.FilamentDetectorController;
 import fiji.plugin.filamentdetector.gui.controller.detection.RidgeDetectionFilamentDetectorController;
+import fiji.plugin.filamentdetector.gui.event.DetectionParametersUpdatedEvent;
 import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import fiji.plugin.filamentdetector.gui.view.FilamentsTableView;
 import fiji.plugin.filamentdetector.model.Filament;
@@ -350,6 +351,13 @@ public class DetectFilamentController extends AbstractController implements Init
 			this.detect(null);
 		}
 	}
+	
+	@EventHandler
+	public void updateDetectionParameters(DetectionParametersUpdatedEvent event) {
+		if (liveDetectionButton.isSelected()) {
+			this.detect(null);
+		}
+	}
 
 	@FXML
 	public void updateFilteringParameters(Event event) {
@@ -374,10 +382,6 @@ public class DetectFilamentController extends AbstractController implements Init
 
 		if (detectionTask != null) {
 			detectionTask.cancel();
-		}
-
-		if (detectionThread != null) {
-			detectionThread.stop();
 		}
 
 		this.detectionProgressIndicator.setVisible(true);

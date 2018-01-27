@@ -29,9 +29,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.event.EventService;
+import org.scijava.plugin.Parameter;
 
 import fiji.plugin.filamentdetector.detection.FilamentDetector;
 import fiji.plugin.filamentdetector.detection.RidgeDetectionFilamentDetector;
+import fiji.plugin.filamentdetector.gui.event.DetectionParametersUpdatedEvent;
 import fiji.plugin.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import fiji.plugin.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
 import javafx.event.Event;
@@ -43,6 +46,9 @@ public class RidgeDetectionFilamentDetectorController extends AbstractFilamentDe
 
 	private static String FXML_PATH = "/fiji/plugin/filamentdetector/gui/view/detection/RidgeDetectionFilamentDetectorView.fxml";
 
+	@Parameter
+	private EventService eventService;
+	
 	@FXML
 	private Slider lineWidthSlider;
 
@@ -147,7 +153,8 @@ public class RidgeDetectionFilamentDetectorController extends AbstractFilamentDe
 			thresholdSync.setLowerValue(this.filamentDetector.getLowerThresh());
 			thresholdSync.setUpperValue(this.filamentDetector.getUpperThresh());
 		}
-
+		
+		eventService.publish(new DetectionParametersUpdatedEvent());
 	}
 
 }
