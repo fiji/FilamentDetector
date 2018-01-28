@@ -88,6 +88,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	private List<TrackedFilament> trackedFilamentDisplayed = new ArrayList<>();
 
 	private ImageDisplay imageDisplay;
+	private ImagePlus imagePlus;
 
 	private List<Filament> selectedFilaments = new ArrayList<>();
 	private List<TrackedFilament> selectedTrackedFilament = new ArrayList<>();
@@ -447,7 +448,12 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	@Override
 	public void setImageDisplay(ImageDisplay imageDisplay) {
 		this.imageDisplay = imageDisplay;
-		getImagePlus().getWindow().getCanvas().addMouseListener(this);
+		this.imagePlus = null;
+		
+		ImagePlus imp = getImagePlus();
+		if (imp != null) {
+			imp.getWindow().getCanvas().addMouseListener(this);
+		}
 		this.refresh();
 	}
 
@@ -498,27 +504,35 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	}
 
 	private ImagePlus getImagePlus() {
-		ImagePlus imp = null;
+
+		if (imageDisplay == null) {
+			log.debug("ImageDisplay is null. Can't retrieve ImagePlus.");
+			return null;
+		}
+
+		if (imagePlus != null) {
+			return imagePlus;
+		}
 
 		try {
-			imp = convert.convert(imageDisplay, ImagePlus.class);
+			imagePlus = convert.convert(imageDisplay, ImagePlus.class);
 		} catch (NullPointerException e) {
 			eventService.publish(new ImageNotFoundEvent());
 			return null;
 		}
 
-		if (imageDisplay != null && imp == null) {
-			eventService.publish(new ImageNotFoundEvent());
+		if (imageDisplay != null && imagePlus == null) {
+			log.error("Critical error: ImagePlus not found.");
 		}
 
-		if (imp != null) {
-			ij.measure.Calibration cal = imp.getCalibration();
+		if (imagePlus != null) {
+			ij.measure.Calibration cal = imagePlus.getCalibration();
 			if (cal == null) {
-				imp.setCalibration(new ij.measure.Calibration());
+				imagePlus.setCalibration(new ij.measure.Calibration());
 			}
 		}
 
-		return imp;
+		return imagePlus;
 	}
 
 	@Override
