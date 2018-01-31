@@ -50,6 +50,8 @@ import ij.plugin.frame.RoiManager;
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
 import net.imagej.display.OverlayService;
+import net.imagej.ops.OpService;
+import net.imglib2.type.numeric.real.DoubleType;
 import sc.fiji.filamentdetector.event.FilamentSelectedEvent;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
 import sc.fiji.filamentdetector.model.Filament;
@@ -66,6 +68,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 
 	@Parameter
 	private ConvertService convert;
+
+	@Parameter
+	private OpService op;
 
 	@Parameter
 	private LogService log;
@@ -449,7 +454,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void setImageDisplay(ImageDisplay imageDisplay) {
 		this.imageDisplay = imageDisplay;
 		this.imagePlus = null;
-		
+
 		ImagePlus imp = getImagePlus();
 		if (imp != null) {
 			imp.getWindow().getCanvas().addMouseListener(this);
@@ -631,6 +636,28 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			} else if (viewMode == ImageDisplayMode.GRAYSCALE) {
 				imp.setDisplayMode(IJ.GRAYSCALE);
 			}
+			this.autoScaleImage();
+		}
+	}
+
+	@Override
+	public void autoScaleImage() {
+		ImagePlus imp = getImagePlus();
+		ImageDisplay imd = getImageDisplay();
+		Dataset data = (Dataset) imd.getActiveView().getData();
+
+		if (imp != null) {
+
+			int currentChannel = imp.getC();
+			DoubleType min = (DoubleType) op.run("stats.min", data);
+			DoubleType max = (DoubleType) op.run("stats.max", data);
+
+			for (int c = 0; c <= imp.getChannel(); c++) {
+				imp.setC(c);
+				imp.setDisplayRange(min.get(), max.get());
+				imp.updateChannelAndDraw();
+			}
+			imp.setC(currentChannel);
 		}
 	}
 

@@ -20,8 +20,8 @@
    <children>
       <SplitPane dividerPositions="0.65" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
-            <AnchorPane fx:id="mainPaneContainer" />
-            <AnchorPane>
+            <AnchorPane fx:id="mainPaneContainer" minWidth="750.0" />
+            <AnchorPane minWidth="400.0">
                <children>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -112,6 +112,7 @@
                                           </TitledPane>
                                           <HBox alignment="CENTER_RIGHT" spacing="5.0">
                                              <children>
+                                                <Button fx:id="autoScaleButton" mnemonicParsing="false" text="Auto Scale" />
                                                 <Button fx:id="compositeButton" mnemonicParsing="false" text="Composite View" />
                                                 <Button mnemonicParsing="false" onMouseClicked="#exportToROIManager" text="Export to ROI Manager" />
                                              </children>

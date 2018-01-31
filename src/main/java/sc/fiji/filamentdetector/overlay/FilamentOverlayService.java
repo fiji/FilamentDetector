@@ -97,4 +97,6 @@ public interface FilamentOverlayService extends ImageJService {
 	void updateLineWidth();
 
 	void setViewMode(ImageDisplayMode viewMode);
+	
+	void autoScaleImage();
 }

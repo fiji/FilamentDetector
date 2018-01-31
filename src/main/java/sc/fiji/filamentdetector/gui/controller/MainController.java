@@ -111,7 +111,10 @@ public class MainController extends AbstractController implements Initializable 
 	private Label tipDiameterValueLabel;
 
 	@FXML
-	Button compositeButton;
+	private Button compositeButton;
+
+	@FXML
+	private Button autoScaleButton;
 
 	private FilamentWorkflow filamentWorkflow;
 
@@ -284,6 +287,10 @@ public class MainController extends AbstractController implements Initializable 
 			} else {
 				compositeButton.setText(colorText);
 			}
+		});
+
+		autoScaleButton.setOnAction((event) -> {
+			overlay.autoScaleImage();
 		});
 	}
 
