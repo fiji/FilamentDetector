@@ -94,6 +94,8 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 		saveResultsCheckbox.setSelected(analyzer.isSaveResults());
 		showPlotsCheckbox.setSelected(showPlots);
 		savePlotsCheckbox.setSelected(savePlots);
+
+		this.updateParameters(null);
 	}
 
 	@FXML
@@ -101,6 +103,13 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 		analyzer.setSaveResults(saveResultsCheckbox.isSelected());
 		showPlots = showPlotsCheckbox.isSelected();
 		savePlots = savePlotsCheckbox.isSelected();
+
+		if (savePlotsCheckbox.isSelected()) {
+			showPlotsCheckbox.setSelected(true);
+			showPlotsCheckbox.setDisable(true);
+		} else {
+			showPlotsCheckbox.setDisable(false);
+		}
 	}
 
 	@Override
