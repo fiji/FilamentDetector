@@ -31,14 +31,6 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="showImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show Preprocessed Image." />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" spacing="5.0">
-                     <children>
                         <CheckBox fx:id="saveImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Save Preprocessed Image next to the Original Image." />
                      </children>
                      <padding>
@@ -47,7 +39,15 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="useForOverlayCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Use Preprocessed Image for overlay (and show the image)." />
+                        <CheckBox fx:id="showImageCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Show Preprocessed Image." />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="useForOverlayCheckbox" mnemonicParsing="false" onAction="#updateParameters" text="Use Preprocessed Image (Not Original) for Overlay." />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

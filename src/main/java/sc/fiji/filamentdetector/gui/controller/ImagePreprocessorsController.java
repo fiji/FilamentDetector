@@ -199,12 +199,20 @@ public class ImagePreprocessorsController extends AbstractController implements 
 			controller.enableTooltip();
 		}
 
+		this.updateParameters();
 	}
 
 	public void updateParameters() {
 		imagePreprocessors.setSavePreprocessedImage(saveImageCheckbox.isSelected());
 		imagePreprocessors.setShowPreprocessedImage(showImageCheckbox.isSelected());
 		imagePreprocessors.setUseForOverlay(useForOverlayCheckbox.isSelected());
+
+		if (imagePreprocessors.isUseForOverlay()) {
+			showImageCheckbox.setSelected(true);
+			showImageCheckbox.setDisable(true);
+		} else {
+			showImageCheckbox.setDisable(false);
+		}
 	}
 
 	@FXML
