@@ -30,6 +30,8 @@ import javafx.scene.layout.Pane;
 
 public class ReorderableListCell extends ListCell<Pane> {
 
+	private boolean blockReorder = false;
+
 	public ReorderableListCell() {
 		super();
 	}
@@ -42,6 +44,14 @@ public class ReorderableListCell extends ListCell<Pane> {
 		} else {
 			setGraphic(pane);
 		}
+	}
+
+	public boolean isBlockReorder() {
+		return blockReorder;
+	}
+
+	public void setBlockReorder(boolean blockReorder) {
+		this.blockReorder = blockReorder;
 	}
 
 }

@@ -61,6 +61,11 @@ public class ReorderablePaneListView extends ListView<Pane> {
 			ReorderableListCell cell = new ReorderableListCell();
 
 			cell.setOnDragDetected(event -> {
+
+				if (cell.isBlockReorder()) {
+					return;
+				}
+
 				if (cell.getItem() == null) {
 					return;
 				}

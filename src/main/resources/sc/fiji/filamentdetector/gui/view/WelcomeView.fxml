@@ -119,7 +119,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" spacing="10.0">
                                              <children>
-                                                <Label text="Channel to use :" />
+                                                <Label text="Select Filament Channel :" />
                                                 <ComboBox fx:id="channelComboBox" onAction="#writeCalibration" />
                                              </children>
                                              <padding>
