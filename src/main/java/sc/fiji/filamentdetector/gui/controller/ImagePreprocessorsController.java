@@ -244,6 +244,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 				status.showStatus(statusMessage);
 				progressIndicator.setVisible(false);
 				overlay.reset();
+				overlay.autoScaleImage();
 				usePreprocessedImageForOverlay();
 			}
 
