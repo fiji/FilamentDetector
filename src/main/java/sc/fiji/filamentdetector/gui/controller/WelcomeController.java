@@ -125,6 +125,13 @@ public class WelcomeController extends AbstractController implements Initializab
 
 		channelComboBox.getItems().addAll(filamentDetector.getCalibrations().getChannelList());
 		channelComboBox.getSelectionModel().selectFirst();
+
+		if (this.filamentDetector.getCalibrations().getSizeZ() <= 1) {
+			// Disable the Voxel Depth checkbox
+			voxelDepthField.setDisable(true);
+		} else {
+			voxelDepthField.setDisable(false);
+		}
 	}
 
 	@FXML
