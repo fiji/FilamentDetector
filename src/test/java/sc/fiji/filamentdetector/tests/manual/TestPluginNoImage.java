@@ -25,11 +25,29 @@
  */
 package sc.fiji.filamentdetector.tests.manual;
 
-import net.imagej.ImageJ;
+import org.scijava.Context;
 
-public class TestPlugin {
+import net.imagej.Dataset;
+import net.imagej.ImageJ;
+import sc.fiji.filamentdetector.FilamentDetectorPlugin;
+
+public class TestPluginNoImage {
 
 	public static void main(final String... args) throws Exception {
 		final ImageJ ij = net.imagej.Main.launch(args);
+		Context context = ij.getContext();
+
+		String baseDir = "/home/hadim/.doc/Code/Postdoc/ij/testdata/";
+
+		String fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit.tif";
+		fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
+		//fpath = baseDir + "7,5uM_emccd_lapse1.tif";
+		// fpath = baseDir + "10uM_emccd_lapse1-1-Preprocessed.tif";
+
+		Dataset data = ij.dataset().open(fpath);
+		ij.ui().show(data);
+
+		ij.command().run(FilamentDetectorPlugin.class, true);
+
 	}
 }
