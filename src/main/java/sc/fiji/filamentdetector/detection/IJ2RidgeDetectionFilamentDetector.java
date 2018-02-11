@@ -160,6 +160,8 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 		lines = (List<DefaultPolyline>) op.run(RidgeDetection.class, slice, lineWidth, lowerThreshold, higherThreshold,
 				(int) lineWidth);
 
+		// TODO: add junctions detection.
+		
 		for (DefaultPolyline line : lines) {
 			Filament filament = FilamentFactory.fromPolyline(line, frame);
 
