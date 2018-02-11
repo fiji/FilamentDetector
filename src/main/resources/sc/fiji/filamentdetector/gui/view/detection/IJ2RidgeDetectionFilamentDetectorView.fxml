@@ -28,7 +28,7 @@
             <HBox alignment="CENTER_LEFT" spacing="5.0">
                <children>
                   <Label minWidth="-Infinity" text="Lower Treshold" />
-                  <Slider fx:id="lowerThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
+                  <Slider fx:id="lowerThresholdSlider" blockIncrement="1.0" majorTickUnit="5.0" max="200.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
                   <TextField fx:id="lowerThresholdField" maxWidth="45.0" minWidth="45.0" onAction="#updateParameters" />
                </children>
                <padding>
@@ -38,7 +38,7 @@
             <HBox alignment="CENTER_LEFT" spacing="5.0">
                <children>
                   <Label minWidth="-Infinity" text="Upper Treshold" />
-                  <Slider fx:id="upperThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
+                  <Slider fx:id="upperThresholdSlider" blockIncrement="1.0" majorTickUnit="5.0" max="200.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
                   <TextField fx:id="upperThresholdField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
                </children>
                <padding>
