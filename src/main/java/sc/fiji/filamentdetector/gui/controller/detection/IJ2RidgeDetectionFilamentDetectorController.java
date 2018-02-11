@@ -99,8 +99,8 @@ public class IJ2RidgeDetectionFilamentDetectorController extends AbstractFilamen
 
 		if (thresholdSync.isEvent(event)) {
 			thresholdSync.update(event);
-			this.filamentDetector.setLowerThresh(thresholdSync.getLowerValue());
-			this.filamentDetector.setUpperThresh(thresholdSync.getUpperValue());
+			this.filamentDetector.setLowerThreshold(thresholdSync.getLowerValue());
+			this.filamentDetector.setUpperThreshold(thresholdSync.getUpperValue());
 		} else if (lineWidthSync.isEvent(event)) {
 			lineWidthSync.update(event);
 			this.filamentDetector.setLineWidth(lineWidthSync.getValue());

@@ -92,4 +92,17 @@ public class FilamentDetectorService extends AbstractService implements ImageJSe
 		}
 	}
 
+	public IJ2RidgeDetectionFilamentDetector getIJ2RidgeFilamentDetector() {
+		PluginInfo<SciJavaPlugin> pluginInfo = pluginService.getPlugin(IJ2RidgeDetectionFilamentDetector.class);
+		try {
+			IJ2RidgeDetectionFilamentDetector plugin = (IJ2RidgeDetectionFilamentDetector) pluginInfo.createInstance();
+			plugin.setContext(context);
+			return plugin;
+		} catch (InstantiableException e) {
+			log.error("Can't load the following Filament Detector : " + pluginInfo.getName());
+			log.error(e.getMessage());
+			return null;
+		}
+	}
+
 }

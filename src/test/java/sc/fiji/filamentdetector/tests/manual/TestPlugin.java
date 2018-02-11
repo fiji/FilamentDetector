@@ -40,8 +40,9 @@ public class TestPlugin {
 		String baseDir = "/home/hadim/.doc/Code/Postdoc/ij/testdata/";
 
 		String fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit.tif";
-		//fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1.tif";
-		// fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
+		
+		fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
+		fpath = baseDir + "flat.tif";
 		// fpath = baseDir + "7,5uM_emccd_lapse1.tif";
 		// fpath = baseDir + "10uM_emccd_lapse1-1-Preprocessed.tif";
 

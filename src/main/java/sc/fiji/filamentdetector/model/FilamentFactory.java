@@ -26,12 +26,26 @@
 package sc.fiji.filamentdetector.model;
 
 import de.biomedical_imaging.ij.steger.Line;
+import net.imglib2.roi.geom.real.DefaultPolyline;
 
 public class FilamentFactory {
 
 	public static Filament fromLine(Line line, int frame) {
 		float[] x = line.getXCoordinates();
 		float[] y = line.getYCoordinates();
+
+		return new Filament(x, y, frame);
+	}
+
+	public static Filament fromPolyline(DefaultPolyline line, int frame) {
+		// We only assume two dimensions here.
+		double[] x = new double[line.numVertices()];
+		double[] y = new double[line.numVertices()];
+
+		for (int i = 0; i < line.numVertices(); i++) {
+			x[i] = line.vertex(i).getDoublePosition(0);
+			y[i] = line.vertex(i).getDoublePosition(1);
+		}
 
 		return new Filament(x, y, frame);
 	}
