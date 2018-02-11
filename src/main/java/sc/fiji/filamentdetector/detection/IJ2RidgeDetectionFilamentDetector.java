@@ -126,9 +126,8 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 		try {
 			imp = convertService.convert(getImageDisplay(), ImagePlus.class);
 			
-			int currentFrame = imp.getFrame();
+			int currentFrame = imp.getFrame() - 1;
 
-			log.info(currentFrame);
 			this.detectFrame(currentFrame, channelIndex);
 			this.simplifyFilaments();
 

@@ -126,7 +126,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 
 		this.impData.setC(channelIndex + 1);
 
-		for (int frame = 1; frame < this.impData.getNFrames() + 1; frame++) {
+		for (int frame = 0; frame < this.impData.getNFrames(); frame++) {
 			this.detectFrame(frame);
 		}
 		this.imp.setT(currentFrame);
@@ -143,7 +143,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 	public void detectCurrentFrame(int channelIndex) {
 
 		this.initDetection();
-		int currentFrame = this.imp.getFrame();
+		int currentFrame = this.imp.getFrame() - 1;
 		int currentChannel = this.imp.getChannel();
 
 		this.impData.setC(channelIndex + 1);
@@ -166,7 +166,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 			filaments = new Filaments();
 		}
 
-		this.impData.setT(frame);
+		this.impData.setT(frame + 1);
 		ImageProcessor ip = this.impData.getProcessor();
 
 		// Detect lines
