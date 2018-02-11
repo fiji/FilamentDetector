@@ -25,47 +25,50 @@
  */
 package sc.fiji.filamentdetector;
 
-import org.scijava.Context;
 import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
+import org.scijava.service.Service;
 
-import net.imagej.Dataset;
-import net.imagej.ImageJ;
-import net.imagej.display.ImageDisplay;
+import net.imagej.ImageJService;
+import net.imagej.ImgPlus;
+import net.imagej.axis.AxisType;
+import net.imagej.ops.OpService;
+import net.imglib2.FinalInterval;
+import net.imglib2.util.Intervals;
 
-public class DatasetUtils {
+@Plugin(type = Service.class)
+public class ImageUtilService extends AbstractService implements ImageJService {
 
-	// TODO: use IJ Ops to do that
-	static public ImageDisplay convertTo8Bit(ImageDisplay imageDisplay, ImageJ ij) {
-		/*
-		 * ImageDisplay out = null; Dataset dataset = (Dataset)
-		 * imageDisplay.getActiveView().getData();
-		 * 
-		 * Img<DoubleType> clipped = ij.op().create().img(dataset); Op clip_op =
-		 * ij.op().op("convert.clip", dataset.getImgPlus().firstElement(),
-		 * dataset.firstElement()); ij.op().op("convert.imageType", clipped, dataset,
-		 * clip_op);
-		 * 
-		 * Dataset converted = ij.dataset().create(ij.op().create().imgPlus(clipped));
-		 * ij.ui().show(converted);
-		 * 
-		 * return ij.imageDisplay().getActiveImageDisplay();
-		 */
-		return null;
-	}
+	@Parameter
+	private LogService log;
 
-	public static void main(final String... args) throws Exception {
-		final ImageJ ij = net.imagej.Main.launch(args);
-		Context context = ij.getContext();
+	@Parameter
+	private OpService op;
 
-		LogService log = ij.log();
+	public ImgPlus<?> cropAlongAxis(ImgPlus<?> img, AxisType axis, long index) {
 
-		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/test-16bit.tif";
-		Dataset dataset = ij.dataset().open(fpath);
-		ij.ui().show(dataset);
+		if (img.dimensionIndex(axis) == -1) {
+			return img;
+		}
 
-		ImageDisplay imd = ij.imageDisplay().getActiveImageDisplay();
+		int nDim = img.numDimensions();
+		long[] intervalsArray = new long[nDim * 2];
 
-		ImageDisplay converted = DatasetUtils.convertTo8Bit(imd, ij);
+		for (int i = 0; i < nDim; i++) {
+
+			if (img.axis(i).type().equals(axis)) {
+				intervalsArray[i] = index;
+				intervalsArray[i + nDim] = index;
+			} else {
+				intervalsArray[i] = 0;
+				intervalsArray[i + nDim] = img.dimension(i) - 1;
+			}
+		}
+
+		FinalInterval interval = Intervals.createMinMax(intervalsArray);
+		return (ImgPlus<?>) op.transform().crop(img, interval);
 	}
 
 }

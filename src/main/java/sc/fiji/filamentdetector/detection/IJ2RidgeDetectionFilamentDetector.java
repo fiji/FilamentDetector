@@ -36,14 +36,17 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.ImgPlus;
-import net.imagej.display.ImageDisplay;
+import net.imagej.axis.Axes;
 import net.imagej.display.ImageDisplayService;
 import net.imagej.ops.OpService;
 import net.imagej.ops.segment.detectRidges.RidgeDetection;
 import net.imglib2.roi.geom.real.DefaultPolyline;
 import net.imglib2.type.numeric.RealType;
+import sc.fiji.filamentdetector.ImageUtilService;
+import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
 import sc.fiji.filamentdetector.model.Filament;
 import sc.fiji.filamentdetector.model.FilamentFactory;
 import sc.fiji.filamentdetector.model.Filaments;
@@ -72,6 +75,9 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 	@Parameter
 	private ImageDisplayService imds;
 
+	@Parameter
+	private ImageUtilService ijUtil;
+
 	private double lineWidth = 3.5;
 	private double higherThreshold = 20;
 	private double lowerThreshold = 7;
@@ -95,8 +101,10 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 
 		this.initDetection();
 
-		int frame = 1;
-		this.detectFrame(frame);
+		long numT = getDataset().dimension(Axes.TIME);
+		for (int t = 0; t < numT; t++) {
+			this.detectFrame(t, channelIndex);
+		}
 
 		this.simplifyFilaments();
 	}
@@ -108,29 +116,51 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 
 	@Override
 	public void detectCurrentFrame(int channelIndex) {
-
 		this.initDetection();
-		int currentFrame = 0;
-		this.detectFrame(currentFrame);
-		this.simplifyFilaments();
+
+		// The following does not work
+		// int currentFrame = getImageDisplay().getIntPosition(Axes.TIME);
+		
+		// Need to use IJ1 to get the current frame
+		ImagePlus imp = null;
+		try {
+			imp = convertService.convert(getImageDisplay(), ImagePlus.class);
+			
+			int currentFrame = imp.getFrame();
+
+			log.info(currentFrame);
+			this.detectFrame(currentFrame, channelIndex);
+			this.simplifyFilaments();
+
+		} catch (NullPointerException e) {
+			eventService.publish(new ImageNotFoundEvent());
+		}
+
 	}
 
 	@Override
 	public void detectFrame(int frame) {
+		this.detectFrame(frame, 0);
+	}
 
+	@Override
+	public void detectFrame(int frame, int channel) {
+		log.info(channel);
 		Filaments filaments = this.getFilaments();
 
 		if (filaments == null) {
 			filaments = new Filaments();
 		}
 
-		ImageDisplay imd = getImageDisplay();
 		Dataset dataset = getDataset();
 		ImgPlus<? extends RealType<?>> img = dataset.getImgPlus();
 
+		ImgPlus<?> slice = ijUtil.cropAlongAxis(img, Axes.TIME, frame);
+		slice = ijUtil.cropAlongAxis(slice, Axes.CHANNEL, channel);
+
 		List<DefaultPolyline> lines = new ArrayList<>();
-		lines = (List<DefaultPolyline>) op.run(RidgeDetection.class, img, lineWidth, lowerThreshold, higherThreshold,
-				lineWidth);
+		lines = (List<DefaultPolyline>) op.run(RidgeDetection.class, slice, lineWidth, lowerThreshold, higherThreshold,
+				(int) lineWidth);
 
 		for (DefaultPolyline line : lines) {
 			Filament filament = FilamentFactory.fromPolyline(line, frame);

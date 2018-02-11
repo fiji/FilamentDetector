@@ -57,11 +57,11 @@ public class FilamentDetectorService extends AbstractService implements ImageJSe
 		List<FilamentDetector> detectors = new ArrayList<>();
 		FilamentDetector detector;
 
-		detector = new RidgeDetectionFilamentDetector();
+		detector = new IJ2RidgeDetectionFilamentDetector();
 		detector.setContext(context);
 		detectors.add(detector);
 
-		detector = new IJ2RidgeDetectionFilamentDetector();
+		detector = new RidgeDetectionFilamentDetector();
 		detector.setContext(context);
 		detectors.add(detector);
 

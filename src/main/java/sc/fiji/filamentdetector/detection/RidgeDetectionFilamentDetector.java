@@ -26,7 +26,6 @@
 package sc.fiji.filamentdetector.detection;
 
 import java.awt.Color;
-import java.util.stream.Collectors;
 
 import org.scijava.Priority;
 import org.scijava.convert.ConvertService;
@@ -125,7 +124,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
 
-		this.impData.setC(channelIndex);
+		this.impData.setC(channelIndex + 1);
 
 		for (int frame = 1; frame < this.impData.getNFrames() + 1; frame++) {
 			this.detectFrame(frame);
@@ -147,10 +146,15 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
 
-		this.impData.setC(channelIndex);
+		this.impData.setC(channelIndex + 1);
 		this.detectFrame(currentFrame);
 		this.imp.setC(currentChannel);
 		this.simplifyFilaments();
+	}
+
+	@Override
+	public void detectFrame(int frame, int channel) {
+		this.detectFrame(frame);
 	}
 
 	@Override

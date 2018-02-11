@@ -53,7 +53,9 @@ public class TestDetector {
 		FilamentDetectorService detectorService = ij.get(FilamentDetectorService.class);
 		FilamentTrackerService tarckerService = ij.get(FilamentTrackerService.class);
 
-		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/flat.tif";
+		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-only-T.tif";
+		//fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-flat.tif";
+		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-only-C.tif";
 		Dataset dataset = dsio.open(fpath);
 		ij.ui().show(dataset);
 
@@ -61,7 +63,7 @@ public class TestDetector {
 
 		FilamentWorkflow wf = new FilamentWorkflow(context, imd);
 		wf.initialize();
-		wf.getCalibrations().setChannelToUseIndex(2);
+		wf.getCalibrations().setChannelToUseIndex(1);
 
 		// Get processed data and convert it to ImageDisplay
 		// TODO: that step should be easier

@@ -225,8 +225,8 @@ public class DetectFilamentController extends AbstractController implements Init
 	}
 
 	public void initPane() {
-		this.detectorComboBox.getSelectionModel().select(0);
-		status.showStatus("Initialize detection.");
+		//this.detectorComboBox.getSelectionModel().select(0);
+		//status.showStatus("Initialize detection.");
 	}
 
 	private void setFilamentDetector(FilamentDetector filamentDetector) {
