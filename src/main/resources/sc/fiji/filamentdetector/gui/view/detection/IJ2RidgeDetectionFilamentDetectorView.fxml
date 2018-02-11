@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <Label minWidth="-Infinity" text="Line Width" />
+                  <Slider fx:id="lineWidthSlider" blockIncrement="0.1" majorTickUnit="5.0" max="5.0" min="0.4" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
+                  <TextField fx:id="lineWidthField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <Label minWidth="-Infinity" text="Lower Treshold" />
+                  <Slider fx:id="lowerThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
+                  <TextField fx:id="lowerThresholdField" maxWidth="45.0" minWidth="45.0" onAction="#updateParameters" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <Label minWidth="-Infinity" text="Upper Treshold" />
+                  <Slider fx:id="upperThresholdSlider" blockIncrement="0.1" majorTickUnit="5.0" max="10.0" minorTickCount="1" onMouseClicked="#updateParameters" onMouseDragged="#updateParameters" onMousePressed="#updateParameters" />
+                  <TextField fx:id="upperThresholdField" maxWidth="80.0" minWidth="45.0" onAction="#updateParameters" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

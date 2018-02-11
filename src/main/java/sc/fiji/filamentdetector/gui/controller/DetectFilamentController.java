@@ -66,11 +66,13 @@ import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.detection.FilamentDetector;
 import sc.fiji.filamentdetector.detection.FilamentDetectorService;
 import sc.fiji.filamentdetector.detection.FilteringParameters;
+import sc.fiji.filamentdetector.detection.IJ2RidgeDetectionFilamentDetector;
 import sc.fiji.filamentdetector.detection.RidgeDetectionFilamentDetector;
 import sc.fiji.filamentdetector.event.FilterFilamentEvent;
 import sc.fiji.filamentdetector.event.PreventPanelSwitchEvent;
 import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.controller.detection.FilamentDetectorController;
+import sc.fiji.filamentdetector.gui.controller.detection.IJ2RidgeDetectionFilamentDetectorController;
 import sc.fiji.filamentdetector.gui.controller.detection.RidgeDetectionFilamentDetectorController;
 import sc.fiji.filamentdetector.gui.event.DetectionParametersUpdatedEvent;
 import sc.fiji.filamentdetector.gui.fxwidgets.UpperLowerSynchronizer;
@@ -233,11 +235,16 @@ public class DetectFilamentController extends AbstractController implements Init
 		FilamentDetectorController controller = null;
 		if (filamentDetector.getClass().equals(RidgeDetectionFilamentDetector.class)) {
 			controller = new RidgeDetectionFilamentDetectorController(context, filamentDetector);
+			
+		} else if (filamentDetector.getClass().equals(IJ2RidgeDetectionFilamentDetector.class)) {
+			controller = new IJ2RidgeDetectionFilamentDetectorController(context, filamentDetector);
+			
 		} else {
 			log.error("Can't load FilamentDetector parameters pane.");
 		}
 
 		if (controller != null) {
+			detectorParametersPane.getChildren().clear();
 			detectorParametersPane.getChildren().add(controller.loadPane());
 		}
 	}

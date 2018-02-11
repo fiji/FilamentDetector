@@ -34,6 +34,8 @@ import sc.fiji.filamentdetector.model.Filaments;
 
 public interface FilamentDetector extends Named, RichPlugin {
 
+	void simplifyFilaments();
+	
 	void detect();
 
 	void detect(int channelIndex);

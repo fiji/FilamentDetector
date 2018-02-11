@@ -25,6 +25,8 @@
  */
 package sc.fiji.filamentdetector.detection;
 
+import java.util.stream.Collectors;
+
 import org.scijava.plugin.AbstractRichPlugin;
 
 import net.imagej.Dataset;
@@ -43,6 +45,20 @@ public abstract class AbstractFilamentDetector extends AbstractRichPlugin implem
 	private Dataset dataset;
 
 	private Filaments filaments;
+
+	@Override
+	public void simplifyFilaments() {
+		if (this.isSimplifyFilaments()) {
+			Filaments filaments = this.getFilaments();
+			filaments = filaments.simplify(this.getSimplifyToleranceDistance());
+
+			// Remove filaments with only one point
+			filaments = filaments.stream().filter(filament -> filament.getSize() > 1)
+					.collect(Collectors.toCollection(Filaments::new));
+
+			this.setFilaments(filaments);
+		}
+	}
 
 	@Override
 	public void setDetectOnlyCurrentFrame(boolean detectOnlyCurrentFrame) {

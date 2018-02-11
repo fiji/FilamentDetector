@@ -132,7 +132,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		}
 		this.imp.setT(currentFrame);
 		this.imp.setC(currentChannel);
-		this.simplify();
+		this.simplifyFilaments();
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		this.impData.setC(channelIndex);
 		this.detectFrame(currentFrame);
 		this.imp.setC(currentChannel);
-		this.simplify();
+		this.simplifyFilaments();
 	}
 
 	@Override
@@ -180,19 +180,6 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		}
 
 		this.setFilaments(filaments);
-	}
-
-	private void simplify() {
-		if (this.isSimplifyFilaments()) {
-			Filaments filaments = this.getFilaments();
-			filaments = filaments.simplify(this.getSimplifyToleranceDistance());
-
-			// Remove filaments with only one point
-			filaments = filaments.stream().filter(filament -> filament.getSize() > 1)
-					.collect(Collectors.toCollection(Filaments::new));
-
-			this.setFilaments(filaments);
-		}
 	}
 
 	public double getSigma() {
