@@ -145,7 +145,6 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 
 	@Override
 	public void detectFrame(int frame, int channel) {
-		log.info(channel);
 		Filaments filaments = this.getFilaments();
 
 		if (filaments == null) {
