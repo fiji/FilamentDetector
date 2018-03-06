@@ -30,9 +30,11 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 @Plugin(type = ImagePreprocessor.class, priority = Priority.HIGH)
 public class TubenessFilterPreprocessor extends AbstractImagePreprocessor {
@@ -55,14 +57,21 @@ public class TubenessFilterPreprocessor extends AbstractImagePreprocessor {
 
 			int[] fixedAxisIndices = new int[] { dataset.dimensionIndex(Axes.X), dataset.dimensionIndex(Axes.Y) };
 
+			Img<T> in = (Img<T>) dataset.getImgPlus();
+
 			// Apply filter
-			Img<T> out = (Img<T>) ops.create().img(dataset.getImgPlus().getImg());
-			UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.tubeness", out, dataset.getImgPlus(), sigma,
-					calibrations);
+			Img<DoubleType> out = ops.create().img(in, new DoubleType());
+			UnaryComputerOp op = (UnaryComputerOp) ops.op("filter.tubeness", out, in, sigma, calibrations);
 
-			ops.slice(out, dataset.getImgPlus(), op, fixedAxisIndices);
+			ops.slice(out, in, op, fixedAxisIndices);
 
-			this.output = matchRAIToDataset(out, dataset);
+			// Normalize intensity
+			Img<T> out3 = (Img<T>) ops.create().img(dataset.getImgPlus());
+			RealTypeConverter op2 = (RealTypeConverter) ops.op("convert.normalizeScale",
+					dataset.getImgPlus().firstElement(), out.firstElement());
+			ops.convert().imageType(out3, out, op2);
+
+			this.output = matchRAIToDataset(out3, dataset);
 		} else {
 			this.output = getInput();
 		}
