@@ -31,6 +31,7 @@ import io.scif.services.DatasetIOService;
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imglib2.type.numeric.RealType;
+import sc.fiji.filamentdetector.imagepreprocessor.DOGFilterPreprocessor;
 import sc.fiji.filamentdetector.imagepreprocessor.ImagePreprocessorService;
 import sc.fiji.filamentdetector.imagepreprocessor.TubenessFilterPreprocessor;
 
@@ -48,9 +49,14 @@ public class TestPreprocessing {
 		Dataset dataset = dsio.open(fpath);
 		ij.ui().show(dataset);
 
-		TubenessFilterPreprocessor proc = procService.getTubenessFilter();
+/*		TubenessFilterPreprocessor proc = procService.getTubenessFilter();
 		proc.setDoPreprocess(true);
-		proc.setSigma(5);
+		proc.setSigma(5);*/
+
+		DOGFilterPreprocessor proc = procService.getDOGFilter();
+		proc.setDoPreprocess(true);
+		proc.setSigma1(6);
+		proc.setSigma2(2);
 
 		proc.setInput(dataset);
 		proc.preprocess();

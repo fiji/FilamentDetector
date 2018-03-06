@@ -305,6 +305,7 @@ public class ImagePreprocessorsController extends AbstractController implements 
 					overlay.setImageDisplay(imagePreprocessors.getImageDisplay());
 					filamentWorkflow.setImageDisplay(imagePreprocessors.getImageDisplay());
 					log.error("Cannot use the preprocessed image for overlay.");
+					status.showStatus("Cannot use the preprocessed image for overlay. Restart the plugin.");
 				}
 			}
 
