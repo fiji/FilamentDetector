@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 public class TubenessFilterPreprocessor extends AbstractImagePreprocessor {
 
 	private static boolean DEFAULT_DO_PREPROCESS = false;
-	private static double DEFAULT_SIGMA = 5;
+	private static double DEFAULT_SIGMA = 2;
 
 	private double sigma = DEFAULT_SIGMA;
 	private double[] calibrations = new double[] { 1, 1 };

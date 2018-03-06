@@ -66,7 +66,7 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 			Dataset background = processor.getOutput();
 
 			// Convert to 32 bits
-			IterableInterval<FloatType> out = (IterableInterval<FloatType>) ops.run("convert.float32",
+			IterableInterval<FloatType> in = (IterableInterval<FloatType>) ops.run("convert.float32",
 					dataset.getImgPlus());
 			IterableInterval<FloatType> original = (IterableInterval<FloatType>) ops.run("convert.float32",
 					dataset.getImgPlus());
@@ -74,7 +74,7 @@ public class PseudoFlatFieldCorrectionPreprocessor extends AbstractImagePreproce
 					background.getImgPlus());
 
 			// Do subtraction
-			IterableInterval<FloatType> out2 = ops.create().img(out);
+			IterableInterval<FloatType> out2 = ops.create().img(in);
 			ops.math().subtract(out2, original, backgroundFloat);
 
 			// Clip intensities

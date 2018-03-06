@@ -287,6 +287,10 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 	public void mouseClicked(MouseEvent event) {
 		ImagePlus imp = getImagePlus();
 
+		if (imp.getWindow() == null || imp.getWindow().getCanvas() == null) {
+			return;
+		}
+
 		// Get the real x and y
 		double x = imp.getWindow().getCanvas().offScreenXD(event.getX());
 		double y = imp.getWindow().getCanvas().offScreenYD(event.getY());

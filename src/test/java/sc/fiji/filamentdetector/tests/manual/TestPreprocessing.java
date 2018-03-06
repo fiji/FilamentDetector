@@ -25,7 +25,6 @@
  */
 package sc.fiji.filamentdetector.tests.manual;
 
-import org.scijava.Context;
 import org.scijava.log.LogService;
 
 import io.scif.services.DatasetIOService;
@@ -39,7 +38,6 @@ public class TestPreprocessing {
 
 	public static <T extends RealType<T>> void main(final String... args) throws Exception {
 		final ImageJ ij = net.imagej.Main.launch(args);
-		Context context = ij.getContext();
 
 		LogService log = ij.log();
 		ImagePreprocessorService procService = ij.get(ImagePreprocessorService.class);
