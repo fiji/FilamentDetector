@@ -251,9 +251,9 @@ public class ImagePreprocessorsController extends AbstractController implements 
 				String statusMessage = "The image has been successfully preprocessed.";
 				status.showStatus(statusMessage);
 				progressIndicator.setVisible(false);
+				usePreprocessedImageForOverlay();
 				overlay.reset();
 				overlay.autoScaleImage();
-				usePreprocessedImageForOverlay();
 			}
 
 			@Override

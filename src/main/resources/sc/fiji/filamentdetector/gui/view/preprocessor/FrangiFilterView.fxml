@@ -12,7 +12,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox disable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane maxWidth="30.0" minWidth="20.0" prefWidth="30.0">
                <children>
@@ -33,7 +33,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <CheckBox fx:id="doProcessCheckbox" mnemonicParsing="false" onAction="#updateParameters" prefWidth="180.0" text="Frangi Vesselness Filter (COMING SOON)" wrapText="true" />
+                        <CheckBox fx:id="doProcessCheckbox" mnemonicParsing="false" onAction="#updateParameters" prefWidth="180.0" text="Frangi Vesselness Filter" wrapText="true" />
                         <Separator orientation="VERTICAL" />
                         <VBox>
                            <children>
