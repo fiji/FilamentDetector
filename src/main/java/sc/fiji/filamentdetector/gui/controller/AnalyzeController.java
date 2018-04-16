@@ -159,12 +159,12 @@ public class AnalyzeController extends AbstractController implements Initializab
 		analyzers.add(tipFitterAnalyzer);
 		analyzerControllers.put(tipFitterAnalyzer, tipFitterAnalyzerController);
 
-		NaiveNucleationAnalyzer naiveNucleationAnalyzer = analyzerService.getNaiveNucleationAnalyzer();
+/*		NaiveNucleationAnalyzer naiveNucleationAnalyzer = analyzerService.getNaiveNucleationAnalyzer();
 		naiveNucleationAnalyzer.setFilamentWorkflow(filamentWorkflow);
 		AnalyzerController naiveNucleationAnalyzerController = new NaiveNucleationAnalyzerController(context,
 				naiveNucleationAnalyzer);
 		analyzers.add(naiveNucleationAnalyzer);
-		analyzerControllers.put(naiveNucleationAnalyzer, naiveNucleationAnalyzerController);
+		analyzerControllers.put(naiveNucleationAnalyzer, naiveNucleationAnalyzerController);*/
 
 		// Sync the analyzers with the combobox
 		analyzerCombobox.setItems(FXCollections.observableList(analyzers));

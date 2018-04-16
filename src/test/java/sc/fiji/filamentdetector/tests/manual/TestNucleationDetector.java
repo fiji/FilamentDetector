@@ -28,7 +28,6 @@ package sc.fiji.filamentdetector.tests.manual;
 import java.awt.Color;
 import java.util.List;
 
-import org.nd4j.linalg.api.ndarray.INDArray;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -94,7 +93,7 @@ public class TestNucleationDetector {
 		overlay.add(new Filament(line1, frame));
 		overlay.add(new Filament(line2, frame));
 
-		INDArray intensities = GeometryUtils.getIntensities(line1, dataset, frame, channel, 0, thickness, pixelSpacing);
-		log.info(intensities);
+/*		INDArray intensities = GeometryUtils.getIntensities(line1, dataset, frame, channel, 0, thickness, pixelSpacing);
+		log.info(intensities);*/
 	}
 }

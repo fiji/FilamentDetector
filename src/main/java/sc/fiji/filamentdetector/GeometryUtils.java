@@ -30,19 +30,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
-
 import ij.gui.Plot;
-import net.imagej.Dataset;
-import net.imagej.axis.Axes;
 import net.imglib2.RealPoint;
-import net.imglib2.RealRandomAccess;
-import net.imglib2.img.Img;
-import net.imglib2.interpolation.InterpolatorFactory;
-import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
 
 public class GeometryUtils {
 
@@ -68,69 +57,6 @@ public class GeometryUtils {
 			sum += Math.pow(point1.getDoublePosition(d) - point2.getDoublePosition(d), 2);
 		}
 		return Math.sqrt(sum);
-	}
-
-	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z,
-			double thickness, double pixelSpacing) {
-
-		// Get all the parallel lines according to the provided thickness
-		List<List<RealPoint>> lines = GeometryUtils.getParallelLines(line, thickness, pixelSpacing);
-
-		// Get intensities for each line
-		List<INDArray> allIntensities = new ArrayList<>();
-		for (List<RealPoint> singleLine : lines) {
-			allIntensities.add(GeometryUtils.getIntensities(singleLine, dataset, frame, channel, z));
-		}
-
-		// Average the intensities
-		INDArray intensities = Nd4j.create(allIntensities,
-				new int[] { allIntensities.size(), allIntensities.get(0).shape()[1] + 1 });
-
-		return intensities.mean(0);
-	}
-
-	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset, int frame, int channel, int z) {
-		InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator = new NLinearInterpolatorFactory();
-		return getIntensities(line, dataset, interpolator, frame, channel, z);
-	}
-
-	public static <T> INDArray getIntensities(List<RealPoint> line, Dataset dataset,
-			InterpolatorFactory<? extends RealType<?>, Img<? extends RealType<?>>> interpolator, int frame, int channel,
-			int z) {
-
-		Img<? extends RealType<?>> img = dataset.getImgPlus().getImg();
-		RealRandomAccess<? extends RealType<?>> interpolated = Views.interpolate(img, interpolator).realRandomAccess();
-
-		double[] intensities = new double[line.size()];
-		int xIndex = dataset.dimensionIndex(Axes.X);
-		int yIndex = dataset.dimensionIndex(Axes.Y);
-		int zIndex = dataset.dimensionIndex(Axes.Z);
-		int timeIndex = dataset.dimensionIndex(Axes.TIME);
-		int channelIndex = dataset.dimensionIndex(Axes.CHANNEL);
-
-		for (int i = 0; i < line.size(); i++) {
-
-			interpolated.setPosition(line.get(i).getDoublePosition(0), xIndex);
-			interpolated.setPosition(line.get(i).getDoublePosition(1), yIndex);
-
-			if (zIndex >= 0) {
-				interpolated.setPosition(z, zIndex);
-			}
-			if (timeIndex >= 0) {
-				interpolated.setPosition(frame, timeIndex);
-			}
-			if (channelIndex >= 0) {
-				interpolated.setPosition(channel, channelIndex);
-			}
-
-			try {
-				intensities[i] = interpolated.get().getRealDouble();
-			} catch (Exception err) {
-				intensities[i] = 0;
-			}
-		}
-
-		return Nd4j.create(intensities);
 	}
 
 	public static List<RealPoint> getLinePointsFromNumberOfPoints(RealPoint start, RealPoint end, int numPts) {
@@ -202,23 +128,6 @@ public class GeometryUtils {
 		return plot;
 	}
 
-	public static Plot plotPoints(INDArray y) {
-		INDArray x = Nd4j.arange(0, y.size(1));
-		return plotPoints(x, y);
-	}
-
-	public static Plot plotPoints(INDArray x, INDArray y) {
-
-		double[] xPoints = x.data().asDouble();
-		double[] yPoints = y.data().asDouble();
-
-		Plot plot = new Plot("", "x", "y", xPoints, yPoints);
-		plot.addPoints(xPoints, yPoints, 0);
-		plot.show();
-
-		return plot;
-	}
-
 	public static List<List<RealPoint>> getParallelLines(List<RealPoint> middleLine, double thickness, double spacing) {
 
 		RealPoint p1;
@@ -260,5 +169,72 @@ public class GeometryUtils {
 
 		return lines;
 	}
+
+	/*
+	 * public static <T> INDArray getIntensities(List<RealPoint> line, Dataset
+	 * dataset, int frame, int channel, int z, double thickness, double
+	 * pixelSpacing) {
+	 * 
+	 * // Get all the parallel lines according to the provided thickness
+	 * List<List<RealPoint>> lines = GeometryUtils.getParallelLines(line, thickness,
+	 * pixelSpacing);
+	 * 
+	 * // Get intensities for each line List<INDArray> allIntensities = new
+	 * ArrayList<>(); for (List<RealPoint> singleLine : lines) {
+	 * allIntensities.add(GeometryUtils.getIntensities(singleLine, dataset, frame,
+	 * channel, z)); }
+	 * 
+	 * // Average the intensities INDArray intensities = Nd4j.create(allIntensities,
+	 * new int[] { allIntensities.size(), allIntensities.get(0).shape()[1] + 1 });
+	 * 
+	 * return intensities.mean(0); }
+	 * 
+	 * public static <T> INDArray getIntensities(List<RealPoint> line, Dataset
+	 * dataset, int frame, int channel, int z) { InterpolatorFactory<? extends
+	 * RealType<?>, Img<? extends RealType<?>>> interpolator = new
+	 * NLinearInterpolatorFactory(); return getIntensities(line, dataset,
+	 * interpolator, frame, channel, z); }
+	 * 
+	 * public static <T> INDArray getIntensities(List<RealPoint> line, Dataset
+	 * dataset, InterpolatorFactory<? extends RealType<?>, Img<? extends
+	 * RealType<?>>> interpolator, int frame, int channel, int z) {
+	 * 
+	 * Img<? extends RealType<?>> img = dataset.getImgPlus().getImg();
+	 * RealRandomAccess<? extends RealType<?>> interpolated = Views.interpolate(img,
+	 * interpolator).realRandomAccess();
+	 * 
+	 * double[] intensities = new double[line.size()]; int xIndex =
+	 * dataset.dimensionIndex(Axes.X); int yIndex = dataset.dimensionIndex(Axes.Y);
+	 * int zIndex = dataset.dimensionIndex(Axes.Z); int timeIndex =
+	 * dataset.dimensionIndex(Axes.TIME); int channelIndex =
+	 * dataset.dimensionIndex(Axes.CHANNEL);
+	 * 
+	 * for (int i = 0; i < line.size(); i++) {
+	 * 
+	 * interpolated.setPosition(line.get(i).getDoublePosition(0), xIndex);
+	 * interpolated.setPosition(line.get(i).getDoublePosition(1), yIndex);
+	 * 
+	 * if (zIndex >= 0) { interpolated.setPosition(z, zIndex); } if (timeIndex >= 0)
+	 * { interpolated.setPosition(frame, timeIndex); } if (channelIndex >= 0) {
+	 * interpolated.setPosition(channel, channelIndex); }
+	 * 
+	 * try { intensities[i] = interpolated.get().getRealDouble(); } catch (Exception
+	 * err) { intensities[i] = 0; } }
+	 * 
+	 * return Nd4j.create(intensities); }
+	 * 
+	 * public static Plot plotPoints(INDArray y) { INDArray x = Nd4j.arange(0,
+	 * y.size(1)); return plotPoints(x, y); }
+	 * 
+	 * public static Plot plotPoints(INDArray x, INDArray y) {
+	 * 
+	 * double[] xPoints = x.data().asDouble(); double[] yPoints =
+	 * y.data().asDouble();
+	 * 
+	 * Plot plot = new Plot("", "x", "y", xPoints, yPoints); plot.addPoints(xPoints,
+	 * yPoints, 0); plot.show();
+	 * 
+	 * return plot; }
+	 */
 
 }

@@ -28,7 +28,6 @@ package sc.fiji.filamentdetector.tests.manual;
 import java.util.Arrays;
 import java.util.List;
 
-import org.nd4j.linalg.api.ndarray.INDArray;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -77,8 +76,8 @@ public class TestIntensityProfile2 {
 		Filament filament = new Filament(line, frame);
 		overlay.add(filament);
 
-		INDArray intensities = GeometryUtils.getIntensities(line, dataset, frame, channel, 0);
-		GeometryUtils.plotPoints(intensities);
+/*		INDArray intensities = GeometryUtils.getIntensities(line, dataset, frame, channel, 0);
+		GeometryUtils.plotPoints(intensities);*/
 
 	}
 }

@@ -25,12 +25,6 @@
  */
 package sc.fiji.filamentdetector.analyzer;
 
-import java.awt.Color;
-import java.util.List;
-
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.indexing.conditions.Conditions;
 import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -38,11 +32,8 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.Dataset;
 import net.imagej.ops.OpService;
-import net.imglib2.RealPoint;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
-import sc.fiji.filamentdetector.GeometryUtils;
-import sc.fiji.filamentdetector.model.Filament;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 
 @Plugin(type = Analyzer.class, priority = Priority.HIGH)
@@ -92,7 +83,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	@Override
 	public void analyze() {
 
-		int nFilaments = filamentWorkflow.getTrackedFilaments().size();
+/*		int nFilaments = filamentWorkflow.getTrackedFilaments().size();
 		INDArray framesNucleationEvents = Nd4j.create(1, nFilaments);
 		int frameNucleation;
 
@@ -108,11 +99,11 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 		this.resultMessage = "Analysis is done.";
 		this.results.put("nucleation_events", nucleationEvents);
 		this.results.put("number_of_seeds", nFilaments);
-		this.results.put("nucleation_rate", nucleationRate);
+		this.results.put("nucleation_rate", nucleationRate);*/
 	}
 
 	private int frameFirstNucleation(TrackedFilament trackedFilament) {
-		Dataset dataset = this.filamentWorkflow.getDataset();
+/*		Dataset dataset = this.filamentWorkflow.getDataset();
 
 		INDArray frames = Nd4j.create(trackedFilament.getFrames().stream().mapToDouble(d -> d).toArray());
 		Filament filament;
@@ -166,7 +157,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 
 		if (this.colorizedNucleatedSeeds) {
 			trackedFilament.setColor(Color.RED);
-		}
+		}*/
 		return -1;
 	}
 
