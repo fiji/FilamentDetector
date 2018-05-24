@@ -167,9 +167,9 @@ public class MainController extends AbstractController implements Initializable 
 					mainPane.getPanes().add(loadImagePreprocessor());
 					mainPane.getPanes().add(loadDetectFilament());
 					mainPane.getPanes().add(loadTrackingFilament());
-					mainPane.getPanes().add(loadAnalyzer());
 					mainPane.getPanes().add(loadDataExporter());
 					mainPane.getPanes().add(loadKymographBuilder());
+					mainPane.getPanes().add(loadAnalyzer());
 					mainPane.getPanes().add(loadAbout());
 
 					// Initialize overlay settings UI
