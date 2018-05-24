@@ -36,6 +36,7 @@ import org.scijava.Context;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+import org.scijava.thread.ThreadService;
 import org.scijava.ui.UIService;
 
 import javafx.beans.value.ChangeListener;
@@ -83,6 +84,9 @@ public class ImagePreprocessorsController extends AbstractController implements 
 
 	@Parameter
 	private LogService log;
+
+	@Parameter
+	private ThreadService threadService;
 
 	@Parameter
 	private GUIStatusService status;
@@ -291,7 +295,9 @@ public class ImagePreprocessorsController extends AbstractController implements 
 						.orElse(null);
 
 				if (imageDisplay == null) {
-					ui.show(dataset);
+					// NB: We defer to the EDT to avoid a macOS-specific deadlock between
+					// AWT and JavaFX. See https://github.com/hadim/FilamentDetector#12.
+					threadService.queue(() -> ui.show(dataset));
 					imageDisplay = ids.getImageDisplays().stream()
 							.filter(imd -> ((Dataset) imd.getActiveView().getData()).equals(dataset)).findFirst()
 							.orElse(null);
