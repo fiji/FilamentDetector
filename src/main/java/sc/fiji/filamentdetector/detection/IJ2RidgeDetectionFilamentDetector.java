@@ -35,6 +35,7 @@ import org.scijava.event.EventService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.ui.UIService;
 
 import ij.ImagePlus;
 import net.imagej.Dataset;
@@ -42,8 +43,10 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;
 import net.imagej.display.ImageDisplayService;
 import net.imagej.ops.OpService;
-import net.imagej.ops.segment.detectRidges.RidgeDetection;
-import net.imglib2.roi.geom.real.DefaultPolyline;
+import net.imagej.ops.Ops.Segment.DetectJunctions;
+import net.imagej.ops.Ops.Segment.DetectRidges;
+import net.imglib2.RealPoint;
+import net.imglib2.roi.geom.real.Polyline;
 import net.imglib2.type.numeric.RealType;
 import sc.fiji.filamentdetector.ImageUtilService;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
@@ -73,6 +76,9 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 	private EventService eventService;
 
 	@Parameter
+	private UIService ui;
+
+	@Parameter
 	private ImageDisplayService imds;
 
 	@Parameter
@@ -81,6 +87,7 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 	private double lineWidth = 3.5;
 	private double higherThreshold = 20;
 	private double lowerThreshold = 7;
+	private boolean detectJunctions = false;
 
 	public IJ2RidgeDetectionFilamentDetector() {
 		this.setName(NAME);
@@ -120,12 +127,12 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 
 		// The following does not work
 		// int currentFrame = getImageDisplay().getIntPosition(Axes.TIME);
-		
+
 		// Need to use IJ1 to get the current frame
 		ImagePlus imp = null;
 		try {
 			imp = convertService.convert(getImageDisplay(), ImagePlus.class);
-			
+
 			int currentFrame = imp.getFrame() - 1;
 
 			this.detectFrame(currentFrame, channelIndex);
@@ -153,16 +160,22 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 		Dataset dataset = getDataset();
 		ImgPlus<? extends RealType<?>> img = dataset.getImgPlus();
 
-		ImgPlus<?> slice = ijUtil.cropAlongAxis(img, Axes.TIME, frame);
+		ImgPlus<? extends RealType<?>> slice = ijUtil.cropAlongAxis(img, Axes.TIME, frame);
 		slice = ijUtil.cropAlongAxis(slice, Axes.CHANNEL, channel);
 
-		List<DefaultPolyline> lines = new ArrayList<>();
-		lines = (List<DefaultPolyline>) op.run(RidgeDetection.class, slice, lineWidth, lowerThreshold, higherThreshold,
+		List<Polyline> lines = new ArrayList<>();
+		lines = (List<Polyline>) op.run(DetectRidges.class, slice.getImg(), lineWidth, lowerThreshold, higherThreshold,
 				(int) lineWidth);
 
-		// TODO: add junctions detection.
-		
-		for (DefaultPolyline line : lines) {
+		if (this.detectJunctions) {
+			// TODO: create new lines from the detected junctions.
+			List<RealPoint> junctions = (List<RealPoint>) op.run(DetectJunctions.class, lines);
+			for (RealPoint p : junctions) {
+				log.info(p);
+			}
+		}
+
+		for (Polyline line : lines) {
 			Filament filament = FilamentFactory.fromPolyline(line, frame);
 
 			Color color = colorService.getColor(filaments.size() + 1);
@@ -196,6 +209,14 @@ public class IJ2RidgeDetectionFilamentDetector extends AbstractFilamentDetector 
 
 	public void setLineWidth(double lineWidth) {
 		this.lineWidth = lineWidth;
+	}
+
+	public boolean isDetectJunctions() {
+		return detectJunctions;
+	}
+
+	public void setDetectJunctions(boolean detectJunctions) {
+		this.detectJunctions = detectJunctions;
 	}
 
 	@Override

@@ -36,6 +36,7 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.AxisType;
 import net.imagej.ops.OpService;
 import net.imglib2.FinalInterval;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 
 @Plugin(type = Service.class)
@@ -47,7 +48,7 @@ public class ImageUtilService extends AbstractService implements ImageJService {
 	@Parameter
 	private OpService op;
 
-	public ImgPlus<?> cropAlongAxis(ImgPlus<?> img, AxisType axis, long index) {
+	public ImgPlus<? extends RealType<?>> cropAlongAxis(ImgPlus<? extends RealType<?>> img, AxisType axis, long index) {
 
 		if (img.dimensionIndex(axis) == -1) {
 			return img;
@@ -68,7 +69,7 @@ public class ImageUtilService extends AbstractService implements ImageJService {
 		}
 
 		FinalInterval interval = Intervals.createMinMax(intervalsArray);
-		return (ImgPlus<?>) op.transform().crop(img, interval);
+		return (ImgPlus<? extends RealType<?>>) op.transform().crop(img, interval);
 	}
 
 }

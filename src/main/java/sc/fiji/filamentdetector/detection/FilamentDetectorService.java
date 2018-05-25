@@ -26,6 +26,7 @@
 package sc.fiji.filamentdetector.detection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.scijava.Context;
@@ -56,27 +57,16 @@ public class FilamentDetectorService extends AbstractService implements ImageJSe
 	public List<FilamentDetector> getDetectors() {
 		List<FilamentDetector> detectors = new ArrayList<>();
 		FilamentDetector detector;
-
+		
+		detector = new RidgeDetectionFilamentDetector();
+		detector.setContext(context);
+		detectors.add(detector);
+		
 		detector = new IJ2RidgeDetectionFilamentDetector();
 		detector.setContext(context);
 		detectors.add(detector);
 
-		detector = new RidgeDetectionFilamentDetector();
-		detector.setContext(context);
-		detectors.add(detector);
-
 		return detectors;
-
-		/*
-		 * for (PluginInfo<FilamentDetector> pluginInfo :
-		 * pluginService.getPluginsOfType(FilamentDetector.class)) { try {
-		 * FilamentDetector plugin = pluginInfo.createInstance();
-		 * plugin.setContext(context); detectors.add(plugin); } catch
-		 * (InstantiableException e) {
-		 * log.error("Can't load the following Filament Detector : " +
-		 * pluginInfo.getName()); log.error(e.getMessage()); } }
-		 */
-
 	}
 
 	public RidgeDetectionFilamentDetector getRidgeFilamentDetector() {

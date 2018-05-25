@@ -25,43 +25,44 @@
  */
 package sc.fiji.filamentdetector.tests.manual;
 
+import java.util.List;
+
 import org.scijava.Context;
 import org.scijava.log.LogService;
 
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
+import net.imagej.ImgPlus;
+import net.imagej.axis.Axes;
 import net.imagej.ops.OpService;
-import net.imglib2.histogram.Histogram1d;
+import net.imagej.ops.Ops.Segment.DetectRidges;
+import net.imglib2.roi.geom.real.Polyline;
 import net.imglib2.type.numeric.RealType;
+import sc.fiji.filamentdetector.ImageUtilService;
 
-public class TestThreshold {
+public class TestRidgeOp {
 
 	public static <T extends RealType<T>> void main(final String... args) throws Exception {
-		final ImageJ ij = net.imagej.Main.launch(args);
+		final ImageJ ij = new ImageJ();
+		ij.ui().showUI();
 		Context context = ij.getContext();
 
 		LogService log = ij.log();
 		OpService op = ij.op();
+		ImageUtilService ijUtil = context.getService(ImageUtilService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
-		Dataset dataset = ij.dataset().open(fpath);
+		Dataset dataset = (Dataset) ij.io().open(fpath);
 
-		Histogram1d<T> in = op.image().histogram((Iterable<T>) dataset.getImgPlus());
+		ImgPlus<? extends RealType<?>> slice = ijUtil.cropAlongAxis(dataset.getImgPlus(), Axes.TIME, 1);
+		slice = ijUtil.cropAlongAxis(slice, Axes.CHANNEL, 0);
+		ij.ui().show(slice);
+		
+		log.info(slice.numDimensions());
 
-		log.info(op.threshold().rosin(in));
-		log.info(op.threshold().huang(in));
-		log.info(op.threshold().intermodes(in));
-		log.info(op.threshold().isoData(in));
-		log.info(op.threshold().minimum(in).get(0));
-		log.info(op.threshold().li(in));
-		log.info(op.threshold().maxEntropy(in));
-		log.info(op.threshold().maxLikelihood(in));
-		log.info(op.threshold().moments(in));
-		log.info(op.threshold().percentile(in));
-		log.info(op.threshold().renyiEntropy(in));
-		log.info(op.threshold().shanbhag(in));
-		log.info(op.threshold().triangle(in));
-		log.info(op.threshold().yen(in));
+		List<Polyline> lines = (List<Polyline>) op.run(DetectRidges.class, slice, 4.0, 0.0, 100.0, (int) 4);
+
+		log.info(lines);
 
 	}
 

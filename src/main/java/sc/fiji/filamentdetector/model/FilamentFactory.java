@@ -26,7 +26,7 @@
 package sc.fiji.filamentdetector.model;
 
 import de.biomedical_imaging.ij.steger.Line;
-import net.imglib2.roi.geom.real.DefaultPolyline;
+import net.imglib2.roi.geom.real.Polyline;
 
 public class FilamentFactory {
 
@@ -37,7 +37,7 @@ public class FilamentFactory {
 		return new Filament(x, y, frame);
 	}
 
-	public static Filament fromPolyline(DefaultPolyline line, int frame) {
+	public static Filament fromPolyline(Polyline line, int frame) {
 		// We only assume two dimensions here.
 		double[] x = new double[line.numVertices()];
 		double[] y = new double[line.numVertices()];

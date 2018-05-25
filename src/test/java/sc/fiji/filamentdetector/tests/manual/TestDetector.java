@@ -43,7 +43,8 @@ import sc.fiji.filamentdetector.tracking.FilamentTrackerService;
 public class TestDetector {
 
 	public static void main(final String... args) throws Exception {
-		final ImageJ ij = net.imagej.Main.launch(args);
+		final ImageJ ij = new ImageJ();
+		ij.ui().showUI();
 		Context context = ij.getContext();
 
 		LogService log = ij.log();
