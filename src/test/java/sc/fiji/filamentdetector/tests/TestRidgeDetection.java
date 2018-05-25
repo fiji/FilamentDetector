@@ -42,7 +42,7 @@ import sc.fiji.filamentdetector.model.TrackedFilaments;
 
 public class TestRidgeDetection extends AbstractTest {
 
-	@Test
+/*	@Test
 	public void testFilamentWorkflow() {
 
 		int width = 100;
@@ -76,5 +76,5 @@ public class TestRidgeDetection extends AbstractTest {
 		assertEquals(filaments.size(), nLines * maxFrame);
 		assertEquals(trackedFilaments.size(), nLines);
 
-	}
+	}*/
 }
