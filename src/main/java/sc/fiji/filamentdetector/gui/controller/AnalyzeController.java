@@ -55,12 +55,10 @@ import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.analyzer.Analyzer;
 import sc.fiji.filamentdetector.analyzer.AnalyzerService;
 import sc.fiji.filamentdetector.analyzer.LengthOverTimeAnalyzer;
-import sc.fiji.filamentdetector.analyzer.NaiveNucleationAnalyzer;
 import sc.fiji.filamentdetector.analyzer.TipFitterAnalyzer;
 import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.controller.analyzer.AnalyzerController;
 import sc.fiji.filamentdetector.gui.controller.analyzer.LengthOverTimeAnalyzerController;
-import sc.fiji.filamentdetector.gui.controller.analyzer.NaiveNucleationAnalyzerController;
 import sc.fiji.filamentdetector.gui.controller.analyzer.TipFitterAnalyzerController;
 
 public class AnalyzeController extends AbstractController implements Initializable {
@@ -159,12 +157,16 @@ public class AnalyzeController extends AbstractController implements Initializab
 		analyzers.add(tipFitterAnalyzer);
 		analyzerControllers.put(tipFitterAnalyzer, tipFitterAnalyzerController);
 
-/*		NaiveNucleationAnalyzer naiveNucleationAnalyzer = analyzerService.getNaiveNucleationAnalyzer();
-		naiveNucleationAnalyzer.setFilamentWorkflow(filamentWorkflow);
-		AnalyzerController naiveNucleationAnalyzerController = new NaiveNucleationAnalyzerController(context,
-				naiveNucleationAnalyzer);
-		analyzers.add(naiveNucleationAnalyzer);
-		analyzerControllers.put(naiveNucleationAnalyzer, naiveNucleationAnalyzerController);*/
+		/*
+		 * NaiveNucleationAnalyzer naiveNucleationAnalyzer =
+		 * analyzerService.getNaiveNucleationAnalyzer();
+		 * naiveNucleationAnalyzer.setFilamentWorkflow(filamentWorkflow);
+		 * AnalyzerController naiveNucleationAnalyzerController = new
+		 * NaiveNucleationAnalyzerController(context, naiveNucleationAnalyzer);
+		 * analyzers.add(naiveNucleationAnalyzer);
+		 * analyzerControllers.put(naiveNucleationAnalyzer,
+		 * naiveNucleationAnalyzerController);
+		 */
 
 		// Sync the analyzers with the combobox
 		analyzerCombobox.setItems(FXCollections.observableList(analyzers));

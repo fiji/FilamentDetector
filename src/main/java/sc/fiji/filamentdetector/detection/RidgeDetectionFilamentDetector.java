@@ -27,6 +27,8 @@ package sc.fiji.filamentdetector.detection;
 
 import java.awt.Color;
 
+import net.imagej.display.ImageDisplayService;
+
 import org.scijava.Priority;
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;
@@ -40,7 +42,6 @@ import de.biomedical_imaging.ij.steger.Lines;
 import de.biomedical_imaging.ij.steger.OverlapOption;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
-import net.imagej.display.ImageDisplayService;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
 import sc.fiji.filamentdetector.model.Filament;
 import sc.fiji.filamentdetector.model.FilamentFactory;

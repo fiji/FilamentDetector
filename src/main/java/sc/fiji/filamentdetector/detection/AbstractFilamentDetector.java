@@ -27,10 +27,11 @@ package sc.fiji.filamentdetector.detection;
 
 import java.util.stream.Collectors;
 
-import org.scijava.plugin.AbstractRichPlugin;
-
 import net.imagej.Dataset;
 import net.imagej.display.ImageDisplay;
+
+import org.scijava.plugin.AbstractRichPlugin;
+
 import sc.fiji.filamentdetector.model.Filaments;
 
 public abstract class AbstractFilamentDetector extends AbstractRichPlugin implements FilamentDetector {

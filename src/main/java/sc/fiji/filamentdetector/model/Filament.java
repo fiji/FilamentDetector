@@ -25,6 +25,9 @@
  */
 package sc.fiji.filamentdetector.model;
 
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,20 +37,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import net.imagej.display.ImageDisplay;
+import net.imglib2.RealPoint;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
-
-import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Floats;
 
 import ij.ImagePlus;
 import ij.gui.PolygonRoi;
 import ij.gui.ProfilePlot;
 import ij.gui.Roi;
 import ij.process.FloatPolygon;
-import net.imagej.display.ImageDisplay;
-import net.imglib2.RealPoint;
 import sc.fiji.filamentdetector.GeometryUtils;
 
 /* A container for Line */

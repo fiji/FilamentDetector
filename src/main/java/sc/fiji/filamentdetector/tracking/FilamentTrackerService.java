@@ -28,6 +28,8 @@ package sc.fiji.filamentdetector.tracking;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ImageJService;
+
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
@@ -38,8 +40,6 @@ import org.scijava.plugin.PluginService;
 import org.scijava.plugin.SciJavaPlugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
-
-import net.imagej.ImageJService;
 
 @Plugin(type = Service.class)
 public class FilamentTrackerService extends AbstractService implements ImageJService {

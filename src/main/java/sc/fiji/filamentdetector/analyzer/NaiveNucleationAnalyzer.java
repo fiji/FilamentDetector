@@ -25,15 +25,16 @@
  */
 package sc.fiji.filamentdetector.analyzer;
 
+import net.imagej.Dataset;
+import net.imagej.ops.OpService;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
+
 import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.Dataset;
-import net.imagej.ops.OpService;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 
 @Plugin(type = Analyzer.class, priority = Priority.HIGH)
@@ -83,81 +84,70 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	@Override
 	public void analyze() {
 
-/*		int nFilaments = filamentWorkflow.getTrackedFilaments().size();
-		INDArray framesNucleationEvents = Nd4j.create(1, nFilaments);
-		int frameNucleation;
-
-		for (int i = 0; i < nFilaments; i++) {
-			TrackedFilament trackedFilament = filamentWorkflow.getTrackedFilaments().get(i);
-			frameNucleation = frameFirstNucleation(trackedFilament);
-			framesNucleationEvents.putScalar(i, frameNucleation);
-		}
-
-		int nucleationEvents = framesNucleationEvents.cond(Conditions.greaterThan(-1)).sumNumber().intValue();
-		double nucleationRate = (double) nucleationEvents / (double) nFilaments;
-
-		this.resultMessage = "Analysis is done.";
-		this.results.put("nucleation_events", nucleationEvents);
-		this.results.put("number_of_seeds", nFilaments);
-		this.results.put("nucleation_rate", nucleationRate);*/
+		/*
+		 * int nFilaments = filamentWorkflow.getTrackedFilaments().size(); INDArray
+		 * framesNucleationEvents = Nd4j.create(1, nFilaments); int frameNucleation;
+		 * 
+		 * for (int i = 0; i < nFilaments; i++) { TrackedFilament trackedFilament =
+		 * filamentWorkflow.getTrackedFilaments().get(i); frameNucleation =
+		 * frameFirstNucleation(trackedFilament); framesNucleationEvents.putScalar(i,
+		 * frameNucleation); }
+		 * 
+		 * int nucleationEvents =
+		 * framesNucleationEvents.cond(Conditions.greaterThan(-1)).sumNumber().intValue(
+		 * ); double nucleationRate = (double) nucleationEvents / (double) nFilaments;
+		 * 
+		 * this.resultMessage = "Analysis is done.";
+		 * this.results.put("nucleation_events", nucleationEvents);
+		 * this.results.put("number_of_seeds", nFilaments);
+		 * this.results.put("nucleation_rate", nucleationRate);
+		 */
 	}
 
 	private int frameFirstNucleation(TrackedFilament trackedFilament) {
-/*		Dataset dataset = this.filamentWorkflow.getDataset();
-
-		INDArray frames = Nd4j.create(trackedFilament.getFrames().stream().mapToDouble(d -> d).toArray());
-		Filament filament;
-
-		RealPoint start;
-		RealPoint end;
-		double seedLength;
-		RealPoint p1;
-		RealPoint p2;
-		List<RealPoint> line1;
-		List<RealPoint> line2;
-
-		double intensities1;
-		double intensities2;
-
-		for (int frame = 0; frame < frames.max(1).getDouble(0); frame++) {
-			filament = trackedFilament.getFilamentByFrame(frame);
-			if (filament != null) {
-
-				start = filament.getFirstPoint();
-				end = filament.getLastPoint();
-				seedLength = GeometryUtils.distance(start, end);
-
-				p1 = GeometryUtils.getPointOnVectorFromDistance(start, end, seedLength + this.lineLength);
-				p2 = GeometryUtils.getPointOnVectorFromDistance(end, start, seedLength + this.lineLength);
-
-				line1 = GeometryUtils.getLinePointsFromSpacing(end, p1, this.pixelSpacing);
-				line2 = GeometryUtils.getLinePointsFromSpacing(start, p2, this.pixelSpacing);
-
-				if (this.lineThickness < 2) {
-					intensities1 = GeometryUtils.getIntensities(line1, dataset, frame, this.channelIndex, 0).mean(1)
-							.getDouble(0);
-					intensities2 = GeometryUtils.getIntensities(line2, dataset, frame, this.channelIndex, 0).mean(1)
-							.getDouble(0);
-				} else {
-					intensities1 = GeometryUtils.getIntensities(line1, dataset, frame, this.channelIndex, 0,
-							this.lineThickness, this.pixelSpacing).mean(1).getDouble(0);
-					intensities2 = GeometryUtils.getIntensities(line2, dataset, frame, this.channelIndex, 0,
-							this.lineThickness, this.pixelSpacing).mean(1).getDouble(0);
-				}
-
-				if (intensities1 > this.intensityThreshold || intensities2 > this.intensityThreshold) {
-					if (this.colorizedNucleatedSeeds) {
-						trackedFilament.setColor(Color.GREEN);
-					}
-					return frame;
-				}
-
-			}
-		}
-
-		if (this.colorizedNucleatedSeeds) {
-			trackedFilament.setColor(Color.RED);
-		}*/
+		/*
+		 * Dataset dataset = this.filamentWorkflow.getDataset();
+		 * 
+		 * INDArray frames =
+		 * Nd4j.create(trackedFilament.getFrames().stream().mapToDouble(d ->
+		 * d).toArray()); Filament filament;
+		 * 
+		 * RealPoint start; RealPoint end; double seedLength; RealPoint p1; RealPoint
+		 * p2; List<RealPoint> line1; List<RealPoint> line2;
+		 * 
+		 * double intensities1; double intensities2;
+		 * 
+		 * for (int frame = 0; frame < frames.max(1).getDouble(0); frame++) { filament =
+		 * trackedFilament.getFilamentByFrame(frame); if (filament != null) {
+		 * 
+		 * start = filament.getFirstPoint(); end = filament.getLastPoint(); seedLength =
+		 * GeometryUtils.distance(start, end);
+		 * 
+		 * p1 = GeometryUtils.getPointOnVectorFromDistance(start, end, seedLength +
+		 * this.lineLength); p2 = GeometryUtils.getPointOnVectorFromDistance(end, start,
+		 * seedLength + this.lineLength);
+		 * 
+		 * line1 = GeometryUtils.getLinePointsFromSpacing(end, p1, this.pixelSpacing);
+		 * line2 = GeometryUtils.getLinePointsFromSpacing(start, p2, this.pixelSpacing);
+		 * 
+		 * if (this.lineThickness < 2) { intensities1 =
+		 * GeometryUtils.getIntensities(line1, dataset, frame, this.channelIndex,
+		 * 0).mean(1) .getDouble(0); intensities2 = GeometryUtils.getIntensities(line2,
+		 * dataset, frame, this.channelIndex, 0).mean(1) .getDouble(0); } else {
+		 * intensities1 = GeometryUtils.getIntensities(line1, dataset, frame,
+		 * this.channelIndex, 0, this.lineThickness,
+		 * this.pixelSpacing).mean(1).getDouble(0); intensities2 =
+		 * GeometryUtils.getIntensities(line2, dataset, frame, this.channelIndex, 0,
+		 * this.lineThickness, this.pixelSpacing).mean(1).getDouble(0); }
+		 * 
+		 * if (intensities1 > this.intensityThreshold || intensities2 >
+		 * this.intensityThreshold) { if (this.colorizedNucleatedSeeds) {
+		 * trackedFilament.setColor(Color.GREEN); } return frame; }
+		 * 
+		 * } }
+		 * 
+		 * if (this.colorizedNucleatedSeeds) { trackedFilament.setColor(Color.RED); }
+		 */
 		return -1;
 	}
 

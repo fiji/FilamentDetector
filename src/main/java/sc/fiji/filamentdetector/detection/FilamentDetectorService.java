@@ -26,8 +26,9 @@
 package sc.fiji.filamentdetector.detection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import net.imagej.ImageJService;
 
 import org.scijava.Context;
 import org.scijava.InstantiableException;
@@ -39,8 +40,6 @@ import org.scijava.plugin.PluginService;
 import org.scijava.plugin.SciJavaPlugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
-
-import net.imagej.ImageJService;
 
 @Plugin(type = Service.class)
 public class FilamentDetectorService extends AbstractService implements ImageJService {
@@ -57,11 +56,11 @@ public class FilamentDetectorService extends AbstractService implements ImageJSe
 	public List<FilamentDetector> getDetectors() {
 		List<FilamentDetector> detectors = new ArrayList<>();
 		FilamentDetector detector;
-		
+
 		detector = new RidgeDetectionFilamentDetector();
 		detector.setContext(context);
 		detectors.add(detector);
-		
+
 		detector = new IJ2RidgeDetectionFilamentDetector();
 		detector.setContext(context);
 		detectors.add(detector);

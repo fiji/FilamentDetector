@@ -225,8 +225,8 @@ public class DetectFilamentController extends AbstractController implements Init
 	}
 
 	public void initPane() {
-		//this.detectorComboBox.getSelectionModel().select(0);
-		//status.showStatus("Initialize detection.");
+		// this.detectorComboBox.getSelectionModel().select(0);
+		// status.showStatus("Initialize detection.");
 	}
 
 	private void setFilamentDetector(FilamentDetector filamentDetector) {
@@ -235,10 +235,10 @@ public class DetectFilamentController extends AbstractController implements Init
 		FilamentDetectorController controller = null;
 		if (filamentDetector.getClass().equals(RidgeDetectionFilamentDetector.class)) {
 			controller = new RidgeDetectionFilamentDetectorController(context, filamentDetector);
-			
+
 		} else if (filamentDetector.getClass().equals(IJ2RidgeDetectionFilamentDetector.class)) {
 			controller = new IJ2RidgeDetectionFilamentDetectorController(context, filamentDetector);
-			
+
 		} else {
 			log.error("Can't load FilamentDetector parameters pane.");
 		}

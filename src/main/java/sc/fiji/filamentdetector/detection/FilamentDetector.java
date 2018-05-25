@@ -25,17 +25,18 @@
  */
 package sc.fiji.filamentdetector.detection;
 
+import net.imagej.Dataset;
+import net.imagej.display.ImageDisplay;
+
 import org.scijava.Named;
 import org.scijava.plugin.RichPlugin;
 
-import net.imagej.Dataset;
-import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.model.Filaments;
 
 public interface FilamentDetector extends Named, RichPlugin {
 
 	void simplifyFilaments();
-	
+
 	void detect();
 
 	void detect(int channelIndex);
@@ -45,7 +46,7 @@ public interface FilamentDetector extends Named, RichPlugin {
 	void detectCurrentFrame(int channelIndex);
 
 	void detectFrame(int frame);
-	
+
 	void detectFrame(int frame, int channel);
 
 	Filaments getFilaments();

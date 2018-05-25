@@ -25,6 +25,12 @@
  */
 package sc.fiji.filamentdetector.tests;
 
+import net.imagej.DatasetService;
+import net.imagej.ops.OpService;
+import net.imglib2.img.Img;
+import net.imglib2.img.display.imagej.ImageJFunctions;
+import net.imglib2.type.numeric.RealType;
+
 import org.junit.Before;
 import org.scijava.Context;
 import org.scijava.display.DisplayService;
@@ -34,11 +40,6 @@ import org.scijava.plugin.Parameter;
 import ij.ImagePlus;
 import ij.gui.NewImage;
 import ij.process.ImageProcessor;
-import net.imagej.DatasetService;
-import net.imagej.ops.OpService;
-import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
-import net.imglib2.type.numeric.RealType;
 import sc.fiji.filamentdetector.detection.FilamentDetectorService;
 import sc.fiji.filamentdetector.tracking.FilamentTrackerService;
 

@@ -27,9 +27,6 @@ package sc.fiji.filamentdetector.tests.manual;
 
 import java.util.List;
 
-import org.scijava.Context;
-import org.scijava.log.LogService;
-
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imagej.ImgPlus;
@@ -38,6 +35,10 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Segment.DetectRidges;
 import net.imglib2.roi.geom.real.Polyline;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Context;
+import org.scijava.log.LogService;
+
 import sc.fiji.filamentdetector.ImageUtilService;
 
 public class TestRidgeOp {
@@ -57,7 +58,7 @@ public class TestRidgeOp {
 		ImgPlus<? extends RealType<?>> slice = ijUtil.cropAlongAxis(dataset.getImgPlus(), Axes.TIME, 1);
 		slice = ijUtil.cropAlongAxis(slice, Axes.CHANNEL, 0);
 		ij.ui().show(slice);
-		
+
 		log.info(slice.numDimensions());
 
 		List<Polyline> lines = (List<Polyline>) op.run(DetectRidges.class, slice, 4.0, 0.0, 100.0, (int) 4);

@@ -25,9 +25,9 @@
  */
 package sc.fiji.filamentdetector.exporter;
 
-import org.scijava.Context;
-
 import com.google.gson.JsonArray;
+
+import org.scijava.Context;
 
 public abstract class AbstractDataExporter<T> implements DataExporter<T> {
 

@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import net.imagej.Dataset;
+
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -46,7 +48,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import net.imagej.Dataset;
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.exporter.CSVFilamentExporter;
 import sc.fiji.filamentdetector.exporter.CSVTrackedFilamentExporter;

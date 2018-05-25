@@ -26,8 +26,10 @@
 package sc.fiji.filamentdetector.tests.manual;
 
 import io.scif.services.DatasetIOService;
+
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
+
 import sc.fiji.filamentdetector.FilamentDetectorPlugin;
 
 public class TestPlugin {

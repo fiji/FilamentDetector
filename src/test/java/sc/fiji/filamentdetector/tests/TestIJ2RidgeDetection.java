@@ -26,9 +26,6 @@
 package sc.fiji.filamentdetector.tests;
 
 import static org.junit.Assert.assertEquals;
-import static sc.fiji.filamentdetector.tests.AbstractTest.getFakeImage;
-
-import org.junit.Test;
 
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
@@ -36,6 +33,9 @@ import net.imagej.axis.CalibratedAxis;
 import net.imagej.axis.DefaultLinearAxis;
 import net.imagej.display.ImageDisplay;
 import net.imglib2.img.Img;
+
+import org.junit.Test;
+
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.model.Filaments;
 import sc.fiji.filamentdetector.model.TrackedFilaments;

@@ -25,13 +25,15 @@
  */
 package sc.fiji.filamentdetector.tests.manual;
 
-import org.scijava.Context;
-import org.scijava.log.LogService;
-
 import io.scif.services.DatasetIOService;
+
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imagej.display.ImageDisplay;
+
+import org.scijava.Context;
+import org.scijava.log.LogService;
+
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.detection.FilamentDetectorService;
 import sc.fiji.filamentdetector.detection.IJ2RidgeDetectionFilamentDetector;
@@ -55,7 +57,7 @@ public class TestDetector {
 		FilamentTrackerService tarckerService = ij.get(FilamentTrackerService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-only-T.tif";
-		//fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-flat.tif";
+		// fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-flat.tif";
 		fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-only-C.tif";
 		Dataset dataset = dsio.open(fpath);
 		ij.ui().show(dataset);

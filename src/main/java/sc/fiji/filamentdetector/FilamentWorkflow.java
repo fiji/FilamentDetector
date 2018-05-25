@@ -27,6 +27,9 @@ package sc.fiji.filamentdetector;
 
 import java.util.stream.Collectors;
 
+import net.imagej.Dataset;
+import net.imagej.display.ImageDisplay;
+
 import org.scijava.Context;
 import org.scijava.Initializable;
 import org.scijava.convert.ConvertService;
@@ -36,8 +39,6 @@ import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
 
 import ij.ImagePlus;
-import net.imagej.Dataset;
-import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.detection.FilamentDetector;
 import sc.fiji.filamentdetector.detection.FilteringParameters;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;

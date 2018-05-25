@@ -25,6 +25,9 @@
  */
 package sc.fiji.filamentdetector;
 
+import net.imagej.ImageJ;
+import net.imagej.display.ImageDisplay;
+
 import org.scijava.ItemIO;
 import org.scijava.command.Command;
 import org.scijava.command.DynamicCommand;
@@ -33,8 +36,6 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.ui.DialogPrompt;
 
-import net.imagej.ImageJ;
-import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.gui.MainAppFrame;
 
 @Plugin(type = DynamicCommand.class, menuPath = "Plugins>Tracking>FilamentDetector")

@@ -32,14 +32,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.imagej.lut.LUTService;
+import net.imglib2.display.ColorTable;
+
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
-
-import net.imagej.lut.LUTService;
-import net.imglib2.display.ColorTable;
 
 @Plugin(type = Service.class)
 public class DefaultColorService extends AbstractService implements ColorService {

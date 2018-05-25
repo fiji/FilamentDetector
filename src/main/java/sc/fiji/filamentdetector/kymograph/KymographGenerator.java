@@ -25,6 +25,8 @@
  */
 package sc.fiji.filamentdetector.kymograph;
 
+import io.scif.services.DatasetIOService;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -33,6 +35,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import net.imagej.Dataset;
+import net.imagej.display.ImageDisplay;
+
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -40,10 +45,7 @@ import org.scijava.ui.UIService;
 
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
-import io.scif.services.DatasetIOService;
 import javafx.application.Platform;
-import net.imagej.Dataset;
-import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
 import sc.fiji.kymographBuilder.KymographFactory;

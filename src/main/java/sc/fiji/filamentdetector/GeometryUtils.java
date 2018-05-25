@@ -30,8 +30,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import ij.gui.Plot;
 import net.imglib2.RealPoint;
+
+import ij.gui.Plot;
 
 public class GeometryUtils {
 

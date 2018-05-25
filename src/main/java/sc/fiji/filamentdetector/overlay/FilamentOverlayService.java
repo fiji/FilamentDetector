@@ -27,6 +27,7 @@ package sc.fiji.filamentdetector.overlay;
 
 import net.imagej.ImageJService;
 import net.imagej.display.ImageDisplay;
+
 import sc.fiji.filamentdetector.model.Filament;
 import sc.fiji.filamentdetector.model.Filaments;
 import sc.fiji.filamentdetector.model.TrackedFilament;
@@ -97,6 +98,6 @@ public interface FilamentOverlayService extends ImageJService {
 	void updateLineWidth();
 
 	void setViewMode(ImageDisplayMode viewMode);
-	
+
 	void autoScaleImage();
 }

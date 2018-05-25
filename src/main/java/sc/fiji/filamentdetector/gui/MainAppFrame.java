@@ -34,6 +34,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import net.imagej.ImageJ;
+import net.imagej.display.ImageDisplay;
+
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -43,8 +46,6 @@ import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import net.imagej.ImageJ;
-import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.gui.controller.MainController;
 
