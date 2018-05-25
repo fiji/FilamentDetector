@@ -117,9 +117,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		Roi roi = filament.getRoi();
 
 		if (data.numDimensions() > 3) {
-			roi.setPosition(-1, -1, filament.getFrame());
+			roi.setPosition(-1, -1, filament.getFrame() + 1);
 		} else {
-			roi.setPosition(filament.getFrame());
+			roi.setPosition(filament.getFrame() + 1);
 		}
 		roi.setName(Integer.toString(filament.getId()));
 		roi.setStrokeWidth(filamentWidth);
@@ -141,9 +141,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			boundsRoi.setStrokeWidth(1);
 
 			if (data.numDimensions() > 3) {
-				boundsRoi.setPosition(-1, -1, filament.getFrame());
+				boundsRoi.setPosition(-1, -1, filament.getFrame() + 1);
 			} else {
-				boundsRoi.setPosition(filament.getFrame());
+				boundsRoi.setPosition(filament.getFrame() + 1);
 			}
 
 			filamentBoundingBoxesMap.put(filament, boundsRoi);
@@ -214,9 +214,9 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 			tipRoi.setStrokeWidth(filamentWidth);
 
 			if (data.numDimensions() > 3) {
-				tipRoi.setPosition(-1, -1, frame);
+				tipRoi.setPosition(-1, -1, frame + 1);
 			} else {
-				tipRoi.setPosition(frame);
+				tipRoi.setPosition(frame + 1);
 			}
 			overlay.add(tipRoi);
 			rois.add(tipRoi);
@@ -480,7 +480,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 				roi.setStrokeWidth(roi.getStrokeWidth() * 2);
 				ImagePlus imp = getImagePlus();
 				if (moveToFrame) {
-					imp.setT(filament.getFrame());
+					imp.setT(filament.getFrame() + 1);
 				}
 				imp.repaintWindow();
 			}
@@ -498,7 +498,7 @@ public class DefaultFilamentOverlayService extends AbstractService implements Fi
 		}
 		if (moveToFrame) {
 			ImagePlus imp = getImagePlus();
-			imp.setT(trackedFilament.get(0).getFrame());
+			imp.setT(trackedFilament.get(0).getFrame() + 1);
 		}
 	}
 

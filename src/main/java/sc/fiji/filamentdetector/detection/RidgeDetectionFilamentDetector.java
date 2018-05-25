@@ -26,7 +26,6 @@
 package sc.fiji.filamentdetector.detection;
 
 import java.awt.Color;
-import java.util.stream.Collectors;
 
 import org.scijava.Priority;
 import org.scijava.convert.ConvertService;
@@ -125,14 +124,14 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		int currentFrame = this.imp.getFrame();
 		int currentChannel = this.imp.getChannel();
 
-		this.impData.setC(channelIndex);
+		this.impData.setC(channelIndex + 1);
 
-		for (int frame = 1; frame < this.impData.getNFrames() + 1; frame++) {
+		for (int frame = 0; frame < this.impData.getNFrames(); frame++) {
 			this.detectFrame(frame);
 		}
 		this.imp.setT(currentFrame);
 		this.imp.setC(currentChannel);
-		this.simplify();
+		this.simplifyFilaments();
 	}
 
 	@Override
@@ -144,13 +143,18 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 	public void detectCurrentFrame(int channelIndex) {
 
 		this.initDetection();
-		int currentFrame = this.imp.getFrame();
+		int currentFrame = this.imp.getFrame() - 1;
 		int currentChannel = this.imp.getChannel();
 
-		this.impData.setC(channelIndex);
+		this.impData.setC(channelIndex + 1);
 		this.detectFrame(currentFrame);
 		this.imp.setC(currentChannel);
-		this.simplify();
+		this.simplifyFilaments();
+	}
+
+	@Override
+	public void detectFrame(int frame, int channel) {
+		this.detectFrame(frame);
 	}
 
 	@Override
@@ -162,7 +166,7 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 			filaments = new Filaments();
 		}
 
-		this.impData.setT(frame);
+		this.impData.setT(frame + 1);
 		ImageProcessor ip = this.impData.getProcessor();
 
 		// Detect lines
@@ -180,19 +184,6 @@ public class RidgeDetectionFilamentDetector extends AbstractFilamentDetector {
 		}
 
 		this.setFilaments(filaments);
-	}
-
-	private void simplify() {
-		if (this.isSimplifyFilaments()) {
-			Filaments filaments = this.getFilaments();
-			filaments = filaments.simplify(this.getSimplifyToleranceDistance());
-
-			// Remove filaments with only one point
-			filaments = filaments.stream().filter(filament -> filament.getSize() > 1)
-					.collect(Collectors.toCollection(Filaments::new));
-
-			this.setFilaments(filaments);
-		}
 	}
 
 	public double getSigma() {

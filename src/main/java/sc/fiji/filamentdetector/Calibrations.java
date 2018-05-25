@@ -62,7 +62,7 @@ public class Calibrations {
 	private String unitT;
 
 	private List<String> channelList;
-	private int channelToUseIndex = 1;
+	private int channelToUseIndex = 0;
 
 	public Calibrations(Context context, Dataset data) {
 		new Calibrations(context, data, null);
@@ -188,7 +188,7 @@ public class Calibrations {
 				.filter(i -> channelList.get(i).equals(channelToUse)).findFirst().orElse(-1);
 
 		if (newChannelIndex != -1) {
-			channelToUseIndex = newChannelIndex + 1;
+			channelToUseIndex = newChannelIndex;
 		} else {
 			log.error(channelToUse + " is not a valid channel.");
 		}

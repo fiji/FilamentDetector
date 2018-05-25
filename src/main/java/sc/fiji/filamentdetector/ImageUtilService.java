@@ -23,46 +23,53 @@
  * THE SOFTWARE.
  * #L%
  */
-package sc.fiji.filamentdetector.tests.manual;
+package sc.fiji.filamentdetector;
 
-import org.scijava.Context;
 import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
+import org.scijava.service.Service;
 
-import net.imagej.Dataset;
-import net.imagej.ImageJ;
+import net.imagej.ImageJService;
+import net.imagej.ImgPlus;
+import net.imagej.axis.AxisType;
 import net.imagej.ops.OpService;
-import net.imglib2.histogram.Histogram1d;
+import net.imglib2.FinalInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 
-public class TestThreshold {
+@Plugin(type = Service.class)
+public class ImageUtilService extends AbstractService implements ImageJService {
 
-	public static <T extends RealType<T>> void main(final String... args) throws Exception {
-		final ImageJ ij = net.imagej.Main.launch(args);
-		Context context = ij.getContext();
+	@Parameter
+	private LogService log;
 
-		LogService log = ij.log();
-		OpService op = ij.op();
+	@Parameter
+	private OpService op;
 
-		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
-		Dataset dataset = ij.dataset().open(fpath);
+	public ImgPlus<? extends RealType<?>> cropAlongAxis(ImgPlus<? extends RealType<?>> img, AxisType axis, long index) {
 
-		Histogram1d<T> in = op.image().histogram((Iterable<T>) dataset.getImgPlus());
+		if (img.dimensionIndex(axis) == -1) {
+			return img;
+		}
 
-		log.info(op.threshold().rosin(in));
-		log.info(op.threshold().huang(in));
-		log.info(op.threshold().intermodes(in));
-		log.info(op.threshold().isoData(in));
-		log.info(op.threshold().minimum(in).get(0));
-		log.info(op.threshold().li(in));
-		log.info(op.threshold().maxEntropy(in));
-		log.info(op.threshold().maxLikelihood(in));
-		log.info(op.threshold().moments(in));
-		log.info(op.threshold().percentile(in));
-		log.info(op.threshold().renyiEntropy(in));
-		log.info(op.threshold().shanbhag(in));
-		log.info(op.threshold().triangle(in));
-		log.info(op.threshold().yen(in));
+		int nDim = img.numDimensions();
+		long[] intervalsArray = new long[nDim * 2];
 
+		for (int i = 0; i < nDim; i++) {
+
+			if (img.axis(i).type().equals(axis)) {
+				intervalsArray[i] = index;
+				intervalsArray[i + nDim] = index;
+			} else {
+				intervalsArray[i] = 0;
+				intervalsArray[i + nDim] = img.dimension(i) - 1;
+			}
+		}
+
+		FinalInterval interval = Intervals.createMinMax(intervalsArray);
+		return (ImgPlus<? extends RealType<?>>) op.transform().crop(img, interval);
 	}
 
 }

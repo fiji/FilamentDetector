@@ -33,15 +33,16 @@ import sc.fiji.filamentdetector.FilamentDetectorPlugin;
 public class TestPlugin {
 
 	public static void main(final String... args) throws Exception {
-		final ImageJ ij = net.imagej.Main.launch(args);
+		final ImageJ ij = new ImageJ();
+		ij.ui().showUI();
 
 		DatasetIOService dsio = ij.get(DatasetIOService.class);
 
 		String baseDir = "/home/hadim/.doc/Code/Postdoc/ij/testdata/";
 
 		String fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit.tif";
-		//fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/7,5uM_emccd_lapse1.tif";
 		// fpath = baseDir + "7,5uM_emccd_lapse1-small-8bit-Preprocessed.tif";
+		// fpath = baseDir + "fake.tif";
 		// fpath = baseDir + "7,5uM_emccd_lapse1.tif";
 		// fpath = baseDir + "10uM_emccd_lapse1-1-Preprocessed.tif";
 
