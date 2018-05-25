@@ -1,5 +1,5 @@
 /*-
- * #%L
+* #%L
  * A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.
  * %%
  * Copyright (C) 2016 - 2017 Hadrien Mary
@@ -44,7 +44,6 @@ import net.imglib2.type.numeric.RealType;
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.detection.FilamentDetectorService;
 import sc.fiji.filamentdetector.detection.RidgeDetectionFilamentDetector;
-import sc.fiji.filamentdetector.imagepreprocessor.ImagePreprocessor;
 import sc.fiji.filamentdetector.model.Filaments;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
 import sc.fiji.filamentdetector.overlay.FilamentOverlayService;
@@ -55,7 +54,8 @@ import sc.fiji.filamentdetector.tracking.FilamentTrackerService;
 public class TestFake {
 
 	public static void main(final String... args) throws Exception {
-		ImageJ ij = net.imagej.Main.launch(args);
+		ImageJ ij = new ImageJ();
+		ij.ui().showUI();
 
 		Context context = ij.getContext();
 		LogService log = ij.log();
@@ -77,19 +77,11 @@ public class TestFake {
 		wf.initialize();
 		wf.getCalibrations().setChannelToUseIndex(1);
 
-		// Enable some preprocessors
-		ImagePreprocessor proc = wf.getImagePreprocessor().getPreProcessorByName("Convert8BitPreprocessor");
-		proc.setDoPreprocess(true);
-
-		// Preprocess the image
-		wf.getImagePreprocessor().preprocess();
-
 		// Get processed data and convert it to ImageDisplay
 		// TODO: that step should be easier
-		Dataset datasetp = wf.getImagePreprocessor().getPreprocessedDataset();
-		ij.ui().show(datasetp);
+		ij.ui().show(dataset);
 		ImageDisplay imdp = ij.imageDisplay().getImageDisplays().stream()
-				.filter(i -> ((Dataset) i.getActiveView().getData()).equals(datasetp)).findFirst().orElse(null);
+				.filter(i -> ((Dataset) i.getActiveView().getData()).equals(dataset)).findFirst().orElse(null);
 		wf.setImageDisplay(imdp);
 
 		overlay.initialize();
@@ -99,7 +91,7 @@ public class TestFake {
 		RidgeDetectionFilamentDetector detector = detectorService.getRidgeFilamentDetector();
 		wf.setFilamentDetector(detector);
 		detector.setImageDisplay(imdp);
-		detector.setDataset(datasetp);
+		detector.setDataset(dataset);
 		detector.setLineWidth(2.5);
 
 		wf.detect();

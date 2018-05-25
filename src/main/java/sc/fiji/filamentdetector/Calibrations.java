@@ -33,7 +33,6 @@ import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
-import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.axis.Axes;
 
@@ -44,7 +43,6 @@ public class Calibrations {
 	LogService log;
 
 	private Dataset data;
-	private ImagePlus imp;
 
 	private double dx;
 	private double dy;
@@ -65,14 +63,9 @@ public class Calibrations {
 	private int channelToUseIndex = 0;
 
 	public Calibrations(Context context, Dataset data) {
-		new Calibrations(context, data, null);
-	}
-
-	public Calibrations(Context context, Dataset data, ImagePlus imp) {
 		context.inject(this);
 
 		this.data = data;
-		this.imp = imp;
 
 		// Get dimensions indexes
 		int xIndex = this.data.dimensionIndex(Axes.X);
@@ -112,22 +105,22 @@ public class Calibrations {
 	}
 
 	public void setDx(double dx) {
-		setImagePlusCalibration();
+		// setImagePlusCalibration();
 		this.dx = dx;
 	}
 
 	public void setDy(double dy) {
-		setImagePlusCalibration();
+		// setImagePlusCalibration();
 		this.dy = dy;
 	}
 
 	public void setDz(double dz) {
-		setImagePlusCalibration();
+		// setImagePlusCalibration();
 		this.dz = dz;
 	}
 
 	public void setDt(double dt) {
-		setImagePlusCalibration();
+		// setImagePlusCalibration();
 		this.dt = dt;
 	}
 
@@ -206,19 +199,12 @@ public class Calibrations {
 		this.channelToUseIndex = channelToUseIndex;
 	}
 
-	private void setImagePlusCalibration() {
-		if (imp != null) {
-			ij.measure.Calibration cal = imp.getCalibration();
-			if (cal == null) {
-				cal = new ij.measure.Calibration();
-				imp.setCalibration(cal);
-			}
-			cal.pixelWidth = getDx();
-			cal.pixelHeight = getDy();
-			cal.pixelDepth = getDz();
-			cal.frameInterval = getDt();
-			cal.fps = getDt();
-		}
-	}
+	/*
+	 * private void setImagePlusCalibration() { if (imp != null) {
+	 * ij.measure.Calibration cal = imp.getCalibration(); if (cal == null) { cal =
+	 * new ij.measure.Calibration(); imp.setCalibration(cal); } cal.pixelWidth =
+	 * getDx(); cal.pixelHeight = getDy(); cal.pixelDepth = getDz();
+	 * cal.frameInterval = getDt(); cal.fps = getDt(); } }
+	 */
 
 }

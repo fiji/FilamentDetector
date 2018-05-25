@@ -30,6 +30,7 @@ import net.imagej.ImageJ;
 public class TestPluginNoImage {
 
 	public static void main(final String... args) throws Exception {
-		final ImageJ ij = net.imagej.Main.launch(args);
+		final ImageJ ij = new ImageJ();
+		ij.ui().showUI();
 	}
 }

@@ -41,7 +41,6 @@ import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.detection.FilamentDetector;
 import sc.fiji.filamentdetector.detection.FilteringParameters;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
-import sc.fiji.filamentdetector.imagepreprocessor.ImagePreprocessors;
 import sc.fiji.filamentdetector.model.Filaments;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
 import sc.fiji.filamentdetector.tracking.FilamentsTracker;
@@ -72,8 +71,6 @@ public class FilamentWorkflow implements Initializable {
 	private ImageDisplay imageDisplay;
 	private Calibrations calibrations;
 
-	private ImagePreprocessors imagePreprocessors;
-
 	private FilamentDetector filamentsDetector;
 	private FilamentsTracker filamentsTracker;
 
@@ -88,8 +85,6 @@ public class FilamentWorkflow implements Initializable {
 		this.imageDisplay = imd;
 		this.sourceImage = imd;
 
-		this.imagePreprocessors = new ImagePreprocessors(context, this.sourceImage);
-
 		this.filaments = new Filaments();
 		this.filteredFilaments = this.filaments;
 
@@ -100,7 +95,7 @@ public class FilamentWorkflow implements Initializable {
 	@Override
 	public void initialize() {
 		// Get physical pixel sizes (um) and duration between frames (s)
-		calibrations = new Calibrations(context, getDataset(), getImagePlus());
+		calibrations = new Calibrations(context, getDataset());
 	}
 
 	public void setFilamentDetector(FilamentDetector filamentDetector) {
@@ -112,13 +107,7 @@ public class FilamentWorkflow implements Initializable {
 	}
 
 	private void initDetection() {
-		Dataset data;
-		if (this.imagePreprocessors.isHasBeenPreprocessed()) {
-			data = this.imagePreprocessors.getPreprocessedDataset();
-		} else {
-			data = getDataset();
-		}
-		this.filamentsDetector.setDataset(data);
+		this.filamentsDetector.setDataset(getDataset());
 		this.filamentsDetector.setImageDisplay(imageDisplay);
 	}
 
@@ -219,21 +208,6 @@ public class FilamentWorkflow implements Initializable {
 		} else {
 			this.filteredTrackedFilaments = this.trackedFilaments;
 		}
-	}
-
-	public ImagePreprocessors getImagePreprocessor() {
-		return imagePreprocessors;
-	}
-
-	public void preProcessImages() {
-		this.imagePreprocessors.preprocess();
-
-		// Reset all filaments
-		this.filaments.clear();
-		this.filteredFilaments.clear();
-		this.trackedFilaments.clear();
-		this.filteredTrackedFilaments.clear();
-
 	}
 
 	public Context getContext() {

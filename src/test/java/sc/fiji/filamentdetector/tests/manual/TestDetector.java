@@ -66,23 +66,14 @@ public class TestDetector {
 		wf.initialize();
 		wf.getCalibrations().setChannelToUseIndex(1);
 
-		// Get processed data and convert it to ImageDisplay
-		// TODO: that step should be easier
-		Dataset datasetp = wf.getImagePreprocessor().getPreprocessedDataset();
-		ij.ui().show(datasetp);
-		ImageDisplay imdp = ij.imageDisplay().getImageDisplays().stream()
-				.filter(i -> ((Dataset) i.getActiveView().getData()).equals(datasetp)).findFirst().orElse(null);
-		imdp = imd;
-		wf.setImageDisplay(imdp);
-
 		overlay.initialize();
-		overlay.setImageDisplay(imdp);
+		overlay.setImageDisplay(imd);
 		overlay.setViewMode(ImageDisplayMode.COMPOSITE);
 
 		IJ2RidgeDetectionFilamentDetector detector = detectorService.getIJ2RidgeFilamentDetector();
 		wf.setFilamentDetector(detector);
-		detector.setImageDisplay(imdp);
-		detector.setDataset(datasetp);
+		detector.setImageDisplay(imd);
+		detector.setDataset(dataset);
 		detector.setLineWidth(4);
 		detector.setLowerThreshold(7);
 		detector.setUpperThreshold(20);

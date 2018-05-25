@@ -121,7 +121,6 @@ public class MainController extends AbstractController implements Initializable 
 	private Accordion mainPane;
 
 	private WelcomeController welcomeController;
-	private ImagePreprocessorsController imagePreprocessorController;
 	private DetectFilamentController detectFilamentController;
 	private AboutController aboutController;
 	private DataExporterController dataExporterController;
@@ -164,7 +163,6 @@ public class MainController extends AbstractController implements Initializable 
 				// Load all the panes
 				Platform.runLater(() -> {
 					mainPane.getPanes().add(loadWelcome());
-					mainPane.getPanes().add(loadImagePreprocessor());
 					mainPane.getPanes().add(loadDetectFilament());
 					mainPane.getPanes().add(loadTrackingFilament());
 					mainPane.getPanes().add(loadDataExporter());
@@ -332,12 +330,6 @@ public class MainController extends AbstractController implements Initializable 
 		welcomeController = new WelcomeController(context, filamentWorkflow);
 		Pane pane = welcomeController.loadPane();
 		return new TitledPane("Welcome", pane);
-	}
-
-	public TitledPane loadImagePreprocessor() {
-		imagePreprocessorController = new ImagePreprocessorsController(context, filamentWorkflow);
-		Pane pane = imagePreprocessorController.loadPane();
-		return new TitledPane("Preprocessing", pane);
 	}
 
 	public TitledPane loadDetectFilament() {
