@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  * #L%
  */
+
 package sc.fiji.filamentdetector;
 
 import java.util.stream.Collectors;
@@ -38,7 +39,6 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.ui.UIService;
 
-import ij.ImagePlus;
 import sc.fiji.filamentdetector.detection.FilamentDetector;
 import sc.fiji.filamentdetector.detection.FilteringParameters;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
@@ -114,7 +114,8 @@ public class FilamentWorkflow implements Initializable {
 
 	public void detectCurrentFrame() {
 		this.initDetection();
-		this.filamentsDetector.detectCurrentFrame(calibrations.getChannelToUseIndex());
+		this.filamentsDetector.detectCurrentFrame(calibrations
+			.getChannelToUseIndex());
 		this.filaments = filamentsDetector.getFilaments();
 		this.filteredFilaments = this.filaments;
 	}
@@ -137,7 +138,8 @@ public class FilamentWorkflow implements Initializable {
 		try {
 			Dataset dataset = (Dataset) imageDisplay.getActiveView().getData();
 			return dataset;
-		} catch (NullPointerException e) {
+		}
+		catch (NullPointerException e) {
 			eventService.publish(new ImageNotFoundEvent());
 			return null;
 		}
@@ -153,10 +155,6 @@ public class FilamentWorkflow implements Initializable {
 
 	public ImageDisplay getSourceImage() {
 		return sourceImage;
-	}
-
-	public ImagePlus getImagePlus() {
-		return convert.convert(imageDisplay, ImagePlus.class);
 	}
 
 	public Calibrations getCalibrations() {
@@ -181,32 +179,40 @@ public class FilamentWorkflow implements Initializable {
 
 	public void filterFilament(FilteringParameters filteringParameters) {
 		if (!filteringParameters.isDisableFiltering()) {
-			this.filteredFilaments = this.filaments.stream()
-					.filter(filament -> filament.getLength() <= filteringParameters.getMaxLength())
-					.filter(filament -> filament.getLength() >= filteringParameters.getMinLength())
-					.filter(filament -> filament.getSinuosity() <= filteringParameters.getMaxSinuosity())
-					.filter(filament -> filament.getSinuosity() >= filteringParameters.getMinSinuosity())
-					.collect(Collectors.toCollection(Filaments::new));
-		} else {
+			this.filteredFilaments = this.filaments.stream().filter(
+				filament -> filament.getLength() <= filteringParameters.getMaxLength())
+				.filter(filament -> filament.getLength() >= filteringParameters
+					.getMinLength()).filter(filament -> filament
+						.getSinuosity() <= filteringParameters.getMaxSinuosity()).filter(
+							filament -> filament.getSinuosity() >= filteringParameters
+								.getMinSinuosity()).collect(Collectors.toCollection(
+									Filaments::new));
+		}
+		else {
 			this.filteredFilaments = this.filaments;
 		}
 	}
 
-	public void filterTrackedFilament(FilteringTrackedFilamentsParameters filteringParameters) {
+	public void filterTrackedFilament(
+		FilteringTrackedFilamentsParameters filteringParameters)
+	{
 		if (!filteringParameters.isDisableFiltering()) {
 
-			double[] bbox = new double[] { 0, getCalibrations().getSizeX(), 0, getCalibrations().getSizeY() };
+			double[] bbox = new double[] { 0, getCalibrations().getSizeX(), 0,
+				getCalibrations().getSizeY() };
 			bbox[0] += filteringParameters.getBorderLimit();
 			bbox[1] -= filteringParameters.getBorderLimit();
 			bbox[2] += filteringParameters.getBorderLimit();
 			bbox[3] -= filteringParameters.getBorderLimit();
 
-			this.filteredTrackedFilaments = this.trackedFilaments.stream()
-					.filter(trackedFilament -> trackedFilament.size() <= filteringParameters.getMaxSize())
-					.filter(trackedFilament -> trackedFilament.size() >= filteringParameters.getMinSize())
-					.filter(trackedFilament -> trackedFilament.insideBbox(bbox))
-					.collect(Collectors.toCollection(() -> new TrackedFilaments(context)));
-		} else {
+			this.filteredTrackedFilaments = this.trackedFilaments.stream().filter(
+				trackedFilament -> trackedFilament.size() <= filteringParameters
+					.getMaxSize()).filter(trackedFilament -> trackedFilament
+						.size() >= filteringParameters.getMinSize()).filter(
+							trackedFilament -> trackedFilament.insideBbox(bbox)).collect(
+								Collectors.toCollection(() -> new TrackedFilaments(context)));
+		}
+		else {
 			this.filteredTrackedFilaments = this.trackedFilaments;
 		}
 	}
