@@ -54,7 +54,7 @@ public class TestDetector {
 
 		FilamentOverlayService overlay = ij.get(FilamentOverlayService.class);
 		FilamentDetectorService detectorService = ij.get(FilamentDetectorService.class);
-		FilamentTrackerService tarckerService = ij.get(FilamentTrackerService.class);
+		FilamentTrackerService trackerService = ij.get(FilamentTrackerService.class);
 
 		String fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-only-T.tif";
 		// fpath = "/home/hadim/.doc/Code/Postdoc/ij/testdata/fake-flat.tif";
