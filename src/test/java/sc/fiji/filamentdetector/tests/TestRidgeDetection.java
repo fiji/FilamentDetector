@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  * #L%
  */
+
 package sc.fiji.filamentdetector.tests;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +43,7 @@ import sc.fiji.filamentdetector.model.TrackedFilaments;
 
 public class TestRidgeDetection extends AbstractTest {
 
-/*	@Test
+	@Test
 	public void testFilamentWorkflow() {
 
 		int width = 100;
@@ -52,7 +53,7 @@ public class TestRidgeDetection extends AbstractTest {
 		Img img = getFakeImage(width, maxFrame, nLines);
 		Dataset dataset = ds.create(img);
 		CalibratedAxis[] caxis = { new DefaultLinearAxis(Axes.X), new DefaultLinearAxis(Axes.Y),
-				new DefaultLinearAxis(Axes.TIME) };
+			new DefaultLinearAxis(Axes.TIME) };
 		dataset.setAxes(caxis);
 
 		ImageDisplay imd = (ImageDisplay) displayService.createDisplayQuietly(dataset);
@@ -76,5 +77,5 @@ public class TestRidgeDetection extends AbstractTest {
 		assertEquals(filaments.size(), nLines * maxFrame);
 		assertEquals(trackedFilaments.size(), nLines);
 
-	}*/
+	}
 }
