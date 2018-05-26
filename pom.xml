@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>FilamentDetector</artifactId>
-	<version>0.4.6-SNAPSHOT</version>
+	<version>0.4.7-SNAPSHOT</version>
 
 	<name>FilamentDetector</name>
 	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
