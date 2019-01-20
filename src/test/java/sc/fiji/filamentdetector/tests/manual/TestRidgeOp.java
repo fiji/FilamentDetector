@@ -27,6 +27,9 @@ package sc.fiji.filamentdetector.tests.manual;
 
 import java.util.List;
 
+import org.scijava.Context;
+import org.scijava.log.LogService;
+
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
 import net.imagej.ImgPlus;
@@ -35,10 +38,6 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Segment.DetectRidges;
 import net.imglib2.roi.geom.real.Polyline;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Context;
-import org.scijava.log.LogService;
-
 import sc.fiji.filamentdetector.ImageUtilService;
 
 public class TestRidgeOp {

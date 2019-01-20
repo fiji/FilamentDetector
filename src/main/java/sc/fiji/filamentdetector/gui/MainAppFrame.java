@@ -35,9 +35,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import net.imagej.ImageJ;
-import net.imagej.display.ImageDisplay;
-
 import org.scijava.Context;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -49,6 +46,8 @@ import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import net.imagej.ImageJ;
+import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.gui.controller.MainController;
 
@@ -93,15 +92,13 @@ public class MainAppFrame extends JFrame {
 	}
 
 	/**
-	 * Create the JFXPanel that make the link between Swing (IJ) and JavaFX
-	 * plugin.
+	 * Create the JFXPanel that make the link between Swing (IJ) and JavaFX plugin.
 	 */
 	public void initialize() throws Exception {
 
 		try {
 			filamentDetector.initialize();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception(e);
 		}
 
@@ -126,13 +123,11 @@ public class MainAppFrame extends JFrame {
 	public void initFX(JFXPanel fxPanel) {
 		try {
 			// Load the main UI
-			URL fxmlUrl = MainAppFrame.class.getResource(
-				"/sc/fiji/filamentdetector/gui/view/MainView.fxml");
+			URL fxmlUrl = MainAppFrame.class.getResource("/sc/fiji/filamentdetector/gui/view/MainView.fxml");
 			FXMLLoader loader = new FXMLLoader(fxmlUrl);
 
 			// Create and set the main controller
-			MainController mainController = new MainController(context,
-				filamentDetector);
+			MainController mainController = new MainController(context, filamentDetector);
 			loader.setController(mainController);
 
 			// Show the scene containing the root layout.
@@ -145,14 +140,12 @@ public class MainAppFrame extends JFrame {
 			this.setSize((int) scene.getWidth(), (int) scene.getHeight());
 
 			// Position the window
-			ImagePlus imp = convert.convert(filamentDetector.getImageDisplay(),
-				ImagePlus.class);
+			ImagePlus imp = convert.convert(filamentDetector.getImageDisplay(), ImagePlus.class);
 			GUIUtils.positionWindow(this, imp.getWindow());
 
 			mainController.loadPanes();
 
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			log.error(e);
 		}
 	}

@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import net.imagej.Dataset;
-import net.imagej.axis.Axes;
-
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
+
+import net.imagej.Dataset;
+import net.imagej.axis.Axes;
 
 /* An easy way to get Dataset calibrations */
 public class Calibrations {

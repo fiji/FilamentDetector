@@ -49,9 +49,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import net.imglib2.algorithm.MultiThreaded;
-import net.imglib2.util.Util;
-
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -60,6 +57,8 @@ import fiji.plugin.trackmate.tracking.sparselap.costmatrix.CostMatrixCreator;
 import fiji.plugin.trackmate.tracking.sparselap.costmatrix.DefaultCostMatrixCreator;
 import fiji.plugin.trackmate.tracking.sparselap.costmatrix.ResizableDoubleArray;
 import fiji.plugin.trackmate.tracking.sparselap.linker.SparseCostMatrix;
+import net.imglib2.algorithm.MultiThreaded;
+import net.imglib2.util.Util;
 import sc.fiji.filamentdetector.model.Filament;
 
 public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreator<Filament, Filament>, MultiThreaded {

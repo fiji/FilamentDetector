@@ -25,6 +25,12 @@
  */
 package sc.fiji.filamentdetector;
 
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
+import org.scijava.service.Service;
+
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
 import net.imagej.axis.AxisType;
@@ -32,12 +38,6 @@ import net.imagej.ops.OpService;
 import net.imglib2.FinalInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
-
-import org.scijava.log.LogService;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
-import org.scijava.service.Service;
 
 @Plugin(type = Service.class)
 public class ImageUtilService extends AbstractService implements ImageJService {

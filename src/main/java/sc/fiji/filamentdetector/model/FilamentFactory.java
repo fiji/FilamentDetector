@@ -25,9 +25,8 @@
  */
 package sc.fiji.filamentdetector.model;
 
-import net.imglib2.roi.geom.real.Polyline;
-
 import de.biomedical_imaging.ij.steger.Line;
+import net.imglib2.roi.geom.real.Polyline;
 
 public class FilamentFactory {
 

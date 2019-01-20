@@ -33,12 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.imagej.Dataset;
-import net.imagej.display.ImageDisplay;
-import net.imagej.display.OverlayService;
-import net.imagej.ops.OpService;
-import net.imglib2.type.numeric.real.DoubleType;
-
 import org.scijava.convert.ConvertService;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
@@ -53,6 +47,11 @@ import ij.gui.OvalRoi;
 import ij.gui.Overlay;
 import ij.gui.Roi;
 import ij.plugin.frame.RoiManager;
+import net.imagej.Dataset;
+import net.imagej.display.ImageDisplay;
+import net.imagej.display.OverlayService;
+import net.imagej.ops.OpService;
+import net.imglib2.type.numeric.real.DoubleType;
 import sc.fiji.filamentdetector.event.FilamentSelectedEvent;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
 import sc.fiji.filamentdetector.model.Filament;

@@ -36,13 +36,12 @@ import java.net.URL;
 
 import javax.swing.JFrame;
 
-import net.imagej.Dataset;
-import net.imagej.ImageJ;
-
 import org.scijava.ui.DialogPrompt;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
+import net.imagej.Dataset;
+import net.imagej.ImageJ;
 import sc.fiji.filamentdetector.gui.controller.Controller;
 
 public class GUIUtils {

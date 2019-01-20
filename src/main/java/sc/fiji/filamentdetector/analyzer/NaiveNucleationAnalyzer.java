@@ -25,16 +25,15 @@
  */
 package sc.fiji.filamentdetector.analyzer;
 
-import net.imagej.Dataset;
-import net.imagej.ops.OpService;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.Dataset;
+import net.imagej.ops.OpService;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 
 @Plugin(type = Analyzer.class, priority = Priority.HIGH)
@@ -43,7 +42,7 @@ public class NaiveNucleationAnalyzer extends AbstractAnalyzer {
 	public static String NAME = "Naive Nucleation Analyzer";
 	public static String DESCRIPTION = "This module uses the tracked filaments as seeds and look over "
 			+ "each frame and both tips whether the intensity is above a specified threshold. If it is then a "
-			+ "nucleation event is declared.";
+			+ "nucleation event is declared." + " (this analyzer is in development)";
 
 	@Parameter
 	private LogService log;

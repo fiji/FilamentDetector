@@ -27,7 +27,7 @@ package sc.fiji.filamentdetector.detection;
 
 public class FilteringParameters {
 
-	private double maxLength = 100;
+	private double maxLength = 1000;
 	private double minLength = 0;
 	private double maxSinuosity = Double.POSITIVE_INFINITY;
 	private double minSinuosity = 1;

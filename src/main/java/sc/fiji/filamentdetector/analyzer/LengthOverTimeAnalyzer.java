@@ -25,8 +25,6 @@
  */
 package sc.fiji.filamentdetector.analyzer;
 
-import com.opencsv.CSVWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,12 +35,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.imagej.Dataset;
-
 import org.apache.commons.io.FilenameUtils;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
+import com.opencsv.CSVWriter;
+
+import net.imagej.Dataset;
 import sc.fiji.filamentdetector.Calibrations;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
@@ -51,7 +50,8 @@ import sc.fiji.filamentdetector.model.TrackedFilaments;
 public class LengthOverTimeAnalyzer extends AbstractAnalyzer {
 
 	public static String NAME = "Filament Growth Curve";
-	public static String DESCRIPTION = "Generate the classic filament length versus time curve.";
+	public static String DESCRIPTION = "Generate the classic filament length versus time curve."
+			+ " (this analyzer is in development)";
 
 	public LengthOverTimeAnalyzer() {
 		setName(NAME);

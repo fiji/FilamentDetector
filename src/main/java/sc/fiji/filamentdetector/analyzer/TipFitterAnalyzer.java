@@ -37,7 +37,7 @@ public class TipFitterAnalyzer extends AbstractAnalyzer {
 
 	public static String NAME = "Tip Fitter";
 	public static String DESCRIPTION = "Use tracked filaments as seeds to fit in "
-			+ "1D tip of filaments from both side.";
+			+ "1D tip of filaments from both side." + " (this analyzer is in development)";
 
 	private FilamentTipFitter fitter;
 

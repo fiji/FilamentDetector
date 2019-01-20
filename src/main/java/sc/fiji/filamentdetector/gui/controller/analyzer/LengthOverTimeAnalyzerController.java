@@ -35,8 +35,6 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
-import net.imagej.Dataset;
-
 import org.apache.commons.io.FilenameUtils;
 import org.scijava.Context;
 import org.scijava.plugin.Parameter;
@@ -59,6 +57,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.imagej.Dataset;
 import sc.fiji.filamentdetector.analyzer.LengthOverTimeAnalyzer;
 import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.model.TrackedFilament;

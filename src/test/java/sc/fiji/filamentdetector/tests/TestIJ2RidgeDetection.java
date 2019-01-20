@@ -25,56 +25,36 @@
  */
 package sc.fiji.filamentdetector.tests;
 
-import static org.junit.Assert.assertEquals;
-
-import net.imagej.Dataset;
-import net.imagej.axis.Axes;
-import net.imagej.axis.CalibratedAxis;
-import net.imagej.axis.DefaultLinearAxis;
-import net.imagej.display.ImageDisplay;
-import net.imglib2.img.Img;
-
-import org.junit.Test;
-
-import sc.fiji.filamentdetector.FilamentWorkflow;
-import sc.fiji.filamentdetector.model.Filaments;
-import sc.fiji.filamentdetector.model.TrackedFilaments;
-
 public class TestIJ2RidgeDetection extends AbstractTest {
 
-/*	@Test
-	public void testFilamentWorkflow() {
-
-		int width = 100;
-		int maxFrame = 10;
-		int nLines = 5;
-
-		Img img = getFakeImage(width, maxFrame, nLines);
-		Dataset dataset = ds.create(img);
-		CalibratedAxis[] caxis = { new DefaultLinearAxis(Axes.X), new DefaultLinearAxis(Axes.Y),
-				new DefaultLinearAxis(Axes.TIME) };
-		dataset.setAxes(caxis);
-
-		ImageDisplay imd = (ImageDisplay) displayService.createDisplayQuietly(dataset);
-
-		FilamentWorkflow wf = new FilamentWorkflow(context, imd);
-		wf.initialize();
-		wf.getCalibrations().setChannelToUseIndex(1);
-
-		wf.setFilamentDetector(detectorService.getIJ2RidgeFilamentDetector());
-		wf.getFilamentDetector().setImageDisplay(imd);
-		wf.getFilamentDetector().setDataset(dataset);
-		wf.detect();
-		Filaments filaments = wf.getFilaments();
-
-		wf.setFilamentsTracker(trackerService.getBBoxTracker());
-		wf.track();
-		TrackedFilaments trackedFilaments = wf.getTrackedFilaments();
-
-		log.info(filaments.size());
-		log.info(trackedFilaments.size());
-		assertEquals(filaments.size(), nLines * maxFrame);
-		assertEquals(trackedFilaments.size(), nLines);
-
-	}*/
+	/*
+	 * @Test public void testFilamentWorkflow() {
+	 * 
+	 * int width = 100; int maxFrame = 10; int nLines = 5;
+	 * 
+	 * Img img = getFakeImage(width, maxFrame, nLines); Dataset dataset =
+	 * ds.create(img); CalibratedAxis[] caxis = { new DefaultLinearAxis(Axes.X), new
+	 * DefaultLinearAxis(Axes.Y), new DefaultLinearAxis(Axes.TIME) };
+	 * dataset.setAxes(caxis);
+	 * 
+	 * ImageDisplay imd = (ImageDisplay)
+	 * displayService.createDisplayQuietly(dataset);
+	 * 
+	 * FilamentWorkflow wf = new FilamentWorkflow(context, imd); wf.initialize();
+	 * wf.getCalibrations().setChannelToUseIndex(1);
+	 * 
+	 * wf.setFilamentDetector(detectorService.getIJ2RidgeFilamentDetector());
+	 * wf.getFilamentDetector().setImageDisplay(imd);
+	 * wf.getFilamentDetector().setDataset(dataset); wf.detect(); Filaments
+	 * filaments = wf.getFilaments();
+	 * 
+	 * wf.setFilamentsTracker(trackerService.getBBoxTracker()); wf.track();
+	 * TrackedFilaments trackedFilaments = wf.getTrackedFilaments();
+	 * 
+	 * log.info(filaments.size()); log.info(trackedFilaments.size());
+	 * assertEquals(filaments.size(), nLines * maxFrame);
+	 * assertEquals(trackedFilaments.size(), nLines);
+	 * 
+	 * }
+	 */
 }

@@ -32,8 +32,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import net.imagej.display.ImageDisplay;
-
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
@@ -44,6 +42,7 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 import ij.gui.Plot;
+import net.imagej.display.ImageDisplay;
 import sc.fiji.filamentdetector.GeometryUtils;
 import sc.fiji.filamentdetector.model.Filament;
 import sc.fiji.filamentdetector.model.TrackedFilament;

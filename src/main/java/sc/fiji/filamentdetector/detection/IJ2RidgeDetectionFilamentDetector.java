@@ -29,6 +29,15 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scijava.Priority;
+import org.scijava.convert.ConvertService;
+import org.scijava.event.EventService;
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.ui.UIService;
+
+import ij.ImagePlus;
 import net.imagej.Dataset;
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;
@@ -39,16 +48,6 @@ import net.imagej.ops.Ops.Segment.DetectRidges;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geom.real.Polyline;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.convert.ConvertService;
-import org.scijava.event.EventService;
-import org.scijava.log.LogService;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.ui.UIService;
-
-import ij.ImagePlus;
 import sc.fiji.filamentdetector.ImageUtilService;
 import sc.fiji.filamentdetector.event.ImageNotFoundEvent;
 import sc.fiji.filamentdetector.model.Filament;

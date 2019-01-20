@@ -25,9 +25,9 @@
  */
 package sc.fiji.filamentdetector.model;
 
-import com.google.common.primitives.Doubles;
-
 import java.util.Arrays;
+
+import com.google.common.primitives.Doubles;
 
 /* 
  * Represent a tip of a TrackedFilament over time.

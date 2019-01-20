@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import net.imagej.Dataset;
-
 import org.scijava.Context;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -48,7 +46,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import net.imagej.Dataset;
 import sc.fiji.filamentdetector.FilamentWorkflow;
+import sc.fiji.filamentdetector.FilesUtils;
 import sc.fiji.filamentdetector.exporter.CSVFilamentExporter;
 import sc.fiji.filamentdetector.exporter.CSVTrackedFilamentExporter;
 import sc.fiji.filamentdetector.exporter.DataExporter;
@@ -227,9 +227,21 @@ public class DataExporterController extends AbstractController implements Initia
 		FileChooser fileChooser = new FileChooser();
 
 		Dataset dataset = (Dataset) filamentWorkflow.getSourceImage().getActiveView().getData();
+		File initialDirectory = null;
 		if (dataset.getSource() != null) {
 			String parentPath = new File(dataset.getSource()).getParent();
-			fileChooser.setInitialDirectory(new File(parentPath));
+			if (parentPath != null) {
+				initialDirectory = new File(parentPath);
+			}
+		}
+		if (initialDirectory == null) {
+			initialDirectory = new File(System.getProperty("user.home"));
+		}
+		fileChooser.setInitialDirectory(initialDirectory);
+
+		if (dataset.getName() != null) {
+			String fname = FilesUtils.getFileNameWithoutExtension(dataset.getName());
+			fileChooser.setInitialFileName(fname);
 		}
 
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(exporter.getExtensionDescription(),
