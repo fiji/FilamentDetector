@@ -35,7 +35,7 @@
 		<developer>
 			<id>hadim</id>
 			<name>Hadrien Mary</name>
-			<url>http://imagej.net/User:Hadim</url>
+			<url>https://imagej.net/User:Hadim</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -84,7 +84,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/FilamentDetector/</url>
+		<url>https://jenkins.imagej.net/job/FilamentDetector/</url>
 	</ciManagement>
 
 	<dependencies>
