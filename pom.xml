@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>24.2.0</version>
+		<version>26.0.0</version>
 		<relativePath />
 	</parent>
 
@@ -35,7 +35,7 @@
 		<developer>
 			<id>hadim</id>
 			<name>Hadrien Mary</name>
-			<url>http://imagej.net/User:Hadim</url>
+			<url>https://imagej.net/User:Hadim</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -61,14 +61,14 @@
 		<license.licenseName>mit</license.licenseName>
 		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
 
-		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
-		<releaseProfiles>deploy-to-imagej</releaseProfiles>
+		<!-- NB: Deploy releases to the SciJava Maven repository. -->
+		<releaseProfiles>deploy-to-scijava</releaseProfiles>
 	</properties>
 
 	<mailingLists>
 		<mailingList>
-			<name>ImageJ Forum</name>
-			<archive>http://forum.imagej.net/</archive>
+			<name>Image.sc Forum</name>
+			<archive>https://forum.image.sc/tags/filamentdetector</archive>
 		</mailingList>
 	</mailingLists>
 
@@ -84,7 +84,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/FilamentDetector/</url>
+		<url>https://jenkins.imagej.net/job/FilamentDetector/</url>
 	</ciManagement>
 
 	<dependencies>
@@ -150,8 +150,8 @@
 
 	<repositories>
 		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
+			<id>scijava.public</id>
+			<url>https://maven.scijava.org/content/groups/public</url>
 		</repository>
 	</repositories>
 
