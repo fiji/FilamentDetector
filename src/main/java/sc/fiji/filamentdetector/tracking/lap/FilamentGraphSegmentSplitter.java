@@ -31,8 +31,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.ConnectivityInspector;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import sc.fiji.filamentdetector.model.Filament;
@@ -44,10 +44,10 @@ public class FilamentGraphSegmentSplitter {
 
 	private final List<List<Filament>> segmentMiddles;
 
-	public FilamentGraphSegmentSplitter(final UndirectedGraph<Filament, DefaultWeightedEdge> graph,
+	public FilamentGraphSegmentSplitter(final Graph<Filament, DefaultWeightedEdge> graph,
 			final boolean findMiddlePoints) {
-		final ConnectivityInspector<Filament, DefaultWeightedEdge> connectivity = new ConnectivityInspector<Filament, DefaultWeightedEdge>(
-				graph);
+		final ConnectivityInspector<Filament, DefaultWeightedEdge> connectivity =
+			new ConnectivityInspector<>(graph);
 		final List<Set<Filament>> connectedSets = connectivity.connectedSets();
 		final Comparator<Filament> framecomparator = Filament.frameComparator;
 

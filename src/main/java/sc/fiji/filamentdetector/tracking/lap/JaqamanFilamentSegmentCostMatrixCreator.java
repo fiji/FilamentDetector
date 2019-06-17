@@ -49,7 +49,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.jgrapht.UndirectedGraph;
+import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
@@ -77,7 +77,7 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 
 	private List<Filament> uniqueTargets;
 
-	private final UndirectedGraph<Filament, DefaultWeightedEdge> graph;
+	private final Graph<Filament, DefaultWeightedEdge> graph;
 
 	private double alternativeCost = -1;
 
@@ -88,8 +88,10 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 	 * linking cost matrix.
 	 * 
 	 */
-	public JaqamanFilamentSegmentCostMatrixCreator(final UndirectedGraph<Filament, DefaultWeightedEdge> graph,
-			final Map<String, Object> settings) {
+	public JaqamanFilamentSegmentCostMatrixCreator(
+		final Graph<Filament, DefaultWeightedEdge> graph,
+		final Map<String, Object> settings)
+	{
 		this.graph = graph;
 		this.settings = settings;
 		setNumThreads();
@@ -327,8 +329,9 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 			 */
 		} else {
 
-			final DefaultCostMatrixCreator<Filament, Filament> creator = new DefaultCostMatrixCreator<Filament, Filament>(
-					sources, targets, linkCosts.data, alternativeCostFactor, percentile);
+			final DefaultCostMatrixCreator<Filament, Filament> creator =
+				new DefaultCostMatrixCreator<>(sources, targets, linkCosts.data,
+					alternativeCostFactor, percentile);
 
 			if (!creator.checkInput() || !creator.process()) {
 				errorMessage = "Linking track segments: " + creator.getErrorMessage();
