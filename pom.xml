@@ -63,6 +63,8 @@
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
+
+		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
 	</properties>
 
 	<mailingLists>
@@ -108,7 +110,7 @@
 		<dependency>
 			<groupId>de.biomedical-imaging.imagej</groupId>
 			<artifactId>ij_ridge_detect</artifactId>
-			<version>1.4.1</version>
+			<version>${ij_ridge_detect.version}</version>
 		</dependency>
 
 		<dependency>
