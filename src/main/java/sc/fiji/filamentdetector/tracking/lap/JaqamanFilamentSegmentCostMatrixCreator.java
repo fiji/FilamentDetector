@@ -178,7 +178,7 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 		final List<Filament> allMiddles;
 		if (mergingOrSplitting) {
 			final List<List<Filament>> segmentMiddles = segmentSplitter.getSegmentMiddles();
-			allMiddles = new ArrayList<Filament>();
+			allMiddles = new ArrayList<>();
 			for (final List<Filament> segment : segmentMiddles) {
 				allMiddles.addAll(segment);
 			}
@@ -191,8 +191,8 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 		/*
 		 * Sources and targets.
 		 */
-		final ArrayList<Filament> sources = new ArrayList<Filament>();
-		final ArrayList<Filament> targets = new ArrayList<Filament>();
+		final ArrayList<Filament> sources = new ArrayList<>();
+		final ArrayList<Filament> targets = new ArrayList<>();
 		// Corresponding costs.
 		final ResizableDoubleArray linkCosts = new ResizableDoubleArray();
 
@@ -417,7 +417,7 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 		ok = ok & checkParameter(settings, KEY_CUTOFF_PERCENTILE, Double.class, str);
 
 		// Check keys
-		final List<String> mandatoryKeys = new ArrayList<String>();
+		final List<String> mandatoryKeys = new ArrayList<>();
 		mandatoryKeys.add(KEY_ALLOW_GAP_CLOSING);
 		mandatoryKeys.add(KEY_GAP_CLOSING_MAX_DISTANCE);
 		mandatoryKeys.add(KEY_GAP_CLOSING_MAX_FRAME_GAP);
@@ -427,7 +427,7 @@ public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreato
 		mandatoryKeys.add(KEY_MERGING_MAX_DISTANCE);
 		mandatoryKeys.add(KEY_ALTERNATIVE_LINKING_COST_FACTOR);
 		mandatoryKeys.add(KEY_CUTOFF_PERCENTILE);
-		final List<String> optionalKeys = new ArrayList<String>();
+		final List<String> optionalKeys = new ArrayList<>();
 		optionalKeys.add(KEY_GAP_CLOSING_FEATURE_PENALTIES);
 		optionalKeys.add(KEY_SPLITTING_FEATURE_PENALTIES);
 		optionalKeys.add(KEY_MERGING_FEATURE_PENALTIES);
