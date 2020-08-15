@@ -96,8 +96,8 @@ public class CSVTrackedFilamentExporter extends TrackedFilamentsExporter<Tracked
 	@Override
 	public void export(TrackedFilaments trackedFilaments, File file) {
 
-		try {
-			CSVWriter writer = new CSVWriter(new FileWriter(file), ';');
+		try (CSVWriter writer = new CSVWriter(new FileWriter(file), ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
+				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
 
 			String[] columns = Arrays.asList("track id", "filament id", "length", "frame", "sinuosity", "size", "color")
 					.stream().toArray(String[]::new);

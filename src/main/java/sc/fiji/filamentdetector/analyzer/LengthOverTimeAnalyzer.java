@@ -112,8 +112,8 @@ public class LengthOverTimeAnalyzer extends AbstractAnalyzer {
 				filePath += "-LengthOverTime.csv";
 
 				File file = new File(filePath);
-				try {
-					CSVWriter writer = new CSVWriter(new FileWriter(file), ';');
+				try (CSVWriter writer = new CSVWriter(new FileWriter(file), ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
+						CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
 
 					writer.writeNext(Arrays.asList("filament id", "time", "length").stream().toArray(String[]::new));
 					List<String[]> data = new ArrayList<>();

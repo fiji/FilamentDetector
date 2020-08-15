@@ -95,8 +95,8 @@ public class CSVFilamentExporter extends FilamentsExporter<Filaments> {
 	@Override
 	public void export(Filaments filaments, File file) {
 
-		try {
-			CSVWriter writer = new CSVWriter(new FileWriter(file), ';');
+		try (CSVWriter writer = new CSVWriter(new FileWriter(file), ';', CSVWriter.DEFAULT_QUOTE_CHARACTER,
+				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
 
 			String[] columns = Arrays.asList("id", "length", "frame", "sinuosity", "size", "color").stream()
 					.toArray(String[]::new);

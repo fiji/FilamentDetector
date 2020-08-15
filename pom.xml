@@ -65,6 +65,7 @@
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
 
 		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
+		<opencsv.version>5.2</opencsv.version>
 	</properties>
 
 	<mailingLists>
