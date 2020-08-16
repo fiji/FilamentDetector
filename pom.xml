@@ -15,7 +15,7 @@
 
 	<name>FilamentDetector</name>
 	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
-	<url>https://github.com/hadim/FilamentDetector</url>
+	<url>https://github.com/fiji/FilamentDetector</url>
 	<inceptionYear>2016</inceptionYear>
 
 	<organization>
@@ -33,26 +33,26 @@
 
 	<developers>
 		<developer>
-			<id>hadim</id>
-			<name>Hadrien Mary</name>
-			<url>https://imagej.net/User:Hadim</url>
+			<id>ctrueden</id>
+			<name>Curtis Rueden</name>
+			<url>https://imagej.net/User:Rueden</url>
 			<roles>
-				<role>founder</role>
-				<role>lead</role>
-				<role>developer</role>
-				<role>debugger</role>
-				<role>reviewer</role>
-				<role>support</role>
 				<role>maintainer</role>
 			</roles>
-			<timezone>-5</timezone>
 		</developer>
 	</developers>
 
 	<contributors>
-		<!-- NB: Need a least one element to override the parent. See: https://issues.apache.org/jira/browse/MNG-5220 -->
 		<contributor>
-			<name>None</name>
+			<name>Hadrien Mary</name>
+			<url>https://imagej.net/User:Hadim</url>
+			<roles><role>founder</role></roles>
+			<properties><id>hadim</id></properties>
+		</contributor>
+		<contributor>
+			<name>Jan Eglinger</name>
+			<url>https://imagej.net/User:Eglinger</url>
+			<properties><id>imagejan</id></properties>
 		</contributor>
 	</contributors>
 
