@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -17,12 +16,10 @@
 	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
 	<url>https://github.com/fiji/FilamentDetector</url>
 	<inceptionYear>2016</inceptionYear>
-
 	<organization>
 		<name>SciJava</name>
 		<url>http://www.scijava.org/</url>
 	</organization>
-
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -41,7 +38,6 @@
 			</roles>
 		</developer>
 	</developers>
-
 	<contributors>
 		<contributor>
 			<name>Hadrien Mary</name>
@@ -55,18 +51,6 @@
 			<properties><id>imagejan</id></properties>
 		</contributor>
 	</contributors>
-
-	<properties>
-		<package-name>FilamentDetector</package-name>
-		<license.licenseName>mit</license.licenseName>
-		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
-
-		<!-- NB: Deploy releases to the SciJava Maven repository. -->
-		<releaseProfiles>deploy-to-scijava</releaseProfiles>
-
-		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
-		<opencsv.version>5.2</opencsv.version>
-	</properties>
 
 	<mailingLists>
 		<mailingList>
@@ -89,6 +73,18 @@
 		<system>Travis CI</system>
 		<url>https://travis-ci.org/fiji/FilamentDetector</url>
 	</ciManagement>
+
+	<properties>
+		<package-name>FilamentDetector</package-name>
+		<license.licenseName>mit</license.licenseName>
+		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
+
+		<!-- NB: Deploy releases to the SciJava Maven repository. -->
+		<releaseProfiles>deploy-to-scijava</releaseProfiles>
+
+		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
+		<opencsv.version>5.2</opencsv.version>
+	</properties>
 
 	<dependencies>
 
@@ -162,5 +158,4 @@
 			<url>https://maven.scijava.org/content/groups/public</url>
 		</repository>
 	</repositories>
-
 </project>
