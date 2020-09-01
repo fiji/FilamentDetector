@@ -9,14 +9,8 @@ ImageJ wiki page: https://imagej.net/FilamentDetector.
 
 ## Installation
 
-- Start [Fiji](https://imagej.net/Fiji/Downloads).
-- Click on `Help ▶ Update...`.
-- In the new window, click on `Manage update sites`.
-- Scroll to find `FilamentDetector` in the column `Name`. Click on it.
-- Click `Close` and then `Apply changes`.
-- Restart Fiji.
-- Open your image.
-- Then you can start the plugin with `Plugins ► Tracking ► FilamentDetector`.
+`FilamentDetector` is included with Fiji. Just open your image,
+then start the plugin with `Plugins ► Tracking ► FilamentDetector`.
 
 ## How to cite
 
@@ -26,7 +20,6 @@ Since there is no published article about `FilamentDetector` at the moment you c
 
 ### Preprocess images
 ![Screenshot of FilamentDetector](./screenshots/1.preprocess.png "Screenshot of FilamentDetector")
-
 
 ### Detect filaments
 ![Screenshot of FilamentDetector](./screenshots/2.detect.png "Screenshot of FilamentDetector")
