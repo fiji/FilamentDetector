@@ -62,8 +62,8 @@ public class AboutController extends AbstractController implements Initializable
 				+ "euclidean distance as a cost function, <strong>FilamentDetector</strong> usez the bounding boxes "
 				+ "of the detected filaments to compute the <a href=\"https://en.wikipedia.org/wiki/Jaccard_index\">"
 				+ "Intersection over Union</a>.</p>\n" + "<ul>\n"
-				+ "<li>Source code: <a href=\"https://github.com/hadim/FilamentDetector\">https://github.com/hadim/FilamentDetector</a></li>\n"
-				+ "<li>Report an issue: <a href=\"https://github.com/hadim/FilamentDetector/issues\">https://github.com/hadim/FilamentDetector/issues</a></li>\n"
+				+ "<li>Source code: <a href=\"https://github.com/fiji/FilamentDetector\">https://github.com/fiji/FilamentDetector</a></li>\n"
+				+ "<li>Report an issue: <a href=\"https://github.com/fiji/FilamentDetector/issues\">https://github.com/fiji/FilamentDetector/issues</a></li>\n"
 				+ "<li>Wiki: <a href=\"http://imagej.net/FilamentDetector\">http://imagej.net/FilamentDetector</a></li>\n"
 				+ "</ul>";
 		aboutTextField.getEngine().loadContent(text);
