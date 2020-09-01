@@ -9,8 +9,9 @@
 		<relativePath />
 	</parent>
 
+	<groupId>sc.fiji</groupId>
 	<artifactId>FilamentDetector</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<name>FilamentDetector</name>
 	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
