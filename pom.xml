@@ -77,7 +77,7 @@
 	<properties>
 		<package-name>FilamentDetector</package-name>
 		<license.licenseName>mit</license.licenseName>
-		<license.copyrightOwners>Hadrien Mary</license.copyrightOwners>
+		<license.copyrightOwners>Fiji developers.</license.copyrightOwners>
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
