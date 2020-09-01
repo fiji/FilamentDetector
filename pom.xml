@@ -76,7 +76,7 @@
 	</ciManagement>
 
 	<properties>
-		<package-name>FilamentDetector</package-name>
+		<package-name>sc.fiji.filamentdetector</package-name>
 		<license.licenseName>mit</license.licenseName>
 		<license.copyrightOwners>Fiji developers.</license.copyrightOwners>
 
