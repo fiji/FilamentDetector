@@ -1,6 +1,6 @@
 # FilamentDetector
 
-[![](https://travis-ci.org/fiji/FilamentDetector.svg?branch=master)](https://travis-ci.org/fiji/FilamentDetector)
+[![](https://github.com/fiji/FilamentDetector/actions/workflows/build-main.yml/badge.svg)](https://github.com/fiji/FilamentDetector/actions/workflows/build-main.yml)
 [![DOI](https://zenodo.org/badge/56030386.svg)](https://zenodo.org/badge/latestdoi/56030386)
 
 `FilamentDetector` is a **Fiji plugin** that allows easy, fast and accurate detection and tracking of **biological filaments**. It comes with a bunch of **ready-to-use modules** to analyze filaments. `FilamentDetector` is also extensible which means that you can plug **your own algorithm** to detect, track and/or analyze filaments.
