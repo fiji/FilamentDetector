@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.event.EventHandler;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -69,7 +70,10 @@ public class MainController extends AbstractController implements Initializable 
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
+
+	@Parameter
+	private GUIStatusService guiStatus;
 
 	@Parameter
 	private FilamentOverlayService overlay;
@@ -215,7 +219,7 @@ public class MainController extends AbstractController implements Initializable 
 		new Thread(startupTask).start();
 
 		// Allow GUIStatusService to display message in the log window
-		status.setTextField(logField);
+		guiStatus.setTextField(logField);
 	}
 
 	private void setMainPane(Accordion mainPane) {

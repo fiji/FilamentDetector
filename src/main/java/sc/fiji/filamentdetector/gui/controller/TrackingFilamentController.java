@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
@@ -59,7 +60,6 @@ import javafx.util.Callback;
 import sc.fiji.filamentdetector.FilamentWorkflow;
 import sc.fiji.filamentdetector.event.FilterTrackedFilamentEvent;
 import sc.fiji.filamentdetector.event.PreventPanelSwitchEvent;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.controller.tracking.BBoxLAPFilamentsTrackerController;
 import sc.fiji.filamentdetector.gui.controller.tracking.FilamentsTrackerController;
 import sc.fiji.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
@@ -78,7 +78,7 @@ public class TrackingFilamentController extends AbstractController implements In
 	private Context context;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private EventService eventService;

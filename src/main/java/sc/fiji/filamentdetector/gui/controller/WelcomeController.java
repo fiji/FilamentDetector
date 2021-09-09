@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -41,7 +42,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
 import sc.fiji.filamentdetector.FilamentWorkflow;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 
 public class WelcomeController extends AbstractController implements Initializable {
 
@@ -51,7 +51,7 @@ public class WelcomeController extends AbstractController implements Initializab
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@FXML
 	private WebView welcomeTextField;

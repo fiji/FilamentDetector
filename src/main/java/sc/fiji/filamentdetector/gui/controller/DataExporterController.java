@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -55,7 +56,6 @@ import sc.fiji.filamentdetector.exporter.DataExporter;
 import sc.fiji.filamentdetector.exporter.IJ1RoiFilamentExporter;
 import sc.fiji.filamentdetector.exporter.JSONFilamentExporter;
 import sc.fiji.filamentdetector.exporter.JSONTrackedFilamentExporter;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.model.Filaments;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
 
@@ -70,7 +70,7 @@ public class DataExporterController extends AbstractController implements Initia
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@FXML
 	private Label filamentsLabel;

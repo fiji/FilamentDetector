@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -40,7 +41,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import sc.fiji.filamentdetector.analyzer.TipFitterAnalyzer;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
@@ -51,7 +51,7 @@ public class TipFitterAnalyzerController extends AbstractAnalyzerController impl
 	private static String FXML_VIEW_FILE = "/sc/fiji/filamentdetector/gui/view/analyzer/TipFitterAnalyzerView.fxml";
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private LogService log;

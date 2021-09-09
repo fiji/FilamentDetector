@@ -29,6 +29,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
@@ -49,7 +50,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import sc.fiji.filamentdetector.event.FilamentSelectedEvent;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.GUIUtils;
 import sc.fiji.filamentdetector.gui.controller.DetailedFilamentController;
 import sc.fiji.filamentdetector.gui.model.FilamentModel;
@@ -66,7 +66,7 @@ public class FilamentsTableView extends TableView<FilamentModel> {
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private EventService eventService;

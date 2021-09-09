@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
@@ -70,7 +71,6 @@ import sc.fiji.filamentdetector.detection.IJ2RidgeDetectionFilamentDetector;
 import sc.fiji.filamentdetector.detection.RidgeDetectionFilamentDetector;
 import sc.fiji.filamentdetector.event.FilterFilamentEvent;
 import sc.fiji.filamentdetector.event.PreventPanelSwitchEvent;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.controller.detection.FilamentDetectorController;
 import sc.fiji.filamentdetector.gui.controller.detection.IJ2RidgeDetectionFilamentDetectorController;
 import sc.fiji.filamentdetector.gui.controller.detection.RidgeDetectionFilamentDetectorController;
@@ -88,7 +88,7 @@ public class DetectFilamentController extends AbstractController implements Init
 	private Context context;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private EventService eventService;

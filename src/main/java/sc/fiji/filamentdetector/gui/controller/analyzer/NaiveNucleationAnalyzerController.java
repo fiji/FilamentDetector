@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -38,7 +39,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import sc.fiji.filamentdetector.analyzer.NaiveNucleationAnalyzer;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.fxwidgets.SliderLabelSynchronizer;
 import sc.fiji.filamentdetector.overlay.FilamentOverlayService;
 
@@ -47,7 +47,7 @@ public class NaiveNucleationAnalyzerController extends AbstractAnalyzerControlle
 	private static String FXML_VIEW_FILE = "/sc/fiji/filamentdetector/gui/view/analyzer/NaiveNucleationAnalyzerView.fxml";
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private LogService log;

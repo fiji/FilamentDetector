@@ -35,6 +35,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -56,7 +57,6 @@ import sc.fiji.filamentdetector.analyzer.Analyzer;
 import sc.fiji.filamentdetector.analyzer.AnalyzerService;
 import sc.fiji.filamentdetector.analyzer.LengthOverTimeAnalyzer;
 import sc.fiji.filamentdetector.analyzer.TipFitterAnalyzer;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.controller.analyzer.AnalyzerController;
 import sc.fiji.filamentdetector.gui.controller.analyzer.LengthOverTimeAnalyzerController;
 import sc.fiji.filamentdetector.gui.controller.analyzer.TipFitterAnalyzerController;
@@ -72,7 +72,7 @@ public class AnalyzeController extends AbstractController implements Initializab
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private AnalyzerService analyzerService;

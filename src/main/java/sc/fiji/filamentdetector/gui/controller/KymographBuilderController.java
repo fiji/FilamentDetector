@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -49,7 +50,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import sc.fiji.filamentdetector.FilamentWorkflow;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.kymograph.KymographGenerator;
 import sc.fiji.filamentdetector.kymograph.linedrawer.LineDrawer;
 import sc.fiji.filamentdetector.kymograph.linedrawer.LongestFilamentLineDrawer;
@@ -65,7 +65,7 @@ public class KymographBuilderController extends AbstractController implements In
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@FXML
 	private Label nTrackedFilamentsField;

@@ -28,6 +28,7 @@ package sc.fiji.filamentdetector.gui.view;
 import java.util.List;
 
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.log.LogService;
@@ -48,7 +49,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import sc.fiji.filamentdetector.event.TrackedFilamentSelectedEvent;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.gui.GUIUtils;
 import sc.fiji.filamentdetector.gui.controller.DetailedTrackedFilamentController;
 import sc.fiji.filamentdetector.gui.model.TrackedFilamentModel;
@@ -65,7 +65,7 @@ public class TrackedFilamentsTableView extends TableView<TrackedFilamentModel> {
 	private LogService log;
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@Parameter
 	private EventService eventService;

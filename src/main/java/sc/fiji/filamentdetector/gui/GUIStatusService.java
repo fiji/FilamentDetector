@@ -25,35 +25,29 @@
  */
 package sc.fiji.filamentdetector.gui;
 
-import org.scijava.app.DefaultStatusService;
-import org.scijava.app.StatusService;
+import net.imagej.ImageJService;
+
 import org.scijava.app.event.StatusEvent;
-import org.scijava.event.EventService;
-import org.scijava.plugin.Parameter;
+import org.scijava.event.EventHandler;
 import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 import javafx.scene.control.TextArea;
 
 @Plugin(type = Service.class)
-public class GUIStatusService extends DefaultStatusService implements StatusService {
+public class GUIStatusService extends AbstractService implements ImageJService {
 
-	@Parameter
-	private EventService eventService;
+	private Object logField;
 
-	private TextArea logField;
-
-	public void setTextField(TextArea logField) {
+	public void setTextField(final Object logField) {
 		this.logField = logField;
 	}
 
-	@Override
-	protected void publish(final StatusEvent statusEvent) {
-		eventService.publishLater(statusEvent);
-
-		if (logField != null) {
-			logField.appendText("\n>>> " + statusEvent.getStatusMessage());
+	@EventHandler
+	protected void onEvent(final StatusEvent statusEvent) {
+		if (logField instanceof TextArea) {
+			((TextArea) logField).appendText("\n>>> " + statusEvent.getStatusMessage());
 		}
 	}
-
 }

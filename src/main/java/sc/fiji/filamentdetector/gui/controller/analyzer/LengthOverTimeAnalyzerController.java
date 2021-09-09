@@ -37,6 +37,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
 import org.scijava.Context;
+import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -59,7 +60,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.imagej.Dataset;
 import sc.fiji.filamentdetector.analyzer.LengthOverTimeAnalyzer;
-import sc.fiji.filamentdetector.gui.GUIStatusService;
 import sc.fiji.filamentdetector.model.TrackedFilament;
 
 public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController implements AnalyzerController {
@@ -67,7 +67,7 @@ public class LengthOverTimeAnalyzerController extends AbstractAnalyzerController
 	private static String FXML_VIEW_FILE = "/sc/fiji/filamentdetector/gui/view/analyzer/LengthOverTimeAnalyzerView.fxml";
 
 	@Parameter
-	private GUIStatusService status;
+	private StatusService status;
 
 	@FXML
 	private CheckBox saveResultsCheckbox;
