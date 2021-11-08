@@ -61,7 +61,7 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:git:git://github.com/fiji/FilamentDetector</connection>
+		<connection>scm:git:https://github.com/fiji/FilamentDetector</connection>
 		<developerConnection>scm:git:git@github.com:fiji/FilamentDetector</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/fiji/FilamentDetector</url>
