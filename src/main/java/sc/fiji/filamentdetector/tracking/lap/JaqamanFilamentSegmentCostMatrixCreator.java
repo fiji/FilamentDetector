@@ -25,7 +25,7 @@
  */
 package sc.fiji.filamentdetector.tracking.lap;
 
-import static fiji.plugin.trackmate.tracking.LAPUtils.checkFeatureMap;
+import static fiji.plugin.trackmate.tracking.jaqaman.LAPUtils.checkFeatureMap;
 import static fiji.plugin.trackmate.tracking.TrackerKeys.KEY_ALLOW_GAP_CLOSING;
 import static fiji.plugin.trackmate.tracking.TrackerKeys.KEY_ALLOW_TRACK_MERGING;
 import static fiji.plugin.trackmate.tracking.TrackerKeys.KEY_ALLOW_TRACK_SPLITTING;
@@ -49,16 +49,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import net.imglib2.algorithm.MultiThreaded;
+import net.imglib2.util.Util;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
-import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
-import fiji.plugin.trackmate.tracking.sparselap.costmatrix.CostMatrixCreator;
-import fiji.plugin.trackmate.tracking.sparselap.costmatrix.DefaultCostMatrixCreator;
-import fiji.plugin.trackmate.tracking.sparselap.costmatrix.ResizableDoubleArray;
-import fiji.plugin.trackmate.tracking.sparselap.linker.SparseCostMatrix;
-import net.imglib2.algorithm.MultiThreaded;
-import net.imglib2.util.Util;
+import fiji.plugin.trackmate.tracking.jaqaman.costfunction.CostFunction;
+import fiji.plugin.trackmate.tracking.jaqaman.costmatrix.CostMatrixCreator;
+import fiji.plugin.trackmate.tracking.jaqaman.costmatrix.DefaultCostMatrixCreator;
+import fiji.plugin.trackmate.tracking.jaqaman.costmatrix.ResizableDoubleArray;
+import fiji.plugin.trackmate.tracking.jaqaman.costmatrix.SparseCostMatrix;
 import sc.fiji.filamentdetector.model.Filament;
 
 public class JaqamanFilamentSegmentCostMatrixCreator implements CostMatrixCreator<Filament, Filament>, MultiThreaded {

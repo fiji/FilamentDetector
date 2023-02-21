@@ -51,9 +51,9 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
-import fiji.plugin.trackmate.tracking.sparselap.costmatrix.JaqamanLinkingCostMatrixCreator;
-import fiji.plugin.trackmate.tracking.sparselap.linker.JaqamanLinker;
+import fiji.plugin.trackmate.tracking.jaqaman.JaqamanLinker;
+import fiji.plugin.trackmate.tracking.jaqaman.costfunction.CostFunction;
+import fiji.plugin.trackmate.tracking.jaqaman.costmatrix.JaqamanLinkingCostMatrixCreator;
 import sc.fiji.filamentdetector.model.Filament;
 import sc.fiji.filamentdetector.model.TrackedFilaments;
 import sc.fiji.filamentdetector.tracking.lap.BoundingBoxOverlapCostFunction;

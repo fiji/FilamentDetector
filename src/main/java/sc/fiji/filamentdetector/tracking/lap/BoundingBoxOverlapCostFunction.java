@@ -27,7 +27,7 @@ package sc.fiji.filamentdetector.tracking.lap;
 
 import java.util.Arrays;
 
-import fiji.plugin.trackmate.tracking.sparselap.costfunction.CostFunction;
+import fiji.plugin.trackmate.tracking.jaqaman.costfunction.CostFunction;
 import sc.fiji.filamentdetector.model.Filament;
 
 public class BoundingBoxOverlapCostFunction implements CostFunction<Filament, Filament> {
