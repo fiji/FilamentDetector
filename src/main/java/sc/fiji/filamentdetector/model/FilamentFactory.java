@@ -2,7 +2,7 @@
  * #%L
  * A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.
  * %%
- * Copyright (C) 2016 - 2021 Fiji developers.
+ * Copyright (C) 2016 - 2023 Fiji developers.
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
