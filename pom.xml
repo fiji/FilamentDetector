@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>40.0.0</version>
+		<version>44.0.0</version>
 		<relativePath />
 	</parent>
 
 	<groupId>sc.fiji</groupId>
 	<artifactId>FilamentDetector</artifactId>
-	<version>2.0.2-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 
 	<name>FilamentDetector</name>
 	<description>A Fiji plugin that allow easy, fast and accurate detection and tracking of biological filaments.</description>
@@ -84,6 +84,8 @@
 		<releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
 
 		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
+
+		<javafx.version>19.0.2.1</javafx.version>
 	</properties>
 
 	<dependencies>
@@ -105,6 +107,28 @@
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij</artifactId>
+		</dependency>
+
+		<!-- JavaFX dependencies -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<classifier>${scijava.natives.classifier.javafx}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<classifier>${scijava.natives.classifier.javafx}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<classifier>${scijava.natives.classifier.javafx}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-web</artifactId>
+			<classifier>${scijava.natives.classifier.javafx}</classifier>
 		</dependency>
 
 		<!-- Third party dependencies -->
