@@ -87,55 +87,52 @@
 	</properties>
 
 	<dependencies>
-
-		<!--ImageJ -->
+		<!-- Fiji dependencies -->
 		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>imagej</artifactId>
+			<groupId>sc.fiji</groupId>
+			<artifactId>KymographBuilder</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>sc.fiji</groupId>
 			<artifactId>TrackMate</artifactId>
 		</dependency>
 
+		<!-- ImageJ dependencies -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+
+		<!-- Third party dependencies -->
 		<dependency>
 			<groupId>de.biomedical-imaging.imagej</groupId>
 			<artifactId>ij_ridge_detect</artifactId>
 			<version>${ij_ridge_detect.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>sc.fiji</groupId>
-			<artifactId>KymographBuilder</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jgrapht</groupId>
 			<artifactId>jgrapht-core</artifactId>
 		</dependency>
 
-		<!-- Enable IJ1 interface at runtime -->
+		<!-- Runtime dependencies -->
+
+		<!-- Enable original ImageJ interface at runtime -->
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>imagej-legacy</artifactId>
@@ -143,13 +140,12 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Unit test library -->
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<repositories>
