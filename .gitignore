@@ -5,6 +5,7 @@
 /.classpath
 /.project
 .settings
+/.factorypath
 
 ## vim ##
 *.swp
