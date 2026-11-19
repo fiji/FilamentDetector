@@ -86,6 +86,9 @@
 		<ij_ridge_detect.version>1.4.1</ij_ridge_detect.version>
 
 		<javafx.version>19.0.2.1</javafx.version>
+
+		<!-- TEMP: Until pom-scijava manages this version or newer. -->
+		<Anisotropic_Diffusion_2D.version>2.0.2</Anisotropic_Diffusion_2D.version>
 	</properties>
 
 	<dependencies>
